@@ -1,5 +1,7 @@
 //class future builder
 
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 
 import 'constant_variables.dart';
@@ -25,7 +27,8 @@ class _MyFutureBuilderState extends State<MyFutureBuilder> {
           var data = snapshot.data ?? [];
           return ListView.builder(
               physics: const BouncingScrollPhysics(),
-              itemCount: widget.isHome ? 4 : data.length,
+              //itemCount: widget.isHome ? 4 : data.length,
+              itemCount: data.length,
               itemBuilder: (context, index) {
                 int reversedIndex = data.length - index - 1;
                 if (snapshot.connectionState == ConnectionState.waiting) {
@@ -75,8 +78,8 @@ class _MyFutureBuilderState extends State<MyFutureBuilder> {
                               Flexible(
                                 child: Text(
                                   widget.isHome
-                                      ? '${data[reversedIndex].fullNameDoctor}'
-                                      : '${data[index].fullNameDoctor}',
+                                      ? '${data[reversedIndex].fullName}'
+                                      : '${data[index].fullName}',
                                   style: Theme.of(context)
                                       .textTheme
                                       .labelMedium!

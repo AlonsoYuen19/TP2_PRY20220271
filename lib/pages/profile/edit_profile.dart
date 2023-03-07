@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ulcernosis/pages/profile/profile.dart';
-import 'package:ulcernosis/services/user_auth_service.dart';
+import 'package:ulcernosis/services/medic_service.dart';
 
-import '../../models/doctor.dart';
+import '../../models/medic.dart';
 import '../../utils/helpers/constant_variables.dart';
 import '../../utils/widgets/background_figure.dart';
 import '../../utils/widgets/drop_down.dart';
@@ -36,25 +36,28 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   String dni = "";
   String age = "";
   String stateCivil = "";
+  String cmp = "";
   final _name = TextEditingController();
   final _address = TextEditingController();
   final _phone = TextEditingController();
   final _dni = TextEditingController();
   final _age = TextEditingController();
   final _stateCivil = TextEditingController();
+  final _cmp = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  Doctor? doctorUser = Doctor();
+  Medic? doctorUser = Medic();
   Future init() async {
-    final doctorProvider = Provider.of<UserServiceAuth>(context, listen: false);
+    final doctorProvider = Provider.of<MedicAuthServic>(context, listen: false);
     var userId =
         await doctorProvider.getAuthenticateId(prefs.email, prefs.password);
-    doctorUser = await doctorProvider.getDoctorById(userId.toString());
-    name = doctorUser!.fullNameDoctor;
+    doctorUser = await doctorProvider.getMedicById(userId.toString());
+    name = doctorUser!.fullName;
     address = doctorUser!.address;
     phone = doctorUser!.phone;
     dni = doctorUser!.dni;
-    age = doctorUser!.age;
-    stateCivil = doctorUser!.stateCivil;
+    age = doctorUser!.age.toString();
+    stateCivil = doctorUser!.civilStatus;
+    cmp = doctorUser!.cmp;
     setState(() {});
   }
 
@@ -72,13 +75,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     _dni.dispose();
     _age.dispose();
     _stateCivil.dispose();
+    _cmp.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final doctorProvider = Provider.of<UserServiceAuth>(context);
+    final doctorProvider = Provider.of<MedicAuthServic>(context);
     return Scaffold(
       body: SingleChildScrollView(
         child: SafeArea(
@@ -217,23 +221,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             print("Estado Civil: " + _stateCivil.text);
                             var userId = await doctorProvider.getAuthenticateId(
                                 prefs.email, prefs.password);
-                            /*await doctorProvider.updateDoctor(
-                              userId.toString(),
-                              Doctor(
-                                  fullNameDoctor: _name.text.trim(),
-                                  address: _address.text.trim(),
-                                  phone: _phone.text.trim(),
-                                  dni: _dni.text.trim(),
-                                  age: _age.text.trim(),
-                                  stateCivil: _stateCivil.text.trim()));*/
-                            await doctorProvider.updateDoctorTest(
-                                userId.toString(),
-                                fullNameDoctor: _name.text.trim(),
+                            await doctorProvider.updateMedic(userId.toString(),
+                                fullNameMedic: _name.text.trim(),
+                                stateCivil: _stateCivil.text.trim(),
                                 address: _address.text.trim(),
                                 phone: _phone.text.trim(),
                                 dni: _dni.text.trim(),
                                 age: _age.text.trim(),
-                                stateCivil: _stateCivil.text.trim());
+                                cmp: _cmp.text.trim());
                             if (!mounted) {
                               return;
                             }

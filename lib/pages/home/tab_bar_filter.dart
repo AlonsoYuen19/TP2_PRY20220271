@@ -9,8 +9,8 @@ import 'package:ulcernosis/pages/home/tab_bar_pages/fourth_page.dart';
 import 'package:ulcernosis/pages/home/tab_bar_pages/second_page.dart';
 import 'package:ulcernosis/pages/home/tab_bar_pages/third_page.dart';
 
-import '../../models/doctor.dart';
-import '../../services/user_auth_service.dart';
+import '../../models/medic.dart';
+import '../../services/medic_service.dart';
 import '../../shared/user_prefs.dart';
 
 class TabBarFilter extends StatefulWidget {
@@ -22,17 +22,16 @@ class TabBarFilter extends StatefulWidget {
 
 class _TabBarFilterState extends State<TabBarFilter>
     with TickerProviderStateMixin {
-  Doctor doctorUser = Doctor();
-  final userAuth = UserServiceAuth();
+  Medic doctorUser = Medic();
+  final userAuth = MedicAuthServic();
   final prefs = SaveData();
   ScrollController _scrollController = ScrollController();
 
   Future init() async {
     var userId = await userAuth.getAuthenticateId(prefs.email, prefs.password);
-    doctorUser = (await userAuth.getDoctorById(userId.toString()))!;
+    doctorUser = (await userAuth.getMedicById(userId.toString()))!;
     setState(() {
-      print(
-          "El usuario con info es el siguiente :${doctorUser.fullNameDoctor}");
+      print("El usuario con info es el siguiente :${doctorUser.fullName}");
       print("El usuario con id es el siguiente :" + userId!.toString());
     });
   }

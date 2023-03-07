@@ -1,6 +1,5 @@
-
 import 'package:flutter/material.dart';
-import '../../services/user_auth_service.dart';
+import '../../services/medic_service.dart';
 import '../helpers/constant_variables.dart';
 
 class AuthProvider extends ChangeNotifier {
@@ -14,7 +13,7 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future<void> _initPrefs() async {
-    UserServiceAuth loginService = UserServiceAuth();
+    MedicAuthServic loginService = MedicAuthServic();
     var token = await loginService.getBearerToken(prefs.email, prefs.password);
     token = prefs.token;
     _token = token;
@@ -28,9 +27,10 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future<void> updateToken(BuildContext context) async {
-    UserServiceAuth loginService = UserServiceAuth();
-    var token = await loginService.getBearerToken(prefs.email, prefs.password);
-    prefs.token = token!;
+    MedicAuthServic loginService = MedicAuthServic();
+    var token =
+        (await loginService.getBearerToken(prefs.email, prefs.password))!;
+    prefs.token = token;
     print("Token actualizado con exito");
     print(token);
     notifyListeners();

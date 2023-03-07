@@ -132,7 +132,9 @@ class CustomDialogWidget extends StatelessWidget {
                               return;
                             }
                             await token.deleteToken(context);
-
+                            prefs.deleteIdUsers();
+                            prefs.deleteIdMedic();
+                            prefs.deleteIdNurse();
                             Navigator.pushNamedAndRemoveUntil(
                                 context, 'login', (_) => false);
                           },

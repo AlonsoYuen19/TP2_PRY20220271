@@ -1,21 +1,17 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:ulcernosis/pages/profile/patient_profile.dart';
-import '../../models/doctor.dart';
-import '../../models/nurse.dart';
+import '../../models/medic.dart';
 import '../../services/nurse_services.dart';
-import '../../services/user_auth_service.dart';
-import '../../utils/helpers/appbar_drawer.dart';
+import '../../services/medic_service.dart';
+import '../../utils/helpers/appbar_drawer/appbar_drawer.dart';
 import '../../utils/helpers/constant_variables.dart';
 import '../../utils/helpers/loaders_screens/loader_profile_screen.dart';
 import '../../utils/helpers/searchable.dart';
 import '../../utils/providers/auth_token.dart';
 import '../../utils/widgets/alert_dialog.dart';
-import '../../utils/widgets/fancy_card.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -36,15 +32,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   late Future _myFuture;
   String selectedImagePath = '';
-  Doctor? doctorUser = Doctor();
+  Medic? doctorUser = Medic();
   var userId = 0;
   Future init() async {
-    final doctorProvider = Provider.of<UserServiceAuth>(context, listen: false);
+    final doctorProvider = Provider.of<MedicAuthServic>(context, listen: false);
     final nurseProvider = Provider.of<NurseAuthService>(context, listen: false);
     userId =
         (await doctorProvider.getAuthenticateId(prefs.email, prefs.password))!;
     print(userId.toString());
-    doctorUser = await doctorProvider.getDoctorById(userId.toString());
+    doctorUser = await doctorProvider.getMedicById(userId.toString());
     setState(() {});
   }
 
@@ -147,7 +143,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       GestureDetector(
                         onTap: () async {
-                          final doctorProvider = Provider.of<UserServiceAuth>(
+                          final doctorProvider = Provider.of<MedicAuthServic>(
                               context,
                               listen: false);
                           var userId = await doctorProvider.getAuthenticateId(
@@ -228,7 +224,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget profilePage() {
-    String fullName = doctorUser!.fullNameDoctor;
+    String fullName = doctorUser!.fullName;
     final nurseProvider = Provider.of<NurseAuthService>(context, listen: false);
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
@@ -486,7 +482,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ],
             ),
           ),
-          Container(
+          /*Container(
             padding: const EdgeInsets.symmetric(vertical: 10),
             height: 300,
             child: FutureBuilder<List<Nurse>>(
@@ -540,7 +536,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             bottom: 15, left: 15, right: 15),
                         child: FancyCard(
                           image: Image.asset("assets/images/patient-logo.png"),
-                          title: snapshot.data![index].fullNameNurse,
+                          title: snapshot.data![index].fullName,
                           date: snapshot.data![index].email,
                           function: () {
                             //id para enviar a la siguiente pantalla
@@ -557,7 +553,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     });
               },
             ),
-          ),
+          ),*/
         ],
       ),
     );

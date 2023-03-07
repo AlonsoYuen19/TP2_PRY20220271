@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../../models/doctor.dart';
+import '../../models/medic.dart';
 import '../helpers/constant_variables.dart';
 
 class CharListS extends StatefulWidget {
-  final List<Doctor> listDoctors;
-  const CharListS({Key? key, required this.listDoctors}) : super(key: key);
+  final List<Medic> listMedics;
+  const CharListS({Key? key, required this.listMedics}) : super(key: key);
 
   @override
   State<CharListS> createState() => _CharListSState();
@@ -18,8 +18,8 @@ class _CharListSState extends State<CharListS> {
     //card view
     return Column(
       children: [
-        if (widget.listDoctors.isNotEmpty) ...[
-          for (int i = 0; i < widget.listDoctors.length; i++)
+        if (widget.listMedics.isNotEmpty) ...[
+          for (int i = 0; i < widget.listMedics.length; i++)
             Container(
               width: size.width * 0.9,
               padding: const EdgeInsets.only(bottom: 5, top: 10),
@@ -44,7 +44,7 @@ class _CharListSState extends State<CharListS> {
                         children: [
                           Flexible(
                             child: Text(
-                              widget.listDoctors[i].fullNameDoctor,
+                              widget.listMedics[i].fullName,
                               style: Theme.of(context)
                                   .textTheme
                                   .labelMedium!
@@ -95,7 +95,7 @@ class _CharListSState extends State<CharListS> {
                           ),
                           const SizedBox(width: 10),
                           Text(
-                            widget.listDoctors[i].address,
+                            widget.listMedics[i].address,
                             style: Theme.of(context).textTheme.labelMedium,
                           )
                         ],
@@ -108,7 +108,7 @@ class _CharListSState extends State<CharListS> {
             ),
         ] else ...[
           FutureBuilder(
-              future: _getData(doctorList: widget.listDoctors),
+              future: _getData(medicList: widget.listMedics),
               builder: (buildContext, snapshot) {
                 if (snapshot.hasError) {
                   return Text(snapshot.error.toString());
@@ -135,10 +135,10 @@ class _CharListSState extends State<CharListS> {
     );
   }
 
-  Future<List<Doctor>?> _getData(
+  Future<List<Medic>?> _getData(
       {bool hasError = false,
       bool hasData = true,
-      List<Doctor>? doctorList}) async {
+      List<Medic>? medicList}) async {
     await Future.delayed(const Duration(seconds: 5));
     if (hasError) {
       return Future.error("An error occurred");
@@ -146,6 +146,6 @@ class _CharListSState extends State<CharListS> {
     if (!hasData) {
       return Future.error("No existe información");
     }
-    return doctorList;
+    return medicList;
   }
 }

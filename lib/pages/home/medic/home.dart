@@ -3,15 +3,19 @@ import 'dart:async';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:ulcernosis/models/medic.dart';
+import 'package:ulcernosis/models/nurse.dart';
+import 'package:ulcernosis/services/nurse_services.dart';
+import 'package:ulcernosis/services/users_service.dart';
 import 'package:ulcernosis/utils/providers/auth_token.dart';
 import 'package:ulcernosis/utils/helpers/constant_variables.dart';
 import 'package:ulcernosis/utils/helpers/searchable.dart';
 
-import '../../services/user_auth_service.dart';
-import '../../utils/helpers/appbar_drawer.dart';
-import '../../utils/helpers/future_builders.dart';
-import '../../utils/helpers/loaders_screens/loader_home_screen.dart';
-import '../../utils/widgets/alert_dialog.dart';
+import '../../../services/medic_service.dart';
+import '../../../utils/helpers/appbar_drawer/appbar_drawer.dart';
+import '../../../utils/helpers/future_builders.dart';
+import '../../../utils/helpers/loaders_screens/loader_home_screen.dart';
+import '../../../utils/widgets/alert_dialog.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -21,7 +25,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final userAuth = UserServiceAuth();
+  //final userAuth = MedicAuthServic();
+  final userAuth = UsersAuthService();
   Future<Widget> delayPage() {
     Completer<Widget> completer = Completer();
     Future.delayed(const Duration(seconds: 2), () {
@@ -139,7 +144,7 @@ class _HomeScreenState extends State<HomeScreen> {
             height: 520,
             padding: const EdgeInsets.only(top: 20),
             child: MyFutureBuilder(
-              myFuture: userAuth.getDoctors(),
+              myFuture: userAuth.getUsers(),
               isHome: true,
             ),
           ),

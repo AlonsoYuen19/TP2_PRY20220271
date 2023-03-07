@@ -42,12 +42,28 @@ class SaveData {
     _prefs!.setBool('login', true);
   }
 
-  int get idDoctor {
-    return _prefs!.getInt('idDoctor') ?? 0;
+  int get idUsers {
+    return _prefs!.getInt('idUsers') ?? 0;
   }
 
-  set idDoctor(int value) {
-    _prefs!.setInt('idDoctor', value);
+  set idUsers(int value) {
+    _prefs!.setInt('idUsers', value);
+  }
+
+  int get idMedic {
+    return _prefs!.getInt('idMedic') ?? 0;
+  }
+
+  set idMedic(int value) {
+    _prefs!.setInt('idMedic', value);
+  }
+
+  int get idNurse {
+    return _prefs!.getInt('idNurse') ?? 0;
+  }
+
+  set idNurse(int value) {
+    _prefs!.setInt('idNurse', value);
   }
 
   int get idPatient {
@@ -67,7 +83,6 @@ class SaveData {
     _prefs!.setString('image', value);
   }
 
-
   //delete token
   void deleteToken() {
     _prefs?.remove('token');
@@ -83,5 +98,15 @@ class SaveData {
 
   void deleteLogin() {
     _prefs?.remove('login');
+  }
+
+  void deleteIdUsers() {
+    _prefs?.remove('idUsers');
+  }
+  void deleteIdMedic() {
+    _prefs?.remove('idMedic');
+  }
+  void deleteIdNurse() {
+    _prefs?.remove('idNurse');
   }
 }

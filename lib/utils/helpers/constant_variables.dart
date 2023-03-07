@@ -21,6 +21,8 @@ const validDni = Validator.dniValid;
 const validAge = Validator.ageValid;
 const validAddress = Validator.addressValid;
 const validPhone = Validator.phoneValid;
+const validCmp = Validator.cmpValid;
+const validCep = Validator.cepValid;
 
 const validNameEditDoctor = ValidatorEditDoctor.nameValidEdit;
 const validDniEditDoctor = ValidatorEditDoctor.dniValidEdit;
@@ -28,9 +30,8 @@ const validAgeEditDoctor = ValidatorEditDoctor.ageValidEdit;
 const validAddressEditDoctor = ValidatorEditDoctor.addressValidEdit;
 const validPhoneEditDoctor = ValidatorEditDoctor.phoneValidEdit;
 final prefs = SaveData();
-const baseURLNurse = "http://10.0.2.2:8080/api/v2/nurses/";
-const baseURLDoctor = "http://10.0.2.2:8080/api/v1/doctors/";
-const authURL = "http://10.0.2.2:8080/api/v1/auth/";
+
+const authURL = "http://10.0.2.2:8080/api/v1/";
 
 
 const camaraFunction = GaleryOptions.selectImageFromCamera;

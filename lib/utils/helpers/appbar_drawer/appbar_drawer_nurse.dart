@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
-import 'package:provider/provider.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
-import 'package:ulcernosis/utils/providers/auth_token.dart';
+import 'package:ulcernosis/models/nurse.dart';
 
-import '../../models/doctor.dart';
-import '../../services/user_auth_service.dart';
-import '../widgets/alert_dialog.dart';
-import 'constant_variables.dart';
+import '../../../models/medic.dart';
+import '../../../services/nurse_services.dart';
+import '../../../services/medic_service.dart';
+import '../../widgets/alert_dialog.dart';
+import '../constant_variables.dart';
 
-class AppBarDrawer extends StatefulWidget {
+// ignore: must_be_immutable
+class AppBarDrawerNurse extends StatefulWidget {
   final Widget child;
   bool? isHome;
   bool? isDiagnosis;
   bool? isManagement;
   bool? isProfile;
+  bool? isNurse;
 
-  AppBarDrawer(
+  AppBarDrawerNurse(
       {Key? key,
       required this.child,
       this.isHome = false,
@@ -26,26 +28,27 @@ class AppBarDrawer extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<AppBarDrawer> createState() => _AppBarDrawerState();
+  State<AppBarDrawerNurse> createState() => _AppBarDrawerNurseState();
 }
 
-class _AppBarDrawerState extends State<AppBarDrawer> {
-  Doctor doctorUser = Doctor();
+class _AppBarDrawerNurseState extends State<AppBarDrawerNurse> {
+  Medic doctorUser = Medic();
+  Nurse nurseUser = Nurse();
+  final userAuth = MedicAuthServic();
+  final nurseService = NurseAuthService();
   final _advancedDrawerController = AdvancedDrawerController();
-  final userAuth = UserServiceAuth();
-  Future init() async {
+  Future initNurse() async {
     var userId = await userAuth.getAuthenticateId(prefs.email, prefs.password);
-    doctorUser = (await userAuth.getDoctorById(userId.toString()))!;
+    nurseUser = (await nurseService.getNurseById(userId.toString()))!;
     setState(() {
-      print(
-          "El usuario con info es el siguiente :${doctorUser.fullNameDoctor}");
+      print("El usuario con info es el siguiente :${nurseUser.fullName}");
       print("El usuario con id es el siguiente :" + userId!.toString());
     });
   }
 
   @override
   void initState() {
-    init();
+    initNurse();
     super.initState();
   }
 
@@ -64,7 +67,7 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final token = Provider.of<AuthProvider>(context, listen: false);
+    //final token = Provider.of<AuthProvider>(context, listen: false);
     return AdvancedDrawer(
         backdropColor: Theme.of(context).colorScheme.tertiary,
         controller: _advancedDrawerController,
@@ -101,13 +104,13 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                       ),
                     ),
                     Text(
-                      doctorUser.fullNameDoctor,
+                      nurseUser.fullName,
                       textAlign: TextAlign.center,
                       style: Theme.of(context)
                           .textTheme
                           .bodyMedium!
                           .copyWith(fontSize: 28),
-                    ),
+                    )
                   ],
                 ),
                 const Divider(
@@ -131,7 +134,7 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                   child: ListTile(
                     onTap: () async {
                       if (widget.isHome == false) {
-                        token.updateToken(context);
+                        //token.updateToken(context);
                         Navigator.pushNamedAndRemoveUntil(
                             context, 'home', (route) => false);
                       }
@@ -170,7 +173,7 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                   child: ListTile(
                     onTap: () {
                       if (widget.isDiagnosis == false) {
-                        token.updateToken(context);
+                        //token.updateToken(context);
                         Navigator.pushNamedAndRemoveUntil(
                             context, 'diagnosis', (route) => false);
                       }
@@ -209,7 +212,7 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                   child: ListTile(
                       onTap: () {
                         if (widget.isManagement == false) {
-                          token.updateToken(context);
+                          //token.updateToken(context);
                           Navigator.pushNamedAndRemoveUntil(
                               context, 'manage', (route) => false);
                         }
@@ -248,7 +251,7 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                   child: ListTile(
                       onTap: () {
                         if (widget.isProfile == false) {
-                          token.updateToken(context);
+                          //token.updateToken(context);
                           Navigator.pushNamedAndRemoveUntil(
                               context, 'profile', (route) => false);
                         }

@@ -1,20 +1,20 @@
 import 'dart:convert';
 
-Nurse nurseFromJson(String str) => Nurse.fromJson(json.decode(str));
+Medic medicFromJson(String str) => Medic.fromJson(json.decode(str));
 
-String nurseToJson(Nurse data) => json.encode(data.toJson());
+String medicToJson(Medic data) => json.encode(data.toJson());
 
-class Nurse {
-  Nurse({
+class Medic {
+  Medic({
     this.fullName = "",
     this.email = "",
     this.password = "",
     this.dni = "",
     this.age = 0,
     this.address = "",
-    this.cep = "",
     this.phone = "",
-    this.rol = "ROLE_NURSE",
+    this.cmp = "",
+    this.rol = "ROLE_MEDIC",
     this.civilStatus = "",
   });
 
@@ -24,22 +24,22 @@ class Nurse {
   String dni;
   int age;
   String address;
-  String cep;
   String phone;
+  String cmp;
   String rol;
   String civilStatus;
 
-  factory Nurse.fromJson(Map<String, dynamic> json) => Nurse(
+  factory Medic.fromJson(Map<String, dynamic> json) => Medic(
         fullName: json["fullName"],
         email: json["email"],
         //password: json["password"],
         dni: json["dni"],
         age: json["age"],
         address: json["address"],
-        cep: json["cep"],
         phone: json["phone"],
+        cmp: json["cmp"],
         //rol: json["rol"],
-        //civilStatus: json["civilStatus"],
+        civilStatus: json["civilStatus"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -49,8 +49,8 @@ class Nurse {
         "dni": dni,
         "age": age,
         "address": address,
-        "cep": cep,
         "phone": phone,
+        "cmp": cmp,
         "rol": rol,
         "civilStatus": civilStatus,
       };

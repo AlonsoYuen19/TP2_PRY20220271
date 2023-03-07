@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ulcernosis/pages/sign_in/login.dart';
-import 'package:ulcernosis/services/user_auth_service.dart';
+import 'package:ulcernosis/services/nurse_services.dart';
 import 'package:ulcernosis/utils/widgets/background_figure.dart';
 
 import '../../shared/user_prefs.dart';
@@ -12,14 +12,14 @@ import '../../utils/helpers/constant_variables.dart';
 import '../../utils/widgets/drop_down.dart';
 import '../../utils/widgets/text_form_field.dart';
 
-class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({super.key});
+class RegisterNurseScreen extends StatefulWidget {
+  const RegisterNurseScreen({super.key});
 
   @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
+  State<RegisterNurseScreen> createState() => _RegisterNurseScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
   String name = "";
   String password = "";
   String email = "";
@@ -27,6 +27,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   String phone = "";
   String dni = "";
   String age = "";
+  String cep = "";
   final _name = TextEditingController();
   final _password = TextEditingController();
   final _email = TextEditingController();
@@ -35,14 +36,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _dni = TextEditingController();
   final _age = TextEditingController();
   final _stateCivil = TextEditingController();
+  final _cep = TextEditingController();
 
-  final authService = UserServiceAuth();
+  final nurseService = NurseAuthService();
   final prefs = SaveData();
   final _formKey = GlobalKey<FormState>();
   int _currentStep = 0;
   @override
   void dispose() {
+    _name.dispose();
+    _password.dispose();
+    _email.dispose();
+    _address.dispose();
+    _phone.dispose();
+    _dni.dispose();
+    _age.dispose();
     _stateCivil.dispose();
+    _cep.dispose();
     super.dispose();
   }
 
@@ -125,15 +135,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     print("Estado Civil: " + _stateCivil.text);
                     prefs.email = _email.text;
                     prefs.password = _password.text;
-                    await authService.registerDoctor(
-                        _name.text.trim(),
-                        _password.text.trim(),
-                        _email.text.trim(),
-                        _stateCivil.text.trim(),
-                        _address.text.trim(),
-                        _phone.text.trim(),
-                        _dni.text.trim(),
-                        _age.text.trim());
+                    await nurseService.registerNurse(
+                      _name.text.trim(),
+                      _email.text.trim(),
+                      _password.text.trim(),
+                      _dni.text.trim(),
+                      _age.text.trim(),
+                      _address.text.trim(),
+                      _phone.text.trim(),
+                      _cep.text.trim(),
+                      "ROLE_NURSE",
+                      _stateCivil.text.trim(),
+                    );
                     await tokenProvider.updateToken(context);
                     if (!mounted) {
                       return;
@@ -316,6 +329,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                           "El número de teléfono debe ser de 9 dígitos"),
                                       obscureText: false,
                                       controllerr: _phone),
+                                  SizedBox(height: size.height * 0.01),
+                                  title("CEP	"),
+                                  GetTextFormField(
+                                      labelText: "CEP",
+                                      placeholder: cep,
+                                      icon: const Icon(Icons.code),
+                                      keyboardType: TextInputType.phone,
+                                      validator: validCep(
+                                          "El número de teléfono debe ser de 6 dígitos"),
+                                      obscureText: false,
+                                      controllerr: _cep),
                                   SizedBox(height: size.height * 0.01),
                                 ],
                               ),

@@ -6,14 +6,16 @@ import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:starsview/config/StarsConfig.dart';
 import 'package:starsview/starsview.dart';
+import 'package:ulcernosis/services/nurse_services.dart';
 import 'package:ulcernosis/utils/widgets/background_figure.dart';
-
-import '../../services/user_auth_service.dart';
+import '../../models/users.dart';
+import '../../services/medic_service.dart';
+import '../../services/users_service.dart';
 import '../../shared/user_prefs.dart';
 import '../../utils/providers/auth_token.dart';
 import '../../utils/helpers/constant_variables.dart';
 import '../../utils/widgets/text_form_field.dart';
-import '../home/home.dart';
+import '../home/medic/home.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -27,7 +29,7 @@ String password = "";
 
 class _LoginScreenState extends State<LoginScreen> {
   final _prefs = SaveData();
-  final authService = UserServiceAuth();
+  final authService = MedicAuthServic();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -63,9 +65,13 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
+  Users users = Users();
   Future init() async {
     //obtener el token
     Provider.of<AuthProvider>(context, listen: false);
+    print("Id del user: " + prefs.idUsers.toString());
+    print("Id del enfermero: " + prefs.idNurse.toString());
+    print("Id del medico: " + prefs.idMedic.toString());
   }
 
   final texts = ["Brindar", "Ayudar", "Diagnosticar", "En ese orden"];
@@ -283,24 +289,83 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  /*void _fetchDataNurse(BuildContext context, bool isLogged,
+      [bool mounted = true]) async {
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (_) {
+          return StatefulBuilder(builder: (context, StateSetter setState) {
+            return Dialog(
+              backgroundColor: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    CircularProgressIndicator(
+                      color: !isLogged ? Colors.red : Colors.green,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Text('Cargando...',
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium!
+                            .copyWith(color: Colors.black, fontSize: 18))
+                  ],
+                ),
+              ),
+            );
+          });
+        });
+    await Future.delayed(const Duration(seconds: 3));
+    if (!mounted) return;
+    if (isLogged == true) {
+      Navigator.pushNamed(context, "home_nurse");
+    } else {
+      Navigator.of(context).pop();
+    }
+  }*/
+
   Widget signInButton(BuildContext context) {
     final token = Provider.of<AuthProvider>(context, listen: false);
     return ElevatedButton(
         onPressed: () async {
           final isValidForm = _formKey.currentState!.validate();
           if (isValidForm) {
-            final loginService =
-                Provider.of<UserServiceAuth>(context, listen: false);
+            final medicService =
+                Provider.of<MedicAuthServic>(context, listen: false);
+            final nurseService =
+                Provider.of<NurseAuthService>(context, listen: false);
+            final userService =
+                Provider.of<UsersAuthService>(context, listen: false);
             var email = emailController.text.trim();
             var password = passwordController.text.trim();
             _prefs.email = email;
             _prefs.password = password;
             await token.updateToken(context);
             _prefs.login = false;
-            var id = await loginService.getAuthenticateId(email, password);
-            if (id != null) {
-              _prefs.idDoctor = id;
+            var id = await userService.getAuthenticateUserId(email, password);
+            var idMedic = await medicService.getAuthenticateId(email, password);
+            var idNurse = await nurseService.getAuthenticateId(email, password);
+            var type =
+                await medicService.getAuthenticateIdRole(email, password);
+            if (id != null && type == "ROLE_MEDIC") {
+              _prefs.idUsers = id;
+              _prefs.idMedic = idMedic!;
             }
+            if (id != null && type == "ROLE_NURSE") {
+              _prefs.idUsers = id;
+              _prefs.idNurse = idNurse!;
+            }
+            /*if (idMedic != null) {
+              _prefs.idMedic = idMedic;
+            }
+            if (idNurse != null) {
+              _prefs.idNurse = idNurse;
+            }*/
             if (email == "" || password == "") {
               return;
             }
@@ -317,20 +382,39 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               );
               print("No existe en la base de datos");
-            } else {
+            } else /*if (!id.isNaN && type == "ROLE_MEDIC")*/ {
               _fetchData(context, true);
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  duration: const Duration(seconds: 2),
+                  content: Text(
+                    type == "ROLE_MEDIC"
+                        ? "Médico logueado correctamente"
+                        : "Enfermero logueado correctamente",
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                  backgroundColor: Colors.green,
+                ),
+              );
+              if (type == "ROLE_MEDIC") {
+                print("Médico existe en la base de datos");
+              } else {
+                print("Enfermero existe en la base de datos");
+              }
+            } /*else if (!id.isNaN && type == "ROLE_NURSE") {
+              _fetchDataNurse(context, true);
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
                   duration: Duration(seconds: 2),
                   content: Text(
-                    "Usuario logueado correctamente",
+                    "Enfermero logueado correctamente",
                     style: TextStyle(color: Colors.white),
                   ),
                   backgroundColor: Colors.green,
                 ),
               );
-              print("Usuario existe en la base de datos");
-            }
+              print("Enfermero existe en la base de datos");
+            }*/
             if (!mounted) {
               return;
             }

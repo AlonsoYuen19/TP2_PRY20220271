@@ -1,38 +1,42 @@
 // ignore_for_file: use_build_context_synchronously
 
-/*import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:ulcernosis/services/user_auth_service.dart';
+import 'package:ulcernosis/pages/sign_in/login.dart';
+import 'package:ulcernosis/services/medic_service.dart';
 import 'package:ulcernosis/utils/widgets/background_figure.dart';
 
-import '../../services/nurse_services.dart';
 import '../../shared/user_prefs.dart';
 import '../../utils/providers/auth_token.dart';
 import '../../utils/helpers/constant_variables.dart';
 import '../../utils/widgets/drop_down.dart';
 import '../../utils/widgets/text_form_field.dart';
 
-class RegisterPatientScreen extends StatefulWidget {
-  const RegisterPatientScreen({super.key});
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
 
   @override
-  State<RegisterPatientScreen> createState() => _RegisterPatientScreenState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _RegisterPatientScreenState extends State<RegisterPatientScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
   String name = "";
+  String password = "";
   String email = "";
   String address = "";
   String phone = "";
   String dni = "";
   String age = "";
+  String cmp = "";
   final _name = TextEditingController();
+  final _password = TextEditingController();
   final _email = TextEditingController();
   final _address = TextEditingController();
   final _phone = TextEditingController();
   final _dni = TextEditingController();
   final _age = TextEditingController();
   final _stateCivil = TextEditingController();
+  final _cmp = TextEditingController();
 
   final authService = MedicAuthServic();
   final prefs = SaveData();
@@ -40,7 +44,15 @@ class _RegisterPatientScreenState extends State<RegisterPatientScreen> {
   int _currentStep = 0;
   @override
   void dispose() {
+    _name.dispose();
+    _password.dispose();
+    _email.dispose();
+    _address.dispose();
+    _phone.dispose();
+    _dni.dispose();
+    _age.dispose();
     _stateCivil.dispose();
+    _cmp.dispose();
     super.dispose();
   }
 
@@ -81,7 +93,7 @@ class _RegisterPatientScreenState extends State<RegisterPatientScreen> {
 
   Widget controlBuilders(context, details) {
     final size = MediaQuery.of(context).size;
-    final nurseProvider = Provider.of<NurseAuthService>(context, listen: false);
+    final tokenProvider = Provider.of<AuthProvider>(context, listen: false);
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
@@ -114,27 +126,38 @@ class _RegisterPatientScreenState extends State<RegisterPatientScreen> {
                   final isValidForm = _formKey.currentState!.validate();
                   if (isValidForm) {
                     print("Nombre Completo: " + _name.text);
+                    print("Contraseña: " + _password.text);
                     print("Correo: " + _email.text);
                     print("Direccion: " + _address.text);
                     print("phone: " + _phone.text);
                     print("DNI: " + _dni.text);
                     print("Edad: " + _age.text);
                     print("Estado Civil: " + _stateCivil.text);
-                    await nurseProvider.registerPatient(
-                        _name.text.trim(),
-                        _email.text.trim(),
-                        _stateCivil.text.trim(),
-                        _address.text.trim(),
-                        _phone.text.trim(),
-                        _dni.text.trim(),
-                        _age.text.trim());
+                    print("CMP: " + _cmp.text);
+                    prefs.email = _email.text;
+                    prefs.password = _password.text;
+                    await authService.registerMedic(
+                      _name.text.trim(),
+                      _email.text.trim(),
+                      _password.text.trim(),
+                      _dni.text.trim(),
+                      _age.text.trim(),
+                      _address.text.trim(),
+                      _phone.text.trim(),
+                      _cmp.text.trim(),
+                      "ROLE_MEDIC",
+                      _stateCivil.text.trim(),
+                    );
+                    await tokenProvider.updateToken(context);
                     if (!mounted) {
                       return;
                     }
 
-                    Navigator.pushNamedAndRemoveUntil(
+                    Navigator.pushAndRemoveUntil(
                       context,
-                      'profile',
+                      MaterialPageRoute(
+                        builder: (context) => const LoginScreen(),
+                      ),
                       (route) => false,
                     );
                   }
@@ -202,7 +225,7 @@ class _RegisterPatientScreenState extends State<RegisterPatientScreen> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: paddingHori, vertical: 20),
                             child: Text(
-                              "Registro de Paciente",
+                              "Registro",
                               textAlign: TextAlign.center,
                               style: Theme.of(context)
                                   .textTheme
@@ -268,6 +291,20 @@ class _RegisterPatientScreenState extends State<RegisterPatientScreen> {
                                     color: Colors.grey,
                                   ),
                                   SizedBox(height: size.height * 0.01),
+                                  title("Contraseña"),
+                                  GetTextFormField(
+                                    labelText: "Contraseña",
+                                    placeholder: password,
+                                    icon: const Icon(Icons.lock),
+                                    keyboardType: TextInputType.visiblePassword,
+                                    obscureText: true,
+                                    validator: validPassword(""),
+                                    controllerr: _password,
+                                  ),
+                                  const Divider(
+                                    thickness: 1.3,
+                                    color: Colors.grey,
+                                  ),
                                   title("Correo Electrónico"),
                                   GetTextFormField(
                                       labelText: "Correo",
@@ -293,6 +330,17 @@ class _RegisterPatientScreenState extends State<RegisterPatientScreen> {
                                           "El número de teléfono debe ser de 9 dígitos"),
                                       obscureText: false,
                                       controllerr: _phone),
+                                  SizedBox(height: size.height * 0.01),
+                                  title("CMP"),
+                                  GetTextFormField(
+                                      labelText: "CMP",
+                                      placeholder: cmp,
+                                      icon: const Icon(Icons.code),
+                                      keyboardType: TextInputType.phone,
+                                      validator: validCmp(
+                                          "El número del cmp debe de iniciar con 0 tener 6 dígitos"),
+                                      obscureText: false,
+                                      controllerr: _cmp),
                                   SizedBox(height: size.height * 0.01),
                                 ],
                               ),
@@ -384,4 +432,3 @@ class _RegisterPatientScreenState extends State<RegisterPatientScreen> {
     );
   }
 }
-*/

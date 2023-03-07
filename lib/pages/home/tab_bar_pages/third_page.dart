@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../models/doctor.dart';
-import '../../../services/user_auth_service.dart';
+import '../../../models/medic.dart';
+import '../../../services/medic_service.dart';
 import '../../../utils/helpers/future_builders.dart';
 import '../../../utils/helpers/searchable.dart';
 
@@ -14,14 +14,14 @@ class ThirdPage extends StatefulWidget {
 }
 
 class _ThirdPageState extends State<ThirdPage> {
-  final userAuth = UserServiceAuth();
-  Future<List<Doctor>> getStrings() async {
+  final userAuth = MedicAuthServic();
+  /*Future<List<Medic>> getStrings() async {
     await Future.delayed(const Duration(seconds: 1));
     return userAuth.getDoctorsByStateCivil("Divorciado");
-  }
+  }*/
 
   int? count;
-  Future init() async {
+  /*Future init() async {
     final list = await getStrings();
     final count = list.length;
     print("La cantidad de diagnósticos de categoría 3 es: $count");
@@ -31,11 +31,11 @@ class _ThirdPageState extends State<ThirdPage> {
   void initState() {
     init();
     super.initState();
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
-    final doctorProvider = Provider.of<UserServiceAuth>(context, listen: false);
+    final doctorProvider = Provider.of<MedicAuthServic>(context, listen: false);
     return Scaffold(
       body: ListView(
         children: [
@@ -83,7 +83,7 @@ class _ThirdPageState extends State<ThirdPage> {
               ],
             ),
           ),
-          Padding(
+          /*Padding(
             padding: const EdgeInsets.only(top: 12.0),
             child: SizedBox(
               height: 580,
@@ -92,7 +92,7 @@ class _ThirdPageState extends State<ThirdPage> {
                 isHome: false,
               ),
             ),
-          ),
+          ),*/
         ],
       ),
     );

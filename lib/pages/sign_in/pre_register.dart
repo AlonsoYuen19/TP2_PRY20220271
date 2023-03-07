@@ -122,7 +122,7 @@ class _PreRegisterScreenState extends State<PreRegisterScreen> {
                                               context, 'register');
                                         } else if (i == 1) {
                                           Navigator.pushNamed(
-                                              context, 'register');
+                                              context, 'registerNurse');
                                         }
                                       },
                                       child: Padding(

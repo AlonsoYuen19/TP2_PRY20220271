@@ -49,6 +49,31 @@ class Validator {
     };
   }
 
+  static FormFieldValidator<String> cmpValid(String errorMessage) {
+    return (value) {
+      if (value!.isEmpty ||
+          !RegExp(r'^[0-9]{6}$').hasMatch(value) ||
+          value.length != 6 ||
+          !value.startsWith("0")) {
+        return errorMessage;
+      } else {
+        return null;
+      }
+    };
+  }
+
+  static FormFieldValidator<String> cepValid(String errorMessage) {
+    return (value) {
+      if (value!.isEmpty ||
+          !RegExp(r'^[0-9]{6}$').hasMatch(value) ||
+          value.length != 6) {
+        return errorMessage;
+      } else {
+        return null;
+      }
+    };
+  }
+
   static FormFieldValidator<String> emailValid(String errorMessage) {
     return (value) =>
         value != null && EmailValidator.validate(value) ? null : errorMessage;
@@ -66,7 +91,7 @@ class Validator {
     };
   }
   //no contener espacios regexp
-    
+
   static FormFieldValidator<String> passwordValid(String errorMessage) {
     return (value) {
       if (value!.isEmpty) {
@@ -75,9 +100,9 @@ class Validator {
               r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,20}$')
           .hasMatch(value)) {
         return errorMessage;
-      } else if(RegExp(r"\s\b|\b\s").hasMatch(value)){
+      } else if (RegExp(r"\s\b|\b\s").hasMatch(value)) {
         return "La contraseña no puede contener espacios en blanco";
-        }else {
+      } else {
         return null;
       }
     };

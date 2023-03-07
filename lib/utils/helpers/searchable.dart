@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:ulcernosis/models/doctor.dart';
+import 'package:ulcernosis/models/medic.dart';
 
-import '../../services/user_auth_service.dart';
+import '../../services/medic_service.dart';
 import 'constant_variables.dart';
 
 class SearchUser extends SearchDelegate {
-  final UserServiceAuth _userList = UserServiceAuth();
+  final MedicAuthServic _userList = MedicAuthServic();
   bool isHome = true;
   String? state = "";
   SearchUser({required this.isHome, this.state});
@@ -37,10 +37,11 @@ class SearchUser extends SearchDelegate {
     final size = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.all(20.0),
-      child: FutureBuilder<List<Doctor>>(
+      child: FutureBuilder<List<Medic>>(
           future: isHome
-              ? _userList.getDoctors(query: query)
-              : _userList.getDoctorsByStateCivil(state!, query: query),
+              ? _userList.getMedics(query: query)
+              : /*_userList.getDoctorsByStateCivil(state!, query: query),*/
+              _userList.getMedics(query: query),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return Center(
@@ -67,7 +68,7 @@ class SearchUser extends SearchDelegate {
                 ),
               );
             }
-            List<Doctor>? data = snapshot.data;
+            List<Medic>? data = snapshot.data;
             return ListView.builder(
                 physics: const BouncingScrollPhysics(),
                 itemCount: data?.length,
@@ -96,7 +97,7 @@ class SearchUser extends SearchDelegate {
                               children: [
                                 Flexible(
                                   child: Text(
-                                    '${data?[index].fullNameDoctor}',
+                                    '${data?[index].fullName}',
                                     style: Theme.of(context)
                                         .textTheme
                                         .labelMedium!
