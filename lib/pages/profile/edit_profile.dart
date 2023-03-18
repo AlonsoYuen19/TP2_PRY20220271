@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:ulcernosis/pages/profile/profile.dart';
+import 'package:ulcernosis/models/users.dart';
 import 'package:ulcernosis/services/medic_service.dart';
-
-import '../../models/medic.dart';
+import 'package:ulcernosis/services/users_service.dart';
+import '../../services/nurse_services.dart';
 import '../../utils/helpers/constant_variables.dart';
 import '../../utils/widgets/background_figure.dart';
-import '../../utils/widgets/drop_down.dart';
+import '../../utils/widgets/DropDowns/drop_down.dart';
 import '../../utils/widgets/text_form_field.dart';
 
 class EditProfileScreen extends StatefulWidget {
@@ -36,28 +36,23 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   String dni = "";
   String age = "";
   String stateCivil = "";
-  String cmp = "";
   final _name = TextEditingController();
   final _address = TextEditingController();
   final _phone = TextEditingController();
   final _dni = TextEditingController();
   final _age = TextEditingController();
   final _stateCivil = TextEditingController();
-  final _cmp = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  Medic? doctorUser = Medic();
+  Users? user = Users();
   Future init() async {
-    final doctorProvider = Provider.of<MedicAuthServic>(context, listen: false);
-    var userId =
-        await doctorProvider.getAuthenticateId(prefs.email, prefs.password);
-    doctorUser = await doctorProvider.getMedicById(userId.toString());
-    name = doctorUser!.fullName;
-    address = doctorUser!.address;
-    phone = doctorUser!.phone;
-    dni = doctorUser!.dni;
-    age = doctorUser!.age.toString();
-    stateCivil = doctorUser!.civilStatus;
-    cmp = doctorUser!.cmp;
+    final userProvider = Provider.of<UsersAuthService>(context, listen: false);
+    user = await userProvider.getUsersById();
+    name = user!.fullName;
+    address = user!.address;
+    phone = user!.phone;
+    dni = user!.dni;
+    age = user!.age.toString();
+    stateCivil = user!.civilStatus;
     setState(() {});
   }
 
@@ -75,14 +70,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     _dni.dispose();
     _age.dispose();
     _stateCivil.dispose();
-    _cmp.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final doctorProvider = Provider.of<MedicAuthServic>(context);
+    final medicService = MedicAuthServic();
+    final nurseService = NurseAuthService();
     return Scaffold(
       body: SingleChildScrollView(
         child: SafeArea(
@@ -166,7 +161,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           placeholder: "",
                           icon: const Icon(Icons.numbers),
                           keyboardType: TextInputType.number,
-                          validator: validAgeEditDoctor(
+                          validator: validAge(
                               "La edad debe tener el formato correcto", _age),
                           obscureText: false,
                           controllerr: _age,
@@ -219,27 +214,28 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             print("DNI: " + _dni.text);
                             print("Edad: " + _age.text);
                             print("Estado Civil: " + _stateCivil.text);
-                            var userId = await doctorProvider.getAuthenticateId(
-                                prefs.email, prefs.password);
-                            await doctorProvider.updateMedic(userId.toString(),
-                                fullNameMedic: _name.text.trim(),
-                                stateCivil: _stateCivil.text.trim(),
-                                address: _address.text.trim(),
-                                phone: _phone.text.trim(),
-                                dni: _dni.text.trim(),
-                                age: _age.text.trim(),
-                                cmp: _cmp.text.trim());
+                            int age = int.parse(_age.text.trim());
+                            if (user!.role == "ROLE_MEDIC") {
+                              await medicService.updateMedic(context,
+                                  fullNameMedic: _name.text.trim(),
+                                  stateCivil: _stateCivil.text.trim(),
+                                  address: _address.text.trim(),
+                                  phone: _phone.text.trim(),
+                                  dni: _dni.text.trim(),
+                                  age: age);
+                            } else {
+                              await nurseService.updateNurse(context,
+                                  fullName: _name.text.trim(),
+                                  stateCivil: _stateCivil.text.trim(),
+                                  address: _address.text.trim(),
+                                  phone: _phone.text.trim(),
+                                  dni: _dni.text.trim(),
+                                  age: age);
+                            }
+
                             if (!mounted) {
                               return;
                             }
-
-                            Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const ProfileScreen(),
-                              ),
-                              (route) => false,
-                            );
                           }
                         },
                         child: Text(

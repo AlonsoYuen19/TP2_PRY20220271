@@ -1,6 +1,5 @@
 import 'package:ulcernosis/utils/helpers/validator.dart';
 import 'package:ulcernosis/utils/helpers/validator_update.dart';
-
 import '../../shared/user_prefs.dart';
 import 'gallery_options.dart';
 
@@ -19,6 +18,7 @@ const validPasswordLogin = Validator.passwordValidLogin;
 const validStateCivil = Validator.civilStateValid;
 const validDni = Validator.dniValid;
 const validAge = Validator.ageValid;
+const validAgePatient = Validator.ageValidPatient;
 const validAddress = Validator.addressValid;
 const validPhone = Validator.phoneValid;
 const validCmp = Validator.cmpValid;
@@ -30,10 +30,7 @@ const validAgeEditDoctor = ValidatorEditDoctor.ageValidEdit;
 const validAddressEditDoctor = ValidatorEditDoctor.addressValidEdit;
 const validPhoneEditDoctor = ValidatorEditDoctor.phoneValidEdit;
 final prefs = SaveData();
-
 const authURL = "http://10.0.2.2:8080/api/v1/";
-
-
+//const authURL = "http://192.168.18.46:8080/api/v1/";
 const camaraFunction = GaleryOptions.selectImageFromCamera;
 const galleryFunction = GaleryOptions.selectImageFromGallery;
-

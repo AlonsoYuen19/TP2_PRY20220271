@@ -4,7 +4,7 @@ import 'package:ulcernosis/models/medic.dart';
 
 import '../../../services/medic_service.dart';
 import '../../../utils/helpers/future_builders.dart';
-import '../../../utils/helpers/searchable.dart';
+import '../../../utils/helpers/Searchable/searchable.dart';
 
 class SecondPage extends StatefulWidget {
   const SecondPage({Key? key}) : super(key: key);

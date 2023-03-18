@@ -1,61 +1,57 @@
 import 'dart:convert';
 
-Users usersFromJson(String str) => Users.fromJson(json.decode(str));
+Patient patientFromJson(String str) => Patient.fromJson(json.decode(str));
 
-String usersToJson(Users data) => json.encode(data.toJson());
+String patientToJson(Patient data) => json.encode(data.toJson());
 
-class Users {
-    Users({
+class Patient {
+    Patient({
+        this.id=0,
         this.fullName="",
         this.email="",
-        this.password="",
         this.dni="",
         this.phone="",
-        this.age="",
+        this.age=0,
         this.address="",
-        this.cmp,
-        this.cep,
-        this.role="",
         this.civilStatus="",
+        this.medicId=0,
+        this.createdAt="",
     });
 
+    int id;
     String fullName;
     String email;
-    String password;
     String dni;
     String phone;
-    String age;
+    int age;
     String address;
-    dynamic cmp;
-    dynamic cep;
-    String role;
     String civilStatus;
+    int medicId;
+    String createdAt;
 
-    factory Users.fromJson(Map<String, dynamic> json) => Users(
+    factory Patient.fromJson(Map<String, dynamic> json) => Patient(
+        id: json["id"],
         fullName: json["fullName"],
         email: json["email"],
-        //password: json["password"],
         dni: json["dni"],
         phone: json["phone"],
         age: json["age"],
         address: json["address"],
-        cmp: json["cmp"],
-        cep: json["cep"],
-        role: json["role"],
         civilStatus: json["civilStatus"],
+        medicId: json["medicId"],
+        createdAt: json["createdAt"],
     );
 
     Map<String, dynamic> toJson() => {
+        "id": id,
         "fullName": fullName,
         "email": email,
-        "password": password,
         "dni": dni,
         "phone": phone,
         "age": age,
         "address": address,
-        "cmp": cmp,
-        "cep": cep,
-        "role": role,
         "civilStatus": civilStatus,
+        "medicId": medicId,
+        "createdAt": createdAt,
     };
 }

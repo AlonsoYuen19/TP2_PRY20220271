@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
+import 'package:ulcernosis/services/users_service.dart';
 import 'package:ulcernosis/utils/providers/auth_token.dart';
 import '../../shared/user_prefs.dart';
 
@@ -126,15 +127,20 @@ class CustomDialogWidget extends StatelessWidget {
                             final token = Provider.of<AuthProvider>(context,
                                 listen: false);
                             final prefs = SaveData();
+                            final tokencito = UsersAuthService();
                             prefs.login = true;
-
                             if (!context.mounted) {
                               return;
                             }
+                            await tokencito.logOutToken();
                             await token.deleteToken(context);
                             prefs.deleteIdUsers();
                             prefs.deleteIdMedic();
                             prefs.deleteIdNurse();
+                            prefs.deleteIdPatient();
+                            prefs.deleteImage();
+                            prefs.deleteEmail();
+                            prefs.deletePassword();
                             Navigator.pushNamedAndRemoveUntil(
                                 context, 'login', (_) => false);
                           },
@@ -166,4 +172,100 @@ class CustomDialogWidget extends StatelessWidget {
       ),
     );
   }
+}
+
+const _secundary = Color.fromRGBO(34, 70, 95, 1);
+mostrarAlertaError(BuildContext context, String subtitulo, Function function) {
+  showDialog(
+    barrierDismissible: false,
+    context: context,
+    builder: (_) => Center(
+      child: Wrap(
+        children: [
+          AlertDialog(
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10.0))),
+            title: const Center(
+              child: CircleAvatar(
+                radius: 40,
+                backgroundColor: Colors.redAccent,
+                child: Icon(Icons.priority_high_rounded,
+                    color: Colors.white, size: 60),
+              ),
+            ),
+            content: Column(
+              children: [
+                Text(subtitulo,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(color: _secundary, fontSize: 20)),
+                const SizedBox(height: 15.0),
+                TextButton(
+                  onPressed: function as void Function()?,
+                  child: Container(
+                    width: 150.0,
+                    padding: const EdgeInsets.all(10.0),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(color: _secundary)),
+                    child: const Center(
+                      child:
+                          Text('Aceptar', style: TextStyle(color: _secundary)),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+mostrarAlertaExito(BuildContext context, String subtitulo, Function function) {
+  showDialog(
+    barrierDismissible: false,
+    context: context,
+    builder: (_) => Center(
+      child: Wrap(
+        children: [
+          AlertDialog(
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10.0))),
+            title: const Center(
+              child: CircleAvatar(
+                radius: 60,
+                backgroundColor: Colors.green,
+                child: Icon(Icons.check, color: Colors.white, size: 70),
+              ),
+            ),
+            content: Column(
+              children: [
+                const SizedBox(height: 10),
+                Text(subtitulo,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(color: _secundary, fontSize: 26)),
+                const SizedBox(height: 15.0),
+                TextButton(
+                  onPressed: function as void Function()?,
+                  child: Container(
+                    width: 150.0,
+                    padding: const EdgeInsets.all(10.0),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(color: _secundary)),
+                    child: const Center(
+                      child:
+                          Text('Aceptar', style: TextStyle(color: _secundary)),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
+              ],
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
 }

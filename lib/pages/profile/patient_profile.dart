@@ -1,14 +1,14 @@
 // ignore_for_file: use_build_context_synchronously, must_be_immutable
 
-/*import 'dart:async';
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:ulcernosis/models/nurse.dart';
-import '../../services/nurse_services.dart';
+import 'package:ulcernosis/models/patient.dart';
+import 'package:ulcernosis/services/patient_service.dart';
 import '../../utils/helpers/constant_variables.dart';
 import '../../utils/helpers/loaders_screens/loader_patient_profile_screen.dart';
+import '../../utils/widgets/DropDowns/drop_down.dart';
 import '../../utils/widgets/background_figure.dart';
-import '../../utils/widgets/drop_down.dart';
 
 class PatientProfileScreen extends StatefulWidget {
   bool? isName;
@@ -42,7 +42,7 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
     return completer.future;
   }
 
-  Nurse nurseUser = Nurse();
+  Patient patientUser = Patient();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _stateCivilController = TextEditingController();
@@ -51,8 +51,8 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
   final TextEditingController _ageController = TextEditingController();
   final TextEditingController _dniController = TextEditingController();
   Future init() async {
-    final nurseProvider = Provider.of<NurseAuthService>(context, listen: false);
-    nurseUser = (await nurseProvider.getNurseById())!;
+    final patientService = PatientService();
+    patientUser = (await patientService.getPatientById())!;
     print("El id del paciente es ${prefs.idPatient}");
     setState(() {});
   }
@@ -64,19 +64,19 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
   String? stateCivil;
   String? address;
   String? phone;
-  String? age;
+  int? age;
   String? dni;
 
   @override
   void initState() {
     init();
-    name = nurseUser.fullNameNurse;
-    email = nurseUser.email;
-    stateCivil = nurseUser.stateCivil;
-    address = nurseUser.address;
-    phone = nurseUser.phone;
-    age = nurseUser.age;
-    dni = nurseUser.dni;
+    name = patientUser.fullName;
+    email = patientUser.email;
+    stateCivil = patientUser.civilStatus;
+    address = patientUser.address;
+    phone = patientUser.phone;
+    age = patientUser.age;
+    dni = patientUser.dni;
     _myFuture = delayPage();
     super.initState();
   }
@@ -135,7 +135,7 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                                       child: Padding(
                                         padding: const EdgeInsets.all(4.0),
                                         child: Text(
-                                          nurseUser.fullNameNurse,
+                                          patientUser.fullName,
                                           textAlign: TextAlign.center,
                                           style: Theme.of(context)
                                               .textTheme
@@ -179,7 +179,7 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                                     const SizedBox(width: 10),
                                     Flexible(
                                       child: Text(
-                                        nurseUser.email,
+                                        patientUser.email,
                                         textAlign: TextAlign.center,
                                         style: Theme.of(context)
                                             .textTheme
@@ -222,7 +222,7 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                                     const SizedBox(width: 10),
                                     Flexible(
                                       child: Text(
-                                        nurseUser.stateCivil,
+                                        patientUser.civilStatus,
                                         textAlign: TextAlign.center,
                                         style: Theme.of(context)
                                             .textTheme
@@ -265,7 +265,7 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                                     const SizedBox(width: 10),
                                     Flexible(
                                       child: Text(
-                                        nurseUser.address,
+                                        patientUser.address,
                                         textAlign: TextAlign.center,
                                         style: Theme.of(context)
                                             .textTheme
@@ -307,7 +307,7 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                                     ),
                                     const SizedBox(width: 10),
                                     Text(
-                                      nurseUser.phone,
+                                      patientUser.phone,
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodyMedium!
@@ -347,7 +347,7 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                                     ),
                                     const SizedBox(width: 10),
                                     Text(
-                                      "${nurseUser.age} años",
+                                      "${patientUser.age.toString()} años",
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodyMedium!
@@ -365,7 +365,7 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                                             _ageController),
                                         const Icon(Icons.document_scanner),
                                         isAge: true,
-                                        btnText1: age!),
+                                        btnText1: age.toString()),
                                   ],
                                 ),
                               ),
@@ -388,7 +388,7 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                                     ),
                                     const SizedBox(width: 10),
                                     Text(
-                                      nurseUser.dni,
+                                      patientUser.dni,
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodyMedium!
@@ -523,9 +523,8 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
               content: Form(
-                                            key: _formKey,
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
+                key: _formKey,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -556,12 +555,14 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                             validator: validator,
                             controller: controller,
                             keyboardType: keyboardType,
-                            cursorColor: Theme.of(context).colorScheme.onTertiary,
+                            cursorColor:
+                                Theme.of(context).colorScheme.onTertiary,
                             style: TextStyle(
                                 color: Theme.of(context).colorScheme.onTertiary,
                                 fontSize: 20),
                             decoration: InputDecoration(
-                              floatingLabelBehavior: FloatingLabelBehavior.never,
+                              floatingLabelBehavior:
+                                  FloatingLabelBehavior.never,
                               filled: true,
                               fillColor: Theme.of(context).colorScheme.outline,
                               labelStyle: TextStyle(
@@ -585,8 +586,9 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(20)),
                                 borderSide: BorderSide(
-                                    color:
-                                        Theme.of(context).colorScheme.onTertiary,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onTertiary,
                                     width: 5.0),
                               ),
                               errorBorder: OutlineInputBorder(
@@ -604,8 +606,8 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                                     width: 5.0),
                               ),
                               enabledBorder: OutlineInputBorder(
-                                  borderRadius:
-                                      const BorderRadius.all(Radius.circular(20)),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(20)),
                                   borderSide: BorderSide(
                                       color: Theme.of(context)
                                           .colorScheme
@@ -638,56 +640,60 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                         width: size.width * 0.3,
                         child: ElevatedButton(
                             onPressed: () async {
-                              final nurseProvider =
-                                  Provider.of<NurseAuthService>(context,
-                                      listen: false);
+                              final patientService = PatientService();
                               final isValidForm =
                                   _formKey.currentState!.validate();
                               if (isValidForm) {
-                                await nurseProvider.updateNurse(
-                                  fullNameNurse: isName!
-                                      ? controller.text
-                                      : nurseUser.fullNameNurse,
-                                  email: isEmail!
-                                      ? controller.text
-                                      : nurseUser.email,
-                                  stateCivil: isStateCivil!
-                                      ? controller.text
-                                      : nurseUser.stateCivil,
-                                  address: isDirection!
-                                      ? controller.text
-                                      : nurseUser.address,
-                                  phone: isPhone!
-                                      ? controller.text
-                                      : nurseUser.phone,
-                                  age: isAge! ? controller.text : nurseUser.age,
-                                  dni: isDni! ? controller.text : nurseUser.dni,
-                                );
-                                setState(() {
-                                  if (widget.isName == true) {
-                                    nurseUser.fullNameNurse = controller.text;
-                                  }
-                                  if (widget.isEmail == true) {
-                                    nurseUser.email = controller.text;
-                                  }
-                                  if (widget.isStateCivil == true) {
-                                    nurseUser.stateCivil = controller.text;
-                                  }
-                                  if (widget.isAddress == true) {
-                                    nurseUser.address = controller.text;
-                                  }
+                                await patientService.updatePatient(context,
+                                    fullName: isName!
+                                        ? controller.text
+                                        : patientUser.fullName,
+                                    email: isEmail!
+                                        ? controller.text
+                                        : patientUser.email,
+                                    stateCivil: isStateCivil!
+                                        ? controller.text
+                                        : patientUser.civilStatus,
+                                    address: isDirection!
+                                        ? controller.text
+                                        : patientUser.address,
+                                    phone: isPhone!
+                                        ? controller.text
+                                        : patientUser.phone,
+                                    age: isAge!
+                                        ? int.parse(controller.text)
+                                        : patientUser.age,
+                                    dni: isDni!
+                                        ? controller.text
+                                        : patientUser.dni, onSuccess: () {
+                                  setState(() {
+                                    if (widget.isName == true) {
+                                      patientUser.fullName = controller.text;
+                                    }
+                                    if (widget.isEmail == true) {
+                                      patientUser.email = controller.text;
+                                    }
+                                    if (widget.isStateCivil == true) {
+                                      patientUser.civilStatus = controller.text;
+                                    }
+                                    if (widget.isAddress == true) {
+                                      patientUser.address = controller.text;
+                                    }
 
-                                  if (widget.isPhone == true) {
-                                    nurseUser.phone = controller.text;
-                                  }
-                                  if (widget.isAge == true) {
-                                    nurseUser.age = controller.text;
-                                  }
-                                  if (widget.isDni == true) {
-                                    nurseUser.dni = controller.text;
-                                  }
+                                    if (widget.isPhone == true) {
+                                      patientUser.phone = controller.text;
+                                    }
+                                    if (widget.isAge == true) {
+                                      patientUser.age =
+                                          int.parse(controller.text);
+                                    }
+                                    if (widget.isDni == true) {
+                                      patientUser.dni = controller.text;
+                                    }
+                                  });
                                 });
-                                Navigator.of(context).pop(controller.text);
+
+                                //Navigator.of(context).pop(controller.text);
                               }
                             },
                             child: const Text("Guardar")),
@@ -705,4 +711,3 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
         });
   }
 }
-*/

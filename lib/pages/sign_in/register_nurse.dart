@@ -9,7 +9,9 @@ import 'package:ulcernosis/utils/widgets/background_figure.dart';
 import '../../shared/user_prefs.dart';
 import '../../utils/providers/auth_token.dart';
 import '../../utils/helpers/constant_variables.dart';
-import '../../utils/widgets/drop_down.dart';
+import '../../utils/widgets/DropDowns/drop_down_aux.dart';
+import '../../utils/widgets/alert_dialog.dart';
+import '../../utils/widgets/DropDowns/drop_down.dart';
 import '../../utils/widgets/text_form_field.dart';
 
 class RegisterNurseScreen extends StatefulWidget {
@@ -37,6 +39,7 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
   final _age = TextEditingController();
   final _stateCivil = TextEditingController();
   final _cep = TextEditingController();
+  final _auxiliar = TextEditingController();
 
   final nurseService = NurseAuthService();
   final prefs = SaveData();
@@ -53,6 +56,7 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
     _age.dispose();
     _stateCivil.dispose();
     _cep.dispose();
+    _auxiliar.dispose();
     super.dispose();
   }
 
@@ -124,6 +128,7 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
                 ),
                 onPressed: () async {
                   final isValidForm = _formKey.currentState!.validate();
+                  bool isAuxiliar;
                   if (isValidForm) {
                     print("Nombre Completo: " + _name.text);
                     print("Contraseña: " + _password.text);
@@ -132,33 +137,49 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
                     print("phone: " + _phone.text);
                     print("DNI: " + _dni.text);
                     print("Edad: " + _age.text);
+                    print("CEP: " + _cep.text);
                     print("Estado Civil: " + _stateCivil.text);
-                    prefs.email = _email.text;
-                    prefs.password = _password.text;
+                    print("Auxiliar: " + _auxiliar.text);
+                    if (_auxiliar.text == "Si") {
+                      isAuxiliar = true;
+                    } else {
+                      isAuxiliar = false;
+                    }
+                    print("El valor es :" + isAuxiliar.toString());
                     await nurseService.registerNurse(
-                      _name.text.trim(),
-                      _email.text.trim(),
-                      _password.text.trim(),
-                      _dni.text.trim(),
-                      _age.text.trim(),
-                      _address.text.trim(),
-                      _phone.text.trim(),
-                      _cep.text.trim(),
-                      "ROLE_NURSE",
-                      _stateCivil.text.trim(),
-                    );
-                    await tokenProvider.updateToken(context);
+                        context,
+                        _name.text.trim(),
+                        _email.text.trim(),
+                        _password.text.trim(),
+                        _dni.text.trim(),
+                        _age.text.trim(),
+                        _address.text.trim(),
+                        _phone.text.trim(),
+                        _cep.text.trim(),
+                        "ROLE_NURSE",
+                        _stateCivil.text.trim(),
+                        isAuxiliar);
+
+                    var id = await nurseService.getAuthenticateId(
+                        _email.text.trim(), _password.text.trim());
+                    await nurseService.getNurseById(context);
+
                     if (!mounted) {
                       return;
                     }
-
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const LoginScreen(),
-                      ),
-                      (route) => false,
-                    );
+                    if (id != null) {
+                      prefs.email = _email.text.trim();
+                      prefs.password = _password.text.trim();
+                      mostrarAlertaExito(context, "Registro Exitoso", () async {
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const LoginScreen(),
+                          ),
+                          (route) => false,
+                        );
+                      });
+                    }
                   }
                 },
                 child: Text(
@@ -263,7 +284,7 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
                               title: Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: paddingHori),
-                                child: Text("Información del Contacto",
+                                child: Text("Información del Enfermero",
                                     style: Theme.of(context)
                                         .textTheme
                                         .labelLarge!
@@ -379,7 +400,7 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
                                   GetTextFormField(
                                       labelText: "Dni",
                                       placeholder: dni,
-                                      icon: const Icon(Icons.card_membership),
+                                      icon: const Icon(Icons.article_outlined),
                                       keyboardType: TextInputType.number,
                                       validator: validDni(
                                           "El número del dni debe ser de 8 dígitos"),
@@ -409,6 +430,15 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
                                   title("Estado Civil"),
                                   DropDownWithSearch(
                                     searchController: _stateCivil,
+                                  ),
+                                  const Divider(
+                                    thickness: 1.3,
+                                    color: Colors.grey,
+                                  ),
+                                  SizedBox(height: size.height * 0.01),
+                                  title("Elige ser Enfermero Auxiliar?"),
+                                  DropDownWithAuxiliar(
+                                    searchController: _auxiliar,
                                   ),
                                   SizedBox(height: size.height * 0.03),
                                 ],

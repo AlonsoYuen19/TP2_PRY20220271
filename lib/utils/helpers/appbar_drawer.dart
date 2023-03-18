@@ -1,54 +1,66 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
-import 'package:shimmer_animation/shimmer_animation.dart';
-import 'package:ulcernosis/models/nurse.dart';
-
-import '../../../models/medic.dart';
-import '../../../services/nurse_services.dart';
-import '../../../services/medic_service.dart';
-import '../../widgets/alert_dialog.dart';
-import '../constant_variables.dart';
+import 'package:provider/provider.dart';
+import 'package:ulcernosis/services/users_service.dart';
+import '../../models/nurse.dart';
+import '../../models/users.dart';
+import '../../services/nurse_services.dart';
+import '../widgets/alert_dialog.dart';
+import 'constant_variables.dart';
 
 // ignore: must_be_immutable
-class AppBarDrawerNurse extends StatefulWidget {
+class AppBarDrawer extends StatefulWidget {
   final Widget child;
   bool? isHome;
   bool? isDiagnosis;
   bool? isManagement;
   bool? isProfile;
-  bool? isNurse;
 
-  AppBarDrawerNurse(
-      {Key? key,
-      required this.child,
-      this.isHome = false,
-      this.isDiagnosis = false,
-      this.isManagement = false,
-      this.isProfile = false})
-      : super(key: key);
+  AppBarDrawer({
+    Key? key,
+    required this.child,
+    this.isHome = false,
+    this.isDiagnosis = false,
+    this.isManagement = false,
+    this.isProfile = false,
+  }) : super(key: key);
 
   @override
-  State<AppBarDrawerNurse> createState() => _AppBarDrawerNurseState();
+  State<AppBarDrawer> createState() => _AppBarDrawerState();
 }
 
-class _AppBarDrawerNurseState extends State<AppBarDrawerNurse> {
-  Medic doctorUser = Medic();
-  Nurse nurseUser = Nurse();
-  final userAuth = MedicAuthServic();
-  final nurseService = NurseAuthService();
+class _AppBarDrawerState extends State<AppBarDrawer> {
+  Users users = Users();
+  Nurse nurse = Nurse();
+  Uint8List avatar = Uint8List(0);
+  Uint8List avatar2 = Uint8List(0);
   final _advancedDrawerController = AdvancedDrawerController();
-  Future initNurse() async {
-    var userId = await userAuth.getAuthenticateId(prefs.email, prefs.password);
-    nurseUser = (await nurseService.getNurseById(userId.toString()))!;
+  Future init() async {
+    final usersService = Provider.of<UsersAuthService>(context, listen: false);
+    final nurseService = Provider.of<NurseAuthService>(context, listen: false);
+    users = (await usersService.getUsersById())!;
+
+    if (prefs.idMedic != 0) {
+      avatar = (await usersService.getMedicImageFromBackend());
+    }
+    if (prefs.idNurse != 0) {
+      avatar2 = (await usersService.getNurseImageFromBackend());
+      nurse = (await nurseService.getNurseById(context))!;
+    }
+
     setState(() {
-      print("El usuario con info es el siguiente :${nurseUser.fullName}");
-      print("El usuario con id es el siguiente :" + userId!.toString());
+      print("El usuario con info es el siguiente :${users.fullName}");
+      print("El usuario con id es el siguiente :" + prefs.idUsers.toString());
     });
   }
 
   @override
   void initState() {
-    initNurse();
+    init();
+    print("id del enfermero en el SP: " + prefs.idNurse.toString());
+    print("id del médico en el SP: " + prefs.idMedic.toString());
     super.initState();
   }
 
@@ -88,23 +100,37 @@ class _AppBarDrawerNurseState extends State<AppBarDrawerNurse> {
               children: [
                 Column(
                   children: [
-                    Container(
-                      height: size.width * 0.3,
-                      margin: const EdgeInsets.only(
-                        top: 24.0,
-                        bottom: 16.0,
-                      ),
-                      clipBehavior: Clip.antiAlias,
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage('assets/images/doctor-logo.png'),
-                            fit: BoxFit.fitHeight),
-                        color: Colors.black26,
-                        shape: BoxShape.circle,
-                      ),
+                    const SizedBox(height: 10),
+                    avatar.isEmpty && avatar2.isEmpty
+                        ? Container(
+                            height: size.width * 0.3,
+                            margin: const EdgeInsets.only(
+                              top: 24.0,
+                              bottom: 16.0,
+                            ),
+                            clipBehavior: Clip.antiAlias,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage(prefs.idMedic == 0
+                                      ? "assets/images/enfermero-logo.png"
+                                      : "assets/images/doctor-logo.png"),
+                                  fit: BoxFit.fitHeight),
+                              color: Colors.black26,
+                              shape: BoxShape.circle,
+                            ),
+                          )
+                        : ClipOval(
+                            child: Image.memory(
+                                prefs.idMedic != 0 ? avatar : avatar2,
+                                height: size.width * 0.3,
+                                width: size.width * 0.3,
+                                fit: BoxFit.cover),
+                          ),
+                    const SizedBox(
+                      height: 10,
                     ),
                     Text(
-                      nurseUser.fullName,
+                      users.fullName,
                       textAlign: TextAlign.center,
                       style: Theme.of(context)
                           .textTheme
@@ -312,39 +338,31 @@ class _AppBarDrawerNurseState extends State<AppBarDrawerNurse> {
           appBar: AppBar(
             leading: Padding(
               padding: const EdgeInsets.only(left: 20),
-              child: Shimmer(
-                duration: const Duration(seconds: 1),
-                interval: const Duration(seconds: 1),
-                color: Colors.white,
-                enabled: true,
-                direction: const ShimmerDirection.fromLTRB(),
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    shape: MaterialStateProperty.all(const CircleBorder()),
-                    padding:
-                        MaterialStateProperty.all(const EdgeInsets.symmetric(
-                      horizontal: 8.0,
-                      vertical: 8.0,
-                    )),
-                    backgroundColor: MaterialStateProperty.all(Theme.of(context)
-                        .colorScheme
-                        .tertiary), // <-- Button color
-                  ),
-                  onPressed: _handleMenuButtonPressed,
-                  child: ValueListenableBuilder<AdvancedDrawerValue>(
-                    valueListenable: _advancedDrawerController,
-                    builder: (_, value, __) {
-                      return AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 250),
-                        child: Icon(
-                          value.visible ? Icons.clear : Icons.menu,
-                          //key: ValueKey<bool>(value.visible),
-                          color: Theme.of(context).colorScheme.onTertiary,
-                          size: 30,
-                        ),
-                      );
-                    },
-                  ),
+              child: ElevatedButton(
+                style: ButtonStyle(
+                  shape: MaterialStateProperty.all(const CircleBorder()),
+                  padding: MaterialStateProperty.all(const EdgeInsets.symmetric(
+                    horizontal: 8.0,
+                    vertical: 8.0,
+                  )),
+                  backgroundColor: MaterialStateProperty.all(Theme.of(context)
+                      .colorScheme
+                      .tertiary), // <-- Button color
+                ),
+                onPressed: _handleMenuButtonPressed,
+                child: ValueListenableBuilder<AdvancedDrawerValue>(
+                  valueListenable: _advancedDrawerController,
+                  builder: (_, value, __) {
+                    return AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 250),
+                      child: Icon(
+                        value.visible ? Icons.clear : Icons.menu,
+                        //key: ValueKey<bool>(value.visible),
+                        color: Theme.of(context).colorScheme.onTertiary,
+                        size: 30,
+                      ),
+                    );
+                  },
                 ),
               ),
             ),

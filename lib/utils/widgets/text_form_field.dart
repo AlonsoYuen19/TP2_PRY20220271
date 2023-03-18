@@ -32,7 +32,6 @@ class GetTextFormField extends StatefulWidget {
 class _GetTextFormFieldState extends State<GetTextFormField> {
   @override
   void initState() {
-
     super.initState();
   }
 
@@ -59,6 +58,7 @@ class _GetTextFormFieldState extends State<GetTextFormField> {
                   ? null
                   : const EdgeInsets.symmetric(horizontal: paddingHori),
               child: FancyPasswordField(
+                maxLength: 20,
                 focusNode: _focusNode,
                 hasShowHidePassword: true,
                 hasStrengthIndicator: false,
@@ -70,11 +70,11 @@ class _GetTextFormFieldState extends State<GetTextFormField> {
                   LowercaseValidationRule(
                       customText: "Debe tener una minúscula"),
                   SpecialCharacterValidationRule(
-                      customText: "Debe tener un caracter especial"),
+                      customText: "Debe tener un caracter\nespecial"),
                   MinAndMaxCharactersValidationRule(
                       min: 8,
                       max: 20,
-                      customText: "Debe tener entre 8 y 20 caracteres")
+                      customText: "Debe tener entre 8 y 20\ncaracteres")
                 },
                 validationRuleBuilder: (rules, value) {
                   if (value.isEmpty) {
@@ -138,6 +138,7 @@ class _GetTextFormFieldState extends State<GetTextFormField> {
                     fontSize: 20),
                 controller: widget.controllerr,
                 decoration: InputDecoration(
+                  counterText: widget.isRegisterPassword ? null : "",
                   helperText: null,
                   floatingLabelBehavior: FloatingLabelBehavior.never,
                   labelStyle: TextStyle(
@@ -192,6 +193,7 @@ class _GetTextFormFieldState extends State<GetTextFormField> {
                   ? null
                   : const EdgeInsets.symmetric(horizontal: paddingHori),
               child: TextFormField(
+                maxLength: 30,
                 focusNode: _focusNode,
                 autofocus: false,
                 validator: widget.validator,
@@ -202,6 +204,7 @@ class _GetTextFormFieldState extends State<GetTextFormField> {
                     fontSize: 20),
                 controller: widget.controllerr,
                 decoration: InputDecoration(
+                  counterText: "",
                   floatingLabelBehavior: FloatingLabelBehavior.never,
                   filled: true,
                   fillColor: widget.isRegisterPassword

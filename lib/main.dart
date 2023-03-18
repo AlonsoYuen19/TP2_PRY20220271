@@ -12,7 +12,12 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = SaveData();
   await prefs.initPrefs();
-
+  prefs.deleteToken();
+  prefs.deleteIdMedic();
+  prefs.deleteIdNurse();
+  prefs.deleteIdUsers();
+  prefs.deleteIdPatient();
+  prefs.deleteImage();
   runApp(const MyApp());
 }
 

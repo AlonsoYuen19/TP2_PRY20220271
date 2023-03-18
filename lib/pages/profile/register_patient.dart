@@ -1,15 +1,14 @@
 // ignore_for_file: use_build_context_synchronously
 
-/*import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:ulcernosis/services/user_auth_service.dart';
+import 'package:ulcernosis/services/patient_service.dart';
 import 'package:ulcernosis/utils/widgets/background_figure.dart';
 
 import '../../services/nurse_services.dart';
 import '../../shared/user_prefs.dart';
-import '../../utils/providers/auth_token.dart';
 import '../../utils/helpers/constant_variables.dart';
-import '../../utils/widgets/drop_down.dart';
+import '../../utils/widgets/DropDowns/drop_down.dart';
 import '../../utils/widgets/text_form_field.dart';
 
 class RegisterPatientScreen extends StatefulWidget {
@@ -33,9 +32,6 @@ class _RegisterPatientScreenState extends State<RegisterPatientScreen> {
   final _dni = TextEditingController();
   final _age = TextEditingController();
   final _stateCivil = TextEditingController();
-
-  final authService = MedicAuthServic();
-  final prefs = SaveData();
   final _formKey = GlobalKey<FormState>();
   int _currentStep = 0;
   @override
@@ -81,7 +77,7 @@ class _RegisterPatientScreenState extends State<RegisterPatientScreen> {
 
   Widget controlBuilders(context, details) {
     final size = MediaQuery.of(context).size;
-    final nurseProvider = Provider.of<NurseAuthService>(context, listen: false);
+    final patientService = PatientService();
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
@@ -120,23 +116,22 @@ class _RegisterPatientScreenState extends State<RegisterPatientScreen> {
                     print("DNI: " + _dni.text);
                     print("Edad: " + _age.text);
                     print("Estado Civil: " + _stateCivil.text);
-                    await nurseProvider.registerPatient(
-                        _name.text.trim(),
-                        _email.text.trim(),
-                        _stateCivil.text.trim(),
-                        _address.text.trim(),
-                        _phone.text.trim(),
-                        _dni.text.trim(),
-                        _age.text.trim());
+                    print("El id del medico es: " + prefs.idMedic.toString());
+                    int age = int.parse(_age.text.trim());
+                    print(age);
+                    await patientService.registerPatient(
+                      context,
+                      _name.text.trim(),
+                      _email.text.trim(),
+                      _dni.text.trim(),
+                      _phone.text.trim(),
+                      age,
+                      _address.text.trim(),
+                      _stateCivil.text.trim(),
+                    );
                     if (!mounted) {
                       return;
                     }
-
-                    Navigator.pushNamedAndRemoveUntil(
-                      context,
-                      'profile',
-                      (route) => false,
-                    );
                   }
                 },
                 child: Text(
@@ -349,8 +344,8 @@ class _RegisterPatientScreenState extends State<RegisterPatientScreen> {
                                       placeholder: age,
                                       icon: const Icon(Icons.numbers),
                                       keyboardType: TextInputType.number,
-                                      validator: validAge(
-                                          "La edad debe tener el formato correcto",
+                                      validator: validAgePatient(
+                                          "La edad debe ser válida con el formato correcto",
                                           _age),
                                       obscureText: false,
                                       controllerr: _age),
@@ -384,4 +379,3 @@ class _RegisterPatientScreenState extends State<RegisterPatientScreen> {
     );
   }
 }
-*/

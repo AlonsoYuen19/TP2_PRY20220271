@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import '../../utils/helpers/appbar_drawer/appbar_drawer.dart';
+import '../../utils/helpers/appbar_drawer.dart';
 import '../../utils/helpers/loaders_screens/loader_diagnosis_screen.dart';
 import '../../utils/widgets/alert_dialog.dart';
 

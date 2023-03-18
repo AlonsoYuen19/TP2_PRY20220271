@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ulcernosis/pages/sign_in/login.dart';
 import 'package:ulcernosis/services/medic_service.dart';
+import 'package:ulcernosis/utils/helpers/validator.dart';
 import 'package:ulcernosis/utils/widgets/background_figure.dart';
 
 import '../../shared/user_prefs.dart';
 import '../../utils/providers/auth_token.dart';
 import '../../utils/helpers/constant_variables.dart';
-import '../../utils/widgets/drop_down.dart';
+import '../../utils/widgets/alert_dialog.dart';
+import '../../utils/widgets/DropDowns/drop_down.dart';
 import '../../utils/widgets/text_form_field.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -134,9 +136,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     print("Edad: " + _age.text);
                     print("Estado Civil: " + _stateCivil.text);
                     print("CMP: " + _cmp.text);
-                    prefs.email = _email.text;
-                    prefs.password = _password.text;
                     await authService.registerMedic(
+                      context,
                       _name.text.trim(),
                       _email.text.trim(),
                       _password.text.trim(),
@@ -148,18 +149,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       "ROLE_MEDIC",
                       _stateCivil.text.trim(),
                     );
-                    await tokenProvider.updateToken(context);
+                    
+                    var id = await authService.getAuthenticateId(
+                        _email.text.trim(), _password.text.trim());
+                    await authService.getMedicById(id.toString());
+
                     if (!mounted) {
                       return;
                     }
-
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const LoginScreen(),
-                      ),
-                      (route) => false,
-                    );
+                    if (id != null) {
+                      prefs.email = _email.text.trim();
+                      prefs.password = _password.text.trim();
+                      mostrarAlertaExito(context, "Registro Exitoso", () async {
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const LoginScreen(),
+                          ),
+                          (route) => false,
+                        );
+                      });
+                    }
                   }
                 },
                 child: Text(
@@ -264,7 +274,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               title: Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: paddingHori),
-                                child: Text("Información del Contacto",
+                                child: Text("Información del Médico",
                                     style: Theme.of(context)
                                         .textTheme
                                         .labelLarge!
@@ -380,7 +390,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   GetTextFormField(
                                       labelText: "Dni",
                                       placeholder: dni,
-                                      icon: const Icon(Icons.card_membership),
+                                      icon: const Icon(Icons.article_outlined),
                                       keyboardType: TextInputType.number,
                                       validator: validDni(
                                           "El número del dni debe ser de 8 dígitos"),

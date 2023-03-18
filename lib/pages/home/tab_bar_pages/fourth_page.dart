@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import '../../../models/medic.dart';
 import '../../../services/medic_service.dart';
 import '../../../utils/helpers/future_builders.dart';
-import '../../../utils/helpers/searchable.dart';
+import '../../../utils/helpers/Searchable/searchable.dart';
 
 class FourthPage extends StatefulWidget {
   const FourthPage({Key? key}) : super(key: key);

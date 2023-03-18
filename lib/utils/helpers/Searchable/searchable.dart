@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ulcernosis/models/medic.dart';
 
-import '../../services/medic_service.dart';
-import 'constant_variables.dart';
+import '../../../services/medic_service.dart';
+import '../constant_variables.dart';
 
 class SearchUser extends SearchDelegate {
   final MedicAuthServic _userList = MedicAuthServic();

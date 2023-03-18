@@ -1,6 +1,7 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart'
     show FormFieldValidator, TextEditingController;
+
 //import 'package:shared_preferences/shared_preferences.dart';
 
 class Validator {
@@ -29,8 +30,19 @@ class Validator {
     return (value) {
       if (value!.isEmpty || !RegExp(r'^[1-9][0-9]?$').hasMatch(value)) {
         return errorMessage;
-      } else if (int.parse(min.text) < 18) {
-        return "El encargado debe ser mayor de edad";
+      } else if (int.parse(min.text) < 25) {
+        return "El encargado debe tener al menos 25 años";
+      } else {
+        return null;
+      }
+    };
+  }
+
+  static FormFieldValidator<String> ageValidPatient(
+      String errorMessage, TextEditingController min) {
+    return (value) {
+      if (value!.isEmpty || !RegExp(r'^[1-9][0-9]?$').hasMatch(value)) {
+        return errorMessage;
       } else {
         return null;
       }

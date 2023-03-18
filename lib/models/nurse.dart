@@ -16,6 +16,8 @@ class Nurse {
     this.phone = "",
     this.rol = "ROLE_NURSE",
     this.civilStatus = "",
+    this.isAuxiliar = false,
+    this.haveTeamWork = false,
   });
 
   String fullName;
@@ -28,6 +30,8 @@ class Nurse {
   String phone;
   String rol;
   String civilStatus;
+  bool isAuxiliar;
+  bool haveTeamWork;
 
   factory Nurse.fromJson(Map<String, dynamic> json) => Nurse(
         fullName: json["fullName"],
@@ -53,5 +57,7 @@ class Nurse {
         "phone": phone,
         "rol": rol,
         "civilStatus": civilStatus,
+        "isAuxiliar": isAuxiliar,
+        "haveTeamWork": haveTeamWork,
       };
 }

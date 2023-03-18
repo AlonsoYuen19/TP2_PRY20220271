@@ -103,10 +103,21 @@ class SaveData {
   void deleteIdUsers() {
     _prefs?.remove('idUsers');
   }
+
   void deleteIdMedic() {
     _prefs?.remove('idMedic');
   }
+
   void deleteIdNurse() {
     _prefs?.remove('idNurse');
   }
+
+  void deleteIdPatient() {
+    _prefs?.remove('idPatient');
+  }
+
+  void deleteImage() {
+    _prefs?.remove('image');
+  }
+
 }
