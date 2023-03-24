@@ -3,10 +3,8 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ulcernosis/models/nurse.dart';
 import "package:http/http.dart" as http;
-import 'package:ulcernosis/services/medic_service.dart';
 import '../pages/profile/profile.dart';
 import '../utils/helpers/constant_variables.dart';
 import '../utils/widgets/alert_dialog.dart';
@@ -139,7 +137,28 @@ class NurseAuthService with ChangeNotifier {
     }
     return null;
   }
-
+  Future<Nurse?> getNurseByIdManage(int id) async {
+    try {
+      http.Response result = await http.get(
+        Uri.parse("${authURL}nurses/$id"),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          "Authorization": "Bearer ${prefs.token}",
+        },
+      );
+      //prefs.showDialog = true;
+      if (result.statusCode == 200) {
+        final jsonResponse = json.decode(utf8.decode(result.bodyBytes));
+        notifyListeners();
+        return Nurse.fromJson(jsonResponse);
+      }
+    } on SocketException catch (e) {
+      print(e);
+      return null;
+    }
+    return null;
+  }
   Future<String> wasNotified() async {
     var response = await http
         .put(Uri.parse('${authURL}nurses/${prefs.idNurse}/notify'), headers: {

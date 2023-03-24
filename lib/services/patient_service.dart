@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 import "package:http/http.dart" as http;
 import 'package:flutter/material.dart';
 import '../models/patient.dart';
@@ -121,7 +122,31 @@ class PatientService with ChangeNotifier {
       return postMedics;
     }
   }
+  Future<List<Patient>> getPatientsNotassigned() async {
+    try {
+      var response = await http.get(
+        Uri.parse("${authURL}patients/medic/${prefs.idMedic}/get-patients-assigned/false"),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          'Authorization': 'Bearer ${prefs.token}',
+        },
+      );
 
+      if (response.statusCode == 200) {
+        List<dynamic> body = json.decode(utf8.decode(response.bodyBytes));
+        List<Patient> medics =
+            body.map((dynamic item) => Patient.fromJson(item)).toList();
+        notifyListeners();
+        return medics;
+      } else {
+        throw Exception("Failed to load data");
+      }
+    } on SocketException catch (e) {
+      print('Error de conexión: ${e.message}');
+      return postMedics;
+    }
+  }
   List<Patient> postNurses = [];
   Future<List<Patient>> getPatientsByNurse({String? query}) async {
     try {
@@ -154,7 +179,31 @@ class PatientService with ChangeNotifier {
       return postNurses;
     }
   }
+  Future<List<Patient>> getPatientsByNurseManageArea(int id) async {
+    try {
+      var response = await http.get(
+        Uri.parse("${authURL}patients/get_by_nurse/$id"),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          'Authorization': 'Bearer ${prefs.token}',
+        },
+      );
 
+      if (response.statusCode == 200) {
+        List<dynamic> body = json.decode(utf8.decode(response.bodyBytes));
+        List<Patient> nurses =
+            body.map((dynamic item) => Patient.fromJson(item)).toList();
+        notifyListeners();
+        return nurses;
+      } else {
+        throw Exception("Failed to load data");
+      }
+    } on SocketException catch (e) {
+      print('Error de conexión: ${e.message}');
+      return postNurses;
+    }
+  }
   Future<Patient?> getPatientById() async {
     try {
       http.Response result = await http.get(
@@ -253,5 +302,38 @@ class PatientService with ChangeNotifier {
       throw Exception("Failed to load data");
     }
     return null;
+  }
+    Future<Uint8List> getAvatarPatient(int id) async {
+    final response = await http.get(
+      Uri.parse('${authURL}patients/$id/profile-photo'),
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "Authorization": "Bearer ${prefs.token}",
+      },
+    );
+    if (response.statusCode == 200) {
+      return response.bodyBytes;
+    } else {
+      throw Exception('Error al obtener la imagen: ${response.statusCode}');
+    }
+  }
+    Future<Object?> createAssignment(int idPatient,int idNurse) async {
+    Map data = {"patientId": idPatient, "nurseId": idNurse};
+    var response =
+        await http.post(Uri.parse("${authURL}assignments/create-assignment"),
+            headers: {
+              "Accept": "application/json",
+              "Content-Type": "application/json",
+              "Authorization": "Bearer ${prefs.token}",
+            },
+            body: json.encode(data));
+    if (response.statusCode == 201) {
+      print("Asignación creada exitosamente");
+      return json.decode(response.body);
+    } else {
+      print("Error al crear la asignación");
+      return null;
+    }
   }
 }

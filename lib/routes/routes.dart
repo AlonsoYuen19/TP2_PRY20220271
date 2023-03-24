@@ -3,6 +3,7 @@ import 'package:ulcernosis/pages/sign_in/login.dart';
 import '../pages/diagnosis/diagnosis.dart';
 import '../pages/home/home.dart';
 import '../pages/home/tab_bar_filter.dart';
+import '../pages/management/add_nurse.dart';
 import '../pages/management/manage.dart';
 import '../pages/profile/edit_profile.dart';
 import '../pages/profile/profile.dart';
@@ -24,4 +25,5 @@ final Map<String, Widget Function(BuildContext)> appRoutes = {
   'diagnosis': (BuildContext context) => const DiagnosisScreen(),
   'editProfile': (BuildContext context) => const EditProfileScreen(),
   'registerPatient': (BuildContext context) => const RegisterPatientScreen(),
+  'addNurse': (BuildContext context) => const AddNursePage(),
 };

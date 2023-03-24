@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../../models/medic.dart';
 import '../../../services/medic_service.dart';
-import '../../../utils/helpers/future_builders.dart';
+import '../../../utils/helpers/future_builder_cards/future_builders.dart';
 import '../../../utils/helpers/Searchable/searchable.dart';
 
 class ThirdPage extends StatefulWidget {

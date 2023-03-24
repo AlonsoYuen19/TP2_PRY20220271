@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ulcernosis/models/patient.dart';
 import 'package:ulcernosis/services/patient_service.dart';
+import 'package:ulcernosis/utils/helpers/constant_variables.dart';
+import '../../../pages/profile/patient_profile.dart';
 import '../../widgets/fancy_card.dart';
 
 class SearchUserPatient extends SearchDelegate {
@@ -73,33 +75,7 @@ class SearchUserPatient extends SearchDelegate {
                   String anio = data![index].createdAt.substring(0, 4);
                   String mes = data[index].createdAt.substring(5, 7);
                   String dia = data[index].createdAt.substring(8, 10);
-                  List<String> fecha = [];
-                  fecha =
-                      fecha.map((e) => e.replaceAll("01", "Enero")).toList();
-                  fecha =
-                      fecha.map((e) => e.replaceAll("02", "Febrero")).toList();
-                  fecha =
-                      fecha.map((e) => e.replaceAll("03", "Marzo")).toList();
-                  fecha =
-                      fecha.map((e) => e.replaceAll("04", "Abril")).toList();
-                  fecha = fecha.map((e) => e.replaceAll("05", "Mayo")).toList();
-                  fecha =
-                      fecha.map((e) => e.replaceAll("06", "Junio")).toList();
-                  fecha =
-                      fecha.map((e) => e.replaceAll("07", "Julio")).toList();
-                  fecha =
-                      fecha.map((e) => e.replaceAll("08", "Agosto")).toList();
-                  fecha = fecha
-                      .map((e) => e.replaceAll("09", "Septiembre"))
-                      .toList();
-                  fecha =
-                      fecha.map((e) => e.replaceAll("10", "Octubre")).toList();
-                  fecha = fecha
-                      .map((e) => e.replaceAll("11", "Noviembre"))
-                      .toList();
-                  fecha = fecha
-                      .map((e) => e.replaceAll("12", "Diciembre"))
-                      .toList();
+                  mes = meses[mes];
                   return Padding(
                     padding: const EdgeInsets.only(
                         bottom: 15, left: 15, right: 15, top: 15),
@@ -109,14 +85,13 @@ class SearchUserPatient extends SearchDelegate {
                       date: snapshot.data![index].email,
                       date2: "$dia de $mes del $anio",
                       function: () {
-                        //id para enviar a la siguiente pantalla
-                        /*prefs.idPatient = snapshot.data![index].id;
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => PatientProfileScreen(),
-                              ),
-                            );*/
+                        prefs.idPatient = snapshot.data![index].id;
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => PatientProfileScreen(),
+                          ),
+                        );
                       },
                     ),
                   );

@@ -39,8 +39,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Users users = Users();
   Uint8List avatar = Uint8List(0);
   Uint8List avatar2 = Uint8List(0);
+  Uint8List avatar3 = Uint8List(0);
   Future init() async {
     final userService = Provider.of<UsersAuthService>(context, listen: false);
+    //final patientService = Provider.of<PatientService>(context, listen: false);
     users = (await userService.getUsersById())!;
     if (prefs.idMedic != 0) {
       avatar = (await userService.getMedicImageFromBackend());
@@ -48,6 +50,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     if (prefs.idNurse != 0) {
       avatar2 = (await userService.getNurseImageFromBackend());
     }
+    //avatar3 = (await patientService.getAvatarPatient());
     setState(() {});
   }
 
@@ -354,7 +357,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     avatar.isEmpty && avatar2.isEmpty
                         ? CircleAvatar(
-                            backgroundColor: Colors.grey,
+                            backgroundColor: Colors.lightBlue,
                             backgroundImage: AssetImage(prefs.idMedic == 0
                                 ? "assets/images/enfermero-logo.png"
                                 : "assets/images/doctor-logo.png"),
@@ -629,16 +632,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     scrollDirection: Axis.horizontal,
                     physics: const BouncingScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: snapshot.data!.length,
+                    itemCount:
+                        snapshot.data!.length > 5 ? 5 : snapshot.data!.length,
                     itemBuilder: (BuildContext context, int index) {
                       String anio = data[index].createdAt.substring(0, 4);
                       String mes = data[index].createdAt.substring(5, 7);
                       String dia = data[index].createdAt.substring(8, 10);
+                      //mapa de meses
+                      mes = meses[mes]!;
                       return Padding(
                         padding: const EdgeInsets.only(
                             bottom: 15, left: 15, right: 15),
                         child: FancyCard(
                           image: Image.asset("assets/images/patient-logo.png"),
+                          //image2: avatar3,
                           title: snapshot.data![index].fullName,
                           date: "$dia de $mes del $anio",
                           function: () {

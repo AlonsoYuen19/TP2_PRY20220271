@@ -4,7 +4,7 @@
 
 import 'package:flutter/material.dart';
 
-import 'constant_variables.dart';
+import '../constant_variables.dart';
 
 class MyFutureBuilder extends StatefulWidget {
   final Future<List> myFuture;
@@ -28,6 +28,7 @@ class _MyFutureBuilderState extends State<MyFutureBuilder> {
           return ListView.builder(
               physics: const BouncingScrollPhysics(),
               //itemCount: widget.isHome ? 4 : data.length,
+              shrinkWrap: true,
               itemCount: data.length,
               itemBuilder: (context, index) {
                 int reversedIndex = data.length - index - 1;

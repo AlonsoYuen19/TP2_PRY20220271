@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 
 class FancyCard extends StatelessWidget {
@@ -6,10 +8,11 @@ class FancyCard extends StatelessWidget {
     required this.image,
     required this.title,
     required this.date,
-    required this.function,
+    required this.function, //required this.image2,
   });
 
   final Image image;
+  //final Uint8List image2;
   final String title;
   final String date;
   final Function function;
@@ -27,6 +30,29 @@ class FancyCard extends StatelessWidget {
                 padding: const EdgeInsets.all(12.0),
                 child: Column(
                   children: <Widget>[
+                    /*image2.isEmpty 
+                        ? Container(
+                            height: 70,
+                            margin: const EdgeInsets.only(
+                              top: 24.0,
+                              bottom: 16.0,
+                            ),
+                            clipBehavior: Clip.antiAlias,
+                            decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage("assets/images/patient-logo.png"),
+                                  fit: BoxFit.fitHeight),
+                              color: Colors.black26,
+                              shape: BoxShape.circle,
+                            ),
+                          )
+                        : ClipOval(
+                            child: Image.memory(
+                                image2,
+                                height: 70,
+                                width: 70,
+                                fit: BoxFit.cover),
+                          ),*/
                     SizedBox(
                       height: 70,
                       child: image,

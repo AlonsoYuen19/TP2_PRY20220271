@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:ulcernosis/routes/routes.dart';
 import 'package:ulcernosis/services/nurse_services.dart';
 import 'package:ulcernosis/services/medic_service.dart';
+import 'package:ulcernosis/services/team_work_service.dart';
 import 'package:ulcernosis/services/users_service.dart';
 import 'package:ulcernosis/shared/user_prefs.dart';
 import 'package:ulcernosis/theme/theme.dart';
@@ -18,6 +19,7 @@ void main() async {
   prefs.deleteIdUsers();
   prefs.deleteIdPatient();
   prefs.deleteImage();
+  prefs.deleteIdPatient();
   runApp(const MyApp());
 }
 
@@ -33,7 +35,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
             create: (BuildContext contex) => NurseAuthService()),
         ChangeNotifierProvider(
-            create: (BuildContext contex) => UsersAuthService())
+            create: (BuildContext contex) => UsersAuthService()),
+        ChangeNotifierProvider(
+            create: (BuildContext contex) => TeamWorkService()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
