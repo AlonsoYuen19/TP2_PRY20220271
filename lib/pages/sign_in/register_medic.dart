@@ -378,7 +378,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       icon: const Icon(Icons.house),
                                       keyboardType: TextInputType.streetAddress,
                                       validator: validAddress(
-                                          "Escriba el correo con el formato correcto"),
+                                          "Escriba la dirección con el formato correcto"),
                                       obscureText: false,
                                       controllerr: _address),
                                   const Divider(
