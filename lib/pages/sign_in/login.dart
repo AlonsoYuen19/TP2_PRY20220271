@@ -308,7 +308,7 @@ class _LoginScreenState extends State<LoginScreen> {
             var email = emailController.text.trim();
             var password = passwordController.text.trim();
             //await token.updateToken(context);
-            _prefs.login = true;
+
             var id = await userService.getAuthenticateUserId(email, password);
             var idMedic = await medicService.getAuthenticateId(email, password);
             var idNurse = await nurseService.getAuthenticateId(email, password);
@@ -345,6 +345,7 @@ class _LoginScreenState extends State<LoginScreen> {
               _fetchData(context, true);
               _prefs.email = email;
               _prefs.password = password;
+              _prefs.login = true;
               //Obtener el token
               await token.updateToken(context);
               ScaffoldMessenger.of(context).showSnackBar(
