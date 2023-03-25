@@ -141,6 +141,7 @@ class CustomDialogWidget extends StatelessWidget {
                             prefs.deleteImage();
                             prefs.deleteEmail();
                             prefs.deletePassword();
+                            prefs.deleteLogin();
                             Navigator.pushNamedAndRemoveUntil(
                                 context, 'login', (_) => false);
                           },
@@ -270,8 +271,8 @@ mostrarAlertaExito(BuildContext context, String subtitulo, Function function) {
   );
 }
 
-mostrarAlertaRegistro(
-    BuildContext context, String subtitulo, Function function,{Color? color}) {
+mostrarAlertaRegistro(BuildContext context, String subtitulo, Function function,
+    {Color? color}) {
   showDialog(
     barrierDismissible: false,
     context: context,
@@ -329,8 +330,10 @@ mostrarAlertaRegistro(
     ),
   );
 }
+
 mostrarAlertaRegistroAsignacion(
-    BuildContext context, String subtitulo, Function function,{Color? color}) {
+    BuildContext context, String subtitulo, Function function,
+    {Color? color}) {
   showDialog(
     barrierDismissible: false,
     context: context,

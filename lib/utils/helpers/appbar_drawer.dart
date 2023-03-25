@@ -51,7 +51,7 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
       avatar2 = (await usersService.getNurseImageFromBackend());
       nurse = (await nurseService.getNurseById(context))!;
     }
-
+    print(prefs.login);
     setState(() {
       print("El usuario con info es el siguiente :${users.fullName}");
       print("El usuario con id es el siguiente :" + prefs.idUsers.toString());

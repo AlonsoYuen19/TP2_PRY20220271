@@ -1,14 +1,11 @@
 // ignore_for_file: use_build_context_synchronously
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:starsview/config/StarsConfig.dart';
 import 'package:starsview/starsview.dart';
-import 'package:ulcernosis/models/medic.dart';
 import 'package:ulcernosis/services/nurse_services.dart';
 import 'package:ulcernosis/utils/widgets/background_figure.dart';
 import '../../models/users.dart';
@@ -38,7 +35,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   @override
   void initState() {
-    print("token : "+ prefs.token);
+    print("token : " + prefs.token);
+    print(prefs.login);
     init();
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((_) {
