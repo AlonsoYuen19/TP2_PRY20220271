@@ -22,7 +22,7 @@ class ReturnAlert {
                         final token =
                             Provider.of<AuthProvider>(context, listen: false);
                         final prefs = SaveData();
-                        prefs.login = true;
+                        prefs.login = false;
 
                         if (!context.mounted) {
                           return;
@@ -51,7 +51,7 @@ class ReturnAlert {
                         final token =
                             Provider.of<AuthProvider>(context, listen: false);
                         final prefs = SaveData();
-                        prefs.login = true;
+                        prefs.login = false;
 
                         if (!context.mounted) {
                           return;
@@ -128,7 +128,7 @@ class CustomDialogWidget extends StatelessWidget {
                                 listen: false);
                             final prefs = SaveData();
                             final tokencito = UsersAuthService();
-                            prefs.login = true;
+                            prefs.login = false;
                             if (!context.mounted) {
                               return;
                             }

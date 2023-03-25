@@ -36,6 +36,11 @@ const authURL = "http://10.0.2.2:8080/api/v1/";
 const camaraFunction = GaleryOptions.selectImageFromCamera;
 const galleryFunction = GaleryOptions.selectImageFromGallery;
 const colorCard = Color.fromRGBO(207, 234, 254, 1);
+
+
+
+
+
 Map meses = {
   "01": "Enero",
   "02": "Febrero",

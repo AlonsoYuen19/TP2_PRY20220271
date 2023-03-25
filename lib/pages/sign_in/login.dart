@@ -55,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (!mounted) {
       return;
     }
-    if (isLogin == false) {
+    if (isLogin == true) {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => const HomeScreen()));
     }
@@ -308,7 +308,7 @@ class _LoginScreenState extends State<LoginScreen> {
             var email = emailController.text.trim();
             var password = passwordController.text.trim();
             //await token.updateToken(context);
-            _prefs.login = false;
+            _prefs.login = true;
             var id = await userService.getAuthenticateUserId(email, password);
             var idMedic = await medicService.getAuthenticateId(email, password);
             var idNurse = await nurseService.getAuthenticateId(email, password);

@@ -8,7 +8,6 @@ import 'package:ulcernosis/services/users_service.dart';
 import 'package:ulcernosis/shared/user_prefs.dart';
 import 'package:ulcernosis/theme/theme.dart';
 import 'package:ulcernosis/utils/providers/auth_token.dart';
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = SaveData();

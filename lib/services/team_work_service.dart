@@ -100,7 +100,7 @@ class TeamWorkService with ChangeNotifier {
     }
   }
 
-  Future<Nurse?> getNurseByIdTW(BuildContext context, int id) async {
+  Future<Nurse?> getNurseByIdTW(int id) async {
     try {
       http.Response result = await http.get(
         Uri.parse("${authURL}nurses/$id"),

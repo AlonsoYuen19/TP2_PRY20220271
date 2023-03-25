@@ -8,6 +8,7 @@ import 'package:ulcernosis/utils/helpers/constant_variables.dart';
 import '../../models/medic.dart';
 import '../../models/nurse.dart';
 import '../../services/team_work_service.dart';
+import 'items/assign_itenary.dart';
 import 'items/assign_patient.dart';
 import 'items/list_patients.dart';
 import 'items/register_attendances.dart';
@@ -36,7 +37,7 @@ class _TeamWorkNurseProfileState extends State<TeamWorkNurseProfile> {
   Future init() async {
     final teamWorkService = TeamWorkService();
     final medicService = MedicAuthServic();
-    nurse = (await teamWorkService.getNurseByIdTW(context, widget.id))!;
+    nurse = (await teamWorkService.getNurseByIdTW(widget.id))!;
     medic = (await medicService.getMedicById(prefs.idMedic.toString()))!;
     avatar = (await teamWorkService.getNurseImageTeamWork(widget.id));
     print("El nombre del médico encargado es: " + medic.fullName);
@@ -340,7 +341,16 @@ class _TeamWorkNurseProfileState extends State<TeamWorkNurseProfile> {
                                     color:
                                         const Color.fromRGBO(57, 122, 111, 1),
                                     text: "Asignar Itinerario",
-                                    icon: Icons.assignment_add),
+                                    icon: Icons.assignment_add,
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (BuildContext context) =>
+                                                  AssignItineraryPage(
+                                                    idNurse: widget.id,
+                                                  )));
+                                    }),
                               ],
                             ),
                             SizedBox(

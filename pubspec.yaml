@@ -60,6 +60,8 @@ dependencies:
   mime_type: ^1.0.0
   mime: ^1.0.4
   http_parser: ^4.0.2
+  intl: ^0.18.0
+  timezone: ^0.9.1
 
 dev_dependencies:
   flutter_test:

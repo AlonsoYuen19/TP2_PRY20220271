@@ -90,7 +90,7 @@ class _MyFutureBuilderPatientsByNurseState
                                   final nurseService = TeamWorkService();
                                   Nurse? nurse =
                                       await nurseService.getNurseByIdTW(
-                                          context, widget.idNurse);
+                                          widget.idNurse);
                                   int idPatient = data[index].id;
                                   String nameNurse = nurse!.fullName;
                                   List<String> nameNurseList =
