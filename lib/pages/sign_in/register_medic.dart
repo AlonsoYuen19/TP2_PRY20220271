@@ -149,27 +149,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       "ROLE_MEDIC",
                       _stateCivil.text.trim(),
                     );
-                    
-                    var id = await authService.getAuthenticateId(
-                        _email.text.trim(), _password.text.trim());
-                    await authService.getMedicById(id.toString());
-
-                    if (!mounted) {
-                      return;
-                    }
-                    if (id != null) {
-                      prefs.email = _email.text.trim();
-                      prefs.password = _password.text.trim();
-                      mostrarAlertaExito(context, "Registro Exitoso", () async {
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const LoginScreen(),
-                          ),
-                          (route) => false,
-                        );
-                      });
-                    }
                   }
                 },
                 child: Text(

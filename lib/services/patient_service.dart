@@ -38,7 +38,7 @@ class PatientService with ChangeNotifier {
         }),
       );
       //TODO: Implementar el error 500 del servidor
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         print(response.body);
         print("Registro Exitoso");
         notifyListeners();

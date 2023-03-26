@@ -3,7 +3,6 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:ulcernosis/models/nurse.dart';
 import 'package:ulcernosis/services/team_work_service.dart';
-import 'package:timezone/timezone.dart' as tz;
 
 class AssignItineraryPage extends StatefulWidget {
   final int idNurse;
@@ -25,6 +24,7 @@ class _AssignItineraryPageState extends State<AssignItineraryPage> {
     avatar = (await teamWorkService.getNurseImageTeamWork(widget.idNurse));
     setState(() {
       print("El enfermero es: ${nurse!.fullName}");
+      print(avatar);
     });
   }
 
@@ -95,45 +95,40 @@ class _AssignItineraryPageState extends State<AssignItineraryPage> {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Flexible(
-                      child: Text(
-                    nurse!.fullName,
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  )),
-                  avatar.isEmpty
-                      ? Container(
+              avatar.isEmpty
+                  ? Container(
+                      height: size.width * 0.3,
+                      margin: const EdgeInsets.only(
+                        top: 24.0,
+                        bottom: 16.0,
+                      ),
+                      clipBehavior: Clip.antiAlias,
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                            image:
+                                AssetImage("assets/images/enfermero-logo.png"),
+                            fit: BoxFit.fitHeight),
+                        color: Colors.black26,
+                        shape: BoxShape.circle,
+                      ),
+                    )
+                  : ClipOval(
+                      child: Image.memory(avatar,
                           height: size.width * 0.2,
-                          margin: const EdgeInsets.only(
-                            top: 24.0,
-                            bottom: 16.0,
-                          ),
-                          clipBehavior: Clip.antiAlias,
-                          decoration: const BoxDecoration(
-                            image: DecorationImage(
-                                image: AssetImage(
-                                    "assets/images/enfermero-logo.png"),
-                                fit: BoxFit.fitHeight),
-                            color: Colors.black26,
-                            shape: BoxShape.circle,
-                          ),
-                        )
-                      : ClipOval(
-                          child: Image.memory(avatar,
-                              height: size.width * 0.2,
-                              width: size.width * 0.2,
-                              fit: BoxFit.cover),
-                        )
-                ],
+                          width: size.width * 0.2,
+                          fit: BoxFit.cover),
+                    ),
+              Text(
+                nurse!.fullName,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(
-                height: 10,
+                height: 15,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

@@ -7,6 +7,7 @@ import "package:http/http.dart" as http;
 import 'package:ulcernosis/models/medic.dart';
 import 'package:ulcernosis/utils/helpers/constant_variables.dart';
 import "../pages/profile/profile.dart";
+import "../pages/sign_in/login.dart";
 import "../utils/widgets/alert_dialog.dart";
 
 class MedicAuthServic with ChangeNotifier {
@@ -142,6 +143,15 @@ class MedicAuthServic with ChangeNotifier {
       if (response.statusCode == 200) {
         print(response.body);
         print("Registro Exitoso");
+                              mostrarAlertaExito(context, "Registro Exitoso", () async {
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const LoginScreen(),
+                          ),
+                          (route) => false,
+                        );
+                      });
         notifyListeners();
         return response;
       } else if (response.statusCode == 400) {

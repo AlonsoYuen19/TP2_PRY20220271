@@ -53,8 +53,6 @@ class _MyFutureBuilderAvailableNursesState
                         () {
                       int idNurse = data[index].id;
                       teamWorkService.createTeamWork(context, idNurse);
-                      Navigator.pushNamedAndRemoveUntil(
-                          context, 'manage', (route) => false);
                     }, color: Colors.lightBlue);
                   },
                   child: Container(

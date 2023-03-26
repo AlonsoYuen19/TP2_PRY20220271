@@ -76,6 +76,7 @@ class TeamWorkService with ChangeNotifier {
             body: json.encode(data));
     if (response.statusCode == 201) {
       print("Equipo creado");
+      Navigator.pushNamedAndRemoveUntil(context, 'manage', (route) => false);
       return json.decode(response.body);
     } else {
       print("Error al crear el equipo");

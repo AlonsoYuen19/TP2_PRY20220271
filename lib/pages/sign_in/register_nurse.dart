@@ -97,7 +97,6 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
 
   Widget controlBuilders(context, details) {
     final size = MediaQuery.of(context).size;
-    final tokenProvider = Provider.of<AuthProvider>(context, listen: false);
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
@@ -160,26 +159,6 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
                         _stateCivil.text.trim(),
                         isAuxiliar);
 
-                    var id = await nurseService.getAuthenticateId(
-                        _email.text.trim(), _password.text.trim());
-                    await nurseService.getNurseById(context);
-
-                    if (!mounted) {
-                      return;
-                    }
-                    if (id != null) {
-                      prefs.email = _email.text.trim();
-                      prefs.password = _password.text.trim();
-                      mostrarAlertaExito(context, "Registro Exitoso", () async {
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const LoginScreen(),
-                          ),
-                          (route) => false,
-                        );
-                      });
-                    }
                   }
                 },
                 child: Text(

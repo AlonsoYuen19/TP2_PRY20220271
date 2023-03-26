@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:ulcernosis/models/nurse.dart';
 import "package:http/http.dart" as http;
 import '../pages/profile/profile.dart';
+import '../pages/sign_in/login.dart';
 import '../utils/helpers/constant_variables.dart';
 import '../utils/widgets/alert_dialog.dart';
 
@@ -294,10 +295,17 @@ class NurseAuthService with ChangeNotifier {
           "civilStatus": stateCivil,
         }),
       );
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         print("Registro de paciente exitoso");
         print(response.body);
-
+                      mostrarAlertaExito(context, "Registro Exitoso", () async {
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const LoginScreen(),
+                          ),
+                          (route) => false,
+                        );});
         notifyListeners();
         return response;
       } else if (response.statusCode == 400) {

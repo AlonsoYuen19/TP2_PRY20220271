@@ -101,7 +101,7 @@ class _MyFutureBuilderPatientsByNurseState
                                   name = namePatient[0];
                                   await mostrarAlertaRegistroAsignacion(
                                       context,
-                                      "Desea seleccionar al paciente $name para ser atendido por el $nameNurse?",
+                                      "¿Deseas seleccionar al paciente $name para ser atendido por el $nameNurse?",
                                       () {
                                     patienService.createAssignment(
                                         idPatient, widget.idNurse);
