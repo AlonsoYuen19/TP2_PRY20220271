@@ -122,10 +122,12 @@ class PatientService with ChangeNotifier {
       return postMedics;
     }
   }
+
   Future<List<Patient>> getPatientsNotassigned() async {
     try {
       var response = await http.get(
-        Uri.parse("${authURL}patients/medic/${prefs.idMedic}/get-patients-assigned/false"),
+        Uri.parse(
+            "${authURL}patients/medic/${prefs.idMedic}/get-patients-by-assigned/false"),
         headers: {
           "Accept": "application/json",
           "Content-Type": "application/json",
@@ -147,11 +149,12 @@ class PatientService with ChangeNotifier {
       return postMedics;
     }
   }
+
   List<Patient> postNurses = [];
   Future<List<Patient>> getPatientsByNurse({String? query}) async {
     try {
       var response = await http.get(
-        Uri.parse("${authURL}patients/get_by_nurse/${prefs.idNurse}"),
+        Uri.parse("${authURL}patients/get-all-by-nurse/${prefs.idNurse}"),
         headers: {
           "Accept": "application/json",
           "Content-Type": "application/json",
@@ -179,6 +182,7 @@ class PatientService with ChangeNotifier {
       return postNurses;
     }
   }
+
   Future<List<Patient>> getPatientsByNurseManageArea(int id) async {
     try {
       var response = await http.get(
@@ -204,6 +208,7 @@ class PatientService with ChangeNotifier {
       return postNurses;
     }
   }
+
   Future<Patient?> getPatientById() async {
     try {
       http.Response result = await http.get(
@@ -303,7 +308,8 @@ class PatientService with ChangeNotifier {
     }
     return null;
   }
-    Future<Uint8List> getAvatarPatient(int id) async {
+
+  Future<Uint8List> getAvatarPatient(int id) async {
     final response = await http.get(
       Uri.parse('${authURL}patients/$id/profile-photo'),
       headers: {
@@ -318,7 +324,8 @@ class PatientService with ChangeNotifier {
       throw Exception('Error al obtener la imagen: ${response.statusCode}');
     }
   }
-    Future<Object?> createAssignment(int idPatient,int idNurse) async {
+
+  Future<Object?> createAssignment(int idPatient, int idNurse) async {
     Map data = {"patientId": idPatient, "nurseId": idNurse};
     var response =
         await http.post(Uri.parse("${authURL}assignments/create-assignment"),
@@ -334,6 +341,22 @@ class PatientService with ChangeNotifier {
     } else {
       print("Error al crear la asignación");
       return null;
+    }
+  }
+
+  Future<Uint8List> getPatientImageFromBackend(int idPatient) async {
+    final response = await http.get(
+      Uri.parse('${authURL}patients/$idPatient/profile-photo'),
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "Authorization": "Bearer ${prefs.token}",
+      },
+    );
+    if (response.statusCode == 200) {
+      return response.bodyBytes;
+    } else {
+      throw Exception('Error al obtener la imagen: ${response.statusCode}');
     }
   }
 }

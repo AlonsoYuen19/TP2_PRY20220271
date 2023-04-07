@@ -8,7 +8,9 @@ import 'package:provider/provider.dart';
 import 'package:ulcernosis/models/patient.dart';
 import 'package:ulcernosis/models/users.dart';
 import 'package:ulcernosis/pages/profile/patient_profile.dart';
+import 'package:ulcernosis/services/nurse_services.dart';
 import 'package:ulcernosis/services/users_service.dart';
+import '../../models/nurse.dart';
 import '../../services/patient_service.dart';
 import '../../utils/helpers/appbar_drawer.dart';
 import '../../utils/helpers/constant_variables.dart';
@@ -37,23 +39,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
   late Future _myFuture;
   String selectedImagePath = '';
   Users users = Users();
+  Nurse nurse = Nurse();
   Uint8List avatar = Uint8List(0);
   Uint8List avatar2 = Uint8List(0);
   Uint8List avatar3 = Uint8List(0);
   Future init() async {
     final userService = Provider.of<UsersAuthService>(context, listen: false);
+    final nurseService = NurseAuthService();
     //final patientService = Provider.of<PatientService>(context, listen: false);
     users = (await userService.getUsersById())!;
+
     if (prefs.idMedic != 0) {
       avatar = (await userService.getMedicImageFromBackend());
     }
     if (prefs.idNurse != 0) {
+      nurse = (await nurseService.getNurseById(context))!;
       avatar2 = (await userService.getNurseImageFromBackend());
     }
     //avatar3 = (await patientService.getAvatarPatient());
     setState(() {});
   }
 
+  String? equipoMedico;
+  Color? colorEquipoMedico;
   @override
   void initState() {
     print("Imagen: " + prefs.image);
@@ -319,12 +327,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
     } else {
       role = "Enfermero especialista";
     }
+
+    if (nurse.itWasNotified == true) {
+      equipoMedico = "¡Usted actualmente se encuentra en un equipo médico!";
+      colorEquipoMedico = Colors.lightBlue;
+    } else {
+      equipoMedico = "¡Usted actualmente no se encuentra en un equipo médico!";
+      colorEquipoMedico = Colors.redAccent;
+    }
     final size = MediaQuery.of(context).size;
     final patientService = PatientService();
     return SingleChildScrollView(
       child: Column(children: [
-        const SizedBox(
-          height: 12,
+        SizedBox(
+          height: users.role == "ROLE_NURSE" ? 90 : 12,
         ),
         Card(
           color: Colors.grey[150],
@@ -338,22 +354,43 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(left: 8.0),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: ClipOval(
+                    child: Container(
+                      color: Colors.lightBlue,
                       child: IconButton(
                         onPressed: () {
-                          selectImage();
-                          setState(() {});
+                          Navigator.pushNamed(context, 'editProfile');
                         },
-                        icon: const Icon(
-                          Icons.add_a_photo,
-                          size: 26,
-                        ),
-                        color: Theme.of(context).colorScheme.tertiary,
+                        icon: const Icon(Icons.edit, size: 26),
+                        color: Colors.white,
                       ),
+                    ),
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ClipOval(
+                      child: Container(
+                        color: Colors.lightBlue,
+                        //margin: const EdgeInsets.only(left: 8.0),
+                        child: IconButton(
+                          onPressed: () {
+                            selectImage();
+                            setState(() {});
+                          },
+                          icon: const Icon(
+                            Icons.add_a_photo,
+                            size: 26,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 12,
                     ),
                     avatar.isEmpty && avatar2.isEmpty
                         ? CircleAvatar(
@@ -370,17 +407,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 width: size.width * 0.3,
                                 fit: BoxFit.cover),
                           ),
-                    IconButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, 'editProfile');
-                      },
-                      icon: const Icon(Icons.edit, size: 26),
-                      color: Theme.of(context).colorScheme.tertiary,
-                    )
                   ],
                 ),
                 const SizedBox(
-                  height: 10,
+                  height: 15,
                 ),
                 Flexible(
                   child: Text(
@@ -496,6 +526,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ],
                   ),
                 ),
+                const SizedBox(
+                  height: 10,
+                ),
+                users.role == "ROLE_NURSE"
+                    ? Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Text(equipoMedico!,
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(
+                                    color: colorEquipoMedico, fontSize: 22)),
+                      )
+                    : const SizedBox(),
                 const SizedBox(height: 9),
               ],
             ),
@@ -504,87 +549,87 @@ class _ProfileScreenState extends State<ProfileScreen> {
         const SizedBox(
           height: 15,
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 35, vertical: 5),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text(
-                "Lista de Pacientes",
-                style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                    color: Theme.of(context).colorScheme.tertiary,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              users.role == "ROLE_MEDIC"
-                  ? InkWell(
-                      onTap: () {
-                        Navigator.pushNamed(context, 'registerPatient');
-                      },
-                      child: Icon(
-                        Icons.add_circle_outline,
-                        color: Theme.of(context).colorScheme.tertiary,
-                        size: 30,
-                      ),
-                    )
-                  : Container(),
-            ],
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 6.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Flexible(
-                child: Text(
-                  "Seleccione el icono de búsqueda\npara filtrar por nombres del\npaciente",
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium!
-                      .copyWith(color: Colors.grey),
-                ),
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.tertiary,
-                  borderRadius: BorderRadius.circular(50),
-                ),
-                child: IconButton(
-                    style: ButtonStyle(
-                      shape: MaterialStateProperty.all(const CircleBorder()),
-                      padding:
-                          MaterialStateProperty.all(const EdgeInsets.symmetric(
-                        horizontal: 8.0,
-                        vertical: 8.0,
-                      )),
-                    ),
-                    onPressed: () async {
-                      if (users.role == "ROLE_MEDIC") {
-                        await showSearch(
-                          context: context,
-                          delegate: SearchUserPatient(isMedic: true),
-                        );
-                      } else {
-                        await showSearch(
-                          context: context,
-                          delegate: SearchUserPatient(isMedic: false),
-                        );
-                      }
-                    },
-                    icon: Icon(
-                      Icons.search,
-                      color: Theme.of(context).colorScheme.onTertiary,
-                      size: 30,
-                    )),
-              )
-            ],
-          ),
-        ),
         if (users.role == "ROLE_MEDIC") ...[
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 35, vertical: 5),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(
+                  "Lista de Pacientes",
+                  style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                      color: Theme.of(context).colorScheme.tertiary,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                users.role == "ROLE_MEDIC"
+                    ? InkWell(
+                        onTap: () {
+                          Navigator.pushNamed(context, 'registerPatient');
+                        },
+                        child: Icon(
+                          Icons.add_circle_outline,
+                          color: Theme.of(context).colorScheme.tertiary,
+                          size: 30,
+                        ),
+                      )
+                    : Container(),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 6.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Flexible(
+                  child: Text(
+                    "Seleccione el icono de búsqueda\npara filtrar por nombres del\npaciente",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium!
+                        .copyWith(color: Colors.grey),
+                  ),
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.tertiary,
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  child: IconButton(
+                      style: ButtonStyle(
+                        shape: MaterialStateProperty.all(const CircleBorder()),
+                        padding: MaterialStateProperty.all(
+                            const EdgeInsets.symmetric(
+                          horizontal: 8.0,
+                          vertical: 8.0,
+                        )),
+                      ),
+                      onPressed: () async {
+                        if (users.role == "ROLE_MEDIC") {
+                          await showSearch(
+                            context: context,
+                            delegate: SearchUserPatient(isMedic: true),
+                          );
+                        } else {
+                          await showSearch(
+                            context: context,
+                            delegate: SearchUserPatient(isMedic: false),
+                          );
+                        }
+                      },
+                      icon: Icon(
+                        Icons.search,
+                        color: Theme.of(context).colorScheme.onTertiary,
+                        size: 30,
+                      )),
+                )
+              ],
+            ),
+          ),
           Container(
             padding: const EdgeInsets.symmetric(vertical: 10),
             height: 300,
@@ -664,82 +709,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               },
             ),
           ),
-        ] else ...[
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            height: 280,
-            child: FutureBuilder<List<Patient>>(
-              future: patientService.getPatientsByNurse(),
-              builder: (context, snapshot) {
-                List<Patient>? data = snapshot.data;
-                if (!snapshot.hasData) {
-                  return const Center(
-                      child: CircularProgressIndicator(
-                    color: Colors.red,
-                  ));
-                }
-                if (data!.isEmpty) {
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 16.0),
-                    child: Center(
-                      child: Text("No hay pacientes asignados",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium!
-                              .copyWith(color: Colors.red)),
-                    ),
-                  );
-                }
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  Future.delayed(const Duration(seconds: 1));
-                  return Center(
-                      child: SizedBox(
-                    width: 100,
-                    height: 100,
-                    child: CircularProgressIndicator(
-                      color: Theme.of(context).colorScheme.onTertiary,
-                    ),
-                  ));
-                }
-                if (snapshot.hasError) {
-                  return Center(
-                    child: Text("Error al cargar los datos",
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium!
-                            .copyWith(color: Colors.red)),
-                  );
-                }
-                return ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    physics: const BouncingScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: snapshot.data!.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(
-                            bottom: 15, left: 15, right: 15),
-                        child: FancyCard(
-                          image: Image.asset("assets/images/patient-logo.png"),
-                          title: snapshot.data![index].fullName,
-                          date: snapshot.data![index].createdAt,
-                          function: () {
-                            //id para enviar a la siguiente pantalla
-                            /*prefs.idPatient = snapshot.data![index].id;
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => PatientProfileScreen(),
-                              ),
-                            );*/
-                          },
-                        ),
-                      );
-                    });
-              },
-            ),
-          ),
-        ],
+        ]
       ]),
     );
   }

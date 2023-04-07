@@ -4,13 +4,10 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:ulcernosis/services/medic_service.dart';
 import 'package:ulcernosis/utils/helpers/constant_variables.dart';
-
 import '../../models/medic.dart';
 import '../../models/nurse.dart';
 import '../../services/team_work_service.dart';
-import 'items/assign_itenary.dart';
 import 'items/assign_patient.dart';
-import 'items/list_patients.dart';
 import 'items/register_attendances.dart';
 
 class TeamWorkNurseProfile extends StatefulWidget {
@@ -70,7 +67,13 @@ class _TeamWorkNurseProfileState extends State<TeamWorkNurseProfile> {
             future: delayPage(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Container();
+                return SizedBox(
+                  height: 70,
+                  width: 70,
+                  child: CircularProgressIndicator(
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+                );
               }
               String anio = nurse.createdAt.substring(0, 4);
               String mes = nurse.createdAt.substring(5, 7);
@@ -287,14 +290,16 @@ class _TeamWorkNurseProfileState extends State<TeamWorkNurseProfile> {
                                 cardSelector(
                                     color:
                                         const Color.fromRGBO(234, 124, 124, 1),
-                                    text: "Registro de Asistencias",
+                                    text: "Registro de Citas",
                                     icon: Icons.assignment_turned_in_outlined,
                                     onTap: () {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                               builder: (BuildContext context) =>
-                                                  const RegisterAttendancePage()));
+                                                  RegisterAttendancePage(
+                                                    idNurse: widget.id,
+                                                  )));
                                     }),
                                 const SizedBox(
                                   width: 5,
@@ -302,7 +307,7 @@ class _TeamWorkNurseProfileState extends State<TeamWorkNurseProfile> {
                                 cardSelector(
                                     color:
                                         const Color.fromRGBO(12, 119, 233, 1),
-                                    text: "Asignar Paciente",
+                                    text: "Asignar Cita",
                                     icon: Icons.person_add_alt,
                                     onTap: () {
                                       Navigator.push(
@@ -315,48 +320,6 @@ class _TeamWorkNurseProfileState extends State<TeamWorkNurseProfile> {
                                     }),
                               ],
                             ),
-                            SizedBox(
-                              height: size.height * 0.02,
-                            ),
-                            Row(
-                              children: [
-                                cardSelector(
-                                    color:
-                                        const Color.fromRGBO(243, 181, 42, 1),
-                                    text: "Lista de Pacientes",
-                                    icon: Icons.assignment_ind_outlined,
-                                    onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (BuildContext context) =>
-                                                  ListPatientsPage(
-                                                    idNurse: widget.id,
-                                                  )));
-                                    }),
-                                const SizedBox(
-                                  width: 5,
-                                ),
-                                cardSelector(
-                                    color:
-                                        const Color.fromRGBO(57, 122, 111, 1),
-                                    text: "Asignar Itinerario",
-                                    icon: Icons.assignment_add,
-                                    onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (BuildContext context) =>
-                                                  AssignItineraryPage(
-                                                    idNurse: widget.id,
-                                                  )));
-                                    }),
-                              ],
-                            ),
-                            SizedBox(
-                              height: size.height * 0.02,
-                            ),
-                            itineraryShow()
                           ]))));
             })
       ])),

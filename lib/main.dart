@@ -8,6 +8,7 @@ import 'package:ulcernosis/services/users_service.dart';
 import 'package:ulcernosis/shared/user_prefs.dart';
 import 'package:ulcernosis/theme/theme.dart';
 import 'package:ulcernosis/utils/providers/auth_token.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,6 +42,14 @@ class MyApp extends StatelessWidget {
             create: (BuildContext contex) => TeamWorkService()),
       ],
       child: MaterialApp(
+              localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en'),
+        Locale('es'),
+      ],
         debugShowCheckedModeBanner: false,
         theme: textThemes,
         initialRoute: 'login',

@@ -57,11 +57,11 @@ class _AssignPatientPageState extends State<AssignPatientPage> {
                       ),
                       onTap: () => Navigator.pop(context)),
                   SizedBox(
-                    width: size.width * 0.1,
+                    width: size.width * 0.08,
                   ),
                   const Flexible(
                     child: Text(
-                      "Asignar Paciente",
+                      "Seleccionar al Paciente",
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 24,

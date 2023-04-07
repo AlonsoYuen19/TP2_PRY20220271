@@ -138,6 +138,7 @@ class NurseAuthService with ChangeNotifier {
     }
     return null;
   }
+
   Future<Nurse?> getNurseByIdManage(int id) async {
     try {
       http.Response result = await http.get(
@@ -160,6 +161,7 @@ class NurseAuthService with ChangeNotifier {
     }
     return null;
   }
+
   Future<String> wasNotified() async {
     var response = await http
         .put(Uri.parse('${authURL}nurses/${prefs.idNurse}/notify'), headers: {
@@ -298,14 +300,15 @@ class NurseAuthService with ChangeNotifier {
       if (response.statusCode == 201) {
         print("Registro de paciente exitoso");
         print(response.body);
-                      mostrarAlertaExito(context, "Registro Exitoso", () async {
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const LoginScreen(),
-                          ),
-                          (route) => false,
-                        );});
+        mostrarAlertaExito(context, "Registro Exitoso", () async {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const LoginScreen(),
+            ),
+            (route) => false,
+          );
+        });
         notifyListeners();
         return response;
       } else if (response.statusCode == 400) {

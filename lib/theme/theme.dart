@@ -46,6 +46,44 @@ ThemeData textThemes = ThemeData(
     iconTheme: IconThemeData(color: Colors.black, weight: 800),
     toolbarHeight: 80,
   ),
+  timePickerTheme: TimePickerThemeData(
+    backgroundColor: Colors.white,
+    hourMinuteShape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(8)),
+      side: BorderSide(color: Colors.lightBlue, width: 4),
+    ),
+    dayPeriodBorderSide: const BorderSide(color: Colors.lightBlue, width: 4),
+    dayPeriodColor: Colors.blueGrey.shade600,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(8)),
+    ),
+    dayPeriodTextColor: MaterialStateColor.resolveWith((states) =>
+        states.contains(MaterialState.selected)
+            ? Colors.lightBlue
+            : Colors.white),
+    dayPeriodShape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(8)),
+      side: BorderSide(color: Colors.lightBlue, width: 4),
+    ),
+    hourMinuteColor: MaterialStateColor.resolveWith((states) =>
+        states.contains(MaterialState.selected)
+            ? Colors.lightBlue
+            : Colors.blueGrey.shade600),
+    hourMinuteTextColor: MaterialStateColor.resolveWith((states) =>
+        states.contains(MaterialState.selected) ? Colors.white : Colors.white),
+    dialHandColor: Colors.white,
+    dialBackgroundColor: Colors.blueGrey.shade600,
+    hourMinuteTextStyle:
+        const TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+    dayPeriodTextStyle:
+        const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+    helpTextStyle: const TextStyle(
+        fontSize: 26, fontWeight: FontWeight.bold, color: Colors.lightBlue),
+    dialTextColor: MaterialStateColor.resolveWith((states) =>
+        states.contains(MaterialState.selected)
+            ? Colors.lightBlue
+            : Colors.white),
+  ),
   iconButtonTheme: const IconButtonThemeData(
       style: ButtonStyle(
     animationDuration: Duration(seconds: 2),
@@ -81,7 +119,7 @@ ThemeData textThemes = ThemeData(
       //title text
       titleSmall: TextStyle(color: Colors.white, fontSize: 40),
       //drawer text
-      bodyLarge: TextStyle(color: Colors.white, fontSize: 32),
+      bodyLarge: TextStyle(color: Colors.white, fontSize: 30),
       bodySmall: TextStyle(color: Colors.white, fontSize: 16),
     )).textTheme,
   ),

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:provider/provider.dart';
 import 'package:ulcernosis/services/users_service.dart';
+import 'package:ulcernosis/utils/helpers/responsive/responsive.dart';
 import '../../models/nurse.dart';
 import '../../models/users.dart';
 import '../../services/nurse_services.dart';
@@ -51,6 +52,8 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
       avatar2 = (await usersService.getNurseImageFromBackend());
       nurse = (await nurseService.getNurseById(context))!;
     }
+    print(MediaQuery.of(context).size.width);
+    print(MediaQuery.of(context).size.height);
     print(prefs.login);
     setState(() {
       print("El usuario con info es el siguiente :${users.fullName}");
@@ -81,6 +84,7 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final isResp = Responsive.of(context).isShortSide(context);
     //final token = Provider.of<AuthProvider>(context, listen: false);
     return AdvancedDrawer(
         backdropColor: Theme.of(context).colorScheme.tertiary,
@@ -105,7 +109,8 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                     const SizedBox(height: 10),
                     avatar.isEmpty && avatar2.isEmpty
                         ? Container(
-                            height: size.width * 0.3,
+                            height:
+                                isResp ? size.width * 0.25 : size.width * 0.3,
                             margin: const EdgeInsets.only(
                               top: 24.0,
                               bottom: 16.0,
@@ -124,8 +129,12 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                         : ClipOval(
                             child: Image.memory(
                                 prefs.idMedic != 0 ? avatar : avatar2,
-                                height: size.width * 0.3,
-                                width: size.width * 0.3,
+                                height: isResp
+                                    ? size.width * 0.25
+                                    : size.width * 0.3,
+                                width: isResp
+                                    ? size.width * 0.25
+                                    : size.width * 0.3,
                                 fit: BoxFit.cover),
                           ),
                     const SizedBox(
@@ -137,19 +146,26 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                       style: Theme.of(context)
                           .textTheme
                           .bodyMedium!
-                          .copyWith(fontSize: 28),
+                          .copyWith(fontSize: isResp ? 22 : 28),
                     )
                   ],
                 ),
-                const Divider(
-                  color: Colors.transparent,
+                SizedBox(
+                  height: isResp
+                      ? 20
+                      : users.role == "ROLE_NURSE"
+                          ? 60
+                          : 60,
                 ),
                 const Divider(
-                  color: Colors.white54,
+                  color: Colors.white30,
+                  height: 5,
                 ),
                 Container(
                   width: 280,
-                  padding: const EdgeInsets.all(8),
+                  padding: isResp
+                      ? const EdgeInsets.all(2)
+                      : const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: widget.isHome == false
                         ? Colors.transparent
@@ -173,22 +189,30 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                       color: widget.isHome == false
                           ? Theme.of(context).colorScheme.onTertiary
                           : Theme.of(context).colorScheme.tertiary,
-                      size: 40,
+                      size: isResp ? 30 : 40,
                     ),
                     title: Text('Home',
                         style: widget.isHome == false
-                            ? Theme.of(context).textTheme.bodyLarge
+                            ? Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                  fontSize: isResp ? 22 : 30,
+                                )
                             : Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                  fontSize: isResp ? 22 : 30,
                                   color: Theme.of(context).colorScheme.tertiary,
                                 )),
                   ),
                 ),
-                const Divider(
-                  color: Colors.white54,
-                ),
+                isResp
+                    ? const SizedBox()
+                    : const Divider(
+                        color: Colors.white30,
+                        height: 5,
+                      ),
                 Container(
                   width: 280,
-                  padding: const EdgeInsets.all(8),
+                  padding: isResp
+                      ? const EdgeInsets.all(2)
+                      : const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: widget.isDiagnosis == false
                         ? Colors.transparent
@@ -212,61 +236,86 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                       color: widget.isDiagnosis == false
                           ? Theme.of(context).colorScheme.onTertiary
                           : Theme.of(context).colorScheme.tertiary,
-                      size: 40,
+                      size: isResp ? 30 : 40,
                     ),
                     title: Text('Diagnóstico',
                         style: widget.isDiagnosis == false
-                            ? Theme.of(context).textTheme.bodyLarge
+                            ? Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                  fontSize: isResp ? 22 : 30,
+                                )
                             : Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                  fontSize: isResp ? 22 : 30,
                                   color: Theme.of(context).colorScheme.tertiary,
                                 )),
                   ),
                 ),
-                const Divider(
-                  color: Colors.transparent,
-                ),
-                Container(
-                  width: 280,
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: widget.isManagement == false
-                        ? Colors.transparent
-                        : Theme.of(context).colorScheme.onTertiary,
-                    borderRadius: const BorderRadius.vertical(
-                      top: Radius.circular(16),
-                      bottom: Radius.circular(16),
-                    ),
-                  ),
-                  child: ListTile(
-                      onTap: () {
-                        if (widget.isManagement == false) {
-                          //token.updateToken(context);
-                          Navigator.pushNamedAndRemoveUntil(
-                              context, 'manage', (route) => false);
-                        }
-                        return;
-                      },
-                      leading: Icon(
-                        Icons.manage_accounts,
-                        color: widget.isManagement == false
-                            ? Theme.of(context).colorScheme.onTertiary
-                            : Theme.of(context).colorScheme.tertiary,
-                        size: 40,
+                isResp
+                    ? const SizedBox()
+                    : const Divider(
+                        color: Colors.white30,
+                        height: 5,
                       ),
-                      title: Text('Gestión',
-                          style: widget.isManagement == false
-                              ? Theme.of(context).textTheme.bodyLarge
-                              : Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                    color:
-                                        Theme.of(context).colorScheme.tertiary,
-                                  ))),
-                ),
-                const Divider(
-                  color: Colors.transparent,
-                ),
+                users.role == "ROLE_MEDIC"
+                    ? Container(
+                        width: 280,
+                        padding: isResp
+                            ? const EdgeInsets.all(2)
+                            : const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: widget.isManagement == false
+                              ? Colors.transparent
+                              : Theme.of(context).colorScheme.onTertiary,
+                          borderRadius: const BorderRadius.vertical(
+                            top: Radius.circular(16),
+                            bottom: Radius.circular(16),
+                          ),
+                        ),
+                        child: ListTile(
+                            onTap: () {
+                              if (widget.isManagement == false) {
+                                //token.updateToken(context);
+                                Navigator.pushNamedAndRemoveUntil(
+                                    context, 'manage', (route) => false);
+                              }
+                              return;
+                            },
+                            leading: Icon(
+                              Icons.manage_accounts,
+                              color: widget.isManagement == false
+                                  ? Theme.of(context).colorScheme.onTertiary
+                                  : Theme.of(context).colorScheme.tertiary,
+                              size: isResp ? 30 : 40,
+                            ),
+                            title: Text('Gestión',
+                                style: widget.isManagement == false
+                                    ? Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge!
+                                        .copyWith(
+                                          fontSize: isResp ? 22 : 30,
+                                        )
+                                    : Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge!
+                                        .copyWith(
+                                          fontSize: isResp ? 22 : 30,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .tertiary,
+                                        ))),
+                      )
+                    : const SizedBox(),
+                isResp
+                    ? const SizedBox()
+                    : const Divider(
+                        color: Colors.white30,
+                        height: 5,
+                      ),
                 Container(
                   width: 280,
-                  padding: const EdgeInsets.all(8),
+                  padding: isResp
+                      ? const EdgeInsets.all(2)
+                      : const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: widget.isProfile == false
                         ? Colors.transparent
@@ -290,21 +339,28 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                         color: widget.isProfile == false
                             ? Theme.of(context).colorScheme.onTertiary
                             : Theme.of(context).colorScheme.tertiary,
-                        size: 40,
+                        size: isResp ? 30 : 40,
                       ),
                       title: Text('Perfil',
                           style: widget.isProfile == false
-                              ? Theme.of(context).textTheme.bodyLarge
+                              ? Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                    fontSize: isResp ? 22 : 30,
+                                  )
                               : Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                    fontSize: isResp ? 22 : 30,
                                     color:
                                         Theme.of(context).colorScheme.tertiary,
                                   ))),
                 ),
                 const Divider(
-                  thickness: 1,
-                  color: Colors.white54,
+                  color: Colors.white30,
+                  height: 5,
                 ),
-                const SizedBox(height: 20),
+                isResp
+                    ? const SizedBox()
+                    : users.role == "ROLE_NURSE"
+                        ? const Spacer()
+                        : const SizedBox(height: 20),
                 ListTile(
                   onTap: () async {
                     final exit = await showDialog(
@@ -312,12 +368,14 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                         builder: ((context) => const CustomDialogWidget()));
                     return exit;
                   },
-                  leading: const Icon(
+                  leading: Icon(
                     Icons.account_circle_rounded,
-                    size: 40,
+                    size: isResp ? 30 : 40,
                   ),
                   title: Text('Cerrar Sesión',
-                      style: Theme.of(context).textTheme.bodyLarge),
+                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                            fontSize: isResp ? 22 : 30,
+                          )),
                 ),
                 const Spacer(),
                 DefaultTextStyle(
@@ -326,8 +384,8 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                     color: Colors.white54,
                   ),
                   child: Container(
-                    margin: const EdgeInsets.symmetric(
-                      vertical: 16.0,
+                    margin: EdgeInsets.symmetric(
+                      vertical: isResp ? 8 : 16.0,
                     ),
                     child: const Text("@$appTitle"),
                   ),

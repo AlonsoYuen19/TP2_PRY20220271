@@ -176,7 +176,8 @@ class CustomDialogWidget extends StatelessWidget {
 }
 
 const _secundary = Color.fromRGBO(34, 70, 95, 1);
-mostrarAlertaError(BuildContext context, String subtitulo, Function function) {
+mostrarAlertaError(BuildContext context, String subtitulo, Function function,
+    {bool faltaDatos = false}) {
   showDialog(
     barrierDismissible: false,
     context: context,
@@ -186,11 +187,12 @@ mostrarAlertaError(BuildContext context, String subtitulo, Function function) {
           AlertDialog(
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10.0))),
-            title: const Center(
+            title: Center(
               child: CircleAvatar(
                 radius: 40,
-                backgroundColor: Colors.redAccent,
-                child: Icon(Icons.priority_high_rounded,
+                backgroundColor:
+                    faltaDatos == false ? Colors.redAccent : Colors.yellow,
+                child: const Icon(Icons.priority_high_rounded,
                     color: Colors.white, size: 60),
               ),
             ),

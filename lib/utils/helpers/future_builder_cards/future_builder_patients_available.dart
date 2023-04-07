@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:ulcernosis/services/patient_service.dart';
 
 import '../../../models/nurse.dart';
+import '../../../pages/management/items/assign_appointment.dart';
 import '../../../pages/management/team_work_nurse_profile.dart';
 import '../../../services/team_work_service.dart';
 import '../../widgets/alert_dialog.dart';
@@ -33,7 +34,8 @@ class _MyFutureBuilderPatientsByNurseState
         future: widget.myFuture,
         builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
           var data = snapshot.data ?? [];
-          return ListView.builder(
+          return ListView.separated(
+              separatorBuilder: (context, index) => const SizedBox(height: 10),
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemCount: data.length,
@@ -88,9 +90,8 @@ class _MyFutureBuilderPatientsByNurseState
                                 onTap: () async {
                                   final patienService = PatientService();
                                   final nurseService = TeamWorkService();
-                                  Nurse? nurse =
-                                      await nurseService.getNurseByIdTW(
-                                          widget.idNurse);
+                                  Nurse? nurse = await nurseService
+                                      .getNurseByIdTW(widget.idNurse);
                                   int idPatient = data[index].id;
                                   String nameNurse = nurse!.fullName;
                                   List<String> nameNurseList =
@@ -99,8 +100,15 @@ class _MyFutureBuilderPatientsByNurseState
                                   String name = data[index].fullName;
                                   List<String> namePatient = name.split(" ");
                                   name = namePatient[0];
-                                  await mostrarAlertaRegistroAsignacion(
-                                      context,
+                                  Navigator.pushReplacement(context,
+                                      MaterialPageRoute(
+                                          builder: (BuildContext context) {
+                                    return AssignItineraryPage(
+                                      idNurse: widget.idNurse,
+                                      idPatient: idPatient,
+                                    );
+                                  }));
+                                  /*await mostrarAlertaRegistroAsignacion(context,
                                       "¿Deseas seleccionar al paciente $name para ser atendido por el $nameNurse?",
                                       () {
                                     patienService.createAssignment(
@@ -108,11 +116,12 @@ class _MyFutureBuilderPatientsByNurseState
                                     Navigator.pushReplacement(context,
                                         MaterialPageRoute(
                                             builder: (BuildContext context) {
-                                      return TeamWorkNurseProfile(
-                                        id: widget.idNurse,
+                                      return AssignItineraryPage(
+                                        idNurse: widget.idNurse,
+                                        idPatient: idPatient,
                                       );
                                     }));
-                                  }, color: Colors.yellow);
+                                  }, color: Colors.yellow);*/
                                 },
                               ),
                             ],
@@ -124,14 +133,12 @@ class _MyFutureBuilderPatientsByNurseState
                           child: Row(
                             children: [
                               Icon(Icons.info_outline,
-                                  color:
-                                      Theme.of(context).colorScheme.tertiary,
+                                  color: Theme.of(context).colorScheme.tertiary,
                                   size: 28),
                               const SizedBox(width: 10),
                               Text(
                                 "Paciente",
-                                style:
-                                    Theme.of(context).textTheme.labelMedium,
+                                style: Theme.of(context).textTheme.labelMedium,
                               )
                             ],
                           ),
@@ -149,8 +156,7 @@ class _MyFutureBuilderPatientsByNurseState
                               const SizedBox(width: 10),
                               Text(
                                 '${data[index].address}',
-                                style:
-                                    Theme.of(context).textTheme.labelMedium,
+                                style: Theme.of(context).textTheme.labelMedium,
                               )
                             ],
                           ),

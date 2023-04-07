@@ -47,6 +47,7 @@ class Nurse {
         address: json["address"],
         cep: json["cep"],
         phone: json["phone"],
+        itWasNotified: json["itWasNotified"],
         //rol: json["rol"],
         //civilStatus: json["civilStatus"],
       );
