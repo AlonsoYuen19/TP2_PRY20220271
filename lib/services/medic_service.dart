@@ -140,7 +140,7 @@ class MedicAuthServic with ChangeNotifier {
           "civilStatus": stateCivil,
         }),
       );
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         print(response.body);
         print("Registro Exitoso");
                               mostrarAlertaExito(context, "Registro Exitoso", () async {
