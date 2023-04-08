@@ -82,7 +82,14 @@ class SaveData {
   set image(String value) {
     _prefs!.setString('image', value);
   }
+  //image diagnosis
+  String get imageDiag {
+    return _prefs!.getString('imageDiag') ?? '';
+  }
 
+  set imageDiag(String value) {
+    _prefs!.setString('imageDiag', value);
+  }
   //delete token
   void deleteToken() {
     _prefs?.remove('token');
@@ -119,5 +126,7 @@ class SaveData {
   void deleteImage() {
     _prefs?.remove('image');
   }
-
+  void deleteImageDiag() {
+    _prefs?.remove('imageDiag');
+  }
 }

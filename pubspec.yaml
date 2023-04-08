@@ -64,6 +64,8 @@ dependencies:
   timezone: ^0.9.1
   flutter_localizations:
     sdk: flutter
+  camera: ^0.10.3+2
+  pie_chart: ^5.3.2
 
 dev_dependencies:
   flutter_test:

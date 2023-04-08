@@ -231,7 +231,28 @@ class PatientService with ChangeNotifier {
     }
     return null;
   }
-
+  Future<Patient?> getPatientByIdDiagnosis(int id) async {
+    try {
+      http.Response result = await http.get(
+        Uri.parse("${authURL}patients/$id"),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          "Authorization": "Bearer ${prefs.token}",
+        },
+      );
+      if (result.statusCode == 200) {
+        print(result.body);
+        final jsonResponse = json.decode(utf8.decode(result.bodyBytes));
+        notifyListeners();
+        return Patient.fromJson(jsonResponse);
+      }
+    } on SocketException catch (e) {
+      print(e);
+      return null;
+    }
+    return null;
+  }
   Future<Object?> updatePatient(BuildContext context,
       {String? fullName,
       String? email,

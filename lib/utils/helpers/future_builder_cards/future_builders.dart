@@ -3,7 +3,10 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:ulcernosis/models/patient.dart';
+import 'package:ulcernosis/services/patient_service.dart';
 
+import '../../../pages/home/diagnosis_page_patient.dart';
 import '../constant_variables.dart';
 
 class MyFutureBuilder extends StatefulWidget {
@@ -16,6 +19,7 @@ class MyFutureBuilder extends StatefulWidget {
 }
 
 class _MyFutureBuilderState extends State<MyFutureBuilder> {
+  String categoria = "";
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -55,6 +59,23 @@ class _MyFutureBuilderState extends State<MyFutureBuilder> {
                     );
                   }
                 }
+                if (data[reversedIndex].stagePredicted == "1") {
+                  categoria = "1era Categoría";
+                } else if (data[reversedIndex].stagePredicted == "2") {
+                  categoria = "2da Categoría";
+                } else if (data[reversedIndex].stagePredicted == "3") {
+                  categoria = "3era Categoría";
+                } else if (data[reversedIndex].stagePredicted == "4") {
+                  categoria = "4ta Categoría";
+                }
+                String anio = data[reversedIndex].createdAt.substring(0, 4);
+                String mes = data[reversedIndex].createdAt.substring(5, 7);
+                String dia = data[reversedIndex].createdAt.substring(8, 10);
+                mes = meses[mes]!;
+                String anio2 = data[index].createdAt.substring(0, 4);
+                String mes2 = data[index].createdAt.substring(5, 7);
+                String dia2 = data[index].createdAt.substring(8, 10);
+                mes2 = meses[mes2]!;
                 return Container(
                   width: size.width * 0.9,
                   padding: const EdgeInsets.only(bottom: 5),
@@ -78,26 +99,34 @@ class _MyFutureBuilderState extends State<MyFutureBuilder> {
                             children: [
                               Flexible(
                                 child: Text(
-                                  widget.isHome
-                                      ? '${data[reversedIndex].fullName}'
-                                      : '${data[index].fullName}',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelMedium!
-                                      .copyWith(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .tertiary,
-                                      ),
-                                ),
+                                    widget.isHome
+                                        ? '${data[reversedIndex].patientName}'
+                                        : '${data[index].patientName}',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .labelMedium!
+                                        .copyWith(color: Colors.lightBlue)),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 12.0),
-                                child: ImageIcon(
-                                  const AssetImage(
-                                      "assets/images/search-icon.png"),
-                                  color: Theme.of(context).colorScheme.tertiary,
-                                  size: 28,
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              DiagnosisPageByPatient(
+                                                idDiagnosis:
+                                                    data[reversedIndex].id,
+                                                idPatient: data[reversedIndex]
+                                                    .patientId,
+                                              )));
+                                },
+                                child: const Padding(
+                                  padding: EdgeInsets.only(right: 16.0),
+                                  child: ImageIcon(
+                                    AssetImage("assets/images/search-icon.png"),
+                                    color: Colors.lightBlue,
+                                    size: 36,
+                                  ),
                                 ),
                               ),
                             ],
@@ -108,15 +137,14 @@ class _MyFutureBuilderState extends State<MyFutureBuilder> {
                           padding: const EdgeInsets.only(left: paddingHori),
                           child: Row(
                             children: [
-                              ImageIcon(
-                                const AssetImage(
-                                    "assets/images/category-icon.png"),
-                                color: Theme.of(context).colorScheme.tertiary,
+                              const ImageIcon(
+                                AssetImage("assets/images/category-icon.png"),
+                                color: Colors.lightBlue,
                                 size: 36,
                               ),
                               const SizedBox(width: 10),
                               Text(
-                                "Categoria 1",
+                                categoria,
                                 style: Theme.of(context).textTheme.labelMedium,
                               )
                             ],
@@ -127,17 +155,16 @@ class _MyFutureBuilderState extends State<MyFutureBuilder> {
                           padding: const EdgeInsets.only(left: paddingHori),
                           child: Row(
                             children: [
-                              ImageIcon(
-                                const AssetImage(
-                                    "assets/images/address-icon.png"),
-                                color: Theme.of(context).colorScheme.tertiary,
-                                size: 24,
+                              const Icon(
+                                Icons.location_on,
+                                color: Colors.lightBlue,
+                                size: 36,
                               ),
                               const SizedBox(width: 10),
                               Text(
                                 widget.isHome
-                                    ? '${data[reversedIndex].address}'
-                                    : '${data[index].address}',
+                                    ? "$dia de $mes del $anio"
+                                    : "$dia2 de $mes2 del $anio2",
                                 style: Theme.of(context).textTheme.labelMedium,
                               )
                             ],

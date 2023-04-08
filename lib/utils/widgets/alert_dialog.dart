@@ -142,6 +142,7 @@ class CustomDialogWidget extends StatelessWidget {
                             prefs.deleteEmail();
                             prefs.deletePassword();
                             prefs.deleteLogin();
+                            prefs.deleteImageDiag();
                             Navigator.pushNamedAndRemoveUntil(
                                 context, 'login', (_) => false);
                           },
@@ -393,3 +394,64 @@ mostrarAlertaRegistroAsignacion(
     ),
   );
 }
+mostrarAlertaVolverDiagnosticos(
+    BuildContext context, String subtitulo, Function function,
+    {Color? color}) {
+  showDialog(
+    barrierDismissible: false,
+    context: context,
+    builder: (_) => Center(
+      child: Wrap(
+        children: [
+          AlertDialog(
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10.0))),
+            title: Center(
+              child: Icon(Icons.info, color: color, size: 120),
+            ),
+            content: Column(
+              children: [
+                Text(subtitulo,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(color: _secundary, fontSize: 26)),
+                const SizedBox(height: 30.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      style:
+                          ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                      child: const Center(
+                        child: Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: Text('Cancelar',
+                              style: TextStyle(color: Colors.white)),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 15),
+                    ElevatedButton(
+                      onPressed: function as void Function()?,
+                      child: const Center(
+                        child: Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: Text('Aceptar',
+                              style: TextStyle(color: Colors.white)),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+              ],
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+

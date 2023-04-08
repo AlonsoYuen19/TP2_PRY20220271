@@ -72,7 +72,9 @@ class _MyFutureBuilderDiagnosisState extends State<MyFutureBuilderDiagnosis> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              const TakePhotoDiagnosis()));
+                                              TakePhotoDiagnosis(
+                                                  idPatient: idPaciente,
+                                              )));
                                 },
                                 child: Icon(Icons.send_sharp,
                                     color:

@@ -1,6 +1,13 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:ulcernosis/models/diagnosis.dart';
+import 'package:ulcernosis/models/medic.dart';
+import 'package:ulcernosis/models/nurse.dart';
+import 'package:ulcernosis/models/users.dart';
+import 'package:ulcernosis/services/diagnosis_service.dart';
+import 'package:ulcernosis/services/medic_service.dart';
+import 'package:ulcernosis/services/nurse_services.dart';
 import 'package:ulcernosis/services/users_service.dart';
 import 'package:ulcernosis/utils/providers/auth_token.dart';
 import 'package:ulcernosis/utils/helpers/constant_variables.dart';
@@ -18,8 +25,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  //final userAuth = MedicAuthServic();
+  final diagnosisService = DiagnosisService();
   final userAuth = UsersAuthService();
+  final nurseService = NurseAuthService();
+  final medicService = MedicAuthServic();
+  Diagnosis diagnosis = Diagnosis();
+  Users user = Users();
+  Nurse nurse = Nurse();
+  Medic medic = Medic();
   Future<Widget> delayPage() {
     Completer<Widget> completer = Completer();
     Future.delayed(const Duration(seconds: 2), () {
@@ -27,6 +40,24 @@ class _HomeScreenState extends State<HomeScreen> {
     });
 
     return completer.future;
+  }
+
+  Future init() async {
+    user = (await userAuth.getUsersById())!;
+    if (user.role == "ROLE_MEDIC") {
+      medic = (await medicService.getMedicById(prefs.idMedic.toString()))!;
+    } else {
+      nurse = (await nurseService.getNurseByIdManage(prefs.idNurse))!;
+    }
+    setState(() {
+      print("El usuario es: ${user.fullName}");
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    init();
   }
 
   @override
@@ -117,8 +148,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         )),
                       ),
                       onPressed: () async {
-                        Provider.of<AuthProvider>(context, listen: false)
-                            .updateToken(context);
                         await showSearch(
                           context: context,
                           delegate: SearchUser(isHome: true),
@@ -136,10 +165,15 @@ class _HomeScreenState extends State<HomeScreen> {
           const SizedBox(
             height: 20,
           ),
-          MyFutureBuilder(
-            myFuture: userAuth.getUsers(),
-            isHome: true,
-          ),
+          user.role == "ROLE_MEDIC"
+              ? MyFutureBuilder(
+                  myFuture: diagnosisService.getDiagnosisByMedicCMP(medic.cmp),
+                  isHome: true,
+                )
+              : MyFutureBuilder(
+                  myFuture: diagnosisService.getDiagnosisByNurseCEP(nurse.cep),
+                  isHome: true,
+                ),
           const SizedBox(
             height: 20,
           ),

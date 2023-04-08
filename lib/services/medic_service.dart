@@ -352,13 +352,6 @@ class MedicAuthServic with ChangeNotifier {
     }
   }
 
-  //Multipart Request http put
-  Future<String?> uploadImage(filename, url) async {
-    var request = http.MultipartRequest('PUT', Uri.parse(url));
-    request.files.add(await http.MultipartFile.fromPath('picture', filename));
-    var res = await request.send();
-    return res.reasonPhrase;
-  }
 
   Future<Uint8List> getImageFromBackend() async {
     final response = await http.get(

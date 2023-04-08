@@ -22,6 +22,7 @@ void main() async {
   prefs.deleteImage();
   prefs.deleteIdPatient();
   prefs.deleteLogin();
+  prefs.deleteImageDiag();
   runApp(const MyApp());
 }
 
@@ -42,14 +43,14 @@ class MyApp extends StatelessWidget {
             create: (BuildContext contex) => TeamWorkService()),
       ],
       child: MaterialApp(
-              localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ],
-      supportedLocales: const [
-        Locale('en'),
-        Locale('es'),
-      ],
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          Locale('en'),
+          Locale('es'),
+        ],
         debugShowCheckedModeBanner: false,
         theme: textThemes,
         initialRoute: 'login',
