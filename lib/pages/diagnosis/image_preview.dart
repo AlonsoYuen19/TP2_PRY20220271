@@ -109,11 +109,15 @@ class _ImagePreviewState extends State<ImagePreview> {
                                   borderRadius: const BorderRadius.only(
                                       bottomRight: Radius.circular(100))),
                               child: Center(
-                                child: Text(
-                                  "El $rol ${users.fullName} ha diagnosticado al paciente ${patient.fullName.split(" ")[0]} brindando el siguiente resultado",
-                                  textAlign: TextAlign.center,
-                                  style: const TextStyle(
-                                      fontSize: 18, color: Colors.white),
+                                child: Padding(
+                                                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 24.0),
+                                  child: Text(
+                                    "El $rol ${users.fullName} ha diagnosticado al paciente ${patient.fullName.split(" ")[0]} brindando el siguiente resultado",
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                        fontSize: 18, color: Colors.white),
+                                  ),
                                 ),
                               ),
                             ),

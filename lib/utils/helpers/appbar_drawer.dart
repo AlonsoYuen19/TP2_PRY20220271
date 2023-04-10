@@ -191,13 +191,13 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                           : Theme.of(context).colorScheme.tertiary,
                       size: isResp ? 30 : 40,
                     ),
-                    title: Text('Home',
+                    title: Text('Menú principal',
                         style: widget.isHome == false
                             ? Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                  fontSize: isResp ? 22 : 30,
+                                  fontSize: isResp ? 20 : 28,
                                 )
                             : Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                  fontSize: isResp ? 22 : 30,
+                                  fontSize: isResp ? 20 : 28,
                                   color: Theme.of(context).colorScheme.tertiary,
                                 )),
                   ),

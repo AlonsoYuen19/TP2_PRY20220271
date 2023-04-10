@@ -156,7 +156,7 @@ class _MyFutureBuilderState extends State<MyFutureBuilder> {
                           child: Row(
                             children: [
                               const Icon(
-                                Icons.location_on,
+                                Icons.calendar_today_outlined,
                                 color: Colors.lightBlue,
                                 size: 36,
                               ),
