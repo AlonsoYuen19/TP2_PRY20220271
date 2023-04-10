@@ -110,7 +110,7 @@ class _ImagePreviewState extends State<ImagePreview> {
                                       bottomRight: Radius.circular(100))),
                               child: Center(
                                 child: Padding(
-                                                                  padding: const EdgeInsets.symmetric(
+                                  padding: const EdgeInsets.symmetric(
                                       horizontal: 24.0),
                                   child: Text(
                                     "El $rol ${users.fullName} ha diagnosticado al paciente ${patient.fullName.split(" ")[0]} brindando el siguiente resultado",
@@ -218,17 +218,13 @@ class _ImagePreviewState extends State<ImagePreview> {
                                             .confirmDiagnosticMedic(
                                                 context, diagnosis!.id);
                                         Navigator.pushNamedAndRemoveUntil(
-                                            context,
-                                            'diagnosis',
-                                            (route) => false);
+                                            context, 'home', (route) => false);
                                       } else {
                                         await diagnosisService
                                             .confirmDiagnosticNurse(
                                                 context, diagnosis!.id);
                                         Navigator.pushNamedAndRemoveUntil(
-                                            context,
-                                            'diagnosis',
-                                            (route) => false);
+                                            context, 'home', (route) => false);
                                       }
                                     }, color: Colors.lightBlue);
                                   },

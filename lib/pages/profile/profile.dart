@@ -369,45 +369,48 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ClipOval(
-                      child: Container(
-                        color: Colors.lightBlue,
-                        //margin: const EdgeInsets.only(left: 8.0),
-                        child: IconButton(
-                          onPressed: () {
-                            selectImage();
-                            setState(() {});
-                          },
-                          icon: const Icon(
-                            Icons.add_a_photo,
-                            size: 26,
-                            color: Colors.white,
+                Container(
+                  margin: const EdgeInsets.only(left: 40.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      ClipOval(
+                        child: Container(
+                          color: Colors.lightBlue,
+                          //margin: const EdgeInsets.only(left: 8.0),
+                          child: IconButton(
+                            onPressed: () {
+                              selectImage();
+                              setState(() {});
+                            },
+                            icon: const Icon(
+                              Icons.add_a_photo,
+                              size: 26,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(
-                      width: 12,
-                    ),
-                    avatar.isEmpty && avatar2.isEmpty
-                        ? CircleAvatar(
-                            backgroundColor: Colors.lightBlue,
-                            backgroundImage: AssetImage(prefs.idMedic == 0
-                                ? "assets/images/enfermero-logo.png"
-                                : "assets/images/doctor-logo.png"),
-                            radius: 55,
-                          )
-                        : ClipOval(
-                            child: Image.memory(
-                                prefs.idMedic != 0 ? avatar : avatar2,
-                                height: size.width * 0.3,
-                                width: size.width * 0.3,
-                                fit: BoxFit.cover),
-                          ),
-                  ],
+                      const SizedBox(
+                        width: 12,
+                      ),
+                      avatar.isEmpty && avatar2.isEmpty
+                          ? CircleAvatar(
+                              backgroundColor: Colors.lightBlue,
+                              backgroundImage: AssetImage(prefs.idMedic == 0
+                                  ? "assets/images/enfermero-logo.png"
+                                  : "assets/images/doctor-logo.png"),
+                              radius: 55,
+                            )
+                          : ClipOval(
+                              child: Image.memory(
+                                  prefs.idMedic != 0 ? avatar : avatar2,
+                                  height: size.width * 0.3,
+                                  width: size.width * 0.3,
+                                  fit: BoxFit.cover),
+                            ),
+                    ],
+                  ),
                 ),
                 const SizedBox(
                   height: 15,

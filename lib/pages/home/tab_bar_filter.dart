@@ -22,23 +22,23 @@ class TabBarFilter extends StatefulWidget {
 
 class _TabBarFilterState extends State<TabBarFilter>
     with TickerProviderStateMixin {
-  Medic doctorUser = Medic();
+  /*Medic doctorUser = Medic();
   final userAuth = MedicAuthServic();
-  final prefs = SaveData();
+  final prefs = SaveData();*/
   ScrollController _scrollController = ScrollController();
 
-  Future init() async {
+  /*Future init() async {
     var userId = await userAuth.getAuthenticateId(prefs.email, prefs.password);
     doctorUser = (await userAuth.getMedicById(userId.toString()))!;
     setState(() {
       print("El usuario con info es el siguiente :${doctorUser.fullName}");
       print("El usuario con id es el siguiente :" + userId!.toString());
     });
-  }
+  }*/
 
   @override
   void initState() {
-    init();
+    //init();
     _scrollController = ScrollController();
     super.initState();
   }
@@ -139,12 +139,13 @@ class _TabBarFilterState extends State<TabBarFilter>
               ];
             },
             body: SizedBox(
-              width: double.maxFinite,
+              width: double.infinity,
               child: FutureBuilder(
                   future: delayPage(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       return TabBarView(
+                        physics: const BouncingScrollPhysics(),
                         controller: tabController,
                         children: const [
                           //Primera categoria
@@ -169,7 +170,7 @@ class _TabBarFilterState extends State<TabBarFilter>
                           height: 100,
                           width: 100,
                           child: CircularProgressIndicator(
-                              color: Colors.transparent),
+                              color: Colors.lightBlue),
                         ),
                       );
                     }

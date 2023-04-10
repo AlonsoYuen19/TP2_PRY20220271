@@ -3,9 +3,6 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
-import 'package:ulcernosis/models/patient.dart';
-import 'package:ulcernosis/services/patient_service.dart';
-
 import '../../../pages/home/diagnosis_page_patient.dart';
 import '../constant_variables.dart';
 
@@ -33,7 +30,7 @@ class _MyFutureBuilderState extends State<MyFutureBuilder> {
               physics: const BouncingScrollPhysics(),
               //itemCount: widget.isHome ? 4 : data.length,
               shrinkWrap: true,
-              itemCount: data.length,
+              itemCount: data.length > 4 ? 4 : data.length,
               itemBuilder: (context, index) {
                 int reversedIndex = data.length - index - 1;
                 if (snapshot.connectionState == ConnectionState.waiting) {
@@ -46,19 +43,16 @@ class _MyFutureBuilderState extends State<MyFutureBuilder> {
                       color: Theme.of(context).colorScheme.onTertiary,
                     ),
                   ));
+                } else if (snapshot.hasError) {
+                  return Center(
+                    child: Text(
+                      "Error al cargar los datos",
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.onTertiary),
+                    ),
+                  );
                 }
-                if (snapshot.connectionState == ConnectionState.done) {
-                  if (data.isEmpty) {
-                    return Center(
-                      child: Text(
-                        "No hay diagnósticos creados",
-                        style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                              color: Theme.of(context).colorScheme.tertiary,
-                            ),
-                      ),
-                    );
-                  }
-                }
+
                 if (data[reversedIndex].stagePredicted == "1") {
                   categoria = "1era Categoría";
                 } else if (data[reversedIndex].stagePredicted == "2") {
@@ -77,104 +71,117 @@ class _MyFutureBuilderState extends State<MyFutureBuilder> {
                 String dia2 = data[index].createdAt.substring(8, 10);
                 mes2 = meses[mes2]!;
                 return Container(
-                  width: size.width * 0.9,
-                  padding: const EdgeInsets.only(bottom: 5),
-                  constraints: BoxConstraints(
-                      maxWidth: MediaQuery.of(context).size.width),
-                  child: Card(
-                    semanticContainer: true,
-                    borderOnForeground: true,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(25.0),
-                    ),
-                    elevation: 20,
-                    color: Colors.white,
-                    child: Column(
-                      children: [
-                        SizedBox(height: size.height * 0.02),
-                        Padding(
-                          padding: const EdgeInsets.only(left: paddingHori),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        width: size.width * 0.9,
+                        padding: const EdgeInsets.only(bottom: 5),
+                        constraints: BoxConstraints(
+                            maxWidth: MediaQuery.of(context).size.width),
+                        child: Card(
+                          semanticContainer: true,
+                          borderOnForeground: true,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                          ),
+                          elevation: 20,
+                          color: Colors.white,
+                          child: Column(
                             children: [
-                              Flexible(
-                                child: Text(
-                                    widget.isHome
-                                        ? '${data[reversedIndex].patientName}'
-                                        : '${data[index].patientName}',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .labelMedium!
-                                        .copyWith(color: Colors.lightBlue)),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              DiagnosisPageByPatient(
-                                                idDiagnosis:
-                                                    data[reversedIndex].id,
-                                                idPatient: data[reversedIndex]
-                                                    .patientId,
-                                              )));
-                                },
-                                child: const Padding(
-                                  padding: EdgeInsets.only(right: 16.0),
-                                  child: ImageIcon(
-                                    AssetImage("assets/images/search-icon.png"),
-                                    color: Colors.lightBlue,
-                                    size: 36,
-                                  ),
+                              SizedBox(height: size.height * 0.02),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(left: paddingHori),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Flexible(
+                                      child: Text(
+                                          widget.isHome
+                                              ? '${data[reversedIndex].patientName}'
+                                              : '${data[index].patientName}',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .labelMedium!
+                                              .copyWith(
+                                                  color: Colors.lightBlue)),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    DiagnosisPageByPatient(
+                                                      idDiagnosis:
+                                                          data[reversedIndex]
+                                                              .id,
+                                                      idPatient:
+                                                          data[reversedIndex]
+                                                              .patientId,
+                                                    )));
+                                      },
+                                      child: const Padding(
+                                        padding: EdgeInsets.only(right: 16.0),
+                                        child: ImageIcon(
+                                          AssetImage(
+                                              "assets/images/search-icon.png"),
+                                          color: Colors.lightBlue,
+                                          size: 36,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 5),
-                        Padding(
-                          padding: const EdgeInsets.only(left: paddingHori),
-                          child: Row(
-                            children: [
-                              const ImageIcon(
-                                AssetImage("assets/images/category-icon.png"),
-                                color: Colors.lightBlue,
-                                size: 36,
+                              const SizedBox(height: 5),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(left: paddingHori),
+                                child: Row(
+                                  children: [
+                                    const ImageIcon(
+                                      AssetImage(
+                                          "assets/images/category-icon.png"),
+                                      color: Colors.lightBlue,
+                                      size: 36,
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Text(
+                                      categoria,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .labelMedium,
+                                    )
+                                  ],
+                                ),
                               ),
-                              const SizedBox(width: 10),
-                              Text(
-                                categoria,
-                                style: Theme.of(context).textTheme.labelMedium,
-                              )
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 5),
-                        Padding(
-                          padding: const EdgeInsets.only(left: paddingHori),
-                          child: Row(
-                            children: [
-                              const Icon(
-                                Icons.calendar_today_outlined,
-                                color: Colors.lightBlue,
-                                size: 36,
+                              const SizedBox(height: 5),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(left: paddingHori),
+                                child: Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.calendar_today_outlined,
+                                      color: Colors.lightBlue,
+                                      size: 36,
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Text(
+                                      widget.isHome
+                                          ? "$dia de $mes del $anio"
+                                          : "$dia2 de $mes2 del $anio2",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .labelMedium,
+                                    )
+                                  ],
+                                ),
                               ),
-                              const SizedBox(width: 10),
-                              Text(
-                                widget.isHome
-                                    ? "$dia de $mes del $anio"
-                                    : "$dia2 de $mes2 del $anio2",
-                                style: Theme.of(context).textTheme.labelMedium,
-                              )
+                              SizedBox(height: size.height * 0.02),
                             ],
                           ),
                         ),
-                        SizedBox(height: size.height * 0.02),
-                      ],
-                    ),
-                  ),
-                );
+                      );
               });
         },
       ),

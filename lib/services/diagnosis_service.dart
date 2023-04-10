@@ -152,7 +152,8 @@ class DiagnosisService {
     return;
   }
 
-  Future<List<Diagnosis>> getDiagnosisByMedicCMP(String cmp) async {
+  Future<List<Diagnosis>> getDiagnosisByMedicCMP(String? cmp,
+      {String? query, String? query2}) async {
     try {
       var response = await http.get(
         Uri.parse("${authURL}diagnosis/get-by-medic-cmp/$cmp"),
@@ -167,6 +168,19 @@ class DiagnosisService {
         List<dynamic> body = json.decode(utf8.decode(response.bodyBytes));
         List<Diagnosis> diagnosis =
             body.map((dynamic item) => Diagnosis.fromJson(item)).toList();
+        if (query != null) {
+          diagnosis = diagnosis
+              .where((element) => element.patientName
+                  .toLowerCase()
+                  .contains(query.toLowerCase()))
+              .toList();
+        } else if (query2 != null) {
+          diagnosis = diagnosis
+              .where((element) => element.stagePredicted
+                  .toLowerCase()
+                  .contains(query2.toLowerCase()))
+              .toList();
+        }
         print(body);
         return diagnosis;
       } else {
@@ -178,7 +192,8 @@ class DiagnosisService {
     }
   }
 
-  Future<List<Diagnosis>> getDiagnosisByNurseCEP(String cep) async {
+  Future<List<Diagnosis>> getDiagnosisByNurseCEP(String cep,
+      {String? query, String? query2, String? state}) async {
     try {
       var response = await http.get(
         Uri.parse("${authURL}diagnosis/get-by-nurse-cep/$cep"),
@@ -193,6 +208,19 @@ class DiagnosisService {
         List<dynamic> body = json.decode(utf8.decode(response.bodyBytes));
         List<Diagnosis> diagnosis =
             body.map((dynamic item) => Diagnosis.fromJson(item)).toList();
+        if (query != null) {
+          diagnosis = diagnosis
+              .where((element) => element.patientName
+                  .toLowerCase()
+                  .contains(query.toLowerCase()))
+              .toList();
+        } else if (query2 != null) {
+          diagnosis = diagnosis
+              .where((element) => element.stagePredicted
+                  .toLowerCase()
+                  .contains(query2.toLowerCase()))
+              .toList();
+        }
         print(body);
         return diagnosis;
       } else {

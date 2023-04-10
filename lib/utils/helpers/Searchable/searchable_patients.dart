@@ -38,9 +38,8 @@ class SearchUserPatient extends SearchDelegate {
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: FutureBuilder<List<Patient>>(
-          future: isMedic == true
-              ? _patientList.getPatientsByMedics(query: query)
-              : _patientList.getPatientsByNurse(query: query),
+          future: _patientList.getPatientsByMedics(query: query),
+
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return Center(

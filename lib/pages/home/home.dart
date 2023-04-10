@@ -11,7 +11,8 @@ import 'package:ulcernosis/services/nurse_services.dart';
 import 'package:ulcernosis/services/users_service.dart';
 import 'package:ulcernosis/utils/providers/auth_token.dart';
 import 'package:ulcernosis/utils/helpers/constant_variables.dart';
-import 'package:ulcernosis/utils/helpers/Searchable/searchable.dart';
+import 'package:ulcernosis/utils/helpers/Searchable/searchable_medic.dart';
+import '../../utils/helpers/Searchable/searchable_nurse.dart';
 import '../../utils/helpers/appbar_drawer.dart';
 import '../../utils/helpers/future_builder_cards/future_builders.dart';
 import '../../utils/helpers/loaders_screens/loader_home_screen.dart';
@@ -33,6 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Users user = Users();
   Nurse nurse = Nurse();
   Medic medic = Medic();
+  List<Diagnosis> listDiagnosis = [];
   Future<Widget> delayPage() {
     Completer<Widget> completer = Completer();
     Future.delayed(const Duration(seconds: 2), () {
@@ -46,8 +48,12 @@ class _HomeScreenState extends State<HomeScreen> {
     user = (await userAuth.getUsersById())!;
     if (user.role == "ROLE_MEDIC") {
       medic = (await medicService.getMedicById(prefs.idMedic.toString()))!;
+      listDiagnosis =
+          (await diagnosisService.getDiagnosisByMedicCMP(medic.cmp));
     } else {
       nurse = (await nurseService.getNurseByIdManage(prefs.idNurse))!;
+      listDiagnosis =
+          (await diagnosisService.getDiagnosisByNurseCEP(nurse.cep));
     }
     setState(() {
       print("El usuario es: ${user.fullName}");
@@ -81,6 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget homePage() {
+    final size = MediaQuery.of(context).size;
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -96,8 +103,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               TextButton(
                   onPressed: () {
-                    Provider.of<AuthProvider>(context, listen: false)
-                        .updateToken(context);
                     Navigator.pushNamed(context, 'tabBarFilter');
                   },
                   child: Text("Filtrar",
@@ -149,9 +154,16 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       onPressed: () async {
                         await showSearch(
-                          context: context,
-                          delegate: SearchUser(isHome: true),
-                        );
+                            context: context,
+                            delegate: user.role == "ROLE_MEDIC"
+                                ? SearchUser(
+                                    isHome: true,
+                                    cmp: medic.cmp,
+                                    isEtapa: false)
+                                : SearchNurse(
+                                    isHome: true,
+                                    cep: nurse.cep,
+                                    isEtapa: false));
                       },
                       icon: Icon(
                         Icons.search,
@@ -165,15 +177,61 @@ class _HomeScreenState extends State<HomeScreen> {
           const SizedBox(
             height: 20,
           ),
-          user.role == "ROLE_MEDIC"
-              ? MyFutureBuilder(
-                  myFuture: diagnosisService.getDiagnosisByMedicCMP(medic.cmp),
-                  isHome: true,
-                )
-              : MyFutureBuilder(
-                  myFuture: diagnosisService.getDiagnosisByNurseCEP(nurse.cep),
-                  isHome: true,
-                ),
+          listDiagnosis.isEmpty
+              ? FutureBuilder(
+                  future: Future.delayed(const Duration(seconds: 1)),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                          child: CircularProgressIndicator(
+                        color: Colors.transparent,
+                      ));
+                    }
+                    return Column(
+                      children: [
+                        SizedBox(
+                          height: size.height * 0.05,
+                        ),
+                        Container(
+                          height: 200,
+                          width: 200,
+                          decoration: BoxDecoration(
+                            border:
+                                Border.all(width: 0, color: Colors.transparent),
+                            image: const DecorationImage(
+                              image: AssetImage(
+                                  'assets/images/out-stock-diagnostico.png'),
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Text(
+                              "No hay Registros de Diagnósticos Disponibles",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 26,
+                                  fontWeight: FontWeight.bold)),
+                        )
+                      ],
+                    );
+                  })
+              : user.role == "ROLE_MEDIC"
+                  ? MyFutureBuilder(
+                      myFuture:
+                          diagnosisService.getDiagnosisByMedicCMP(medic.cmp),
+                      isHome: true,
+                    )
+                  : MyFutureBuilder(
+                      myFuture:
+                          diagnosisService.getDiagnosisByNurseCEP(nurse.cep),
+                      isHome: true,
+                    ),
           const SizedBox(
             height: 20,
           ),
