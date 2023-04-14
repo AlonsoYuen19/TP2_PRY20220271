@@ -70,7 +70,7 @@ class _TabBarFilterState extends State<TabBarFilter>
         ),
         child: Text(
           'Categoria',
-          style: TextStyle(fontSize: 15),
+          style: TextStyle(fontSize: 12),
         ),
       ),
       const Tab(
@@ -81,7 +81,7 @@ class _TabBarFilterState extends State<TabBarFilter>
         ),
         child: Text(
           'Categoria',
-          style: TextStyle(fontSize: 15),
+          style: TextStyle(fontSize: 12),
         ),
       ),
       const Tab(
@@ -92,7 +92,7 @@ class _TabBarFilterState extends State<TabBarFilter>
         ),
         child: Text(
           'Categoria',
-          style: TextStyle(fontSize: 15),
+          style: TextStyle(fontSize: 12),
         ),
       ),
       const Tab(
@@ -103,7 +103,7 @@ class _TabBarFilterState extends State<TabBarFilter>
         ),
         child: Text(
           'Categoria',
-          style: TextStyle(fontSize: 15),
+          style: TextStyle(fontSize: 12),
         ),
       ),
     ];
@@ -117,7 +117,7 @@ class _TabBarFilterState extends State<TabBarFilter>
                 (BuildContext context, bool innerBoxIsScrolled) {
               return <Widget>[
                 SliverAppBar(
-                  toolbarHeight: MediaQuery.of(context).size.height * 0.1,
+                  toolbarHeight: MediaQuery.of(context).size.height * 0.11,
                   title: const Text('Filtrado por Categoría'),
                   centerTitle: true,
                   backgroundColor: Theme.of(context).colorScheme.onTertiary,

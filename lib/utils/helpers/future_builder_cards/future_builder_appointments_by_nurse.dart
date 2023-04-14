@@ -68,7 +68,7 @@ class _MyFutureBuilderAppointmentByNurseState
                                   Text(
                                     '${data[index].address}',
                                     overflow: TextOverflow.ellipsis,
-                                    maxLines: 2,
+                                    maxLines: 1,
                                     style: TextStyle(
                                         color: Theme.of(context)
                                             .colorScheme

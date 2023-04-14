@@ -52,8 +52,8 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
       avatar2 = (await usersService.getNurseImageFromBackend());
       nurse = (await nurseService.getNurseById(context))!;
     }
-    print(MediaQuery.of(context).size.width);
-    print(MediaQuery.of(context).size.height);
+    
+
     print(prefs.login);
     setState(() {
       print("El usuario con info es el siguiente :${users.fullName}");
@@ -241,10 +241,10 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                     title: Text('Diagnóstico',
                         style: widget.isDiagnosis == false
                             ? Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                  fontSize: isResp ? 22 : 30,
+                                  fontSize: isResp ? 22 : 28,
                                 )
                             : Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                  fontSize: isResp ? 22 : 30,
+                                  fontSize: isResp ? 22 : 28,
                                   color: Theme.of(context).colorScheme.tertiary,
                                 )),
                   ),
@@ -292,13 +292,13 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                                         .textTheme
                                         .bodyLarge!
                                         .copyWith(
-                                          fontSize: isResp ? 22 : 30,
+                                          fontSize: isResp ? 22 : 28,
                                         )
                                     : Theme.of(context)
                                         .textTheme
                                         .bodyLarge!
                                         .copyWith(
-                                          fontSize: isResp ? 22 : 30,
+                                          fontSize: isResp ? 22 : 28,
                                           color: Theme.of(context)
                                               .colorScheme
                                               .tertiary,
@@ -344,10 +344,10 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                       title: Text('Perfil',
                           style: widget.isProfile == false
                               ? Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                    fontSize: isResp ? 22 : 30,
+                                    fontSize: isResp ? 22 : 28,
                                   )
                               : Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                    fontSize: isResp ? 22 : 30,
+                                    fontSize: isResp ? 22 : 28,
                                     color:
                                         Theme.of(context).colorScheme.tertiary,
                                   ))),
@@ -374,7 +374,7 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                   ),
                   title: Text('Cerrar Sesión',
                       style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                            fontSize: isResp ? 22 : 30,
+                            fontSize: isResp ? 22 : 28,
                           )),
                 ),
                 const Spacer(),
