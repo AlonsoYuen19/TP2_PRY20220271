@@ -646,25 +646,25 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                               if (isValidForm) {
                                 await patientService.updatePatient(context,
                                     fullName: isName!
-                                        ? controller.text
+                                        ? controller.text.trim()
                                         : patientUser.fullName,
                                     email: isEmail!
-                                        ? controller.text
+                                        ? controller.text.trim()
                                         : patientUser.email,
                                     stateCivil: isStateCivil!
-                                        ? controller.text
+                                        ? controller.text.trim()
                                         : patientUser.civilStatus,
                                     address: isDirection!
-                                        ? controller.text
+                                        ? controller.text.trim()
                                         : patientUser.address,
                                     phone: isPhone!
-                                        ? controller.text
+                                        ? controller.text.trim()
                                         : patientUser.phone,
                                     age: isAge!
-                                        ? int.parse(controller.text)
+                                        ? int.parse(controller.text.trim())
                                         : patientUser.age,
                                     dni: isDni!
-                                        ? controller.text
+                                        ? controller.text.trim()
                                         : patientUser.dni, onSuccess: () {
                                   setState(() {
                                     if (widget.isName == true) {

@@ -95,8 +95,11 @@ class _TeamWorkNurseProfileState extends State<TeamWorkNurseProfile> {
                                       color: Colors.white,
                                       size: 30,
                                     ),
-                                    onTap: () => Navigator.pushReplacementNamed(
-                                        context, "manage")),
+                                    onTap: () =>
+                                        Navigator.pushNamedAndRemoveUntil(
+                                            context,
+                                            "manage",
+                                            (route) => false)),
                                 SizedBox(
                                   width: size.width * 0.1,
                                 ),

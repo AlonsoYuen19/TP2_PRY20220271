@@ -55,27 +55,23 @@ class _MyFutureBuilderAppointmentByNurseState
                         Padding(
                           padding: const EdgeInsets.only(left: 10),
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Row(
-                                children: [
-                                  Icon(Icons.house,
+                              Icon(Icons.house,
+                                  color: Theme.of(context).colorScheme.tertiary,
+                                  size: 28),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: Text(
+                                  '${data[index].address}',
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                  style: TextStyle(
                                       color: Theme.of(context)
                                           .colorScheme
                                           .tertiary,
-                                      size: 28),
-                                  const SizedBox(width: 10),
-                                  Text(
-                                    '${data[index].address}',
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
-                                    style: TextStyle(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .tertiary,
-                                        fontSize: 18),
-                                  ),
-                                ],
+                                      fontSize: 18),
+                                ),
                               ),
                               InkWell(
                                 child: const Padding(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:ulcernosis/routes/routes.dart';
 import 'package:ulcernosis/services/nurse_services.dart';
@@ -12,6 +13,10 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
   final prefs = SaveData();
   await prefs.initPrefs();
   prefs.deleteToken();
@@ -47,10 +52,10 @@ class MyApp extends StatelessWidget {
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
         ],
-        supportedLocales: const [
+        /*supportedLocales: const [
           Locale('en'),
           Locale('es'),
-        ],
+        ],*/
         debugShowCheckedModeBanner: false,
         theme: textThemes,
         initialRoute: 'login',

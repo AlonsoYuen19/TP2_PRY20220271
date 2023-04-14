@@ -154,9 +154,12 @@ class _MyFutureBuilderPatientsByNurseState
                                 size: 28,
                               ),
                               const SizedBox(width: 10),
-                              Text(
-                                '${data[index].address}',
-                                style: Theme.of(context).textTheme.labelMedium,
+                              Flexible(
+                                child: Text(
+                                  '${data[index].address}',
+                                  style:
+                                      Theme.of(context).textTheme.labelMedium,
+                                ),
                               )
                             ],
                           ),

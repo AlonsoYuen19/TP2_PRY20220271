@@ -54,7 +54,9 @@ class ValidatorEditDoctor {
 
   static FormFieldValidator<String> addressValidEdit(String errorMessage) {
     return (value) {
-      if (!RegExp(r'^[a-zA-Z0-9. ]+$').hasMatch(value!)) {
+      if (value!.isEmpty ||
+          !RegExp(r'^[a-zA-Z0-9., áàãâéêíóôõúüçÁÀÃÂÉÊÍÓÔÕÚÜÇ]+$')
+              .hasMatch(value)) {
         return errorMessage;
       } else {
         return null;
