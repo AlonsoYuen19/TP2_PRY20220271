@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../models/diagnosis.dart';
 import '../../../models/medic.dart';
 import '../../../models/nurse.dart';
 import '../../../models/users.dart';
@@ -23,34 +24,20 @@ class _FourthPageState extends State<FourthPage> {
   final medicService = MedicAuthServic();
   final userService = UsersAuthService();
   final nurseService = NurseAuthService();
+  List<Diagnosis> diagnosis = [];
   Medic medic = Medic();
   Users user = Users();
   Nurse nurse = Nurse();
-  /*Future<List<Diagnosis>> getStrings() async {
-    await Future.delayed(const Duration(seconds: 1));
-    medic = (await medicService.getMedicById(prefs.idMedic.toString()))!;
-    return diagnosisService.getDiagnosisByMedicCMP(medic.cmp, state: "2");
-  }
-
-  Future<List<Diagnosis>> getStrings2() async {
-    await Future.delayed(const Duration(seconds: 1));
-    nurse = (await nurseService.getNurseByIdManage(prefs.idNurse))!;
-    return diagnosisService.getDiagnosisByNurseCEP(nurse.cep, state: "2");
-  }*/
-
-  int? count;
   Future init() async {
     user = (await userService.getUsersById())!;
     if (user.role == "ROLE_MEDIC") {
       medic = (await medicService.getMedicById(prefs.idMedic.toString()))!;
-      /*final list = await getStrings();
-      final count = list.length;
-      print("La cantidad de diagnósticos de categoría 4 es: $count");*/
+      diagnosis =
+          await diagnosisService.getDiagnosisByCMPByStage(medic.cmp, "4");
     } else {
-      user = (await userService.getUsersById())!;
-      /*final list2 = await getStrings2();
-      final count2 = list2.length;
-      print("La cantidad de diagnósticos de categoría 4 es: $count2");*/
+      nurse = (await nurseService.getNurseByIdManage(prefs.idNurse))!;
+      diagnosis =
+          await diagnosisService.getDiagnosisByCEPByStage(nurse.cep, "4");
     }
 
     setState(() {});
@@ -117,20 +104,59 @@ class _FourthPageState extends State<FourthPage> {
               ],
             ),
           ),
-          const SizedBox(
-            height: 20,
-          ),
-          user.role == "ROLE_MEDIC"
-              ? MyFutureBuilder(
-                  myFuture: diagnosisService.getDiagnosisByMedicCMP(medic.cmp,
-                      query2: "4"),
-                  isHome: false,
-                )
-              : MyFutureBuilder(
-                  myFuture: diagnosisService.getDiagnosisByNurseCEP(nurse.cep,
-                      query2: "4"),
-                  isHome: false,
-                ),
+          diagnosis.isEmpty
+              ? FutureBuilder(
+                  future: Future.delayed(const Duration(seconds: 1)),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                          child: CircularProgressIndicator(
+                        color: Colors.transparent,
+                      ));
+                    }
+                    return Column(
+                      children: [
+                        const SizedBox(height: 30),
+                        Container(
+                          height: 200,
+                          width: 200,
+                          decoration: BoxDecoration(
+                            border:
+                                Border.all(width: 0, color: Colors.transparent),
+                            image: const DecorationImage(
+                              image: AssetImage(
+                                  'assets/images/out-stock-diagnostico.png'),
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Text(
+                              "No hay Registros de Diagnósticos Disponibles",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 26,
+                                  fontWeight: FontWeight.bold)),
+                        )
+                      ],
+                    );
+                  })
+              : user.role == "ROLE_MEDIC"
+                  ? MyFutureBuilder(
+                      myFuture: diagnosisService.getDiagnosisByCMPByStage(
+                          medic.cmp, "4"),
+                      isHome: true,
+                    )
+                  : MyFutureBuilder(
+                      myFuture: diagnosisService.getDiagnosisByCEPByStage(
+                          nurse.cep, "4"),
+                      isHome: true,
+                    ),
         ],
       ),
     );

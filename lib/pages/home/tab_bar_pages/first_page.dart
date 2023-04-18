@@ -25,34 +25,21 @@ class _FirstPageState extends State<FirstPage> {
   final medicService = MedicAuthServic();
   final userService = UsersAuthService();
   final nurseService = NurseAuthService();
+  List<Diagnosis> diagnosis = [];
+  List<Diagnosis> diagnosisCEP = [];
   Medic medic = Medic();
   Users user = Users();
   Nurse nurse = Nurse();
-
-  /*Future<List<Diagnosis>> getStrings() async {
-    await Future.delayed(const Duration(seconds: 1));
-    medic = (await medicService.getMedicById(prefs.idMedic.toString()))!;
-    return diagnosisService.getDiagnosisByMedicCMP(medic.cmp, state: "1");
-  }
-
-  Future<List<Diagnosis>> getStrings2() async {
-    await Future.delayed(const Duration(seconds: 1));
-    nurse = (await nurseService.getNurseByIdManage(prefs.idNurse))!;
-    return diagnosisService.getDiagnosisByNurseCEP(nurse.cep, state: "1");
-  }*/
-
-  int? count;
   Future init() async {
+    user = (await userService.getUsersById())!;
     if (user.role == "ROLE_MEDIC") {
       medic = (await medicService.getMedicById(prefs.idMedic.toString()))!;
-      /* final list = await getStrings();
-      final count = list.length;
-      print("La cantidad de diagnósticos de categoría 1 es: $count");*/
+      diagnosis =
+          await diagnosisService.getDiagnosisByCMPByStage(medic.cmp, "1");
     } else {
-      user = (await userService.getUsersById())!;
-      /*final list2 = await getStrings2();
-      final count2 = list2.length;
-      print("La cantidad de diagnósticos de categoría 1 es: $count2");*/
+      nurse = (await nurseService.getNurseByIdManage(prefs.idNurse))!;
+      diagnosis =
+          await diagnosisService.getDiagnosisByCEPByStage(nurse.cep, "1");
     }
 
     setState(() {});
@@ -70,7 +57,8 @@ class _FirstPageState extends State<FirstPage> {
       body: ListView(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -99,9 +87,16 @@ class _FirstPageState extends State<FirstPage> {
                       ),
                       onPressed: () async {
                         await showSearch(
-                          context: context,
-                          delegate: user.role=="ROLE_MEDIC" ?SearchUser(isHome: false, cmp: medic.cmp,isEtapa: true):SearchNurse(isHome: false, cep: nurse.cep,isEtapa: true)
-                        );
+                            context: context,
+                            delegate: user.role == "ROLE_MEDIC"
+                                ? SearchUser(
+                                    isHome: false,
+                                    cmp: medic.cmp,
+                                    isEtapa: true)
+                                : SearchNurse(
+                                    isHome: false,
+                                    cep: nurse.cep,
+                                    isEtapa: true));
                       },
                       icon: Icon(
                         Icons.search,
@@ -112,19 +107,59 @@ class _FirstPageState extends State<FirstPage> {
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 12.0),
-            child: user.role == "ROLE_MEDIC"
-                ? MyFutureBuilder(
-                    myFuture: diagnosisService.getDiagnosisByMedicCMP(medic.cmp,query2: "1"),
-                    isHome: false,
-                  )
-                : MyFutureBuilder(
-                    myFuture: diagnosisService.getDiagnosisByNurseCEP(nurse.cep,
-                        query2: "1"),
-                    isHome: false,
-                  ),
-          ),
+          diagnosis.isEmpty
+              ? FutureBuilder(
+                  future: Future.delayed(const Duration(seconds: 1)),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                          child: CircularProgressIndicator(
+                        color: Colors.transparent,
+                      ));
+                    }
+                    return Column(
+                      children: [
+                        const SizedBox(height: 30),
+                        Container(
+                          height: 200,
+                          width: 200,
+                          decoration: BoxDecoration(
+                            border:
+                                Border.all(width: 0, color: Colors.transparent),
+                            image: const DecorationImage(
+                              image: AssetImage(
+                                  'assets/images/out-stock-diagnostico.png'),
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Text(
+                              "No hay Registros de Diagnósticos Disponibles",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 26,
+                                  fontWeight: FontWeight.bold)),
+                        )
+                      ],
+                    );
+                  })
+              : user.role == "ROLE_MEDIC"
+                  ? MyFutureBuilder(
+                      myFuture: diagnosisService.getDiagnosisByCMPByStage(
+                          medic.cmp, "1"),
+                      isHome: true,
+                    )
+                  : MyFutureBuilder(
+                      myFuture: diagnosisService.getDiagnosisByCEPByStage(
+                          nurse.cep, "1"),
+                      isHome: true,
+                    ),
         ],
       ),
     );

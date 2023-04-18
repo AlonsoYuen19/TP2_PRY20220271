@@ -46,6 +46,9 @@ ThemeData textThemes = ThemeData(
     iconTheme: IconThemeData(color: Colors.black, weight: 800),
     toolbarHeight: 80,
   ),
+  progressIndicatorTheme: const ProgressIndicatorThemeData(
+    color: Colors.transparent,
+  ),
   timePickerTheme: TimePickerThemeData(
     backgroundColor: Colors.white,
     hourMinuteShape: const RoundedRectangleBorder(

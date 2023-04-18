@@ -231,4 +231,72 @@ class DiagnosisService {
       return [];
     }
   }
+
+  Future<List<Diagnosis>> getDiagnosisByCMPByStage(String? cmp, String stage,
+      {String? query}) async {
+    try {
+      var response = await http.get(
+        Uri.parse("${authURL}diagnosis/medic-cmp/$cmp/stage-predicted/$stage"),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          'Authorization': 'Bearer ${prefs.token}',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        List<dynamic> body = json.decode(utf8.decode(response.bodyBytes));
+        List<Diagnosis> diagnosis =
+            body.map((dynamic item) => Diagnosis.fromJson(item)).toList();
+        if (query != null) {
+          diagnosis = diagnosis
+              .where((element) => element.stagePredicted
+                  .toLowerCase()
+                  .contains(query.toLowerCase()))
+              .toList();
+        }
+        print(body);
+        return diagnosis;
+      } else {
+        throw Exception("Failed to load data");
+      }
+    } on SocketException catch (e) {
+      print(e);
+      return [];
+    }
+  }
+
+  Future<List<Diagnosis>> getDiagnosisByCEPByStage(String? cep, String stage,
+      {String? query}) async {
+    try {
+      var response = await http.get(
+        Uri.parse("${authURL}diagnosis/nurse-cep/$cep/stage-predicted/$stage"),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          'Authorization': 'Bearer ${prefs.token}',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        List<dynamic> body = json.decode(utf8.decode(response.bodyBytes));
+        List<Diagnosis> diagnosis =
+            body.map((dynamic item) => Diagnosis.fromJson(item)).toList();
+        if (query != null) {
+          diagnosis = diagnosis
+              .where((element) => element.patientName
+                  .toLowerCase()
+                  .contains(query.toLowerCase()))
+              .toList();
+        }
+        print(body);
+        return diagnosis;
+      } else {
+        throw Exception("Failed to load data");
+      }
+    } on SocketException catch (e) {
+      print(e);
+      return [];
+    }
+  }
 }

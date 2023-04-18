@@ -71,117 +71,104 @@ class _MyFutureBuilderState extends State<MyFutureBuilder> {
                 String dia2 = data[index].createdAt.substring(8, 10);
                 mes2 = meses[mes2]!;
                 return Container(
-                        width: size.width * 0.9,
-                        padding: const EdgeInsets.only(bottom: 5),
-                        constraints: BoxConstraints(
-                            maxWidth: MediaQuery.of(context).size.width),
-                        child: Card(
-                          semanticContainer: true,
-                          borderOnForeground: true,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                          ),
-                          elevation: 20,
-                          color: Colors.white,
-                          child: Column(
+                  width: size.width * 0.9,
+                  padding: const EdgeInsets.only(bottom: 5, top: 15),
+                  constraints: BoxConstraints(
+                      maxWidth: MediaQuery.of(context).size.width),
+                  child: Card(
+                    semanticContainer: true,
+                    borderOnForeground: true,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25.0),
+                    ),
+                    elevation: 20,
+                    color: Colors.white,
+                    child: Column(
+                      children: [
+                        SizedBox(height: size.height * 0.02),
+                        Padding(
+                          padding: const EdgeInsets.only(left: paddingHori),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              SizedBox(height: size.height * 0.02),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(left: paddingHori),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Flexible(
-                                      child: Text(
-                                          widget.isHome
-                                              ? '${data[reversedIndex].patientName}'
-                                              : '${data[index].patientName}',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .labelMedium!
-                                              .copyWith(
-                                                  color: Colors.lightBlue)),
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    DiagnosisPageByPatient(
-                                                      idDiagnosis:
-                                                          data[reversedIndex]
-                                                              .id,
-                                                      idPatient:
-                                                          data[reversedIndex]
-                                                              .patientId,
-                                                    )));
-                                      },
-                                      child: const Padding(
-                                        padding: EdgeInsets.only(right: 16.0),
-                                        child: ImageIcon(
-                                          AssetImage(
-                                              "assets/images/search-icon.png"),
-                                          color: Colors.lightBlue,
-                                          size: 36,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
+                              Flexible(
+                                child: Text(
+                                    widget.isHome
+                                        ? '${data[reversedIndex].patientName}'
+                                        : '${data[index].patientName}',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .labelMedium!
+                                        .copyWith(color: Colors.lightBlue)),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              DiagnosisPageByPatient(
+                                                idDiagnosis:
+                                                    data[reversedIndex].id,
+                                                idPatient: data[reversedIndex]
+                                                    .patientId,
+                                              )));
+                                },
+                                child: const Padding(
+                                  padding: EdgeInsets.only(right: 16.0),
+                                  child: ImageIcon(
+                                    AssetImage("assets/images/search-icon.png"),
+                                    color: Colors.lightBlue,
+                                    size: 36,
+                                  ),
                                 ),
                               ),
-                              const SizedBox(height: 5),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(left: paddingHori),
-                                child: Row(
-                                  children: [
-                                    const ImageIcon(
-                                      AssetImage(
-                                          "assets/images/category-icon.png"),
-                                      color: Colors.lightBlue,
-                                      size: 36,
-                                    ),
-                                    const SizedBox(width: 10),
-                                    Text(
-                                      categoria,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .labelMedium,
-                                    )
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(height: 5),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(left: paddingHori),
-                                child: Row(
-                                  children: [
-                                    const Icon(
-                                      Icons.calendar_today_outlined,
-                                      color: Colors.lightBlue,
-                                      size: 36,
-                                    ),
-                                    const SizedBox(width: 10),
-                                    Text(
-                                      widget.isHome
-                                          ? "$dia de $mes del $anio"
-                                          : "$dia2 de $mes2 del $anio2",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .labelMedium,
-                                    )
-                                  ],
-                                ),
-                              ),
-                              SizedBox(height: size.height * 0.02),
                             ],
                           ),
                         ),
-                      );
+                        const SizedBox(height: 5),
+                        Padding(
+                          padding: const EdgeInsets.only(left: paddingHori),
+                          child: Row(
+                            children: [
+                              const ImageIcon(
+                                AssetImage("assets/images/category-icon.png"),
+                                color: Colors.lightBlue,
+                                size: 36,
+                              ),
+                              const SizedBox(width: 10),
+                              Text(
+                                categoria,
+                                style: Theme.of(context).textTheme.labelMedium,
+                              )
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 5),
+                        Padding(
+                          padding: const EdgeInsets.only(left: paddingHori),
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.calendar_today_outlined,
+                                color: Colors.lightBlue,
+                                size: 36,
+                              ),
+                              const SizedBox(width: 10),
+                              Text(
+                                widget.isHome
+                                    ? "$dia de $mes del $anio"
+                                    : "$dia2 de $mes2 del $anio2",
+                                style: Theme.of(context).textTheme.labelMedium,
+                              )
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: size.height * 0.02),
+                      ],
+                    ),
+                  ),
+                );
               });
         },
       ),
