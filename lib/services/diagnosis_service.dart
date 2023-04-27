@@ -8,6 +8,7 @@ import 'package:ulcernosis/models/diagnosis.dart';
 import 'package:ulcernosis/models/patient.dart';
 import 'package:ulcernosis/utils/widgets/alert_dialog.dart';
 
+import '../models/quick_diagnosis.dart';
 import '../utils/helpers/constant_variables.dart';
 
 class DiagnosisService {
@@ -80,6 +81,30 @@ class DiagnosisService {
     } else {
       print('Error uploading image. Status code: ${response.statusCode}');
       return 0;
+    }
+  }
+
+  QuickDiagnosis quickDiagnosis = QuickDiagnosis();
+  Future<QuickDiagnosis> createQuickDiagnosis(Uint8List imageBytes) async {
+    const url = '${authURL}diagnosis/quick-diagnosis';
+    final request = http.MultipartRequest('POST', Uri.parse(url));
+    final multipartFile = http.MultipartFile.fromBytes('file', imageBytes,
+        filename: prefs.imageQuickDiag,
+        contentType: MediaType('image', 'jpeg'));
+    request.headers['Authorization'] = 'Bearer ${prefs.token}';
+    request.headers['Content-Type'] = 'multipart/form-data';
+    request.files.add(multipartFile);
+    final response = await request.send();
+
+    if (response.statusCode == 200) {
+      final jsonResponse = await response.stream.bytesToString();
+      print(jsonResponse);
+      final quickDiagnosis = quickDiagnosisFromJson(jsonResponse);
+      print(quickDiagnosis);
+      return quickDiagnosis;
+    } else {
+      print('Error uploading image. Status code: ${response.statusCode}');
+      return QuickDiagnosis();
     }
   }
 

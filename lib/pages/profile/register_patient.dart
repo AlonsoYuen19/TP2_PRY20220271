@@ -1,12 +1,8 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:ulcernosis/services/patient_service.dart';
 import 'package:ulcernosis/utils/widgets/background_figure.dart';
-
-import '../../services/nurse_services.dart';
-import '../../shared/user_prefs.dart';
 import '../../utils/helpers/constant_variables.dart';
 import '../../utils/widgets/DropDowns/drop_down.dart';
 import '../../utils/widgets/text_form_field.dart';

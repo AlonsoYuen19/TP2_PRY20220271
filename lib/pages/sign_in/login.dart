@@ -54,8 +54,8 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
     if (isLogin == true) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => const HomeScreen()));
+      Navigator.pushAndRemoveUntil(
+          context, MaterialPageRoute(builder: (context) => const HomeScreen()), (route) => false);
     }
   }
 

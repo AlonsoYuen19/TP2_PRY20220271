@@ -1,16 +1,18 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:async';
+import 'dart:io';
+import 'dart:typed_data';
 
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:ulcernosis/models/patient.dart';
-import 'package:ulcernosis/models/users.dart';
-import 'package:ulcernosis/services/patient_service.dart';
-import 'package:ulcernosis/services/users_service.dart';
-
-import '../../services/diagnosis_service.dart';
+import 'package:ulcernosis/pages/diagnosis/take_photo_quick_diagnosis.dart';
 import '../../utils/helpers/appbar_drawer.dart';
-import '../../utils/helpers/future_builder_cards/future_builder_patients_diagnosis.dart';
+import '../../utils/helpers/constant_variables.dart';
 import '../../utils/helpers/loaders_screens/loader_diagnosis_screen.dart';
 import '../../utils/widgets/alert_dialog.dart';
+import 'diagnosis_patient.dart';
+import 'image_preview_quick_diagnosis.dart';
 
 class DiagnosisScreen extends StatefulWidget {
   const DiagnosisScreen({super.key});
@@ -20,6 +22,7 @@ class DiagnosisScreen extends StatefulWidget {
 }
 
 class _DiagnosisScreenState extends State<DiagnosisScreen> {
+  Uint8List avatar = Uint8List(0);
   Future<Widget> delayPage() {
     Completer<Widget> completer = Completer();
     Future.delayed(const Duration(seconds: 2), () {
@@ -29,28 +32,162 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
     return completer.future;
   }
 
-  List<Patient> patientsMedics = [];
-  List<Patient> patientsNurses = [];
-  Users user = Users();
-  final diagnosisService = DiagnosisService();
-  final patientService = PatientService();
-  final userService = UsersAuthService();
-  Future init() async {
-    user = (await userService.getUsersById())!;
-    if (user.role == "ROLE_MEDIC") {
-      patientsMedics = await diagnosisService.getPatientsNoAssigned();
-      print("El tamaño de la lista es: ${patientsMedics.length}");
-    } else {
-      patientsNurses = await patientService.getPatientsByNurse();
-      print("El tamaño de la lista es: ${patientsNurses.length}");
-    }
-    setState(() {});
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    init();
+  Future selectImage() {
+    final size = MediaQuery.of(context).size;
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0)), //this right here
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'Selecciona una imagen desde tu...',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.tertiary,
+                        fontSize: 24.0,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      GestureDetector(
+                        onTap: () async {
+                          prefs.imageQuickDiagFile = await galleryFunction();
+                          if (prefs.idMedic != 0 &&
+                              prefs.imageQuickDiagFile != '') {
+                            avatar = File(prefs.imageQuickDiagFile)
+                                .readAsBytesSync();
+                            //avatar to a XFile
+                            XFile image = XFile(prefs.imageQuickDiagFile);
+                            if (image.path != '') {
+                              print("Galeria");
+                              return mostrarAlertaExito(context,
+                                  "Se actualizó exitosamente la foto de perfil del Médico",
+                                  () async {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            ImagePreviewQuickDiagnosis(
+                                              imagePath: image,
+                                            )));
+                              });
+                            } else {
+                              return mostrarAlertaError(context,
+                                  "No se pudo actualizar la foto de perfil del Médico",
+                                  () async {
+                                Navigator.pop(context);
+                              });
+                            }
+                          }
+                          if (prefs.imageQuickDiagFile != '') {
+                            if (!mounted) {}
+                            Navigator.of(context).pop();
+                            setState(() {});
+                          } else {
+                            if (!mounted) {}
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                              content: Text("Imagen no seleccionada !"),
+                            ));
+                          }
+                        },
+                        child: Card(
+                            elevation: 5,
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Column(
+                                children: [
+                                  Image.asset(
+                                    'assets/images/gallery-icon.png',
+                                    height: 80,
+                                    width: 80,
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text('Galería',
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .tertiary,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold)),
+                                ],
+                              ),
+                            )),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const TakePhotoQuickDiagnosis()));
+                        },
+                        child: Card(
+                            elevation: 5,
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Column(
+                                children: [
+                                  Image.asset(
+                                    'assets/images/camera-icon.png',
+                                    height: 80,
+                                    width: 80,
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text('Cámara',
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .tertiary,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold)),
+                                ],
+                              ),
+                            )),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  SizedBox(
+                    width: size.width * 0.35,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Theme.of(context).colorScheme.tertiary,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18.0),
+                        ),
+                      ),
+                      child: const Text('Regresar',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold)),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
   }
 
   @override
@@ -68,140 +205,143 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const LoaderDiagnosisScreen();
             }
-            return AppBarDrawer(isDiagnosis: true, child: diagnosisPage());
+            return AppBarDrawer(isDiagnosis: true, child: _selectOption());
           },
         ));
   }
 
-  Widget diagnosisPage() {
-    final size = MediaQuery.of(context).size;
-    return Stack(children: [
-      Container(
-        height: MediaQuery.of(context).size.height * 0.25,
-        width: double.infinity,
-        decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.tertiary,
-            borderRadius:
-                const BorderRadius.only(bottomRight: Radius.circular(100))),
-      ),
-      SafeArea(
-          child: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-              horizontal: size.width * 0.06, vertical: size.height * 0.05),
-          child: Column(children: [
-            const Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                padding: EdgeInsets.only(left: 18.0),
-                child: Text(
-                  "Selecciona al Paciente",
-                  style: TextStyle(
+  Widget _selectOption() {
+    return Column(
+      children: [
+        const SizedBox(
+          height: 70,
+        ),
+        const Align(
+          alignment: Alignment.centerLeft,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 32.0),
+            child: Text(
+              "Seleccione una opción para realizar el diagnóstico:",
+              textAlign: TextAlign.start,
+              style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.lightBlue),
+            ),
+          ),
+        ),
+        const SizedBox(
+          height: 70,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const DiagnosisPatientPage()));
+              },
+              child: Container(
+                width: 160,
+                height: 180,
+                decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(20)),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Icon(
+                      Icons.person,
+                      size: 50,
                       color: Colors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      "Paciente Registrado",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    )
+                  ],
                 ),
               ),
             ),
-            SizedBox(
-              height: size.height * 0.05,
-            ),
-            if (user.role == "ROLE_MEDIC") ...[
-              patientsMedics.isEmpty
-                  ? FutureBuilder(
-                      future: Future.delayed(const Duration(seconds: 2)),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const Center(
-                              child: CircularProgressIndicator(
-                            color: Colors.transparent,
-                          ));
-                        }
-                        return Column(
-                          children: [
-                            SizedBox(
-                              height: size.height * 0.08,
-                            ),
-                            Container(
-                              height: 280,
-                              width: 280,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                    width: 0, color: Colors.transparent),
-                                image: const DecorationImage(
-                                  image: AssetImage(
-                                      'assets/images/out-of-stock.png'),
-                                  fit: BoxFit.contain,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            const Text(
-                                "No hay Registros de Pacientes Disponibles",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.grey,
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.bold))
-                          ],
-                        );
-                      })
-                  : MyFutureBuilderDiagnosis(
-                      myFuture: diagnosisService.getPatientsNoAssigned(),
+            GestureDetector(
+              onTap: () {
+                selectImage();
+              },
+              child: Container(
+                width: 160,
+                height: 180,
+                decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(20)),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Icon(
+                      Icons.medical_services,
+                      size: 50,
+                      color: Colors.white,
                     ),
-            ] else ...[
-              patientsNurses.isEmpty
-                  ? FutureBuilder(
-                      future: Future.delayed(const Duration(seconds: 2)),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const Center(
-                              child: CircularProgressIndicator(
-                            color: Colors.transparent,
-                          ));
-                        }
-                        return Column(
-                          children: [
-                            SizedBox(
-                              height: size.height * 0.08,
-                            ),
-                            Container(
-                              height: 280,
-                              width: 280,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                    width: 0, color: Colors.transparent),
-                                image: const DecorationImage(
-                                  image: AssetImage(
-                                      'assets/images/out-of-stock.png'),
-                                  fit: BoxFit.contain,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            const Text(
-                                "No hay Registros de Pacientes Disponibles",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.grey,
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.bold))
-                          ],
-                        );
-                      })
-                  : MyFutureBuilderDiagnosis(
-                      myFuture: patientService.getPatientsByNurse(),
+                    SizedBox(
+                      height: 10,
                     ),
-            ],
-          ]),
+                    Text(
+                      "Diagnóstico Rápido",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    )
+                  ],
+                ),
+              ),
+            )
+          ],
         ),
-      ))
-    ]);
+        const SizedBox(
+          height: 30,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: const [
+            Padding(
+              padding: EdgeInsets.only(left: 20.0),
+              child: Tooltip(
+                  triggerMode: TooltipTriggerMode.tap,
+                  margin: EdgeInsets.symmetric(horizontal: 50),
+                  decoration: BoxDecoration(
+                      color: Colors.lightBlue,
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                  showDuration: Duration(seconds: 6),
+                  message:
+                      "Seleccione la opción 'Paciente Registrado' si desea realizar un diagnóstico a un paciente registrado en el sistema",
+                  textStyle: TextStyle(fontSize: 18),
+                  child: Icon(Icons.info_outline,
+                      color: Colors.lightBlue, size: 50)),
+            ),
+            Padding(
+              padding: EdgeInsets.only(right: 16.0),
+              child: Tooltip(
+                  triggerMode: TooltipTriggerMode.tap,
+                  margin: EdgeInsets.symmetric(horizontal: 50),
+                  decoration: BoxDecoration(
+                      color: Colors.lightBlue,
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                  showDuration: Duration(seconds: 6),
+                  message:
+                      "Seleccione la opción 'Diagnóstico Rápido' si desea realizar un diagnóstico a un paciente que no se encuentra registrado en el sistema",
+                  textStyle: TextStyle(fontSize: 18),
+                  child: Icon(Icons.info_outline,
+                      color: Colors.lightBlue, size: 50)),
+            ),
+          ],
+        )
+      ],
+    );
   }
 }

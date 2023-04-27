@@ -90,6 +90,22 @@ class SaveData {
   set imageDiag(String value) {
     _prefs!.setString('imageDiag', value);
   }
+    //image diagnosis quick
+  String get imageQuickDiag {
+    return _prefs!.getString('imageQuickDiag') ?? '';
+  }
+
+  set imageQuickDiag(String value) {
+    _prefs!.setString('imageQuickDiag', value);
+  }
+      //image diagnosis quick file
+  String get imageQuickDiagFile {
+    return _prefs!.getString('imageQuickDiagFile') ?? '';
+  }
+
+  set imageQuickDiagFile(String value) {
+    _prefs!.setString('imageQuickDiagFile', value);
+  }
   //delete token
   void deleteToken() {
     _prefs?.remove('token');
@@ -128,5 +144,11 @@ class SaveData {
   }
   void deleteImageDiag() {
     _prefs?.remove('imageDiag');
+  }
+  void deleteImageQuickDiag() {
+    _prefs?.remove('imageQuickDiag');
+  }
+  void deleteImageQuickDiagFile() {
+    _prefs?.remove('imageQuickDiagFile');
   }
 }

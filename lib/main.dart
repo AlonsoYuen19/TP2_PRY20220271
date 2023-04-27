@@ -28,6 +28,8 @@ void main() async {
   prefs.deleteIdPatient();
   prefs.deleteLogin();
   prefs.deleteImageDiag();
+  prefs.deleteImageQuickDiag();
+  prefs.deleteImageQuickDiagFile();
   runApp(const MyApp());
 }
 

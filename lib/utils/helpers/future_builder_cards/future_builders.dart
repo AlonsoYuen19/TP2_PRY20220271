@@ -26,13 +26,14 @@ class _MyFutureBuilderState extends State<MyFutureBuilder> {
         future: widget.myFuture,
         builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
           var data = snapshot.data ?? [];
+
           return ListView.builder(
               physics: const BouncingScrollPhysics(),
               //itemCount: widget.isHome ? 4 : data.length,
               shrinkWrap: true,
               itemCount: data.length > 4 ? 4 : data.length,
               itemBuilder: (context, index) {
-                int reversedIndex = data.length - index - 1;
+                int reversedIndex = data.length - 1 - index;
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   Future.delayed(const Duration(seconds: 1));
                   return Center(

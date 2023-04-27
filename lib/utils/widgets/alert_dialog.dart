@@ -143,6 +143,8 @@ class CustomDialogWidget extends StatelessWidget {
                             prefs.deletePassword();
                             prefs.deleteLogin();
                             prefs.deleteImageDiag();
+                            prefs.deleteImageQuickDiag();
+                            prefs.deleteImageQuickDiagFile();
                             Navigator.pushNamedAndRemoveUntil(
                                 context, 'login', (_) => false);
                           },
@@ -394,6 +396,7 @@ mostrarAlertaRegistroAsignacion(
     ),
   );
 }
+
 mostrarAlertaVolverDiagnosticos(
     BuildContext context, String subtitulo, Function function,
     {Color? color}) {
@@ -454,4 +457,3 @@ mostrarAlertaVolverDiagnosticos(
     ),
   );
 }
-

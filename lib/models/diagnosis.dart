@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 Diagnosis diagnosisFromJson(String str) => Diagnosis.fromJson(json.decode(str));
-
+Diagnosis diagnosisFromJson2(String str) => Diagnosis.fromJson2(json.decode(str));
 String diagnosisToJson(Diagnosis data) => json.encode(data.toJson());
 
 class Diagnosis {
@@ -50,7 +50,14 @@ class Diagnosis {
         createdAt: json["createdAt"],
         isConfirmed: json["isConfirmed"],
       );
-
+  factory Diagnosis.fromJson2(Map<String, dynamic> json) => Diagnosis(
+        stage1: json["stage1"],
+        stage2: json["stage2"],
+        stage3: json["stage3"],
+        stage4: json["stage4"],
+        stagePredicted: json["stagePredicted"],
+        creatorType: json["creatorType"],
+      );
   Map<String, dynamic> toJson() => {
         "id": id,
         "stage1": stage1,
