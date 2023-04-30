@@ -13,6 +13,7 @@ class _LoaderHomeScreenState extends State<LoaderHomeScreen> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Center(
         child: Stack(
           children: [

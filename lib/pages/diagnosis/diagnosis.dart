@@ -71,7 +71,7 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
                             if (image.path != '') {
                               print("Galeria");
                               return mostrarAlertaExito(context,
-                                  "Se actualizó exitosamente la foto de perfil del Médico",
+                                  "Imagen de la úlcera subida correctamente",
                                   () async {
                                 Navigator.push(
                                     context,
@@ -83,7 +83,7 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
                               });
                             } else {
                               return mostrarAlertaError(context,
-                                  "No se pudo actualizar la foto de perfil del Médico",
+                                  "No se pudo subir correctamente la imagen",
                                   () async {
                                 Navigator.pop(context);
                               });
