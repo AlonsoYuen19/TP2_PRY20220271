@@ -33,6 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  bool _isPressed = false;
   @override
   void initState() {
     print("token : " + prefs.token);
@@ -55,7 +56,9 @@ class _LoginScreenState extends State<LoginScreen> {
     }
     if (isLogin == true) {
       Navigator.pushAndRemoveUntil(
-          context, MaterialPageRoute(builder: (context) => const HomeScreen()), (route) => false);
+          context,
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
+          (route) => false);
     }
   }
 
@@ -291,84 +294,90 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  Widget signInButton(BuildContext context) {
+  void _handleButton() async {
+    setState(() {
+      _isPressed = true;
+    });
     final token = Provider.of<AuthProvider>(context, listen: false);
-    return ElevatedButton(
-        onPressed: () async {
-          final isValidForm = _formKey.currentState!.validate();
-          if (isValidForm) {
-            final medicService =
-                Provider.of<MedicAuthServic>(context, listen: false);
-            final nurseService =
-                Provider.of<NurseAuthService>(context, listen: false);
-            final userService =
-                Provider.of<UsersAuthService>(context, listen: false);
-            var email = emailController.text.trim();
-            var password = passwordController.text.trim();
-            //await token.updateToken(context);
+    final isValidForm = _formKey.currentState!.validate();
+    if (isValidForm) {
+      final medicService = Provider.of<MedicAuthServic>(context, listen: false);
+      final nurseService =
+          Provider.of<NurseAuthService>(context, listen: false);
+      final userService = Provider.of<UsersAuthService>(context, listen: false);
+      var email = emailController.text.trim();
+      var password = passwordController.text.trim();
+      //await token.updateToken(context);
 
-            var id = await userService.getAuthenticateUserId(email, password);
-            var idMedic = await medicService.getAuthenticateId(email, password);
-            var idNurse = await nurseService.getAuthenticateId(email, password);
-            var type = await userService.getAuthenticateIdRole(email, password);
-            if (id != null && type == "ROLE_MEDIC") {
-              _prefs.idUsers = id;
-              _prefs.idMedic = idMedic!;
-            }
-            if (id != null && type == "ROLE_NURSE") {
-              _prefs.idUsers = id;
-              _prefs.idNurse = idNurse!;
-            }
-            if (email == "" || password == "") {
-              return;
-            }
-            /*if (id == -1) {
+      var id = await userService.getAuthenticateUserId(email, password);
+      var idMedic = await medicService.getAuthenticateId(email, password);
+      var idNurse = await nurseService.getAuthenticateId(email, password);
+      var type = await userService.getAuthenticateIdRole(email, password);
+      if (id != null && type == "ROLE_MEDIC") {
+        _prefs.idUsers = id;
+        _prefs.idMedic = idMedic!;
+      }
+      if (id != null && type == "ROLE_NURSE") {
+        _prefs.idUsers = id;
+        _prefs.idNurse = idNurse!;
+      }
+      if (email == "" || password == "") {
+        return;
+      }
+      /*if (id == -1) {
               print("Error de conexion");
               return;
             }*/
-            if (id == null) {
-              _fetchData(context, false);
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  duration: Duration(seconds: 2),
-                  content: Text(
-                    "Usuario o contraseña incorrectas",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  backgroundColor: Colors.red,
-                ),
-              );
-              print("No existe en la base de datos");
-            } else {
-              _fetchData(context, true);
-              _prefs.email = email;
-              _prefs.password = password;
-              _prefs.login = true;
-              //Obtener el token
-              await token.updateToken(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  duration: const Duration(seconds: 2),
-                  content: Text(
-                    type == "ROLE_MEDIC"
-                        ? "Médico logueado correctamente"
-                        : "Enfermero logueado correctamente",
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                  backgroundColor: Colors.green,
-                ),
-              );
-              if (type == "ROLE_MEDIC") {
-                print("Médico existe en la base de datos");
-              } else {
-                print("Enfermero existe en la base de datos");
-              }
-            }
-            if (!mounted) {
-              return;
-            }
-          }
-        },
+      if (id == null) {
+        _fetchData(context, false);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            duration: Duration(seconds: 2),
+            content: Text(
+              "Usuario o contraseña incorrectas",
+              style: TextStyle(color: Colors.white),
+            ),
+            backgroundColor: Colors.red,
+          ),
+        );
+        print("No existe en la base de datos");
+        setState(() {
+          _isPressed = false;
+        });
+      } else {
+        _fetchData(context, true);
+        _prefs.email = email;
+        _prefs.password = password;
+        _prefs.login = true;
+        //Obtener el token
+        await token.updateToken(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            duration: const Duration(seconds: 2),
+            content: Text(
+              type == "ROLE_MEDIC"
+                  ? "Médico logueado correctamente"
+                  : "Enfermero logueado correctamente",
+              style: const TextStyle(color: Colors.white),
+            ),
+            backgroundColor: Colors.green,
+          ),
+        );
+        if (type == "ROLE_MEDIC") {
+          print("Médico existe en la base de datos");
+        } else {
+          print("Enfermero existe en la base de datos");
+        }
+      }
+      if (!mounted) {
+        return;
+      }
+    }
+  }
+
+  Widget signInButton(BuildContext context) {
+    return ElevatedButton(
+        onPressed: _isPressed == false ? _handleButton : null,
         child: Container(
           padding: const EdgeInsets.all(5.0),
           child: Text("Iniciar sesión",
