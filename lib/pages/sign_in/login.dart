@@ -297,6 +297,11 @@ class _LoginScreenState extends State<LoginScreen> {
   void _handleButton() async {
     setState(() {
       _isPressed = true;
+      Future.delayed(const Duration(seconds: 6), () {
+        setState(() {
+          _isPressed = false;
+        });
+      });
     });
     final token = Provider.of<AuthProvider>(context, listen: false);
     final isValidForm = _formKey.currentState!.validate();
