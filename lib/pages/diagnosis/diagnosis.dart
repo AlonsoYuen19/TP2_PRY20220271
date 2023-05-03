@@ -41,12 +41,12 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0)), //this right here
             child: Padding(
-              padding: const EdgeInsets.all(12.0),
+              padding: const EdgeInsets.all(16.0),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    'Selecciona una imagen desde tu...',
+                    'Evalué una imágen de una escara desde tu...',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         color: Theme.of(context).colorScheme.tertiary,
@@ -104,7 +104,7 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
                         child: Card(
                             elevation: 5,
                             child: Padding(
-                              padding: const EdgeInsets.all(12.0),
+                              padding: const EdgeInsets.all(16.0),
                               child: Column(
                                 children: [
                                   Image.asset(
@@ -137,11 +137,11 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
                         child: Card(
                             elevation: 5,
                             child: Padding(
-                              padding: const EdgeInsets.all(12.0),
+                              padding: const EdgeInsets.all(16.0),
                               child: Column(
                                 children: [
                                   Image.asset(
-                                    'assets/images/camera-icon.png',
+                                    'assets/images/take_a_photo.png',
                                     height: 80,
                                     width: 80,
                                   ),

@@ -77,6 +77,7 @@ class DiagnosisService {
       print('Image uploaded successfully!');
       final jsonResponse = json.decode(await response.stream.bytesToString());
       int id = jsonResponse['id'];
+      print("El id del diagnóstico es: " + id.toString());
       return id;
     } else {
       print('Error uploading image. Status code: ${response.statusCode}');
@@ -85,7 +86,8 @@ class DiagnosisService {
   }
 
   QuickDiagnosis quickDiagnosis = QuickDiagnosis();
-  Future<QuickDiagnosis> createQuickDiagnosis(Uint8List imageBytes) async {
+  Future<QuickDiagnosis> createQuickDiagnosis(
+      Uint8List imageBytes, BuildContext context) async {
     const url = '${authURL}diagnosis/quick-diagnosis';
     final request = http.MultipartRequest('POST', Uri.parse(url));
     final multipartFile = http.MultipartFile.fromBytes('file', imageBytes,
@@ -94,7 +96,18 @@ class DiagnosisService {
     request.headers['Authorization'] = 'Bearer ${prefs.token}';
     request.headers['Content-Type'] = 'multipart/form-data';
     request.files.add(multipartFile);
-    final response = await request.send();
+    final response = await request
+        .send()
+        .timeout(Duration(seconds: 10))
+        .then((value) => value)
+        .catchError((onError) {
+      print(onError);
+      return mostrarAlertaError(context,
+          "¡Ups! Hubo un problema al momento de realizar la operación, reintenta el diagnóstico",
+          () {
+        Navigator.pop(context);
+      });
+    });
 
     if (response.statusCode == 200) {
       final jsonResponse = await response.stream.bytesToString();
@@ -124,6 +137,7 @@ class DiagnosisService {
       print('Image uploaded successfully!');
       final jsonResponse = json.decode(await response.stream.bytesToString());
       int id = jsonResponse['id'];
+      print("El id del diagnóstico es: " + id.toString());
       return id;
     } else {
       print('Error uploading image. Status code: ${response.statusCode}');

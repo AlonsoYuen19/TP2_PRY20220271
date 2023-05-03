@@ -295,14 +295,6 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _handleButton() async {
-    setState(() {
-      _isPressed = true;
-      Future.delayed(const Duration(seconds: 6), () {
-        setState(() {
-          _isPressed = false;
-        });
-      });
-    });
     final token = Provider.of<AuthProvider>(context, listen: false);
     final isValidForm = _formKey.currentState!.validate();
     if (isValidForm) {
@@ -333,6 +325,14 @@ class _LoginScreenState extends State<LoginScreen> {
               print("Error de conexion");
               return;
             }*/
+      setState(() {
+        _isPressed = true;
+        Future.delayed(const Duration(seconds: 6), () {
+          setState(() {
+            _isPressed = false;
+          });
+        });
+      });
       if (id == null) {
         _fetchData(context, false);
         ScaffoldMessenger.of(context).showSnackBar(

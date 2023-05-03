@@ -9,6 +9,7 @@ import 'package:ulcernosis/services/users_service.dart';
 import 'package:ulcernosis/utils/helpers/responsive/responsive.dart';
 import '../../models/nurse.dart';
 import '../../models/users.dart';
+import '../../pages/diagnosis/diagnosis_nurse_selection_patient.dart';
 import '../../services/nurse_services.dart';
 import '../widgets/alert_dialog.dart';
 import 'constant_variables.dart';
@@ -18,6 +19,7 @@ class AppBarDrawer extends StatefulWidget {
   final Widget child;
   bool? isHome;
   bool? isDiagnosis;
+  bool? isDiagnosisNurse;
   bool? isManagement;
   bool? isProfile;
 
@@ -26,6 +28,7 @@ class AppBarDrawer extends StatefulWidget {
     required this.child,
     this.isHome = false,
     this.isDiagnosis = false,
+    this.isDiagnosisNurse = false,
     this.isManagement = false,
     this.isProfile = false,
   }) : super(key: key);
@@ -52,7 +55,6 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
       avatar2 = (await usersService.getNurseImageFromBackend());
       nurse = (await nurseService.getNurseById(context))!;
     }
-    
 
     print(prefs.login);
     setState(() {
@@ -106,7 +108,7 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
               children: [
                 Column(
                   children: [
-                    const SizedBox(height: 10),
+                    SizedBox(height: users.role == "ROLE_NURSE" ? 40 : 10),
                     avatar.isEmpty && avatar2.isEmpty
                         ? Container(
                             height:
@@ -154,7 +156,7 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                   height: isResp
                       ? 20
                       : users.role == "ROLE_NURSE"
-                          ? 60
+                          ? 80
                           : 60,
                 ),
                 const Divider(
@@ -214,7 +216,8 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                       ? const EdgeInsets.all(2)
                       : const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: widget.isDiagnosis == false
+                    color: widget.isDiagnosis == false &&
+                            widget.isDiagnosisNurse == false
                         ? Colors.transparent
                         : Theme.of(context).colorScheme.onTertiary,
                     borderRadius: const BorderRadius.vertical(
@@ -224,22 +227,32 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                   ),
                   child: ListTile(
                     onTap: () {
-                      if (widget.isDiagnosis == false) {
-                        //token.updateToken(context);
+                      if (widget.isDiagnosis == false &&
+                          users.role == "ROLE_MEDIC") {
                         Navigator.pushNamedAndRemoveUntil(
                             context, 'diagnosis', (route) => false);
+                      } else if (widget.isDiagnosisNurse == false &&
+                          users.role == "ROLE_NURSE") {
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const DiagnosisNurseSelectionScreen()),
+                            (route) => false);
                       }
                       return;
                     },
                     leading: Icon(
                       Icons.document_scanner,
-                      color: widget.isDiagnosis == false
+                      color: widget.isDiagnosis == false &&
+                              widget.isDiagnosisNurse == false
                           ? Theme.of(context).colorScheme.onTertiary
                           : Theme.of(context).colorScheme.tertiary,
                       size: isResp ? 30 : 40,
                     ),
                     title: Text('Diagnóstico',
-                        style: widget.isDiagnosis == false
+                        style: widget.isDiagnosis == false &&
+                                widget.isDiagnosisNurse == false
                             ? Theme.of(context).textTheme.bodyLarge!.copyWith(
                                   fontSize: isResp ? 22 : 28,
                                 )

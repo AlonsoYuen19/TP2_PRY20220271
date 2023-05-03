@@ -36,6 +36,7 @@ class _TakePhotoDiagnosisState extends State<TakePhotoDiagnosis> {
   Medic medic = Medic();
   Nurse nurse = Nurse();
   Patient patient = Patient();
+  bool _isPressed = false;
   Future init() async {
     patient = (await patientService.getPatientByIdDiagnosis(widget.idPatient))!;
     if (prefs.idMedic != 0) {
@@ -107,201 +108,182 @@ class _TakePhotoDiagnosisState extends State<TakePhotoDiagnosis> {
                   ? CircularProgressIndicator(
                       color: Theme.of(context).colorScheme.secondary,
                     )
-                  : FutureBuilder(
-                      future: Future.delayed(const Duration(seconds: 1)),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const Center(
-                              child: CircularProgressIndicator(
-                            color: Colors.transparent,
-                          ));
-                        }
-                        return Stack(
+                  : Stack(
+                      children: [
+                        Column(
                           children: [
-                            Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 50),
-                                  child: Align(
-                                      alignment: Alignment.topCenter,
-                                      child: Container(
-                                          height: size.height * 0.55,
-                                          width: size.width * 0.75,
-                                          color: Colors.black,
-                                          child: controller == null
-                                              ? Center(
-                                                  child: Padding(
-                                                  padding: const EdgeInsets
-                                                          .symmetric(
-                                                      horizontal: 50),
-                                                  child: Column(
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
-                                                    children: const [
-                                                      Icon(Icons.camera_alt,
-                                                          color: Colors.white,
-                                                          size: 40),
-                                                      SizedBox(height: 10),
-                                                      Text(
-                                                          "Cámara no detectada",
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 24,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
-                                                          textAlign:
-                                                              TextAlign.center),
-                                                      SizedBox(height: 5),
-                                                      Text(
-                                                          "Pruebe volvetando la cámara.",
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 18),
-                                                          textAlign:
-                                                              TextAlign.center)
-                                                    ],
-                                                  ),
-                                                ))
-                                              : CameraPreview(controller!))),
-                                ),
-                                Center(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      const SizedBox(
-                                        height: 40,
-                                      ),
-                                      ElevatedButton(
-                                        onPressed: () async {
-                                          try {
-                                            controller!
-                                                .takePicture()
-                                                .then((value) async {
-                                              prefs.imageDiag = value.path;
-                                              avatar =
-                                                  await value.readAsBytes();
-                                              int idDiag;
-                                              int idDiag2;
-                                              if (prefs.idMedic != 0) {
-                                                idDiag = await diagnosisService
-                                                    .createDiagnosisMedic(
-                                                        avatar,
-                                                        widget.idPatient);
-                                                print(idDiag);
-                                                if (!idDiag.isNaN &&
-                                                    idDiag != 0) {
-                                                  return mostrarAlertaExito(
-                                                      context,
-                                                      "Tomó la foto de la herida exitosamente",
-                                                      () async {
-                                                    Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (BuildContext
-                                                                    context) =>
-                                                                ImagePreview(
-                                                                  imagePath:
-                                                                      value,
-                                                                  idDiagnosis:
-                                                                      idDiag,
-                                                                  idPatient: widget
-                                                                      .idPatient,
-                                                                )));
-                                                  });
-                                                } else {
-                                                  return mostrarAlertaError(
-                                                      context,
-                                                      "Ocurrió un error al tomar la foto de la herida",
-                                                      () async {
-                                                    Navigator.pop(context);
-                                                  });
-                                                }
-                                              } else {
-                                                idDiag2 = await diagnosisService
-                                                    .createDiagnosisNurse(
-                                                        avatar,
-                                                        widget.idPatient);
-                                                print(idDiag2);
-                                                if (!idDiag2.isNaN) {
-                                                  return mostrarAlertaExito(
-                                                      context,
-                                                      "Tomó la foto de la herida exitosamente",
-                                                      () async {
-                                                    Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (BuildContext
-                                                                    context) =>
-                                                                ImagePreview(
-                                                                  imagePath:
-                                                                      value,
-                                                                  idDiagnosis:
-                                                                      idDiag2,
-                                                                  idPatient: widget
-                                                                      .idPatient,
-                                                                )));
-                                                  });
-                                                } else {
-                                                  return mostrarAlertaError(
-                                                      context,
-                                                      "Ocurrió un error al tomar la foto de la herida",
-                                                      () async {
-                                                    Navigator.pop(context);
-                                                  });
-                                                }
-                                              }
-                                            });
-                                          } catch (e) {
-                                            print(e);
-                                          }
-                                        },
-                                        child: const Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 20),
-                                          child: Text('Toma la foto',
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 25,
-                                                  fontWeight: FontWeight.bold)),
-                                        ),
-                                      ),
-                                      const SizedBox(height: 20),
-                                      ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            backgroundColor: Colors.redAccent),
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child: const Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 35),
-                                          child: Text('Regresar',
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 25,
-                                                  fontWeight: FontWeight.bold)),
-                                        ),
-                                      ),
-                                      const SizedBox(height: 20)
-                                    ],
-                                  ),
-                                )
-                              ],
+                            Padding(
+                              padding: const EdgeInsets.only(top: 50),
+                              child: Align(
+                                  alignment: Alignment.topCenter,
+                                  child: Container(
+                                      height: size.height * 0.55,
+                                      width: size.width * 0.75,
+                                      color: Colors.transparent,
+                                      child: controller == null
+                                          ? Container()
+                                          : CameraPreview(controller!))),
                             ),
+                            Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  const SizedBox(
+                                    height: 40,
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: _isPressed == false
+                                        ? handleButton
+                                        : null,
+                                    child: _isPressed == true
+                                        ? Container(
+                                            width: 280,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                const CircularProgressIndicator(
+                                                  color: Color.fromRGBO(
+                                                      114, 146, 171, 1),
+                                                  strokeWidth: 5,
+                                                ),
+                                                const SizedBox(
+                                                  width: 20,
+                                                ),
+                                                const Text(
+                                                    'Por favor espere ...',
+                                                    style: TextStyle(
+                                                        color: Color.fromRGBO(
+                                                            114, 146, 171, 1),
+                                                        fontSize: 20,
+                                                        fontWeight:
+                                                            FontWeight.bold)),
+                                              ],
+                                            ),
+                                          )
+                                        : const Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 20),
+                                            child: Text('Toma la foto',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 25,
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                          ),
+                                  ),
+                                  const SizedBox(height: 20),
+                                  ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.redAccent),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 35),
+                                      child: Text('Regresar',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 25,
+                                              fontWeight: FontWeight.bold)),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 20)
+                                ],
+                              ),
+                            )
                           ],
-                        );
-                      }),
+                        ),
+                      ],
+                    )
             ]),
           ))
         ]),
       ),
     );
+  }
+
+  void handleButton() {
+    try {
+      setState(() {
+        _isPressed = true;
+        /*Future.delayed(const Duration(seconds: 9), () {
+          setState(() {
+            _isPressed = false;
+          });
+        });*/
+      });
+      controller!.takePicture().then((value) async {
+        prefs.imageDiag = value.path;
+        avatar = await value.readAsBytes();
+        int idDiag;
+        int idDiag2;
+        if (prefs.idMedic != 0) {
+          idDiag = await diagnosisService.createDiagnosisMedic(
+              avatar, widget.idPatient);
+          print(idDiag);
+          if (!idDiag.isNaN && idDiag != 0) {
+            return mostrarAlertaExito(
+                context, "Tomó la foto de la herida exitosamente", () async {
+              setState(() {
+                _isPressed = false;
+              });
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => ImagePreview(
+                            imagePath: value,
+                            idDiagnosis: idDiag,
+                            idPatient: widget.idPatient,
+                          )));
+            });
+          } else {
+            return mostrarAlertaError(
+                context, "Ocurrió un error al tomar la foto de la herida",
+                () async {
+              Navigator.pop(context);
+              setState(() {
+                _isPressed = false;
+              });
+            });
+          }
+        } else {
+          idDiag2 = await diagnosisService.createDiagnosisNurse(
+              avatar, widget.idPatient);
+          print(idDiag2);
+          if (!idDiag2.isNaN) {
+            return mostrarAlertaExito(
+                context, "Tomó la foto de la herida exitosamente", () async {
+              setState(() {
+                _isPressed = false;
+              });
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => ImagePreview(
+                            imagePath: value,
+                            idDiagnosis: idDiag2,
+                            idPatient: widget.idPatient,
+                          )));
+            });
+          } else {
+            return mostrarAlertaError(
+                context, "Ocurrió un error al tomar la foto de la herida",
+                () async {
+              Navigator.pop(context);
+              setState(() {
+                _isPressed = false;
+              });
+            });
+          }
+        }
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
   getCameras() async {

@@ -15,7 +15,7 @@ class DiagnosisPatientPage extends StatefulWidget {
 }
 
 class _DiagnosisPatientPageState extends State<DiagnosisPatientPage> {
-    List<Patient> patientsMedics = [];
+  List<Patient> patientsMedics = [];
   List<Patient> patientsNurses = [];
   Users user = Users();
   final diagnosisService = DiagnosisService();
@@ -38,13 +38,12 @@ class _DiagnosisPatientPageState extends State<DiagnosisPatientPage> {
     super.initState();
     init();
   }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      body: 
-    
-    Stack(children: [
+        body: Stack(children: [
       Container(
         height: MediaQuery.of(context).size.height * 0.25,
         width: double.infinity,
@@ -59,17 +58,29 @@ class _DiagnosisPatientPageState extends State<DiagnosisPatientPage> {
           padding: EdgeInsets.symmetric(
               horizontal: size.width * 0.06, vertical: size.height * 0.05),
           child: Column(children: [
-            const Align(
+            Align(
               alignment: Alignment.centerLeft,
-              child: Padding(
-                padding: EdgeInsets.only(left: 18.0),
-                child: Text(
-                  "Selecciona al Paciente",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold),
-                ),
+              child: Row(
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: const Icon(
+                        Icons.arrow_back_ios,
+                        color: Colors.white,
+                      )),
+                  Padding(
+                    padding: EdgeInsets.only(left: 18.0),
+                    child: Text(
+                      "Selecciona al Paciente",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ],
               ),
             ),
             SizedBox(
@@ -173,4 +184,4 @@ class _DiagnosisPatientPageState extends State<DiagnosisPatientPage> {
       ))
     ]));
   }
-  }
+}

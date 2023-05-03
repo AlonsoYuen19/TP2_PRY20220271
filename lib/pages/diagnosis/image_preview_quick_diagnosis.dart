@@ -2,8 +2,6 @@
 
 import 'dart:async';
 import 'dart:io';
-import 'dart:typed_data';
-
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
@@ -45,7 +43,7 @@ class _ImagePreviewQuickDiagnosisState
 
   Future<Widget> delayPage() {
     Completer<Widget> completer = Completer();
-    Future.delayed(const Duration(seconds: 1), () {
+    Future.delayed(const Duration(seconds: 2), () {
       completer.complete(Container());
     });
 
@@ -53,8 +51,8 @@ class _ImagePreviewQuickDiagnosisState
   }
 
   Future<QuickDiagnosis> getQuickDiagnosis() async {
-    QuickDiagnosis quickDiagnosis = await diagnosisService
-        .createQuickDiagnosis(File(widget.imagePath.path).readAsBytesSync());
+    QuickDiagnosis quickDiagnosis = await diagnosisService.createQuickDiagnosis(
+        File(widget.imagePath.path).readAsBytesSync(), context);
     setState(() {
       diagnosis!.stagePredicted = quickDiagnosis.stagePredicted;
     });
@@ -232,7 +230,7 @@ class _ImagePreviewQuickDiagnosisState
       Color.fromRGBO(83, 136, 216, 1),
     ];
     return FutureBuilder(
-        future: Future.delayed(const Duration(milliseconds: 500)),
+        future: Future.delayed(const Duration(seconds: 2)),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
