@@ -71,19 +71,19 @@ class SearchUser extends SearchDelegate {
             }
             if (snapshot.data!.isEmpty) {
               return Center(
-                child: Text(
-                  'Escribe bien el nombre del paciente',
-                  style: Theme.of(context).textTheme.labelMedium!.copyWith(
-                        color: Theme.of(context).colorScheme.tertiary,
-                      ),
-                ),
-              );
-            }
-            if (searchFieldLabel == "") {
-              return Center(
-                child: Text(
-                  'Escribe bien el nombre del paciente',
-                  style: Theme.of(context).textTheme.labelMedium,
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text(
+                    '! Por favor, ingrese el nombre del paciente correctamente ... ! ',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelMedium!
+                        .copyWith(
+                          color: Theme.of(context).colorScheme.tertiary,
+                        )
+                        .copyWith(fontSize: 24),
+                  ),
                 ),
               );
             }
