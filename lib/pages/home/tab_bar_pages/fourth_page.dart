@@ -55,58 +55,61 @@ class _FourthPageState extends State<FourthPage> {
     return Scaffold(
       body: ListView(
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Flexible(
-                  child: Text(
-                    "Seleccione el icono de búsqueda\npara filtrar por nombres del\npaciente",
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium!
-                        .copyWith(color: Colors.grey),
+          diagnosis.isEmpty
+              ? Container()
+              : Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Flexible(
+                        child: Text(
+                          "Seleccione el icono de búsqueda\npara filtrar por nombres del\npaciente",
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium!
+                              .copyWith(color: Colors.grey),
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.tertiary,
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                        child: IconButton(
+                            style: ButtonStyle(
+                              shape: MaterialStateProperty.all(
+                                  const CircleBorder()),
+                              padding: MaterialStateProperty.all(
+                                  const EdgeInsets.symmetric(
+                                horizontal: 8.0,
+                                vertical: 8.0,
+                              )),
+                            ),
+                            onPressed: () async {
+                              await showSearch(
+                                  context: context,
+                                  delegate: user.role == "ROLE_MEDIC"
+                                      ? SearchUser(
+                                          isHome: false,
+                                          cmp: medic.cmp,
+                                          isEtapa: true,
+                                          stagePredicted: "4")
+                                      : SearchNurse(
+                                          isHome: false,
+                                          cep: nurse.cep,
+                                          isEtapa: true,
+                                          stagePredicted: "4"));
+                            },
+                            icon: Icon(
+                              Icons.search,
+                              color: Theme.of(context).colorScheme.onTertiary,
+                              size: 30,
+                            )),
+                      )
+                    ],
                   ),
                 ),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.tertiary,
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                  child: IconButton(
-                      style: ButtonStyle(
-                        shape: MaterialStateProperty.all(const CircleBorder()),
-                        padding: MaterialStateProperty.all(
-                            const EdgeInsets.symmetric(
-                          horizontal: 8.0,
-                          vertical: 8.0,
-                        )),
-                      ),
-                      onPressed: () async {
-                        await showSearch(
-                            context: context,
-                            delegate: user.role == "ROLE_MEDIC"
-                                ? SearchUser(
-                                    isHome: false,
-                                    cmp: medic.cmp,
-                                    isEtapa: true,
-                                    stagePredicted: "4")
-                                : SearchNurse(
-                                    isHome: false,
-                                    cep: nurse.cep,
-                                    isEtapa: true,
-                                    stagePredicted: "4"));
-                      },
-                      icon: Icon(
-                        Icons.search,
-                        color: Theme.of(context).colorScheme.onTertiary,
-                        size: 30,
-                      )),
-                )
-              ],
-            ),
-          ),
           diagnosis.isEmpty
               ? FutureBuilder(
                   future: Future.delayed(const Duration(seconds: 1)),
@@ -119,7 +122,8 @@ class _FourthPageState extends State<FourthPage> {
                     }
                     return Column(
                       children: [
-                        const SizedBox(height: 30),
+                        SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.1),
                         Container(
                           height: 200,
                           width: 200,
