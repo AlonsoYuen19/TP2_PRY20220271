@@ -10,8 +10,13 @@ class SearchUser extends SearchDelegate {
   bool isEtapa = false;
   String? state = "";
   String? cmp;
+  String? stagePredicted;
   SearchUser(
-      {required this.isHome, this.state, this.cmp, required this.isEtapa});
+      {required this.isHome,
+      this.state,
+      this.cmp,
+      this.stagePredicted,
+      required this.isEtapa});
   @override
   String get searchFieldLabel => 'Buscar nombre del paciente';
   @override
@@ -50,7 +55,12 @@ class SearchUser extends SearchDelegate {
           future: isHome && isEtapa == false
               ? diagnosisService.getDiagnosisByMedicCMP(cmp!, query: query)
               : /*_userList.getDoctorsByStateCivil(state!, query: query),*/
-              diagnosisService.getDiagnosisByMedicCMP(cmp, query: query),
+              //diagnosisService.getDiagnosisByMedicCMP(cmp, query: query),
+              diagnosisService.getDiagnosisByCMPByStage(
+                  cmp!,
+                  stagePredicted!,
+                  query: query,
+                ),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return Center(

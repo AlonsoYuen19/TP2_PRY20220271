@@ -289,7 +289,7 @@ class DiagnosisService {
             body.map((dynamic item) => Diagnosis.fromJson(item)).toList();
         if (query != null) {
           diagnosis = diagnosis
-              .where((element) => element.stagePredicted
+              .where((element) => element.patientName
                   .toLowerCase()
                   .contains(query.toLowerCase()))
               .toList();

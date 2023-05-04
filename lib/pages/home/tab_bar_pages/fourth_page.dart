@@ -11,6 +11,7 @@ import '../../../utils/helpers/Searchable/searchable_medic.dart';
 import '../../../utils/helpers/Searchable/searchable_nurse.dart';
 import '../../../utils/helpers/constant_variables.dart';
 import '../../../utils/helpers/future_builder_cards/future_builders.dart';
+import '../../../utils/helpers/future_builder_cards/future_builders_filter.dart';
 
 class FourthPage extends StatefulWidget {
   const FourthPage({Key? key}) : super(key: key);
@@ -89,11 +90,13 @@ class _FourthPageState extends State<FourthPage> {
                                 ? SearchUser(
                                     isHome: false,
                                     cmp: medic.cmp,
-                                    isEtapa: true)
+                                    isEtapa: true,
+                                    stagePredicted: "4")
                                 : SearchNurse(
                                     isHome: false,
                                     cep: nurse.cep,
-                                    isEtapa: true));
+                                    isEtapa: true,
+                                    stagePredicted: "4"));
                       },
                       icon: Icon(
                         Icons.search,
@@ -147,15 +150,13 @@ class _FourthPageState extends State<FourthPage> {
                     );
                   })
               : user.role == "ROLE_MEDIC"
-                  ? MyFutureBuilder(
+                  ? MyFutureBuilderFilter(
                       myFuture: diagnosisService.getDiagnosisByCMPByStage(
                           medic.cmp, "4"),
-                      isHome: true,
                     )
-                  : MyFutureBuilder(
+                  : MyFutureBuilderFilter(
                       myFuture: diagnosisService.getDiagnosisByCEPByStage(
                           nurse.cep, "4"),
-                      isHome: true,
                     ),
         ],
       ),

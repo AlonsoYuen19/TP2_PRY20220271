@@ -12,6 +12,7 @@ import '../../../utils/helpers/Searchable/searchable_medic.dart';
 import '../../../utils/helpers/Searchable/searchable_nurse.dart';
 import '../../../utils/helpers/constant_variables.dart';
 import '../../../utils/helpers/future_builder_cards/future_builders.dart';
+import '../../../utils/helpers/future_builder_cards/future_builders_filter.dart';
 
 class FirstPage extends StatefulWidget {
   const FirstPage({Key? key}) : super(key: key);
@@ -92,11 +93,13 @@ class _FirstPageState extends State<FirstPage> {
                                 ? SearchUser(
                                     isHome: false,
                                     cmp: medic.cmp,
-                                    isEtapa: true)
+                                    isEtapa: true,
+                                    stagePredicted: "1")
                                 : SearchNurse(
                                     isHome: false,
                                     cep: nurse.cep,
-                                    isEtapa: true));
+                                    isEtapa: true,
+                                    stagePredicted: "1"));
                       },
                       icon: Icon(
                         Icons.search,
@@ -150,15 +153,13 @@ class _FirstPageState extends State<FirstPage> {
                     );
                   })
               : user.role == "ROLE_MEDIC"
-                  ? MyFutureBuilder(
+                  ? MyFutureBuilderFilter(
                       myFuture: diagnosisService.getDiagnosisByCMPByStage(
                           medic.cmp, "1"),
-                      isHome: true,
                     )
-                  : MyFutureBuilder(
+                  : MyFutureBuilderFilter(
                       myFuture: diagnosisService.getDiagnosisByCEPByStage(
                           nurse.cep, "1"),
-                      isHome: true,
                     ),
         ],
       ),
