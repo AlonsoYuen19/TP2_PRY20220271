@@ -30,6 +30,7 @@ class _MyFutureBuilderAvailableNursesState
           var data = snapshot.data ?? [];
           return ListView.builder(
               shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
               itemCount: data.length,
               itemBuilder: (context, index) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
