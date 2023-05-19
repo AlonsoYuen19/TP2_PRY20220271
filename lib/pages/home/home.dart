@@ -95,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Text(
-                "Deseas filtrar por categorías?",
+                "Deseas filtrar por etapas?",
                 style: Theme.of(context)
                     .textTheme
                     .bodyMedium!

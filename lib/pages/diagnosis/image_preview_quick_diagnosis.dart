@@ -209,7 +209,7 @@ class _ImagePreviewQuickDiagnosisState
       Color.fromRGBO(83, 136, 216, 1),
     ];
     return FutureBuilder(
-        future: Future.delayed(const Duration(seconds: 4)),
+        future: Future.delayed(const Duration(seconds: 7)),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(

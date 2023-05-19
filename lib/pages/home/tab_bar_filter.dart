@@ -69,7 +69,7 @@ class _TabBarFilterState extends State<TabBarFilter>
           size: 32,
         ),
         child: Text(
-          'Categoria',
+          'Etapa',
           style: TextStyle(fontSize: 12),
         ),
       ),
@@ -80,7 +80,7 @@ class _TabBarFilterState extends State<TabBarFilter>
           size: 32,
         ),
         child: Text(
-          'Categoria',
+          'Etapa',
           style: TextStyle(fontSize: 12),
         ),
       ),
@@ -91,7 +91,7 @@ class _TabBarFilterState extends State<TabBarFilter>
           size: 32,
         ),
         child: Text(
-          'Categoria',
+          'Etapa',
           style: TextStyle(fontSize: 12),
         ),
       ),
@@ -102,7 +102,7 @@ class _TabBarFilterState extends State<TabBarFilter>
           size: 32,
         ),
         child: Text(
-          'Categoria',
+          'Etapa',
           style: TextStyle(fontSize: 12),
         ),
       ),
@@ -118,7 +118,7 @@ class _TabBarFilterState extends State<TabBarFilter>
               return <Widget>[
                 SliverAppBar(
                   toolbarHeight: MediaQuery.of(context).size.height * 0.11,
-                  title: const Text('Filtrado por Categoría'),
+                  title: const Text('Filtrado por Etapa'),
                   centerTitle: true,
                   backgroundColor: Theme.of(context).colorScheme.onTertiary,
                   elevation: 10.0,
@@ -148,17 +148,17 @@ class _TabBarFilterState extends State<TabBarFilter>
                         physics: const BouncingScrollPhysics(),
                         controller: tabController,
                         children: const [
-                          //Primera categoria
+                          //Primera Etapa
                           Tab(
                             child: FirstPage(),
                           ),
-                          //Segunda categoria
+                          //Segunda Etapa
                           Tab(child: SecondPage()),
-                          //Tercera categoria
+                          //Tercera Etapa
                           Tab(
                             child: ThirdPage(),
                           ),
-                          //Cuarta categoria
+                          //Cuarta Etapa
                           Tab(
                             child: FourthPage(),
                           ),

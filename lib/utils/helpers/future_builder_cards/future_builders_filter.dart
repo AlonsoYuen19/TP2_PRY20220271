@@ -54,13 +54,13 @@ class _MyFutureBuilderState extends State<MyFutureBuilderFilter> {
                 }
 
                 if (data[reversedIndex].stagePredicted == "1") {
-                  categoria = "1era Categoría";
+                  categoria = "1era Etapa";
                 } else if (data[reversedIndex].stagePredicted == "2") {
-                  categoria = "2da Categoría";
+                  categoria = "2da Etapa";
                 } else if (data[reversedIndex].stagePredicted == "3") {
-                  categoria = "3era Categoría";
+                  categoria = "3era Etapa";
                 } else if (data[reversedIndex].stagePredicted == "4") {
-                  categoria = "4ta Categoría";
+                  categoria = "4ta Etapa";
                 }
                 String anio2 = data[index].createdAt.substring(0, 4);
                 String mes2 = data[index].createdAt.substring(5, 7);
