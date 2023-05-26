@@ -112,8 +112,7 @@ class CustomDialogWidget extends StatelessWidget {
                       height: 60,
                       child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  const Color.fromRGBO(0, 0, 255, 1)),
+                              backgroundColor: Colors.grey.withOpacity(0.9)),
                           onPressed: () => Navigator.pop(context, false),
                           child: const Text("Cancelar")),
                     ),

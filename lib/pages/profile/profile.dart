@@ -530,7 +530,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
                 const SizedBox(
-                  height: 10,
+                  height: 20,
                 ),
                 users.role == "ROLE_NURSE"
                     ? Padding(

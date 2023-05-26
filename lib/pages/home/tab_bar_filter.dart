@@ -164,12 +164,12 @@ class _TabBarFilterState extends State<TabBarFilter>
                         ],
                       );
                     } else {
-                      return const Center(
+                      return Center(
                         child: SizedBox(
                           height: 100,
                           width: 100,
                           child: CircularProgressIndicator(
-                              color: Colors.lightBlue),
+                              color: Theme.of(context).colorScheme.onSecondary),
                         ),
                       );
                     }

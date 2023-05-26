@@ -163,11 +163,11 @@ class _ImagePreviewState extends State<ImagePreview> {
                           child: Padding(
                             padding: EdgeInsets.symmetric(
                                 horizontal: size.width * 0.1),
-                            child: const Text("Resultados",
+                            child: Text("Resultados",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontSize: 20,
-                                    color: Colors.lightBlue,
+                                    color: Theme.of(context).colorScheme.onSecondary,
                                     fontWeight: FontWeight.bold)),
                           ),
                         ),
@@ -210,7 +210,7 @@ class _ImagePreviewState extends State<ImagePreview> {
                               width: 150,
                               child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.lightBlue),
+                                      backgroundColor: Theme.of(context).colorScheme.onSecondary),
                                   onPressed: () async {
                                     mostrarAlertaVolverDiagnosticos(context,
                                         "¿Está seguro de cofirmar el diagnóstico para finalizar con la operación?",
@@ -228,7 +228,7 @@ class _ImagePreviewState extends State<ImagePreview> {
                                         Navigator.pushNamedAndRemoveUntil(
                                             context, 'home', (route) => false);
                                       }
-                                    }, color: Colors.lightBlue);
+                                    }, color: Theme.of(context).colorScheme.onSecondary);
                                   },
                                   child: const Text(
                                     "Confirmar Diagnóstico",
@@ -301,8 +301,8 @@ class _ImagePreviewState extends State<ImagePreview> {
                   color: Colors.black54,
                   fontSize: 18),
             ),
-            chartValuesOptions: const ChartValuesOptions(
-              chartValueBackgroundColor: Colors.lightBlue,
+            chartValuesOptions: ChartValuesOptions(
+              chartValueBackgroundColor: Theme.of(context).colorScheme.onSecondary,
               chartValueStyle: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,

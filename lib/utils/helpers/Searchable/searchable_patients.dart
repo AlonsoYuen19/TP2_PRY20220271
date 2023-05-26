@@ -62,7 +62,10 @@ class SearchUserPatient extends SearchDelegate {
               return Center(
                 child: Text(
                   'Escribe bien el nombre del paciente',
-                  style: Theme.of(context).textTheme.labelMedium,
+                  style: Theme.of(context)
+                      .textTheme
+                      .labelMedium!
+                      .copyWith(color: Theme.of(context).colorScheme.tertiary),
                 ),
               );
             }

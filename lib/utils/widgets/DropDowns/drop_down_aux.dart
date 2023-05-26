@@ -38,16 +38,14 @@ class _DropDownWithAuxiliarState extends State<DropDownWithAuxiliar> {
           child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 40),
               child: DropdownButton<String>(
-                dropdownColor: Theme.of(context).colorScheme.onBackground,
+                dropdownColor: Color.fromRGBO(14, 26, 48, 1),
                 focusColor: Theme.of(context).colorScheme.secondary,
                 borderRadius: const BorderRadius.all(Radius.circular(20)),
                 icon: const Icon(Icons.person),
                 iconSize: 30,
                 value: widget.searchController.text,
-                items: <String>[
-                  'Si',
-                  'No'
-                ].map<DropdownMenuItem<String>>((String value) {
+                items: <String>['Si', 'No']
+                    .map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
                     child: Text(

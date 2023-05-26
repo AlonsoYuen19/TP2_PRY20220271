@@ -89,7 +89,7 @@ class _DiagnosisScreenState extends State<DiagnosisNurseSelectionScreen> {
                     child: Text(
                       "Selecciona al Paciente\nAsignado",
                       style: TextStyle(
-                          color: Colors.lightBlue,
+                          color: Theme.of(context).colorScheme.onSecondary,
                           fontSize: 24,
                           fontWeight: FontWeight.bold),
                     ),

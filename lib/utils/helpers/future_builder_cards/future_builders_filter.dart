@@ -92,7 +92,10 @@ class _MyFutureBuilderState extends State<MyFutureBuilderFilter> {
                                     style: Theme.of(context)
                                         .textTheme
                                         .labelMedium!
-                                        .copyWith(color: Colors.lightBlue)),
+                                        .copyWith(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .tertiary)),
                               ),
                               GestureDetector(
                                 onTap: () {
@@ -107,11 +110,12 @@ class _MyFutureBuilderState extends State<MyFutureBuilderFilter> {
                                                     .patientId,
                                               )));
                                 },
-                                child: const Padding(
+                                child: Padding(
                                   padding: EdgeInsets.only(right: 16.0),
                                   child: ImageIcon(
                                     AssetImage("assets/images/search-icon.png"),
-                                    color: Colors.lightBlue,
+                                    color:
+                                        Theme.of(context).colorScheme.tertiary,
                                     size: 36,
                                   ),
                                 ),
@@ -124,15 +128,21 @@ class _MyFutureBuilderState extends State<MyFutureBuilderFilter> {
                           padding: const EdgeInsets.only(left: paddingHori),
                           child: Row(
                             children: [
-                              const ImageIcon(
+                              ImageIcon(
                                 AssetImage("assets/images/category-icon.png"),
-                                color: Colors.lightBlue,
+                                color: Theme.of(context).colorScheme.tertiary,
                                 size: 36,
                               ),
                               const SizedBox(width: 10),
                               Text(
                                 categoria,
-                                style: Theme.of(context).textTheme.labelMedium,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelMedium!
+                                    .copyWith(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onSecondary),
                               )
                             ],
                           ),
@@ -142,15 +152,21 @@ class _MyFutureBuilderState extends State<MyFutureBuilderFilter> {
                           padding: const EdgeInsets.only(left: paddingHori),
                           child: Row(
                             children: [
-                              const Icon(
+                              Icon(
                                 Icons.calendar_today_outlined,
-                                color: Colors.lightBlue,
+                                color: Theme.of(context).colorScheme.tertiary,
                                 size: 36,
                               ),
                               const SizedBox(width: 10),
                               Text(
                                 "$dia2 de $mes2 del $anio2",
-                                style: Theme.of(context).textTheme.labelMedium,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelMedium!
+                                    .copyWith(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onSecondary),
                               )
                             ],
                           ),

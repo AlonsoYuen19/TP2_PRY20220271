@@ -54,7 +54,7 @@ class _MyFutureBuilderAvailableNursesState
                         () {
                       int idNurse = data[index].id;
                       teamWorkService.createTeamWork(context, idNurse);
-                    }, color: Colors.lightBlue);
+                    }, color: Theme.of(context).colorScheme.onSecondary);
                   },
                   child: Container(
                     width: size.width * 0.9,
