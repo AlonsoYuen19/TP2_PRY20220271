@@ -45,7 +45,7 @@ class _AddNursePageState extends State<AddNursePage> {
           height: MediaQuery.of(context).size.height * 0.3,
           width: double.infinity,
           decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.tertiary,
+              color: Theme.of(context).colorScheme.onSecondaryContainer,
               borderRadius:
                   const BorderRadius.only(bottomRight: Radius.circular(100))),
         ),
@@ -114,10 +114,12 @@ class _AddNursePageState extends State<AddNursePage> {
                                     const SizedBox(
                                       height: 20,
                                     ),
-                                    const Text("No hay enfermeros disponibles",
+                                    Text("No hay enfermeros disponibles",
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
-                                            color: Colors.grey,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onSecondary,
                                             fontSize: 30,
                                             fontWeight: FontWeight.bold))
                                   ],

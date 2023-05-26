@@ -59,7 +59,7 @@ class _TeamWorkNurseProfileState extends State<TeamWorkNurseProfile> {
           height: MediaQuery.of(context).size.height * 0.3,
           width: double.infinity,
           decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.tertiary,
+              color: Theme.of(context).colorScheme.onSecondaryContainer,
               borderRadius:
                   const BorderRadius.only(bottomRight: Radius.circular(100))),
         ),
@@ -163,10 +163,12 @@ class _TeamWorkNurseProfileState extends State<TeamWorkNurseProfile> {
                                       Text(
                                         "Enfermero asignado al médico ${medic.fullName}",
                                         textAlign: TextAlign.center,
-                                        style: const TextStyle(
-                                            color: Colors.grey,
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .outline,
                                             fontSize: 18,
-                                            fontWeight: FontWeight.w600),
+                                            fontWeight: FontWeight.bold),
                                       ),
                                       const SizedBox(
                                         height: 15,
@@ -291,8 +293,9 @@ class _TeamWorkNurseProfileState extends State<TeamWorkNurseProfile> {
                             Row(
                               children: [
                                 cardSelector(
-                                    color:
-                                        const Color.fromRGBO(234, 124, 124, 1),
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSecondaryContainer,
                                     text: "Registro de Citas",
                                     icon: Icons.assignment_turned_in_outlined,
                                     onTap: () {
@@ -309,7 +312,7 @@ class _TeamWorkNurseProfileState extends State<TeamWorkNurseProfile> {
                                 ),
                                 cardSelector(
                                     color:
-                                        const Color.fromRGBO(12, 119, 233, 1),
+                                        Theme.of(context).colorScheme.tertiary,
                                     text: "Asignar Cita",
                                     icon: Icons.person_add_alt,
                                     onTap: () {

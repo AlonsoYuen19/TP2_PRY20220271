@@ -50,7 +50,7 @@ class _DropDownWithSearchState extends State<DropDownWithSearch> {
           child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 40),
               child: DropdownButton<String>(
-                dropdownColor: Theme.of(context).colorScheme.onBackground,
+                dropdownColor: Color.fromRGBO(14, 26, 48, 1),
                 focusColor: Theme.of(context).colorScheme.secondary,
                 borderRadius: const BorderRadius.all(Radius.circular(20)),
                 icon: const Icon(Icons.person),

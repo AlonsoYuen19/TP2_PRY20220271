@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:starsview/config/StarsConfig.dart';
 import 'package:starsview/starsview.dart';
@@ -87,7 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
       resizeToAvoidBottomInset: true,
       body: Stack(
         children: <Widget>[
-          backgroundFigure(context),
+          backgroundFigure(context, height: 0.3),
           const StarsView(
             fps: 60,
             starsConfig: StarsConfig(
@@ -156,11 +157,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ],
                     ),
-                    SizedBox(height: size.height * 0.04),
-                    Center(
-                        child: Text(appTitle,
-                            style: Theme.of(context).textTheme.titleSmall!)),
-                    SizedBox(height: size.height * 0.065),
+                    SizedBox(height: 100),
                     //CARD
                     SizedBox(
                       width: size.width * 0.9,
@@ -176,17 +173,12 @@ class _LoginScreenState extends State<LoginScreen> {
                           children: [
                             SizedBox(height: size.height * 0.03),
                             Center(
-                                child: Text("Bienvenido",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .titleSmall!
-                                        .copyWith(
-                                            fontSize: 28,
-                                            fontWeight: FontWeight.bold,
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .tertiary))),
-                            SizedBox(height: size.height * 0.03),
+                                child: SvgPicture.asset(
+                              'assets/images/Ulsernosis.svg',
+                              fit: BoxFit.cover,
+                              height: 55,
+                            )),
+                            SizedBox(height: size.height * 0.035),
                             GetTextFormField(
                               labelText: "Correo",
                               placeholder: email,
@@ -222,7 +214,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodyMedium!
-                                        .copyWith(color: Colors.grey),
+                                        .copyWith(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .outline),
                                   ),
                                   TextButton(
                                       onPressed: () async {

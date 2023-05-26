@@ -3,15 +3,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:ulcernosis/pages/home/tab_bar_pages/first_page.dart';
 import 'package:ulcernosis/pages/home/tab_bar_pages/fourth_page.dart';
 import 'package:ulcernosis/pages/home/tab_bar_pages/second_page.dart';
 import 'package:ulcernosis/pages/home/tab_bar_pages/third_page.dart';
-
-import '../../models/medic.dart';
-import '../../services/medic_service.dart';
-import '../../shared/user_prefs.dart';
 
 class TabBarFilter extends StatefulWidget {
   const TabBarFilter({Key? key}) : super(key: key);
@@ -118,7 +113,11 @@ class _TabBarFilterState extends State<TabBarFilter>
               return <Widget>[
                 SliverAppBar(
                   toolbarHeight: MediaQuery.of(context).size.height * 0.11,
-                  title: const Text('Filtrado por Etapa'),
+                  title: Text('Filtrado por Etapa',
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.onSecondary,
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold)),
                   centerTitle: true,
                   backgroundColor: Theme.of(context).colorScheme.onTertiary,
                   elevation: 10.0,

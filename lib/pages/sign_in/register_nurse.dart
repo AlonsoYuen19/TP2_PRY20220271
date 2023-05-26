@@ -1,16 +1,11 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:ulcernosis/pages/sign_in/login.dart';
 import 'package:ulcernosis/services/nurse_services.dart';
 import 'package:ulcernosis/utils/widgets/background_figure.dart';
-
 import '../../shared/user_prefs.dart';
-import '../../utils/providers/auth_token.dart';
 import '../../utils/helpers/constant_variables.dart';
 import '../../utils/widgets/DropDowns/drop_down_aux.dart';
-import '../../utils/widgets/alert_dialog.dart';
 import '../../utils/widgets/DropDowns/drop_down.dart';
 import '../../utils/widgets/text_form_field.dart';
 
@@ -68,7 +63,7 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
         style: Theme.of(context)
             .textTheme
             .bodyMedium!
-            .copyWith(color: Colors.lightBlue),
+            .copyWith(color: Theme.of(context).colorScheme.onSecondary),
       ),
     );
   }
@@ -123,7 +118,7 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   elevation: 0,
-                  backgroundColor: const Color.fromRGBO(0, 0, 255, 10),
+                  backgroundColor: const Color.fromRGBO(14, 26, 48, 1),
                 ),
                 onPressed: () async {
                   final isValidForm = _formKey.currentState!.validate();
@@ -158,7 +153,6 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
                         "ROLE_NURSE",
                         _stateCivil.text.trim(),
                         isAuxiliar);
-
                   }
                 },
                 child: Text(
@@ -176,7 +170,7 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
                 onPressed: details.onStepContinue,
                 style: ElevatedButton.styleFrom(
                     elevation: 0,
-                    backgroundColor: const Color.fromRGBO(0, 0, 255, 10)),
+                    backgroundColor: const Color.fromRGBO(14, 26, 48, 1)),
                 child: Text('Siguiente',
                     style: Theme.of(context).textTheme.labelMedium!.copyWith(
                           color: Theme.of(context).colorScheme.onTertiary,
@@ -230,7 +224,9 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
                                   .textTheme
                                   .titleSmall!
                                   .copyWith(
-                                      color: Colors.lightBlue,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSecondary,
                                       fontWeight: FontWeight.bold),
                             ),
                           ),
@@ -241,7 +237,8 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
                     Theme(
                       data: Theme.of(context).copyWith(
                           colorScheme: ColorScheme.fromSeed(
-                              primary: Colors.lightBlue,
+                              primary:
+                                  Theme.of(context).colorScheme.onSecondary,
                               error: Colors.red,
                               onBackground:
                                   Theme.of(context).colorScheme.onBackground,
@@ -269,7 +266,9 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
                                         .labelLarge!
                                         .copyWith(
                                             fontSize: 20,
-                                            color: Colors.lightBlue)),
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onSecondary)),
                               ),
                               content: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
@@ -357,7 +356,9 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
                                           .labelLarge!
                                           .copyWith(
                                               fontSize: 20,
-                                              color: Colors.lightBlue))),
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSecondary))),
                               content: Column(
                                 children: [
                                   title("Dirección"),

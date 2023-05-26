@@ -101,19 +101,24 @@ class _ManageScreenState extends State<ManageScreen> {
                         fontSize: 24,
                         fontWeight: FontWeight.bold)),
                 listNurses.length < 3
-                    ? const Tooltip(
+                    ? Tooltip(
                         triggerMode: TooltipTriggerMode.tap,
                         decoration: BoxDecoration(
-                            color: Colors.grey,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSecondaryContainer,
                             borderRadius:
                                 BorderRadius.all(Radius.circular(10))),
                         padding:
-                            EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                            EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                         showDuration: Duration(seconds: 4),
                         message:
                             "Selecciona el icono para\nagregar enfermeros\na tu equipo médico",
                         child: Icon(Icons.info_outline,
-                            color: Colors.lightBlue, size: 36))
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSecondaryContainer,
+                            size: 36))
                     : Container(),
               ],
             ),

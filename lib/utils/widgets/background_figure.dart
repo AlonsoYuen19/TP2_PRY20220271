@@ -20,7 +20,7 @@ Widget backgroundFigure(BuildContext context,
         height: size.height * height,
         width: size.width * 1,
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.tertiary,
+          color: Theme.of(context).colorScheme.onSecondaryContainer,
           borderRadius: footer
               ? BorderRadius.vertical(top: Radius.elliptical(x, y))
               : BorderRadius.vertical(bottom: Radius.elliptical(x, y)),
@@ -132,17 +132,10 @@ Widget backgroundFigureAppBar(BuildContext context) {
 Widget registerBackgroundFigure(BuildContext context) {
   final size = MediaQuery.of(context).size;
   return Stack(children: [
-    Shimmer(
-      duration: const Duration(seconds: 3),
-      interval: const Duration(seconds: 1),
-      color: Colors.white,
-      enabled: true,
-      direction: const ShimmerDirection.fromRTLB(),
-      child: Container(
-        height: size.height * 1,
-        width: size.width * 1,
-        color: Theme.of(context).colorScheme.onTertiary,
-      ),
+    Container(
+      height: size.height * 1,
+      width: size.width * 1,
+      color: Theme.of(context).colorScheme.surface,
     ),
   ]);
 }
@@ -150,17 +143,10 @@ Widget registerBackgroundFigure(BuildContext context) {
 Widget preRegisterBackgroundFigure(BuildContext context) {
   final size = MediaQuery.of(context).size;
   return Stack(children: [
-    Shimmer(
-      duration: const Duration(seconds: 3),
-      interval: const Duration(seconds: 1),
-      color: Colors.lightBlue,
-      enabled: true,
-      direction: const ShimmerDirection.fromLTRB(),
-      child: Container(
-        height: size.height * 1,
-        width: size.width * 1,
-        color: const Color.fromRGBO(230, 230, 230, 10),
-      ),
+    Container(
+      height: size.height * 1,
+      width: size.width * 1,
+      color: Theme.of(context).colorScheme.surface,
     ),
   ]);
 }

@@ -30,6 +30,7 @@ class _MyFutureBuilderAppointmentByNurseState
         builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
           var data = snapshot.data ?? [];
           return ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemCount: data.length,
               itemBuilder: (context, index) {

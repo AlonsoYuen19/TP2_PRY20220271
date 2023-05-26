@@ -216,7 +216,7 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
         const SizedBox(
           height: 70,
         ),
-        const Align(
+        Align(
           alignment: Alignment.centerLeft,
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 32.0),
@@ -226,7 +226,7 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
               style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: Colors.lightBlue),
+                  color: Theme.of(context).colorScheme.onSecondary),
             ),
           ),
         ),
@@ -247,7 +247,7 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
                 width: 160,
                 height: 180,
                 decoration: BoxDecoration(
-                    color: Colors.blue,
+                    color: Theme.of(context).colorScheme.onSecondaryContainer,
                     borderRadius: BorderRadius.circular(20)),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -277,7 +277,7 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
                 width: 160,
                 height: 180,
                 decoration: BoxDecoration(
-                    color: Colors.blue,
+                    color: Theme.of(context).colorScheme.onSecondaryContainer,
                     borderRadius: BorderRadius.circular(20)),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -306,14 +306,14 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: const [
+          children: [
             Padding(
               padding: EdgeInsets.only(left: 20.0),
               child: Tooltip(
                   triggerMode: TooltipTriggerMode.tap,
                   margin: EdgeInsets.symmetric(horizontal: 50),
                   decoration: BoxDecoration(
-                      color: Colors.lightBlue,
+                      color: Theme.of(context).colorScheme.onSecondaryContainer,
                       borderRadius: BorderRadius.all(Radius.circular(10))),
                   padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                   showDuration: Duration(seconds: 6),
@@ -321,7 +321,8 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
                       "Seleccione la opción 'Paciente Registrado' si desea realizar un diagnóstico a un paciente registrado en el sistema",
                   textStyle: TextStyle(fontSize: 18),
                   child: Icon(Icons.info_outline,
-                      color: Colors.lightBlue, size: 50)),
+                      color: Theme.of(context).colorScheme.onSecondaryContainer,
+                      size: 50)),
             ),
             Padding(
               padding: EdgeInsets.only(right: 16.0),
@@ -329,7 +330,7 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
                   triggerMode: TooltipTriggerMode.tap,
                   margin: EdgeInsets.symmetric(horizontal: 50),
                   decoration: BoxDecoration(
-                      color: Colors.lightBlue,
+                      color: Theme.of(context).colorScheme.onSecondaryContainer,
                       borderRadius: BorderRadius.all(Radius.circular(10))),
                   padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                   showDuration: Duration(seconds: 6),
@@ -337,7 +338,8 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
                       "Seleccione la opción 'Diagnóstico Rápido' si desea realizar un diagnóstico a un paciente que no se encuentra registrado en el sistema",
                   textStyle: TextStyle(fontSize: 18),
                   child: Icon(Icons.info_outline,
-                      color: Colors.lightBlue, size: 50)),
+                      color: Theme.of(context).colorScheme.onSecondaryContainer,
+                      size: 50)),
             ),
           ],
         )

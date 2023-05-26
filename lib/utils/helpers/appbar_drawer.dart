@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:ulcernosis/services/users_service.dart';
 import 'package:ulcernosis/utils/helpers/responsive/responsive.dart';
@@ -409,47 +410,46 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
         ),
         child: Scaffold(
           appBar: AppBar(
-            leading: Padding(
-              padding: const EdgeInsets.only(left: 20),
-              child: ElevatedButton(
-                style: ButtonStyle(
-                  shape: MaterialStateProperty.all(const CircleBorder()),
-                  padding: MaterialStateProperty.all(const EdgeInsets.symmetric(
-                    horizontal: 8.0,
-                    vertical: 8.0,
-                  )),
-                  backgroundColor: MaterialStateProperty.all(Theme.of(context)
-                      .colorScheme
-                      .tertiary), // <-- Button color
-                ),
-                onPressed: _handleMenuButtonPressed,
-                child: ValueListenableBuilder<AdvancedDrawerValue>(
-                  valueListenable: _advancedDrawerController,
-                  builder: (_, value, __) {
-                    return AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 250),
-                      child: Icon(
-                        value.visible ? Icons.clear : Icons.menu,
-                        //key: ValueKey<bool>(value.visible),
-                        color: Theme.of(context).colorScheme.onTertiary,
-                        size: 30,
-                      ),
-                    );
-                  },
+              leading: Padding(
+                padding: const EdgeInsets.only(left: 20),
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all(const CircleBorder()),
+                    padding:
+                        MaterialStateProperty.all(const EdgeInsets.symmetric(
+                      horizontal: 8.0,
+                      vertical: 8.0,
+                    )),
+                    backgroundColor: MaterialStateProperty.all(Theme.of(context)
+                        .colorScheme
+                        .tertiary), // <-- Button color
+                  ),
+                  onPressed: _handleMenuButtonPressed,
+                  child: ValueListenableBuilder<AdvancedDrawerValue>(
+                    valueListenable: _advancedDrawerController,
+                    builder: (_, value, __) {
+                      return AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 250),
+                        child: Icon(
+                          value.visible ? Icons.clear : Icons.menu,
+                          //key: ValueKey<bool>(value.visible),
+                          color: Theme.of(context).colorScheme.onTertiary,
+                          size: 30,
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
-            ),
-            titleSpacing: 45,
-            leadingWidth: 75,
-            backgroundColor: Colors.transparent,
-            automaticallyImplyLeading: false,
-            title: Text(
-              appTitle,
-              style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                    color: Theme.of(context).colorScheme.onPrimary,
-                  ),
-            ),
-          ),
+              titleSpacing: 28,
+              leadingWidth: 75,
+              backgroundColor: Colors.transparent,
+              automaticallyImplyLeading: false,
+              title: SvgPicture.asset(
+                'assets/images/Ulsernosis.svg',
+                fit: BoxFit.cover,
+                height: 54,
+              )),
           body: widget.child,
         ));
   }

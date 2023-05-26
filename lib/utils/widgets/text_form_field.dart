@@ -78,12 +78,12 @@ class _GetTextFormFieldState extends State<GetTextFormField> {
                 },
                 validationRuleBuilder: (rules, value) {
                   if (value.isEmpty) {
-                    return const Padding(
+                    return Padding(
                       padding: EdgeInsets.symmetric(vertical: 8.0),
                       child: Text(
                         "Ingrese una contraseña",
                         style: TextStyle(
-                          color: Colors.green,
+                          color: Color.fromRGBO(14, 26, 48, 0.8),
                         ),
                       ),
                     );
@@ -91,6 +91,7 @@ class _GetTextFormFieldState extends State<GetTextFormField> {
                   return Padding(
                     padding: const EdgeInsets.symmetric(vertical: 5.0),
                     child: ListView(
+                        physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         children: rules
                             .map(
@@ -139,6 +140,7 @@ class _GetTextFormFieldState extends State<GetTextFormField> {
                 controller: widget.controllerr,
                 decoration: InputDecoration(
                   counterText: widget.isRegisterPassword ? null : "",
+                  counterStyle: TextStyle(fontWeight: FontWeight.w700),
                   helperText: null,
                   floatingLabelBehavior: FloatingLabelBehavior.never,
                   labelStyle: TextStyle(

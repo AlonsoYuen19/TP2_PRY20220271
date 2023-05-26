@@ -48,7 +48,7 @@ class _DiagnosisPatientPageState extends State<DiagnosisPatientPage> {
         height: MediaQuery.of(context).size.height * 0.25,
         width: double.infinity,
         decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.tertiary,
+            color: Theme.of(context).colorScheme.onSecondaryContainer,
             borderRadius:
                 const BorderRadius.only(bottomRight: Radius.circular(100))),
       ),

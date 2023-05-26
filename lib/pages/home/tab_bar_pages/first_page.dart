@@ -11,7 +11,6 @@ import '../../../services/users_service.dart';
 import '../../../utils/helpers/Searchable/searchable_medic.dart';
 import '../../../utils/helpers/Searchable/searchable_nurse.dart';
 import '../../../utils/helpers/constant_variables.dart';
-import '../../../utils/helpers/future_builder_cards/future_builders.dart';
 import '../../../utils/helpers/future_builder_cards/future_builders_filter.dart';
 
 class FirstPage extends StatefulWidget {
@@ -71,7 +70,10 @@ class _FirstPageState extends State<FirstPage> {
                           style: Theme.of(context)
                               .textTheme
                               .bodyMedium!
-                              .copyWith(color: Colors.grey),
+                              .copyWith(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSecondary),
                         ),
                       ),
                       Container(
@@ -125,7 +127,7 @@ class _FirstPageState extends State<FirstPage> {
                     }
                     return Column(
                       children: [
-                                                SizedBox(
+                        SizedBox(
                             height: MediaQuery.of(context).size.height * 0.1),
                         Container(
                           height: 200,
@@ -143,13 +145,13 @@ class _FirstPageState extends State<FirstPage> {
                         const SizedBox(
                           height: 20,
                         ),
-                        const Padding(
+                        Padding(
                           padding: EdgeInsets.symmetric(horizontal: 16.0),
                           child: Text(
                               "No hay Registros de Diagnósticos Disponibles",
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: Colors.grey,
+                                  color: Theme.of(context).colorScheme.onSecondary,
                                   fontSize: 26,
                                   fontWeight: FontWeight.bold)),
                         )

@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 
 class FancyCard extends StatelessWidget {
@@ -42,7 +40,7 @@ class FancyCard extends StatelessWidget {
                               image: DecorationImage(
                                   image: AssetImage("assets/images/patient-logo.png"),
                                   fit: BoxFit.fitHeight),
-                              color: Colors.black26,
+                              color: Theme.of(context).colorScheme.onSecondary26,
                               shape: BoxShape.circle,
                             ),
                           )
@@ -60,17 +58,17 @@ class FancyCard extends StatelessWidget {
                     const SizedBox(height: 10),
                     Row(
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.person,
-                          color: Colors.blue,
+                          color: Theme.of(context).colorScheme.tertiary,
                           size: 20,
                         ),
                         const SizedBox(width: 10),
                         Flexible(
                           child: Text(
                             title,
-                            style: const TextStyle(
-                              color: Colors.black,
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.onSecondary,
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
@@ -81,17 +79,17 @@ class FancyCard extends StatelessWidget {
                     const SizedBox(height: 10),
                     Row(
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.calendar_month_outlined,
-                          color: Colors.blue,
+                          color: Theme.of(context).colorScheme.tertiary,
                           size: 20,
                         ),
                         const SizedBox(width: 10),
                         Flexible(
                           child: Text(
                             date,
-                            style: const TextStyle(
-                              color: Colors.black,
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.onSecondary,
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
@@ -99,12 +97,15 @@ class FancyCard extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 15),
                     ElevatedButton(
                         onPressed: function as void Function()?,
-                        child: const Text(
-                          "Saber más",
-                          style: TextStyle(fontSize: 18),
+                        child: Padding(
+                          padding: const EdgeInsets.all(6.0),
+                          child: const Text(
+                            "Saber más",
+                            style: TextStyle(fontSize: 18),
+                          ),
                         )),
                   ],
                 ),
@@ -152,9 +153,9 @@ class FancyCardSearchPatient extends StatelessWidget {
                   const SizedBox(height: 10),
                   Row(
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.person,
-                        color: Colors.blue,
+                        color: Theme.of(context).colorScheme.tertiary,
                         size: 30,
                       ),
                       const SizedBox(width: 10),
@@ -163,8 +164,8 @@ class FancyCardSearchPatient extends StatelessWidget {
                           title,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
-                          style: const TextStyle(
-                            color: Colors.black,
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.onSecondary,
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
                           ),
@@ -175,9 +176,9 @@ class FancyCardSearchPatient extends StatelessWidget {
                   const SizedBox(height: 10),
                   Row(
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.calendar_month_outlined,
-                        color: Colors.blue,
+                        color: Theme.of(context).colorScheme.tertiary,
                         size: 30,
                       ),
                       const SizedBox(width: 10),
@@ -186,8 +187,8 @@ class FancyCardSearchPatient extends StatelessWidget {
                           date,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
-                          style: const TextStyle(
-                            color: Colors.black,
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.onSecondary,
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
                           ),
@@ -198,17 +199,17 @@ class FancyCardSearchPatient extends StatelessWidget {
                   const SizedBox(height: 10),
                   Row(
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.calendar_month_outlined,
-                        color: Colors.blue,
+                        color: Theme.of(context).colorScheme.tertiary,
                         size: 30,
                       ),
                       const SizedBox(width: 10),
                       Flexible(
                         child: Text(
                           date2,
-                          style: const TextStyle(
-                            color: Colors.black,
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.onSecondary,
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
                           ),

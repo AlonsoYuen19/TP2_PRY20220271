@@ -93,7 +93,7 @@ class _ImagePreviewQuickDiagnosisState
                         height: MediaQuery.of(context).size.height * 0.2,
                         width: double.infinity,
                         decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.tertiary,
+                            color: Theme.of(context).colorScheme.onSecondaryContainer,
                             borderRadius: const BorderRadius.only(
                                 bottomRight: Radius.circular(100))),
                         child: const Center(

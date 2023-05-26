@@ -3,13 +3,9 @@
 // ignore_for_file: must_be_immutable, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:ulcernosis/services/patient_service.dart';
-
 import '../../../models/nurse.dart';
 import '../../../pages/management/items/assign_appointment.dart';
-import '../../../pages/management/team_work_nurse_profile.dart';
 import '../../../services/team_work_service.dart';
-import '../../widgets/alert_dialog.dart';
 import '../constant_variables.dart';
 
 class MyFutureBuilderPatientsByNurse extends StatefulWidget {
@@ -82,13 +78,15 @@ class _MyFutureBuilderPatientsByNurseState
                                 ),
                               ),
                               InkWell(
-                                child: const Padding(
+                                child: Padding(
                                   padding: EdgeInsets.only(right: 16.0),
                                   child: Icon(Icons.send,
-                                      color: Colors.lightBlue, size: 28),
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .tertiary,
+                                      size: 28),
                                 ),
                                 onTap: () async {
-                                  final patienService = PatientService();
                                   final nurseService = TeamWorkService();
                                   Nurse? nurse = await nurseService
                                       .getNurseByIdTW(widget.idNurse);

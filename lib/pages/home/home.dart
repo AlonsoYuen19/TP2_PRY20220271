@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:ulcernosis/models/diagnosis.dart';
 import 'package:ulcernosis/models/medic.dart';
 import 'package:ulcernosis/models/nurse.dart';
@@ -9,7 +8,6 @@ import 'package:ulcernosis/services/diagnosis_service.dart';
 import 'package:ulcernosis/services/medic_service.dart';
 import 'package:ulcernosis/services/nurse_services.dart';
 import 'package:ulcernosis/services/users_service.dart';
-import 'package:ulcernosis/utils/providers/auth_token.dart';
 import 'package:ulcernosis/utils/helpers/constant_variables.dart';
 import 'package:ulcernosis/utils/helpers/Searchable/searchable_medic.dart';
 import '../../utils/helpers/Searchable/searchable_nurse.dart';
@@ -89,6 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget homePage() {
     final size = MediaQuery.of(context).size;
     return SingleChildScrollView(
+      physics: BouncingScrollPhysics(),
       child: Column(
         children: [
           Row(
@@ -99,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 style: Theme.of(context)
                     .textTheme
                     .bodyMedium!
-                    .copyWith(color: Colors.grey),
+                    .copyWith(color: Theme.of(context).colorScheme.onSecondary),
               ),
               TextButton(
                   onPressed: () {
@@ -124,6 +123,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   .copyWith(color: Theme.of(context).colorScheme.tertiary),
             ),
           ),
+          const SizedBox(
+            height: 10,
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 5.0),
             child: Row(
@@ -132,10 +134,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 Flexible(
                   child: Text(
                     "Seleccione el icono de búsqueda\npara filtrar por nombres del\npaciente",
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium!
-                        .copyWith(color: Colors.grey),
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        color: Theme.of(context).colorScheme.onSecondary),
                   ),
                 ),
                 Container(

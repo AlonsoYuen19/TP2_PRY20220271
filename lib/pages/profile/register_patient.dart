@@ -41,10 +41,9 @@ class _RegisterPatientScreenState extends State<RegisterPatientScreen> {
       padding: const EdgeInsets.symmetric(horizontal: paddingHori, vertical: 5),
       child: Text(
         title,
-        style: Theme.of(context)
-            .textTheme
-            .bodyMedium!
-            .copyWith(color: Colors.lightBlue),
+        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+              color: Theme.of(context).colorScheme.onSecondary,
+            ),
       ),
     );
   }
@@ -100,7 +99,7 @@ class _RegisterPatientScreenState extends State<RegisterPatientScreen> {
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   elevation: 0,
-                  backgroundColor: const Color.fromRGBO(0, 0, 255, 10),
+                  backgroundColor: Color.fromRGBO(14, 26, 48, 1),
                 ),
                 onPressed: () async {
                   final isValidForm = _formKey.currentState!.validate();
@@ -145,7 +144,7 @@ class _RegisterPatientScreenState extends State<RegisterPatientScreen> {
                 onPressed: details.onStepContinue,
                 style: ElevatedButton.styleFrom(
                     elevation: 0,
-                    backgroundColor: const Color.fromRGBO(0, 0, 255, 10)),
+                    backgroundColor: Color.fromRGBO(14, 26, 48, 1)),
                 child: Text('Siguiente',
                     style: Theme.of(context).textTheme.labelMedium!.copyWith(
                           color: Theme.of(context).colorScheme.onTertiary,
@@ -199,7 +198,9 @@ class _RegisterPatientScreenState extends State<RegisterPatientScreen> {
                                   .textTheme
                                   .titleSmall!
                                   .copyWith(
-                                      color: Colors.lightBlue,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSecondary,
                                       fontWeight: FontWeight.bold),
                             ),
                           ),
@@ -210,7 +211,8 @@ class _RegisterPatientScreenState extends State<RegisterPatientScreen> {
                     Theme(
                       data: Theme.of(context).copyWith(
                           colorScheme: ColorScheme.fromSeed(
-                              primary: Colors.lightBlue,
+                              primary:
+                                  Theme.of(context).colorScheme.onSecondary,
                               error: Colors.red,
                               onBackground:
                                   Theme.of(context).colorScheme.onBackground,
@@ -237,8 +239,11 @@ class _RegisterPatientScreenState extends State<RegisterPatientScreen> {
                                         .textTheme
                                         .labelLarge!
                                         .copyWith(
-                                            fontSize: 20,
-                                            color: Colors.lightBlue)),
+                                          fontSize: 20,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSecondary,
+                                        )),
                               ),
                               content: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
@@ -300,8 +305,11 @@ class _RegisterPatientScreenState extends State<RegisterPatientScreen> {
                                           .textTheme
                                           .labelLarge!
                                           .copyWith(
-                                              fontSize: 20,
-                                              color: Colors.lightBlue))),
+                                            fontSize: 20,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onSecondary,
+                                          ))),
                               content: Column(
                                 children: [
                                   title("Dirección"),

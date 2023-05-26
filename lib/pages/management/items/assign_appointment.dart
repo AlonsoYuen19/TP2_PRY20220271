@@ -75,15 +75,14 @@ class _AssignItineraryPageState extends State<AssignItineraryPage> {
           height: MediaQuery.of(context).size.height * 0.3,
           width: double.infinity,
           decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.tertiary,
+              color: Theme.of(context).colorScheme.onSecondaryContainer,
               borderRadius:
                   const BorderRadius.only(bottomRight: Radius.circular(100))),
         ),
         SafeArea(
-            child: Padding(
-          padding: EdgeInsets.symmetric(
-              horizontal: size.width * 0.06, vertical: size.height * 0.05),
-          child: SingleChildScrollView(
+            child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 30),
             child: Column(children: [
               Row(
                 children: [
@@ -109,7 +108,7 @@ class _AssignItineraryPageState extends State<AssignItineraryPage> {
                 ],
               ),
               const SizedBox(
-                height: 20,
+                height: 35,
               ),
               FutureBuilder(
                   future: Future.delayed(const Duration(seconds: 1)),
@@ -127,21 +126,21 @@ class _AssignItineraryPageState extends State<AssignItineraryPage> {
                           height: 30,
                         ),
                         /*textFormField(
-                          timeOfDayIn: true,
-                          labelText: "Hora de entrada",
-                          controller: _controllerIn,
-                        ),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        textFormField(
-                          timeOfDayIn: false,
-                          labelText: "Hora de salida",
-                          controller: _controllerOut,
-                        ),
-                        const SizedBox(
-                          height: 30,
-                        ),*/
+                              timeOfDayIn: true,
+                              labelText: "Hora de entrada",
+                              controller: _controllerIn,
+                            ),
+                            const SizedBox(
+                              height: 30,
+                            ),
+                            textFormField(
+                              timeOfDayIn: false,
+                              labelText: "Hora de salida",
+                              controller: _controllerOut,
+                            ),
+                            const SizedBox(
+                              height: 30,
+                            ),*/
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.4,
                           child: ElevatedButton(
@@ -215,9 +214,9 @@ class _AssignItineraryPageState extends State<AssignItineraryPage> {
         readOnly: true,
         decoration: InputDecoration(
           contentPadding: EdgeInsets.zero,
-          prefixIcon: const Icon(
+          prefixIcon: Icon(
             Icons.access_time,
-            color: Colors.lightBlue,
+            color: Theme.of(context).colorScheme.onSecondary,
             size: 22,
           ),
           hintText: '$hours:$minutes $amPm',
@@ -227,9 +226,9 @@ class _AssignItineraryPageState extends State<AssignItineraryPage> {
             overflow: TextOverflow.ellipsis,
           ),
           suffixIcon: IconButton(
-            icon: const Icon(
+            icon: Icon(
               Icons.arrow_drop_down,
-              color: Colors.lightBlue,
+              color: Theme.of(context).colorScheme.onSecondary,
               size: 32,
             ),
             onPressed: () async {
@@ -260,12 +259,14 @@ class _AssignItineraryPageState extends State<AssignItineraryPage> {
                               const EdgeInsets.all(10)),
                           elevation: MaterialStateProperty.all(5),
                           backgroundColor: MaterialStateColor.resolveWith(
-                            (states) => Colors.lightBlue,
+                            (states) =>
+                                Theme.of(context).colorScheme.onSecondary,
                           ),
                           foregroundColor: MaterialStateColor.resolveWith(
                               (states) => Colors.white),
                           overlayColor: MaterialStateColor.resolveWith(
-                              (states) => Colors.lightBlue),
+                              (states) =>
+                                  Theme.of(context).colorScheme.onSecondary),
                         ),
                       ),
                     ),
@@ -292,8 +293,8 @@ class _AssignItineraryPageState extends State<AssignItineraryPage> {
             },
           ),
           labelText: labelText,
-          labelStyle: const TextStyle(
-              color: Colors.lightBlue,
+          labelStyle: TextStyle(
+              color: Theme.of(context).colorScheme.onSecondary,
               fontSize: 20,
               overflow: TextOverflow.ellipsis,
               fontWeight: FontWeight.bold),
@@ -302,13 +303,15 @@ class _AssignItineraryPageState extends State<AssignItineraryPage> {
             borderRadius: BorderRadius.all(Radius.circular(10.0)),
             borderSide: BorderSide(color: Colors.grey, width: 3),
           ),
-          focusedBorder: const OutlineInputBorder(
+          focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(10.0)),
-            borderSide: BorderSide(color: Colors.lightBlue, width: 4),
+            borderSide: BorderSide(
+                color: Theme.of(context).colorScheme.onSecondary, width: 4),
           ),
-          border: const OutlineInputBorder(
+          border: OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(10.0)),
-            borderSide: BorderSide(color: Colors.lightBlue),
+            borderSide:
+                BorderSide(color: Theme.of(context).colorScheme.onSecondary),
           ),
           errorBorder: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -322,6 +325,7 @@ class _AssignItineraryPageState extends State<AssignItineraryPage> {
   Widget cardNurse() {
     final size = MediaQuery.of(context).size;
     int cantNombreEnfermero = nurse!.fullName.split(" ").length;
+    int cantNombrePaciente = patient!.fullName.split(" ").length;
     String fechaFormateada =
         "${date!.day.toString().padLeft(2, '0')}/${date!.month.toString().padLeft(2, '0')}/${date!.year}";
     return Card(
@@ -331,19 +335,19 @@ class _AssignItineraryPageState extends State<AssignItineraryPage> {
           borderRadius: BorderRadius.circular(15.0),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(24.0),
           child: Column(
             children: [
               const SizedBox(
                 height: 5,
               ),
-              const Align(
+              Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
                   "Enfermero",
                   textAlign: TextAlign.start,
                   style: TextStyle(
-                      color: Colors.lightBlue,
+                      color: Theme.of(context).colorScheme.onSecondary,
                       fontSize: 22,
                       fontWeight: FontWeight.w700),
                 ),
@@ -361,12 +365,12 @@ class _AssignItineraryPageState extends State<AssignItineraryPage> {
                             height: size.width * 0.2,
                             width: size.width * 0.2,
                             //clipBehavior: Clip.antiAlias,
-                            decoration: const BoxDecoration(
+                            decoration: BoxDecoration(
                               image: DecorationImage(
                                   image: AssetImage(
                                       "assets/images/enfermero-logo.png"),
                                   fit: BoxFit.fitHeight),
-                              color: Colors.lightBlue,
+                              color: Theme.of(context).colorScheme.onSecondary,
                               shape: BoxShape.circle,
                             ),
                           )
@@ -398,13 +402,13 @@ class _AssignItineraryPageState extends State<AssignItineraryPage> {
               const SizedBox(
                 height: 5,
               ),
-              const Align(
+              Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
                   "Paciente",
                   textAlign: TextAlign.start,
                   style: TextStyle(
-                      color: Colors.lightBlue,
+                      color: Theme.of(context).colorScheme.onSecondary,
                       fontSize: 22,
                       fontWeight: FontWeight.w700),
                 ),
@@ -441,7 +445,9 @@ class _AssignItineraryPageState extends State<AssignItineraryPage> {
                     ),
                     Flexible(
                       child: Text(
-                        patient!.fullName,
+                        cantNombrePaciente < 2
+                            ? patient!.fullName
+                            : '${patient!.fullName.split(' ')[0]} ${patient!.fullName.split(' ')[1]}',
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           color: Colors.black,
@@ -456,13 +462,13 @@ class _AssignItineraryPageState extends State<AssignItineraryPage> {
               const SizedBox(
                 height: 5,
               ),
-              const Align(
+              Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
                   "Fecha de cita programada",
                   textAlign: TextAlign.start,
                   style: TextStyle(
-                      color: Colors.lightBlue,
+                      color: Theme.of(context).colorScheme.onSecondary,
                       fontSize: 22,
                       fontWeight: FontWeight.w700),
                 ),
@@ -499,8 +505,10 @@ class _AssignItineraryPageState extends State<AssignItineraryPage> {
                           builder: (context, child) {
                             return Theme(
                               data: Theme.of(context).copyWith(
-                                colorScheme: const ColorScheme.light(
-                                    primary: Colors.lightBlue,
+                                colorScheme: ColorScheme.light(
+                                    primary: Theme.of(context)
+                                        .colorScheme
+                                        .onSecondary,
                                     onPrimary: Colors.white,
                                     onSurface: Colors.blueAccent,
                                     error: Colors.red),
@@ -542,7 +550,9 @@ class _AssignItineraryPageState extends State<AssignItineraryPage> {
                                       textStyle: const TextStyle(
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold),
-                                      backgroundColor: Colors.lightBlue,
+                                      backgroundColor: Theme.of(context)
+                                          .colorScheme
+                                          .onSecondary,
                                       elevation: 10 // button text color
                                       ),
                                 ),
@@ -559,9 +569,9 @@ class _AssignItineraryPageState extends State<AssignItineraryPage> {
                           });
                         });
                       },
-                      child: const Icon(
+                      child: Icon(
                         Icons.calendar_month,
-                        color: Colors.lightBlue,
+                        color: Theme.of(context).colorScheme.onSecondary,
                         size: 30,
                       ),
                     )
@@ -571,13 +581,13 @@ class _AssignItineraryPageState extends State<AssignItineraryPage> {
               const SizedBox(
                 height: 10,
               ),
-              const Align(
+              Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
                   "Dirección",
                   textAlign: TextAlign.start,
                   style: TextStyle(
-                      color: Colors.lightBlue,
+                      color: Theme.of(context).colorScheme.onSecondary,
                       fontSize: 22,
                       fontWeight: FontWeight.w700),
                 ),
@@ -591,12 +601,13 @@ class _AssignItineraryPageState extends State<AssignItineraryPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          const Flexible(
+                          Flexible(
                             child: Text(
                               "¿Atenderá en la dirección del paciente?",
                               textAlign: TextAlign.start,
                               style: TextStyle(
-                                  color: Colors.black54,
+                                  color:
+                                      Theme.of(context).colorScheme.onSecondary,
                                   fontSize: 13,
                                   fontWeight: FontWeight.w700),
                             ),
@@ -613,7 +624,8 @@ class _AssignItineraryPageState extends State<AssignItineraryPage> {
                               print(
                                   "El valor del switch es: ${switchVariable.toString()}");
                             },
-                            activeTrackColor: Colors.lightBlue,
+                            activeTrackColor:
+                                Theme.of(context).colorScheme.onSecondary,
                             activeColor: Colors.white,
                           ),
                         ],

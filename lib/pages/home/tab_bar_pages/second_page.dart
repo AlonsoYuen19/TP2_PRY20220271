@@ -68,7 +68,7 @@ class _SecondPageState extends State<SecondPage> {
                           style: Theme.of(context)
                               .textTheme
                               .bodyMedium!
-                              .copyWith(color: Colors.grey),
+                              .copyWith(color: Theme.of(context).colorScheme.onSecondary),
                         ),
                       ),
                       Container(
@@ -140,13 +140,13 @@ class _SecondPageState extends State<SecondPage> {
                         const SizedBox(
                           height: 20,
                         ),
-                        const Padding(
+                        Padding(
                           padding: EdgeInsets.symmetric(horizontal: 16.0),
                           child: Text(
                               "No hay Registros de Diagnósticos Disponibles",
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: Colors.grey,
+                                  color: Theme.of(context).colorScheme.onSecondary,
                                   fontSize: 26,
                                   fontWeight: FontWeight.bold)),
                         )

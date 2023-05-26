@@ -54,7 +54,8 @@ class _PreRegisterScreenState extends State<PreRegisterScreen> {
                         "Selección de Usuario",
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                            color: Colors.blue, fontWeight: FontWeight.bold),
+                            color: Theme.of(context).colorScheme.tertiary,
+                            fontWeight: FontWeight.bold),
                       ),
                     ),
                   ),

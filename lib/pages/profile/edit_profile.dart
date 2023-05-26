@@ -25,7 +25,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         style: Theme.of(context)
             .textTheme
             .bodyMedium!
-            .copyWith(color: Colors.lightBlue),
+            .copyWith(color: Theme.of(context).colorScheme.onSecondary),
       ),
     );
   }
@@ -82,7 +82,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       body: SingleChildScrollView(
         child: SafeArea(
           child: Stack(children: [
-            backgroundFigure(context, x: 400, y: 150, height: 0.15),
+            backgroundFigure(context, x: 400, y: 150, height: 0.12),
             Column(
               children: [
                 Form(

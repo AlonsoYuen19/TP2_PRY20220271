@@ -12,7 +12,6 @@ import '../../utils/helpers/appbar_drawer.dart';
 import '../../utils/helpers/future_builder_cards/future_builder_patients_diagnosis.dart';
 import '../../utils/helpers/loaders_screens/loader_diagnosis_screen.dart';
 import '../../utils/widgets/alert_dialog.dart';
-import 'diagnosis_patient.dart';
 
 class DiagnosisNurseSelectionScreen extends StatefulWidget {
   const DiagnosisNurseSelectionScreen({super.key});

@@ -338,6 +338,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final size = MediaQuery.of(context).size;
     final patientService = PatientService();
     return SingleChildScrollView(
+      physics: BouncingScrollPhysics(),
       child: Column(children: [
         SizedBox(
           height: users.role == "ROLE_NURSE" ? 90 : 12,
@@ -358,7 +359,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   alignment: Alignment.centerRight,
                   child: ClipOval(
                     child: Container(
-                      color: Colors.lightBlue,
+                      color: Theme.of(context).colorScheme.tertiary,
                       child: IconButton(
                         onPressed: () {
                           Navigator.pushNamed(context, 'editProfile');
@@ -376,7 +377,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     children: [
                       ClipOval(
                         child: Container(
-                          color: Colors.lightBlue,
+                          color: Theme.of(context).colorScheme.tertiary,
                           //margin: const EdgeInsets.only(left: 8.0),
                           child: IconButton(
                             onPressed: () {
@@ -419,10 +420,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: Text(
                     users.fullName,
                     textAlign: TextAlign.center,
-                    style: Theme.of(context)
-                        .textTheme
-                        .displayMedium!
-                        .copyWith(fontSize: 24),
+                    style: Theme.of(context).textTheme.displayMedium!.copyWith(
+                        fontSize: 24,
+                        color: Theme.of(context).colorScheme.onSecondary),
                   ),
                 ),
                 const SizedBox(
@@ -583,18 +583,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ],
             ),
           ),
+          const SizedBox(
+            height: 10,
+          ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 6.0),
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Flexible(
                   child: Text(
                     "Seleccione el icono de búsqueda\npara filtrar por nombres del\npaciente",
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium!
-                        .copyWith(color: Colors.grey),
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        color: Theme.of(context).colorScheme.onSecondary),
                   ),
                 ),
                 Container(

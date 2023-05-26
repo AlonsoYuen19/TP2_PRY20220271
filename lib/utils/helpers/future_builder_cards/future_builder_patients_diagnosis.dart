@@ -26,6 +26,7 @@ class _MyFutureBuilderDiagnosisState extends State<MyFutureBuilderDiagnosis> {
         builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
           var data = snapshot.data ?? [];
           return ListView.separated(
+              physics: const NeverScrollableScrollPhysics(),
               separatorBuilder: (context, index) => const SizedBox(height: 10),
               shrinkWrap: true,
               itemCount: data.length,
@@ -50,7 +51,8 @@ class _MyFutureBuilderDiagnosisState extends State<MyFutureBuilderDiagnosis> {
                       children: [
                         SizedBox(height: size.height * 0.02),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -73,7 +75,7 @@ class _MyFutureBuilderDiagnosisState extends State<MyFutureBuilderDiagnosis> {
                                       MaterialPageRoute(
                                           builder: (context) =>
                                               TakePhotoDiagnosis(
-                                                  idPatient: idPaciente,
+                                                idPatient: idPaciente,
                                               )));
                                 },
                                 child: Icon(Icons.send_sharp,

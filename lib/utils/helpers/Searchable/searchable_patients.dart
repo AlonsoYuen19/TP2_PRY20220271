@@ -39,7 +39,6 @@ class SearchUserPatient extends SearchDelegate {
       padding: const EdgeInsets.all(20.0),
       child: FutureBuilder<List<Patient>>(
           future: _patientList.getPatientsByMedics(query: query),
-
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return Center(
@@ -52,9 +51,10 @@ class SearchUserPatient extends SearchDelegate {
               return Center(
                 child: Text(
                   'No se encontraron pacientes relacionados',
+                  textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.labelMedium!.copyWith(
-                        color: Theme.of(context).colorScheme.tertiary,
-                      ),
+                      color: Theme.of(context).colorScheme.tertiary,
+                      fontSize: 24),
                 ),
               );
             }
