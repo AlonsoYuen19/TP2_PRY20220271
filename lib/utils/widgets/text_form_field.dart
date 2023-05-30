@@ -24,7 +24,8 @@ class GetTextFormField extends StatefulWidget {
       this.validator,
       this.obscureText = false,
       this.isRegisterPassword = true,
-      this.isEditProfile = false,this.maxLength=30});
+      this.isEditProfile = false,
+      this.maxLength = 30});
 
   @override
   State<GetTextFormField> createState() => _GetTextFormFieldState();
@@ -36,6 +37,7 @@ class _GetTextFormFieldState extends State<GetTextFormField> {
     super.initState();
   }
 
+  Color _color = Color.fromRGBO(14, 26, 48, 1);
   final _focusNode = FocusNode();
   @override
   Widget build(BuildContext context) {
@@ -80,11 +82,11 @@ class _GetTextFormFieldState extends State<GetTextFormField> {
                 validationRuleBuilder: (rules, value) {
                   if (value.isEmpty) {
                     return Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8.0),
+                      padding: EdgeInsets.symmetric(vertical: 4.0),
                       child: Text(
                         "Ingrese una contraseña",
                         style: TextStyle(
-                          color: Color.fromRGBO(14, 26, 48, 0.8),
+                          color: Theme.of(context).colorScheme.tertiary,
                         ),
                       ),
                     );
@@ -134,60 +136,51 @@ class _GetTextFormFieldState extends State<GetTextFormField> {
                 obscuringCharacter: "*",
                 validator: widget.validator,
                 keyboardType: widget.keyboardType,
-                cursorColor: Theme.of(context).colorScheme.onTertiary,
+                cursorColor: _color,
                 style: TextStyle(
-                    color: Theme.of(context).colorScheme.onTertiary,
-                    fontSize: 20),
+                    color: _color,
+                    fontSize: 16,
+                    decoration: TextDecoration.none),
                 controller: widget.controllerr,
                 decoration: InputDecoration(
                   counterText: widget.isRegisterPassword ? null : "",
-                  counterStyle: TextStyle(fontWeight: FontWeight.w700),
+                  counterStyle: TextStyle(fontWeight: FontWeight.w600),
                   helperText: null,
-                  floatingLabelBehavior: FloatingLabelBehavior.never,
-                  labelStyle: TextStyle(
-                    color: Theme.of(context).colorScheme.onTertiary,
-                  ),
+                  labelStyle:
+                      TextStyle(color: _color, fontWeight: FontWeight.w400),
                   errorStyle: TextStyle(
                     height: 0,
                     color: Theme.of(context).colorScheme.error,
                     fontSize: Theme.of(context)
                         .textTheme
                         .bodyMedium!
-                        .copyWith(fontSize: 15)
+                        .copyWith(fontSize: 16)
                         .fontSize,
                   ),
                   errorMaxLines: 2,
-                  prefixIconColor: Theme.of(context).colorScheme.onTertiary,
-                  suffixIconColor: Theme.of(context).colorScheme.onTertiary,
-                  prefixIcon: widget.icon,
+                  suffixIconColor: _color,
                   labelText: widget.labelText,
                   hintText: widget.placeholder,
                   filled: true,
-                  fillColor: widget.isRegisterPassword
-                      ? Theme.of(context).colorScheme.onBackground
-                      : Theme.of(context).colorScheme.outline,
+                  fillColor: Colors.white,
                   contentPadding: const EdgeInsets.all(20.0),
                   focusedBorder: OutlineInputBorder(
-                    borderRadius: const BorderRadius.all(Radius.circular(20)),
-                    borderSide: BorderSide(
-                        color: Theme.of(context).colorScheme.onTertiary,
-                        width: 5.0),
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    borderSide: BorderSide(color: Colors.green, width: 2),
                   ),
                   errorBorder: OutlineInputBorder(
-                    borderRadius: const BorderRadius.all(Radius.circular(20)),
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
                     borderSide: BorderSide(
-                        color: Theme.of(context).colorScheme.error, width: 5.0),
+                        color: Theme.of(context).colorScheme.error, width: 1.2),
                   ),
                   focusedErrorBorder: OutlineInputBorder(
-                    borderRadius: const BorderRadius.all(Radius.circular(20)),
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
                     borderSide: BorderSide(
-                        color: Theme.of(context).colorScheme.error, width: 5.0),
+                        color: Theme.of(context).colorScheme.error, width: 1.2),
                   ),
                   enabledBorder: OutlineInputBorder(
-                      borderRadius: const BorderRadius.all(Radius.circular(20)),
-                      borderSide: BorderSide(
-                          color: Theme.of(context).colorScheme.onTertiary,
-                          width: 5.0)),
+                      borderRadius: const BorderRadius.all(Radius.circular(10)),
+                      borderSide: BorderSide(color: _color, width: 1.2)),
                 ),
               ),
             )
@@ -201,22 +194,21 @@ class _GetTextFormFieldState extends State<GetTextFormField> {
                 autofocus: false,
                 validator: widget.validator,
                 keyboardType: widget.keyboardType,
-                cursorColor: Theme.of(context).colorScheme.onTertiary,
+                cursorColor: _color,
                 style: TextStyle(
-                    color: Theme.of(context).colorScheme.onTertiary,
-                    fontSize: 20),
+                    color: _color,
+                    fontSize: 16,
+                    decoration: TextDecoration.none,
+                    decorationThickness: 0),
                 controller: widget.controllerr,
                 decoration: InputDecoration(
                   counterText: "",
-                  floatingLabelBehavior: FloatingLabelBehavior.never,
                   filled: true,
-                  fillColor: widget.isRegisterPassword
-                      ? Theme.of(context).colorScheme.onBackground
-                      : Theme.of(context).colorScheme.outline,
+                  fillColor: Colors.white,
                   labelStyle: TextStyle(
-                    backgroundColor: Colors.transparent,
-                    color: Theme.of(context).colorScheme.onTertiary,
-                  ),
+                      backgroundColor: Colors.transparent,
+                      color: Color.fromRGBO(14, 26, 48, 1),
+                      fontWeight: FontWeight.w400),
                   errorStyle: TextStyle(
                     color: Theme.of(context).colorScheme.error,
                     fontSize: Theme.of(context)
@@ -226,33 +218,27 @@ class _GetTextFormFieldState extends State<GetTextFormField> {
                         .fontSize,
                   ),
                   errorMaxLines: 2,
-                  prefixIconColor: Theme.of(context).colorScheme.onTertiary,
-                  prefixIcon: widget.icon,
                   labelText: widget.labelText,
                   hintText: widget.placeholder,
                   contentPadding:
                       EdgeInsets.all(widget.isEditProfile == false ? 20 : 15),
                   focusedBorder: OutlineInputBorder(
-                    borderRadius: const BorderRadius.all(Radius.circular(20)),
-                    borderSide: BorderSide(
-                        color: Theme.of(context).colorScheme.onTertiary,
-                        width: 5.0),
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    borderSide: BorderSide(color: Colors.green, width: 2),
                   ),
                   errorBorder: OutlineInputBorder(
-                    borderRadius: const BorderRadius.all(Radius.circular(20)),
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
                     borderSide: BorderSide(
-                        color: Theme.of(context).colorScheme.error, width: 5.0),
+                        color: Theme.of(context).colorScheme.error, width: 1.2),
                   ),
                   focusedErrorBorder: OutlineInputBorder(
-                    borderRadius: const BorderRadius.all(Radius.circular(20)),
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
                     borderSide: BorderSide(
-                        color: Theme.of(context).colorScheme.error, width: 5.0),
+                        color: Theme.of(context).colorScheme.error, width: 1.2),
                   ),
                   enabledBorder: OutlineInputBorder(
-                      borderRadius: const BorderRadius.all(Radius.circular(20)),
-                      borderSide: BorderSide(
-                          color: Theme.of(context).colorScheme.onTertiary,
-                          width: 5.0)),
+                      borderRadius: const BorderRadius.all(Radius.circular(10)),
+                      borderSide: BorderSide(color: _color, width: 1.2)),
                 ),
               ),
             ),

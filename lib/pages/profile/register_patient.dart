@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:ulcernosis/services/patient_service.dart';
-import 'package:ulcernosis/utils/widgets/background_figure.dart';
 import '../../utils/helpers/constant_variables.dart';
 import '../../utils/widgets/DropDowns/drop_down.dart';
 import '../../utils/widgets/text_form_field.dart';
@@ -37,13 +36,17 @@ class _RegisterPatientScreenState extends State<RegisterPatientScreen> {
   }
 
   Widget title(String title) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: paddingHori, vertical: 5),
-      child: Text(
-        title,
-        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-              color: Theme.of(context).colorScheme.onSecondary,
-            ),
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 5),
+        child: Text(
+          title,
+          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+              color: Theme.of(context).colorScheme.tertiary,
+              fontSize: 17,
+              fontWeight: FontWeight.w500),
+        ),
       ),
     );
   }
@@ -75,12 +78,11 @@ class _RegisterPatientScreenState extends State<RegisterPatientScreen> {
     final patientService = PatientService();
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      child: Column(
         children: [
           if (_currentStep > 0) ...[
             SizedBox(
-              width: size.width * 0.35,
+              width: size.width * 0.75,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.grey, elevation: 0),
@@ -94,12 +96,13 @@ class _RegisterPatientScreenState extends State<RegisterPatientScreen> {
                 ),
               ),
             ),
+            const SizedBox(height: 10),
             SizedBox(
-              width: size.width * 0.35,
+              width: size.width * 0.75,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   elevation: 0,
-                  backgroundColor: Color.fromRGBO(14, 26, 48, 1),
+                  backgroundColor: Color.fromRGBO(255, 161, 158, 1),
                 ),
                 onPressed: () async {
                   final isValidForm = _formKey.currentState!.validate();
@@ -139,12 +142,12 @@ class _RegisterPatientScreenState extends State<RegisterPatientScreen> {
             ),
           ] else if (_currentStep == 0) ...[
             SizedBox(
-              width: size.width * 0.35,
+              width: size.width * 0.75,
               child: ElevatedButton(
                 onPressed: details.onStepContinue,
                 style: ElevatedButton.styleFrom(
                     elevation: 0,
-                    backgroundColor: Color.fromRGBO(14, 26, 48, 1)),
+                    backgroundColor: Color.fromRGBO(255, 161, 158, 1)),
                 child: Text('Siguiente',
                     style: Theme.of(context).textTheme.labelMedium!.copyWith(
                           color: Theme.of(context).colorScheme.onTertiary,
@@ -162,79 +165,139 @@ class _RegisterPatientScreenState extends State<RegisterPatientScreen> {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       body: Stack(children: [
-        registerBackgroundFigure(context),
-        Center(
-          child: SingleChildScrollView(
-            child: SafeArea(
-              child: Form(
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Row(
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.only(left: 15),
-                          child: FloatingActionButton(
-                            backgroundColor:
-                                Theme.of(context).colorScheme.outline,
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: const Icon(Icons.arrow_back,
-                                color: Colors.white),
+        SingleChildScrollView(
+          child: SafeArea(
+            child: Form(
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Row(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(left: 15),
+                        child: FloatingActionButton(
+                          backgroundColor:
+                              Theme.of(context).colorScheme.outline,
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child:
+                              const Icon(Icons.arrow_back, color: Colors.white),
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(
+                          margin: EdgeInsets.only(right: size.width * 0.1),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: paddingHori, vertical: 20),
+                          child: Text(
+                            "Registro de Paciente",
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleSmall!
+                                .copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSecondary,
+                                    fontWeight: FontWeight.bold),
                           ),
                         ),
-                        Expanded(
-                          child: Container(
-                            margin: EdgeInsets.only(right: size.width * 0.1),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: paddingHori, vertical: 20),
-                            child: Text(
-                              "Registro de Paciente",
-                              textAlign: TextAlign.center,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleSmall!
-                                  .copyWith(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onSecondary,
-                                      fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: size.height * 0.01),
+                  Theme(
+                    data: Theme.of(context).copyWith(
+                        colorScheme: ColorScheme.fromSeed(
+                            primary: Theme.of(context).colorScheme.onSecondary,
+                            error: Colors.red,
+                            onBackground:
+                                Theme.of(context).colorScheme.onBackground,
+                            seedColor:
+                                Theme.of(context).colorScheme.onBackground)),
+                    child: Stepper(
+                      margin:
+                          const EdgeInsets.only(left: 55, right: 25, top: 5),
+                      type: StepperType.vertical,
+                      physics: const ScrollPhysics(),
+                      currentStep: _currentStep,
+                      onStepCancel: cancel,
+                      onStepContinue: continuedStep,
+                      onStepTapped: tapped,
+                      controlsBuilder: controlBuilders,
+                      elevation: 0,
+                      steps: [
+                        Step(
+                            title: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: paddingHori),
+                              child: Text("Información del Contacto",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelLarge!
+                                      .copyWith(
+                                        fontSize: 20,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onSecondary,
+                                      )),
                             ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: size.height * 0.01),
-                    Theme(
-                      data: Theme.of(context).copyWith(
-                          colorScheme: ColorScheme.fromSeed(
-                              primary:
-                                  Theme.of(context).colorScheme.onSecondary,
-                              error: Colors.red,
-                              onBackground:
-                                  Theme.of(context).colorScheme.onBackground,
-                              seedColor:
-                                  Theme.of(context).colorScheme.onBackground)),
-                      child: Stepper(
-                        margin:
-                            const EdgeInsets.only(left: 55, right: 25, top: 5),
-                        type: StepperType.vertical,
-                        physics: const ScrollPhysics(),
-                        currentStep: _currentStep,
-                        onStepCancel: cancel,
-                        onStepContinue: continuedStep,
-                        onStepTapped: tapped,
-                        controlsBuilder: controlBuilders,
-                        elevation: 0,
-                        steps: [
-                          Step(
-                              title: Padding(
+                            content: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                GetTextFormField(
+                                    labelText: "Nombre Completo",
+                                    placeholder: name,
+                                    icon: const Icon(
+                                        Icons.person_add_alt_1_sharp),
+                                    keyboardType: TextInputType.name,
+                                    validator: validName(
+                                        "Escriba el nombre con el formato correcto"),
+                                    controllerr: _name,
+                                    obscureText: false),
+                                const Divider(
+                                  thickness: 1.3,
+                                  color: Colors.grey,
+                                ),
+                                SizedBox(height: size.height * 0.01),
+                                GetTextFormField(
+                                    labelText: "Correo",
+                                    placeholder: email,
+                                    icon: const Icon(Icons.email),
+                                    keyboardType: TextInputType.emailAddress,
+                                    validator: validEmail(
+                                        "Escriba el correo con el formato correcto"),
+                                    obscureText: false,
+                                    controllerr: _email),
+                                const Divider(
+                                  thickness: 1.3,
+                                  color: Colors.grey,
+                                ),
+                                SizedBox(height: size.height * 0.01),
+                                GetTextFormField(
+                                    labelText: "Telefono",
+                                    placeholder: phone,
+                                    icon: const Icon(Icons.phone),
+                                    keyboardType: TextInputType.phone,
+                                    validator: validPhone(
+                                        "El número de teléfono debe ser de 9 dígitos"),
+                                    obscureText: false,
+                                    controllerr: _phone),
+                                SizedBox(height: size.height * 0.01),
+                              ],
+                            ),
+                            isActive: _currentStep >= 0,
+                            state: _currentStep >= 0
+                                ? StepState.complete
+                                : StepState.disabled),
+                        Step(
+                            title: Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: paddingHori),
-                                child: Text("Información del Contacto",
+                                child: Text("Detalles Personales",
                                     style: Theme.of(context)
                                         .textTheme
                                         .labelLarge!
@@ -243,138 +306,68 @@ class _RegisterPatientScreenState extends State<RegisterPatientScreen> {
                                           color: Theme.of(context)
                                               .colorScheme
                                               .onSecondary,
-                                        )),
-                              ),
-                              content: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  title("Nombre Completo"),
-                                  GetTextFormField(
-                                      labelText: "Nombre Completo",
-                                      placeholder: name,
-                                      icon: const Icon(
-                                          Icons.person_add_alt_1_sharp),
-                                      keyboardType: TextInputType.name,
-                                      validator: validName(
-                                          "Escriba el nombre con el formato correcto"),
-                                      controllerr: _name,
-                                      obscureText: false),
-                                  const Divider(
-                                    thickness: 1.3,
-                                    color: Colors.grey,
-                                  ),
-                                  SizedBox(height: size.height * 0.01),
-                                  title("Correo Electrónico"),
-                                  GetTextFormField(
-                                      labelText: "Correo",
-                                      placeholder: email,
-                                      icon: const Icon(Icons.email),
-                                      keyboardType: TextInputType.emailAddress,
-                                      validator: validEmail(
-                                          "Escriba el correo con el formato correcto"),
-                                      obscureText: false,
-                                      controllerr: _email),
-                                  const Divider(
-                                    thickness: 1.3,
-                                    color: Colors.grey,
-                                  ),
-                                  SizedBox(height: size.height * 0.01),
-                                  title("Telefono	"),
-                                  GetTextFormField(
-                                      labelText: "Telefono",
-                                      placeholder: phone,
-                                      icon: const Icon(Icons.phone),
-                                      keyboardType: TextInputType.phone,
-                                      validator: validPhone(
-                                          "El número de teléfono debe ser de 9 dígitos"),
-                                      obscureText: false,
-                                      controllerr: _phone),
-                                  SizedBox(height: size.height * 0.01),
-                                ],
-                              ),
-                              isActive: _currentStep >= 0,
-                              state: _currentStep >= 0
-                                  ? StepState.complete
-                                  : StepState.disabled),
-                          Step(
-                              title: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: paddingHori),
-                                  child: Text("Detalles Personales",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .labelLarge!
-                                          .copyWith(
-                                            fontSize: 20,
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .onSecondary,
-                                          ))),
-                              content: Column(
-                                children: [
-                                  title("Dirección"),
-                                  GetTextFormField(
-                                      labelText: "Dirección",
-                                      placeholder: address,
-                                      icon: const Icon(Icons.house),
-                                      keyboardType: TextInputType.streetAddress,
-                                      validator: validAddress(
-                                          "Escriba la dirección con el formato correcto"),
-                                      obscureText: false,
-                                      controllerr: _address),
-                                  const Divider(
-                                    thickness: 1.3,
-                                    color: Colors.grey,
-                                  ),
-                                  SizedBox(height: size.height * 0.01),
-                                  title("Dni"),
-                                  GetTextFormField(
-                                      labelText: "Dni",
-                                      placeholder: dni,
-                                      icon: const Icon(Icons.card_membership),
-                                      keyboardType: TextInputType.number,
-                                      validator: validDni(
-                                          "El número del dni debe ser de 8 dígitos"),
-                                      obscureText: false,
-                                      controllerr: _dni),
-                                  const Divider(
-                                    thickness: 1.3,
-                                    color: Colors.grey,
-                                  ),
-                                  SizedBox(height: size.height * 0.01),
-                                  title("Edad"),
-                                  GetTextFormField(
-                                      labelText: "Edad",
-                                      placeholder: age,
-                                      icon: const Icon(Icons.numbers),
-                                      keyboardType: TextInputType.number,
-                                      validator: validAgePatient(
-                                          "La edad debe ser válida con el formato correcto",
-                                          _age),
-                                      obscureText: false,
-                                      controllerr: _age),
-                                  const Divider(
-                                    thickness: 1.3,
-                                    color: Colors.grey,
-                                  ),
-                                  SizedBox(height: size.height * 0.01),
-                                  title("Estado Civil"),
-                                  DropDownWithSearch(
-                                    searchController: _stateCivil,
-                                  ),
-                                  SizedBox(height: size.height * 0.03),
-                                ],
-                              ),
-                              isActive: _currentStep >= 0,
-                              state: _currentStep >= 1
-                                  ? StepState.complete
-                                  : StepState.disabled),
-                        ],
-                      ),
+                                        ))),
+                            content: Column(
+                              children: [
+                                GetTextFormField(
+                                    labelText: "Dirección",
+                                    placeholder: address,
+                                    icon: const Icon(Icons.house),
+                                    keyboardType: TextInputType.streetAddress,
+                                    validator: validAddress(
+                                        "Escriba la dirección con el formato correcto"),
+                                    obscureText: false,
+                                    controllerr: _address),
+                                const Divider(
+                                  thickness: 1.3,
+                                  color: Colors.grey,
+                                ),
+                                SizedBox(height: size.height * 0.01),
+                                GetTextFormField(
+                                    labelText: "Dni",
+                                    placeholder: dni,
+                                    icon: const Icon(Icons.card_membership),
+                                    keyboardType: TextInputType.number,
+                                    validator: validDni(
+                                        "El número del dni debe ser de 8 dígitos"),
+                                    obscureText: false,
+                                    controllerr: _dni),
+                                const Divider(
+                                  thickness: 1.3,
+                                  color: Colors.grey,
+                                ),
+                                SizedBox(height: size.height * 0.01),
+                                GetTextFormField(
+                                    labelText: "Edad",
+                                    placeholder: age,
+                                    icon: const Icon(Icons.numbers),
+                                    keyboardType: TextInputType.number,
+                                    validator: validAgePatient(
+                                        "La edad debe ser válida con el formato correcto",
+                                        _age),
+                                    obscureText: false,
+                                    controllerr: _age),
+                                const Divider(
+                                  thickness: 1.3,
+                                  color: Colors.grey,
+                                ),
+                                SizedBox(height: size.height * 0.01),
+                                title("Estado Civil"),
+                                DropDownWithSearch(
+                                  searchController: _stateCivil,
+                                ),
+                                SizedBox(height: size.height * 0.03),
+                              ],
+                            ),
+                            isActive: _currentStep >= 0,
+                            state: _currentStep >= 1
+                                ? StepState.complete
+                                : StepState.disabled),
+                      ],
                     ),
-                    SizedBox(height: size.height * 0.03),
-                  ],
-                ),
+                  ),
+                  SizedBox(height: size.height * 0.03),
+                ],
               ),
             ),
           ),

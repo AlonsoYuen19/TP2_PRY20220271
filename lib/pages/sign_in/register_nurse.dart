@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:ulcernosis/services/nurse_services.dart';
-import 'package:ulcernosis/utils/widgets/background_figure.dart';
 import '../../shared/user_prefs.dart';
 import '../../utils/helpers/constant_variables.dart';
 import '../../utils/widgets/DropDowns/drop_down_aux.dart';
@@ -56,14 +55,17 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
   }
 
   Widget title(String title) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: paddingHori, vertical: 5),
-      child: Text(
-        title,
-        style: Theme.of(context)
-            .textTheme
-            .bodyMedium!
-            .copyWith(color: Theme.of(context).colorScheme.onSecondary),
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 5),
+        child: Text(
+          title,
+          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+              color: Theme.of(context).colorScheme.tertiary,
+              fontSize: 17,
+              fontWeight: FontWeight.w500),
+        ),
       ),
     );
   }
@@ -188,7 +190,6 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       body: Stack(children: [
-        registerBackgroundFigure(context),
         Center(
           child: SingleChildScrollView(
             child: SafeArea(
@@ -273,7 +274,6 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
                               content: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  title("Nombre Completo"),
                                   GetTextFormField(
                                       labelText: "Nombre Completo",
                                       placeholder: name,
@@ -289,7 +289,6 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
                                     color: Colors.grey,
                                   ),
                                   SizedBox(height: size.height * 0.01),
-                                  title("Contraseña"),
                                   GetTextFormField(
                                     labelText: "Contraseña",
                                     placeholder: password,
@@ -303,7 +302,6 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
                                     thickness: 1.3,
                                     color: Colors.grey,
                                   ),
-                                  title("Correo Electrónico"),
                                   GetTextFormField(
                                       labelText: "Correo",
                                       placeholder: email,
@@ -319,7 +317,6 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
                                     color: Colors.grey,
                                   ),
                                   SizedBox(height: size.height * 0.01),
-                                  title("Telefono	"),
                                   GetTextFormField(
                                       labelText: "Telefono",
                                       placeholder: phone,
@@ -330,7 +327,6 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
                                       obscureText: false,
                                       controllerr: _phone),
                                   SizedBox(height: size.height * 0.01),
-                                  title("CEP	"),
                                   GetTextFormField(
                                       labelText: "CEP",
                                       placeholder: cep,
@@ -362,7 +358,6 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
                                                   .onSecondary))),
                               content: Column(
                                 children: [
-                                  title("Dirección"),
                                   GetTextFormField(
                                       labelText: "Dirección",
                                       placeholder: address,
@@ -377,7 +372,6 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
                                     color: Colors.grey,
                                   ),
                                   SizedBox(height: size.height * 0.01),
-                                  title("Dni"),
                                   GetTextFormField(
                                       labelText: "Dni",
                                       placeholder: dni,
@@ -392,7 +386,6 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
                                     color: Colors.grey,
                                   ),
                                   SizedBox(height: size.height * 0.01),
-                                  title("Edad"),
                                   GetTextFormField(
                                       labelText: "Edad",
                                       placeholder: age,

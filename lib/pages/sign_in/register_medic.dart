@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:ulcernosis/services/medic_service.dart';
-import 'package:ulcernosis/utils/widgets/background_figure.dart';
 import '../../shared/user_prefs.dart';
 import '../../utils/helpers/constant_variables.dart';
 import '../../utils/widgets/DropDowns/drop_down.dart';
@@ -52,19 +51,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     super.dispose();
   }
 
-  Widget title(String title) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: paddingHori, vertical: 5),
-      child: Text(
-        title,
-        style: Theme.of(context)
-            .textTheme
-            .bodyMedium!
-            .copyWith(color: Theme.of(context).colorScheme.onSecondary),
-      ),
-    );
-  }
-
   tapped(int step) {
     setState(() {
       _currentStep = step;
@@ -91,12 +77,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
     final size = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      child: Column(
         children: [
           if (_currentStep > 0) ...[
             SizedBox(
-              width: size.width * 0.35,
+              width: size.width * 0.85,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.grey, elevation: 0),
@@ -110,12 +95,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
               ),
             ),
+            const SizedBox(height: 10),
             SizedBox(
-              width: size.width * 0.35,
+              width: size.width * 0.85,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   elevation: 0,
-                  backgroundColor: const Color.fromRGBO(14, 26, 48, 1),
+                  backgroundColor: Color.fromRGBO(255, 161, 158, 1),
                 ),
                 onPressed: () async {
                   final isValidForm = _formKey.currentState!.validate();
@@ -154,12 +140,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
           ] else if (_currentStep == 0) ...[
             SizedBox(
-              width: size.width * 0.35,
+              width: size.width * 0.85,
               child: ElevatedButton(
                 onPressed: details.onStepContinue,
                 style: ElevatedButton.styleFrom(
                     elevation: 0,
-                    backgroundColor: Color.fromRGBO(14, 26, 48, 1)),
+                    backgroundColor: Color.fromRGBO(255, 161, 158, 1)),
                 child: Text('Siguiente',
                     style: Theme.of(context).textTheme.labelMedium!.copyWith(
                           color: Theme.of(context).colorScheme.onTertiary,
@@ -172,12 +158,28 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
+  Widget title(String title) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 5),
+        child: Text(
+          title,
+          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+              color: Theme.of(context).colorScheme.tertiary,
+              fontSize: 17,
+              fontWeight: FontWeight.w500),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Stack(children: [
-        registerBackgroundFigure(context),
         Center(
           child: SingleChildScrollView(
             child: SafeArea(
@@ -262,7 +264,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               content: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  title("Nombre Completo"),
                                   GetTextFormField(
                                       labelText: "Nombre Completo",
                                       placeholder: name,
@@ -278,7 +279,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     color: Colors.grey,
                                   ),
                                   SizedBox(height: size.height * 0.01),
-                                  title("Contraseña"),
                                   GetTextFormField(
                                     labelText: "Contraseña",
                                     placeholder: password,
@@ -292,7 +292,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     thickness: 1.3,
                                     color: Colors.grey,
                                   ),
-                                  title("Correo Electrónico"),
                                   GetTextFormField(
                                       labelText: "Correo",
                                       placeholder: email,
@@ -308,7 +307,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     color: Colors.grey,
                                   ),
                                   SizedBox(height: size.height * 0.01),
-                                  title("Telefono	"),
                                   GetTextFormField(
                                       labelText: "Telefono",
                                       placeholder: phone,
@@ -319,7 +317,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       obscureText: false,
                                       controllerr: _phone),
                                   SizedBox(height: size.height * 0.01),
-                                  title("CMP"),
                                   GetTextFormField(
                                       labelText: "CMP",
                                       placeholder: cmp,
@@ -351,7 +348,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                                   .onSecondary))),
                               content: Column(
                                 children: [
-                                  title("Dirección"),
                                   GetTextFormField(
                                       labelText: "Dirección",
                                       placeholder: address,
@@ -366,7 +362,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     color: Colors.grey,
                                   ),
                                   SizedBox(height: size.height * 0.01),
-                                  title("Dni"),
                                   GetTextFormField(
                                       labelText: "Dni",
                                       placeholder: dni,
@@ -381,7 +376,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     color: Colors.grey,
                                   ),
                                   SizedBox(height: size.height * 0.01),
-                                  title("Edad"),
                                   GetTextFormField(
                                       labelText: "Edad",
                                       placeholder: age,

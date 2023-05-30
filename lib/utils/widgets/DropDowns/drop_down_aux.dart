@@ -28,20 +28,24 @@ class _DropDownWithAuxiliarState extends State<DropDownWithAuxiliar> {
       children: [
         Container(
           decoration: BoxDecoration(
-            borderRadius: const BorderRadius.all(Radius.circular(20)),
-            color: Theme.of(context).colorScheme.onBackground,
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
+            color: Colors.white,
             border: Border.all(
-                width: 5,
+                width: 1.2,
                 //color: newColor,
-                color: newColor2),
+                color: Color.fromRGBO(14, 26, 48, 1)),
           ),
           child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40),
+              padding: const EdgeInsets.symmetric(horizontal: 18),
               child: DropdownButton<String>(
-                dropdownColor: Color.fromRGBO(14, 26, 48, 1),
-                focusColor: Theme.of(context).colorScheme.secondary,
-                borderRadius: const BorderRadius.all(Radius.circular(20)),
-                icon: const Icon(Icons.person),
+                dropdownColor: Colors.white,
+                underline: const SizedBox(),
+                focusColor: Colors.green,
+                borderRadius: const BorderRadius.all(Radius.circular(10)),
+                icon: const Icon(
+                  Icons.arrow_drop_down,
+                  color: Color.fromRGBO(14, 26, 48, 1),
+                ),
                 iconSize: 30,
                 value: widget.searchController.text,
                 items: <String>['Si', 'No']
@@ -50,7 +54,8 @@ class _DropDownWithAuxiliarState extends State<DropDownWithAuxiliar> {
                     value: value,
                     child: Text(
                       value,
-                      style: const TextStyle(fontSize: 20, color: Colors.white),
+                      style: const TextStyle(
+                          fontSize: 16, color: Color.fromRGBO(14, 26, 48, 1)),
                     ),
                   );
                 }).toList(),
@@ -63,8 +68,8 @@ class _DropDownWithAuxiliarState extends State<DropDownWithAuxiliar> {
                   print(widget.searchController.text);
                 },
                 style: TextStyle(
-                  color: Theme.of(context).colorScheme.onBackground,
-                  fontSize: 19,
+                  color: Colors.white,
+                  fontSize: 16,
                 ),
                 isExpanded: true,
                 iconEnabledColor: Colors.white,
