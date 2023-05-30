@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:ulcernosis/models/patient.dart';
 import 'package:ulcernosis/models/users.dart';
@@ -38,6 +39,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   late Future _myFuture;
   String selectedImagePath = '';
+  List<Patient> patientsLength = [];
   Users users = Users();
   Nurse nurse = Nurse();
   Uint8List avatar = Uint8List(0);
@@ -46,6 +48,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future init() async {
     final userService = Provider.of<UsersAuthService>(context, listen: false);
     final nurseService = NurseAuthService();
+    final patientService = PatientService();
     //final patientService = Provider.of<PatientService>(context, listen: false);
     users = (await userService.getUsersById())!;
 
@@ -56,6 +59,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       nurse = (await nurseService.getNurseById(context))!;
       avatar2 = (await userService.getNurseImageFromBackend());
     }
+    patientsLength = (await patientService.getPatientsByMedics());
     //avatar3 = (await patientService.getAvatarPatient());
     setState(() {});
   }
@@ -86,7 +90,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const LoaderProfileScreen();
             }
-            return AppBarDrawer(isProfile: true, child: profilePage());
+            return AppBarDrawer(
+                isProfile: true,
+                title: "Mi Perfil",
+                color: Theme.of(context).colorScheme.surface,
+                child: profilePage());
           },
         ));
   }
@@ -320,10 +328,108 @@ class _ProfileScreenState extends State<ProfileScreen> {
         });
   }
 
+  Widget rowWidget(String icon, String icon2, String text1, String text2,
+      String text3, String text4) {
+    final size = MediaQuery.of(context).size;
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(
+          width: 25,
+        ),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SvgPicture.asset(
+                icon,
+                fit: BoxFit.cover,
+                height: size.shortestSide > 500 ? 24 : 20,
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    text1,
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        color: Theme.of(context).colorScheme.tertiary,
+                        fontSize: 17),
+                  ),
+                  Text(
+                    text2,
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        color: Theme.of(context).colorScheme.outline,
+                        fontSize: 17),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        SizedBox(
+          width: size.shortestSide > 500 ? 60 : 35,
+        ),
+        Flexible(
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SvgPicture.asset(
+                  icon2,
+                  fit: BoxFit.cover,
+                  height: size.shortestSide > 500 ? 24 : 20,
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Container(
+                  constraints: BoxConstraints(
+                    maxWidth: size.shortestSide > 500 ? 250 : 170,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        text3,
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            color: Theme.of(context).colorScheme.tertiary,
+                            fontSize: 17,
+                            overflow: TextOverflow.ellipsis),
+                      ),
+                      Text(
+                        text4,
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                              color: Theme.of(context).colorScheme.outline,
+                              fontSize: 17,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                        maxLines:
+                            2, // Limita el número máximo de líneas del texto
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget profilePage() {
+    final size = MediaQuery.of(context).size;
     String role = "";
     if (users.role == 'ROLE_MEDIC') {
-      role = "Médico especialista";
+      role = "Médico\nespecialista";
     } else {
       role = "Enfermero especialista";
     }
@@ -335,59 +441,45 @@ class _ProfileScreenState extends State<ProfileScreen> {
       equipoMedico = "¡Usted actualmente no se encuentra en un equipo médico!";
       colorEquipoMedico = Colors.redAccent;
     }
-    final size = MediaQuery.of(context).size;
     final patientService = PatientService();
     return SingleChildScrollView(
       physics: BouncingScrollPhysics(),
-      child: Column(children: [
-        SizedBox(
-          height: users.role == "ROLE_NURSE" ? 90 : 12,
+      child: Stack(children: [
+        Container(
+          height: size.height * 0.28,
+          width: double.infinity,
+          decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface,
+              borderRadius: const BorderRadius.vertical(
+                  bottom: Radius.elliptical(400, 80))),
         ),
-        Card(
-          color: Colors.grey[150],
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15.0),
+        Column(children: [
+          SizedBox(
+            height: users.role == "ROLE_NURSE" ? 90 : 12,
           ),
-          margin: const EdgeInsets.symmetric(horizontal: 35),
-          elevation: 10,
-          child: Padding(
+          Padding(
             padding: const EdgeInsets.all(12.0),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: ClipOval(
-                    child: Container(
-                      color: Theme.of(context).colorScheme.tertiary,
-                      child: IconButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, 'editProfile');
-                        },
-                        icon: const Icon(Icons.edit, size: 26),
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
                 Container(
-                  margin: const EdgeInsets.only(left: 40.0),
+                  margin: EdgeInsets.only(left: size.width * 0.2),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       ClipOval(
                         child: Container(
-                          color: Theme.of(context).colorScheme.tertiary,
+                          color: Theme.of(context).colorScheme.background,
                           //margin: const EdgeInsets.only(left: 8.0),
                           child: IconButton(
                             onPressed: () {
                               selectImage();
                               setState(() {});
                             },
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.add_a_photo,
-                              size: 26,
-                              color: Colors.white,
+                              size: 30,
+                              color: Theme.of(context).colorScheme.tertiary,
                             ),
                           ),
                         ),
@@ -401,13 +493,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               backgroundImage: AssetImage(prefs.idMedic == 0
                                   ? "assets/images/enfermero-logo.png"
                                   : "assets/images/doctor-logo.png"),
-                              radius: 55,
+                              radius: 50,
                             )
                           : ClipOval(
                               child: Image.memory(
                                   prefs.idMedic != 0 ? avatar : avatar2,
-                                  height: size.width * 0.3,
-                                  width: size.width * 0.3,
+                                  height: size.width * 0.28,
+                                  width: size.width * 0.28,
                                   fit: BoxFit.cover),
                             ),
                     ],
@@ -422,113 +514,47 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.displayMedium!.copyWith(
                         fontSize: 24,
+                        fontWeight: FontWeight.w600,
                         color: Theme.of(context).colorScheme.onSecondary),
                   ),
                 ),
                 const SizedBox(
+                  height: 15,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, 'editProfile');
+                  },
+                  child: Text(
+                    "Editar Datos",
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.displayMedium!.copyWith(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w800,
+                        color:
+                            Theme.of(context).colorScheme.onSecondaryContainer),
+                  ),
+                ),
+                SizedBox(
+                  height: size.height * 0.065,
+                ),
+                rowWidget(
+                    "assets/svgImages/especialidad.svg",
+                    "assets/svgImages/dni.svg",
+                    "Especialdad",
+                    role,
+                    "DNI",
+                    users.dni),
+                const SizedBox(
                   height: 10,
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(2.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.medical_services,
-                        color: Theme.of(context).colorScheme.tertiary,
-                        size: 20,
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        role,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium!
-                            .copyWith(color: Colors.black87, fontSize: 20),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 2,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(2.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.article_outlined,
-                        color: Theme.of(context).colorScheme.tertiary,
-                        size: 20,
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        users.dni,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium!
-                            .copyWith(color: Colors.black87, fontSize: 20),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 2,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(2.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.house,
-                        color: Theme.of(context).colorScheme.tertiary,
-                        size: 20,
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        users.address,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium!
-                            .copyWith(color: Colors.black87, fontSize: 20),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 2,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(2.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.phone,
-                        color: Theme.of(context).colorScheme.tertiary,
-                        size: 20,
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        users.phone,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium!
-                            .copyWith(color: Colors.black87, fontSize: 20),
-                      ),
-                    ],
-                  ),
-                ),
+                rowWidget(
+                    "assets/svgImages/celular.svg",
+                    "assets/svgImages/direccion.svg",
+                    "Celular",
+                    users.phone,
+                    "Dirección",
+                    users.address),
                 const SizedBox(
                   height: 20,
                 ),
@@ -548,96 +574,98 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ],
             ),
           ),
-        ),
-        const SizedBox(
-          height: 15,
-        ),
-        if (users.role == "ROLE_MEDIC") ...[
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 35, vertical: 5),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  "Lista de Pacientes",
-                  style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                      color: Theme.of(context).colorScheme.tertiary,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                users.role == "ROLE_MEDIC"
-                    ? InkWell(
-                        onTap: () {
-                          Navigator.pushNamed(context, 'registerPatient');
+          const Divider(
+            height: 0,
+            thickness: 1,
+          ),
+          if (users.role == "ROLE_MEDIC") ...[
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 35, vertical: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    "Lista de Pacientes (${patientsLength.length})",
+                    style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                        color: Theme.of(context).colorScheme.tertiary,
+                        fontSize: 21,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  users.role == "ROLE_MEDIC"
+                      ? InkWell(
+                          onTap: () {
+                            Navigator.pushNamed(context, 'registerPatient');
+                          },
+                          child: Icon(
+                            Icons.add_circle_outline,
+                            color: Theme.of(context).colorScheme.tertiary,
+                            size: 30,
+                          ),
+                        )
+                      : Container(),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 35.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Flexible(
+                    child: Text(
+                      "Seleccione el icono de búsqueda\npara filtrar por nombres del\npaciente",
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          color: Theme.of(context).colorScheme.outline,
+                          fontSize: 16),
+                    ),
+                  ),
+                  SizedBox(
+                    width: size.width * 0.08,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.background,
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                    child: IconButton(
+                        style: ButtonStyle(
+                          shape:
+                              MaterialStateProperty.all(const CircleBorder()),
+                          padding: MaterialStateProperty.all(
+                              const EdgeInsets.symmetric(
+                            horizontal: 8.0,
+                            vertical: 8.0,
+                          )),
+                        ),
+                        onPressed: () async {
+                          if (users.role == "ROLE_MEDIC") {
+                            await showSearch(
+                              context: context,
+                              delegate: SearchUserPatient(isMedic: true),
+                            );
+                          } else {
+                            await showSearch(
+                              context: context,
+                              delegate: SearchUserPatient(isMedic: false),
+                            );
+                          }
                         },
-                        child: Icon(
-                          Icons.add_circle_outline,
+                        icon: Icon(
+                          Icons.search,
                           color: Theme.of(context).colorScheme.tertiary,
                           size: 30,
-                        ),
-                      )
-                    : Container(),
-              ],
-            ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Flexible(
-                  child: Text(
-                    "Seleccione el icono de búsqueda\npara filtrar por nombres del\npaciente",
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        color: Theme.of(context).colorScheme.onSecondary),
-                  ),
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.tertiary,
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                  child: IconButton(
-                      style: ButtonStyle(
-                        shape: MaterialStateProperty.all(const CircleBorder()),
-                        padding: MaterialStateProperty.all(
-                            const EdgeInsets.symmetric(
-                          horizontal: 8.0,
-                          vertical: 8.0,
                         )),
-                      ),
-                      onPressed: () async {
-                        if (users.role == "ROLE_MEDIC") {
-                          await showSearch(
-                            context: context,
-                            delegate: SearchUserPatient(isMedic: true),
-                          );
-                        } else {
-                          await showSearch(
-                            context: context,
-                            delegate: SearchUserPatient(isMedic: false),
-                          );
-                        }
-                      },
-                      icon: Icon(
-                        Icons.search,
-                        color: Theme.of(context).colorScheme.onTertiary,
-                        size: 30,
-                      )),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            height: 300,
-            child: FutureBuilder<List<Patient>>(
+            FutureBuilder<List<Patient>>(
               future: patientService.getPatientsByMedics(),
               builder: (context, snapshot) {
                 List<Patient>? data = snapshot.data;
@@ -677,8 +705,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             .copyWith(color: Colors.red)),
                   );
                 }
-                return ListView.builder(
-                    scrollDirection: Axis.horizontal,
+                return ListView.separated(
+                    separatorBuilder: (context, index) => const SizedBox(
+                          height: 5,
+                        ),
+                    scrollDirection: Axis.vertical,
                     physics: const BouncingScrollPhysics(),
                     shrinkWrap: true,
                     itemCount:
@@ -689,31 +720,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       String dia = data[index].createdAt.substring(8, 10);
                       //mapa de meses
                       mes = meses[mes]!;
-                      return Padding(
-                        padding: const EdgeInsets.only(
-                            bottom: 15, left: 15, right: 15),
-                        child: FancyCard(
-                          image: Image.asset("assets/images/patient-logo.png"),
-                          //image2: avatar3,
-                          title: snapshot.data![index].fullName,
-                          date: "$dia de $mes del $anio",
-                          function: () {
-                            //id para enviar a la siguiente pantalla
-                            prefs.idPatient = snapshot.data![index].id;
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => PatientProfileScreen(),
-                              ),
-                            );
-                          },
-                        ),
+                      return FancyCard(
+                        image: Image.asset("assets/images/patient-logo.png"),
+                        //image2: avatar3,
+                        title: snapshot.data![index].fullName,
+                        date: "Fecha: $mes $dia, $anio",
+                        function: () {
+                          //id para enviar a la siguiente pantalla
+                          prefs.idPatient = snapshot.data![index].id;
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PatientProfileScreen(),
+                            ),
+                          );
+                        },
                       );
                     });
               },
             ),
-          ),
-        ]
+          ]
+        ]),
       ]),
     );
   }

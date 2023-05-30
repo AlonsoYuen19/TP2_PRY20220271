@@ -106,33 +106,61 @@ class _TabBarFilterState extends State<TabBarFilter>
         length: 4,
         child: Scaffold(
           body: NestedScrollView(
+            //physics: NeverScrollableScrollPhysics(),
             floatHeaderSlivers: true,
             controller: _scrollController,
             headerSliverBuilder:
                 (BuildContext context, bool innerBoxIsScrolled) {
               return <Widget>[
                 SliverAppBar(
+                  leading: Padding(
+                    padding:
+                        const EdgeInsets.only(left: 20, top: 20, bottom: 20),
+                    child: ElevatedButton(
+                      child: Icon(
+                        Icons.arrow_back_outlined,
+                        color: Theme.of(context).colorScheme.onTertiary,
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      style: ButtonStyle(
+                        padding: MaterialStateProperty.all(
+                            const EdgeInsets.symmetric(
+                          horizontal: 8.0,
+                          vertical: 8.0,
+                        )),
+                        backgroundColor: MaterialStateProperty.all(
+                            Theme.of(context)
+                                .colorScheme
+                                .onSecondaryContainer), // <-- Button color
+                      ),
+                    ),
+                  ),
+                  leadingWidth: 75,
                   toolbarHeight: MediaQuery.of(context).size.height * 0.11,
                   title: Text('Filtrado por Etapa',
                       style: TextStyle(
-                          color: Theme.of(context).colorScheme.onSecondary,
+                          color: Theme.of(context).colorScheme.tertiary,
                           fontSize: 22,
                           fontWeight: FontWeight.bold)),
                   centerTitle: true,
                   backgroundColor: Theme.of(context).colorScheme.onTertiary,
                   elevation: 10.0,
-                  pinned: true,
+                  pinned: false,
                   floating: true,
                   forceElevated: innerBoxIsScrolled,
                   bottom: TabBar(
                     controller: tabController,
                     tabs: tabss,
                     indicator: BoxDecoration(
-                      color: Theme.of(context).colorScheme.tertiary,
-                      borderRadius: BorderRadius.circular(16.0),
+                      color: Theme.of(context).colorScheme.onSecondaryContainer,
+                      borderRadius: BorderRadius.circular(8.0),
                     ),
                     labelColor: Colors.white,
-                    unselectedLabelColor: Colors.black,
+                    unselectedLabelColor: Theme.of(context)
+                        .colorScheme
+                        .tertiary, // <-- label color
                   ),
                 )
               ];
@@ -144,7 +172,7 @@ class _TabBarFilterState extends State<TabBarFilter>
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       return TabBarView(
-                        physics: const BouncingScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         controller: tabController,
                         children: const [
                           //Primera Etapa

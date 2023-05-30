@@ -27,6 +27,7 @@ class _DiagnosisPageByPatientState extends State<DiagnosisPageByPatient> {
   Diagnosis? diagnosis = Diagnosis();
   Patient patient = Patient();
   String rol = "";
+  String porcentaje = "";
   final diagnosisService = DiagnosisService();
   final usersService = UsersAuthService();
   final patientService = PatientService();
@@ -62,6 +63,15 @@ class _DiagnosisPageByPatientState extends State<DiagnosisPageByPatient> {
     } else {
       rol = "Enfermero";
     }
+    if (diagnosis!.stagePredicted == "1") {
+      porcentaje = diagnosis!.stage1;
+    } else if (diagnosis!.stagePredicted == "2") {
+      porcentaje = diagnosis!.stage2;
+    } else if (diagnosis!.stagePredicted == "3") {
+      porcentaje = diagnosis!.stage3;
+    } else if (diagnosis!.stagePredicted == "4") {
+      porcentaje = diagnosis!.stage4;
+    }
     final size = MediaQuery.of(context).size;
     return WillPopScope(
       onWillPop: () async {
@@ -86,79 +96,111 @@ class _DiagnosisPageByPatientState extends State<DiagnosisPageByPatient> {
               return Stack(
                 children: [
                   SafeArea(
-                      child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Stack(
-                          children: [
-                            Container(
-                              height: MediaQuery.of(context).size.height * 0.2,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                  color: Theme.of(context).colorScheme.tertiary,
-                                  borderRadius: const BorderRadius.only(
-                                      bottomRight: Radius.circular(100))),
-                              child: Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 24.0),
-                                  child: Text(
-                                    "El $rol ${diagnosis!.creatorName} ha diagnosticado al paciente ${patient.fullName.split(" ")[0]} brindando el siguiente resultado",
-                                    textAlign: TextAlign.center,
-                                    style: const TextStyle(
-                                        fontSize: 18, color: Colors.white),
-                                  ),
-                                ),
+                      child: Column(
+                    children: [
+                      const SizedBox(height: 20),
+                      Align(
+                          alignment: Alignment.topCenter,
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 24, vertical: 20),
+                            child: Text(
+                              'Resultado',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.tertiary,
+                                fontSize: 21,
+                                fontWeight: FontWeight.w600,
                               ),
+                            ),
+                          )),
+                      const SizedBox(height: 20),
+                      Container(
+                        //height: size.height * 0.11,
+                        width: size.width * 0.8,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 20),
+                        decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.tertiary,
+                            borderRadius: BorderRadius.circular(8)),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Etapa: ${diagnosis!.stagePredicted}",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 24,
+                                  color:
+                                      Theme.of(context).colorScheme.onTertiary),
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              "${porcentaje.substring(0, 5)}% de predicción",
+                              textAlign: TextAlign.start,
+                              style: TextStyle(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w400,
+                                  color:
+                                      Theme.of(context).colorScheme.onTertiary),
                             ),
                           ],
                         ),
-                        const SizedBox(height: 20),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: size.width * 0.1),
-                            child: Text("Resultados",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    color: Theme.of(context).colorScheme.onSecondary,
-                                    fontWeight: FontWeight.bold)),
+                      ),
+                      const SizedBox(height: 20),
+                      Container(
+                        width: size.width * 0.85,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 10),
+                        child: Text("Información Adicional",
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: Theme.of(context).colorScheme.tertiary,
+                                fontWeight: FontWeight.bold)),
+                      ),
+                      //const SizedBox(height: 10),
+                      Container(
+                        width: size.width * 0.84,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 10),
+                        child: Text(
+                          "El $rol ${diagnosis!.creatorName} ha diagnosticado al paciente ${patient.fullName.split(" ")[0]} con la condición médica en etapa ${diagnosis!.stagePredicted} de su úlcera por presión. Según el diagnóstico, la probabilidad de que el paciente se encuentre en esa etapa es de un ${porcentaje.substring(0, 5)}% de predicción",
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              color: Theme.of(context).colorScheme.outline),
+                        ),
+                      ),
+                      const SizedBox(height: 30),
+                      Expanded(
+                        child: Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Container(
+                            width: size.width * 0.85,
+                            margin: EdgeInsets.only(bottom: size.height * 0.05),
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    elevation: 0,
+                                    backgroundColor: Theme.of(context)
+                                        .colorScheme
+                                        .onSecondaryContainer),
+                                onPressed: () {
+                                  Navigator.pushNamedAndRemoveUntil(
+                                    context,
+                                    'home',
+                                    (route) => false,
+                                  );
+                                },
+                                child: const Text(
+                                  "Aceptar",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(fontSize: 18),
+                                )),
                           ),
                         ),
-                        const SizedBox(height: 30),
-                        SizedBox(
-                          width: size.width * 0.85,
-                          height: size.height * 0.5,
-                          child: pieChart(),
-                        ),
-                        const SizedBox(
-                          height: 25,
-                        ),
-                        SizedBox(
-                          width: 150,
-                          child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: Theme.of(context).colorScheme.onSecondary),
-                              onPressed: () {
-                                Navigator.pushNamedAndRemoveUntil(
-                                  context,
-                                  'home',
-                                  (route) => false,
-                                );
-                              },
-                              child: const Text(
-                                "Aceptar",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(fontSize: 18),
-                              )),
-                        ),
-                        const SizedBox(
-                          height: 25,
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ))
                 ],
               );
@@ -218,7 +260,8 @@ class _DiagnosisPageByPatientState extends State<DiagnosisPageByPatient> {
                   fontSize: 18),
             ),
             chartValuesOptions: ChartValuesOptions(
-              chartValueBackgroundColor: Theme.of(context).colorScheme.onSecondary,
+              chartValueBackgroundColor:
+                  Theme.of(context).colorScheme.onSecondary,
               chartValueStyle: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,

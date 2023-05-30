@@ -79,7 +79,8 @@ class _HomeScreenState extends State<HomeScreen> {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const LoaderHomeScreen();
             }
-            return AppBarDrawer(isHome: true, child: homePage());
+            return AppBarDrawer(
+                isHome: true, title: "Últimos Diagnósticos", child: homePage());
           },
         ));
   }
@@ -111,18 +112,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           decoration: TextDecoration.underline)))
             ],
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-                horizontal: paddingListViewHori + 14,
-                vertical: paddingListViewVerti),
-            child: Text(
-              "Últimos Diagnósticos",
-              style: Theme.of(context)
-                  .textTheme
-                  .labelLarge!
-                  .copyWith(color: Theme.of(context).colorScheme.tertiary),
-            ),
-          ),
           const SizedBox(
             height: 10,
           ),
@@ -133,14 +122,15 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 Flexible(
                   child: Text(
-                    "Seleccione el icono de búsqueda\npara filtrar por nombres del\npaciente",
+                    "Seleccione el icono de búsqueda\npara filtrar, de acuedo al nombre\ndel paciente",
                     style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        color: Theme.of(context).colorScheme.onSecondary),
+                        color: Theme.of(context).colorScheme.onSecondary,
+                        fontSize: 16.5),
                   ),
                 ),
                 Container(
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.tertiary,
+                    color: Theme.of(context).colorScheme.background,
                     borderRadius: BorderRadius.circular(50),
                   ),
                   child: IconButton(
@@ -167,7 +157,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       },
                       icon: Icon(
                         Icons.search,
-                        color: Theme.of(context).colorScheme.onTertiary,
+                        color: Theme.of(context).colorScheme.tertiary,
                         size: 30,
                       )),
                 )

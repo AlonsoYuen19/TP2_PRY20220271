@@ -36,7 +36,7 @@ class SearchUserPatient extends SearchDelegate {
   @override
   Widget buildResults(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.all(16.0),
       child: FutureBuilder<List<Patient>>(
           future: _patientList.getPatientsByMedics(query: query),
           builder: (context, snapshot) {
@@ -84,8 +84,7 @@ class SearchUserPatient extends SearchDelegate {
                     child: FancyCardSearchPatient(
                       image: Image.asset("assets/images/patient-logo.png"),
                       title: snapshot.data![index].fullName,
-                      date: snapshot.data![index].email,
-                      date2: "$dia de $mes del $anio",
+                      date: "Fecha: $mes $dia, $anio",
                       function: () {
                         prefs.idPatient = snapshot.data![index].id;
                         Navigator.pushReplacement(

@@ -296,6 +296,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   GetTextFormField(
                                       labelText: "Correo",
                                       placeholder: email,
+                                      maxLength: 20,
                                       icon: const Icon(Icons.email),
                                       keyboardType: TextInputType.emailAddress,
                                       validator: validEmail(

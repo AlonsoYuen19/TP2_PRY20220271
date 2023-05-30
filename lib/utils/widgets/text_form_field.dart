@@ -13,6 +13,7 @@ class GetTextFormField extends StatefulWidget {
   final bool obscureText;
   final bool isRegisterPassword;
   final bool isEditProfile;
+  final int maxLength;
   const GetTextFormField(
       {super.key,
       required this.labelText,
@@ -23,7 +24,7 @@ class GetTextFormField extends StatefulWidget {
       this.validator,
       this.obscureText = false,
       this.isRegisterPassword = true,
-      this.isEditProfile = false});
+      this.isEditProfile = false,this.maxLength=30});
 
   @override
   State<GetTextFormField> createState() => _GetTextFormFieldState();
@@ -195,7 +196,7 @@ class _GetTextFormFieldState extends State<GetTextFormField> {
                   ? null
                   : const EdgeInsets.symmetric(horizontal: paddingHori),
               child: TextFormField(
-                maxLength: 30,
+                maxLength: widget.maxLength,
                 focusNode: _focusNode,
                 autofocus: false,
                 validator: widget.validator,

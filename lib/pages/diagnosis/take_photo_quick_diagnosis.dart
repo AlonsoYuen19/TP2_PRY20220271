@@ -70,12 +70,12 @@ class _TakePhotoQuickDiagnosisState extends State<TakePhotoQuickDiagnosis> {
       child: Scaffold(
         body: Stack(children: [
           Container(
-            height: MediaQuery.of(context).size.height * 0.25,
+            height: MediaQuery.of(context).size.height * 0.3,
             width: double.infinity,
             decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.onSecondaryContainer,
-                borderRadius:
-                    const BorderRadius.only(bottomRight: Radius.circular(100))),
+                color: Theme.of(context).colorScheme.surface,
+                borderRadius: const BorderRadius.vertical(
+                    bottom: Radius.elliptical(400, 80))),
           ),
           SafeArea(
               child: SingleChildScrollView(
@@ -83,16 +83,17 @@ class _TakePhotoQuickDiagnosisState extends State<TakePhotoQuickDiagnosis> {
               const SizedBox(
                 height: 30,
               ),
-              const Align(
+              Align(
                   alignment: Alignment.topLeft,
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    padding: EdgeInsets.symmetric(horizontal: 24),
                     child: Text(
-                      'Toma la foto de la herida',
+                      'Capture la imagen de la úlcera, dentro del recuadro',
+                      textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.tertiary,
+                        fontSize: 21,
+                        fontWeight: FontWeight.w400,
                       ),
                     ),
                   )),
@@ -124,12 +125,17 @@ class _TakePhotoQuickDiagnosisState extends State<TakePhotoQuickDiagnosis> {
                                     height: 40,
                                   ),
                                   ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        elevation: 0,
+                                        backgroundColor: Theme.of(context)
+                                            .colorScheme
+                                            .onSecondaryContainer),
                                     onPressed: _isPressed == false
                                         ? handleButton
                                         : null,
                                     child: _isPressed == true
                                         ? Container(
-                                            width: 280,
+                                            width: size.width * 0.74,
                                             child: Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
@@ -147,20 +153,21 @@ class _TakePhotoQuickDiagnosisState extends State<TakePhotoQuickDiagnosis> {
                                                     style: TextStyle(
                                                         color: Color.fromRGBO(
                                                             114, 146, 171, 1),
-                                                        fontSize: 20,
+                                                        fontSize: 16,
                                                         fontWeight:
                                                             FontWeight.bold)),
                                               ],
                                             ),
                                           )
-                                        : const Padding(
+                                        : Container(
+                                            width: size.width * 0.75,
                                             padding: EdgeInsets.symmetric(
                                                 horizontal: 20),
-                                            child: Text('Toma la foto',
+                                            child: Text('Capture la imagen',
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                     color: Colors.white,
-                                                    fontSize: 25,
+                                                    fontSize: 16,
                                                     fontWeight:
                                                         FontWeight.bold)),
                                           ),
@@ -168,18 +175,24 @@ class _TakePhotoQuickDiagnosisState extends State<TakePhotoQuickDiagnosis> {
                                   const SizedBox(height: 20),
                                   ElevatedButton(
                                     style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.redAccent),
+                                        elevation: 1.2,
+                                        backgroundColor: Theme.of(context)
+                                            .colorScheme
+                                            .surface),
                                     onPressed: () {
                                       Navigator.pop(context);
                                     },
-                                    child: const Padding(
+                                    child: Container(
+                                      width: size.width * 0.75,
                                       padding:
                                           EdgeInsets.symmetric(horizontal: 35),
                                       child: Text('Regresar',
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 25,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSecondaryContainer,
+                                              fontSize: 16,
                                               fontWeight: FontWeight.bold)),
                                     ),
                                   ),
@@ -220,7 +233,7 @@ class _TakePhotoQuickDiagnosisState extends State<TakePhotoQuickDiagnosis> {
               setState(() {
                 _isPressed = false;
               });
-              Navigator.push(
+              Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                       builder: (BuildContext context) =>

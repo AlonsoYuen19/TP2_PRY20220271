@@ -307,6 +307,7 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
                                   GetTextFormField(
                                       labelText: "Correo",
                                       placeholder: email,
+                                      maxLength: 20,
                                       icon: const Icon(Icons.email),
                                       keyboardType: TextInputType.emailAddress,
                                       validator: validEmail(

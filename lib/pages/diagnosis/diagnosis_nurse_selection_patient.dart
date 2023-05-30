@@ -66,7 +66,10 @@ class _DiagnosisScreenState extends State<DiagnosisNurseSelectionScreen> {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const LoaderDiagnosisScreen();
             }
-            return AppBarDrawer(isDiagnosisNurse: true, child: _selectOption());
+            return AppBarDrawer(
+                isDiagnosisNurse: true,
+                title: "Diangósticos",
+                child: _selectOption());
           },
         ));
   }

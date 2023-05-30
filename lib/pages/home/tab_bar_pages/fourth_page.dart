@@ -53,6 +53,7 @@ class _FourthPageState extends State<FourthPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView(
+        physics: BouncingScrollPhysics(),
         children: [
           diagnosis.isEmpty
               ? Container()
@@ -75,7 +76,7 @@ class _FourthPageState extends State<FourthPage> {
                       ),
                       Container(
                         decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.tertiary,
+                          color: Theme.of(context).colorScheme.background,
                           borderRadius: BorderRadius.circular(50),
                         ),
                         child: IconButton(
@@ -105,7 +106,7 @@ class _FourthPageState extends State<FourthPage> {
                             },
                             icon: Icon(
                               Icons.search,
-                              color: Theme.of(context).colorScheme.onTertiary,
+                              color: Theme.of(context).colorScheme.tertiary,
                               size: 30,
                             )),
                       )

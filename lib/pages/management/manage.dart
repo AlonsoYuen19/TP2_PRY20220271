@@ -77,6 +77,7 @@ class _ManageScreenState extends State<ManageScreen> {
             }
             return AppBarDrawer(
                 isManagement: true,
+                title: "Gestión de Equipo Médico",
                 child: users.role == "ROLE_MEDIC" ? managePage() : Container());
           },
         ));

@@ -48,9 +48,9 @@ class _RegisterAttendancePageState extends State<RegisterAttendancePage> {
           height: MediaQuery.of(context).size.height * 0.3,
           width: double.infinity,
           decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.onSecondaryContainer,
-              borderRadius:
-                  const BorderRadius.only(bottomRight: Radius.circular(100))),
+              color: Theme.of(context).colorScheme.surface,
+              borderRadius: const BorderRadius.vertical(
+                  bottom: Radius.elliptical(400, 80))),
         ),
         SafeArea(
             child: SingleChildScrollView(
@@ -60,29 +60,45 @@ class _RegisterAttendancePageState extends State<RegisterAttendancePage> {
             child: Column(children: [
               Row(
                 children: [
-                  InkWell(
-                      child: const Icon(
-                        Icons.arrow_back_ios,
-                        color: Colors.white,
-                        size: 30,
-                      ),
-                      onTap: () => Navigator.pop(context)),
                   SizedBox(
-                    width: size.width * 0.1,
+                    width: size.width * 0.04,
                   ),
-                  const Flexible(
+                  ElevatedButton(
+                    child: Icon(
+                      Icons.arrow_back_outlined,
+                      color: Theme.of(context).colorScheme.onTertiary,
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    style: ButtonStyle(
+                      padding:
+                          MaterialStateProperty.all(const EdgeInsets.symmetric(
+                        horizontal: 12.0,
+                        vertical: 16.0,
+                      )),
+                      backgroundColor: MaterialStateProperty.all(
+                          Theme.of(context)
+                              .colorScheme
+                              .onSecondaryContainer), // <-- Button color
+                    ),
+                  ),
+                  SizedBox(
+                    width: size.width * 0.12,
+                  ),
+                  Flexible(
                     child: Text(
                       "Registro de Citas",
                       style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold),
+                          color: Theme.of(context).colorScheme.tertiary,
+                          fontSize: 21,
+                          fontWeight: FontWeight.w400),
                     ),
                   ),
                 ],
               ),
               const SizedBox(
-                height: 30,
+                height: 35,
               ),
               FutureBuilder(
                   future: delayPage(),

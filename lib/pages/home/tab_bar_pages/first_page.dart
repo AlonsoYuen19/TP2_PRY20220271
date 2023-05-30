@@ -55,6 +55,7 @@ class _FirstPageState extends State<FirstPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView(
+        physics: BouncingScrollPhysics(),
         children: [
           diagnosis.isEmpty
               ? Container()
@@ -78,7 +79,7 @@ class _FirstPageState extends State<FirstPage> {
                       ),
                       Container(
                         decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.tertiary,
+                          color: Theme.of(context).colorScheme.background,
                           borderRadius: BorderRadius.circular(50),
                         ),
                         child: IconButton(
@@ -108,7 +109,7 @@ class _FirstPageState extends State<FirstPage> {
                             },
                             icon: Icon(
                               Icons.search,
-                              color: Theme.of(context).colorScheme.onTertiary,
+                              color: Theme.of(context).colorScheme.tertiary,
                               size: 30,
                             )),
                       )
@@ -151,7 +152,8 @@ class _FirstPageState extends State<FirstPage> {
                               "No hay Registros de Diagnósticos Disponibles",
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: Theme.of(context).colorScheme.onSecondary,
+                                  color:
+                                      Theme.of(context).colorScheme.onSecondary,
                                   fontSize: 26,
                                   fontWeight: FontWeight.bold)),
                         )

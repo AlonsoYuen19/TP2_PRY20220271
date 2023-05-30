@@ -54,6 +54,7 @@ class _ThirdPageState extends State<ThirdPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView(
+        physics: BouncingScrollPhysics(),
         children: [
           diagnosis.isEmpty
               ? Container()
@@ -68,12 +69,15 @@ class _ThirdPageState extends State<ThirdPage> {
                           style: Theme.of(context)
                               .textTheme
                               .bodyMedium!
-                              .copyWith(color: Theme.of(context).colorScheme.onSecondary),
+                              .copyWith(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSecondary),
                         ),
                       ),
                       Container(
                         decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.tertiary,
+                          color: Theme.of(context).colorScheme.background,
                           borderRadius: BorderRadius.circular(50),
                         ),
                         child: IconButton(
@@ -103,7 +107,7 @@ class _ThirdPageState extends State<ThirdPage> {
                             },
                             icon: Icon(
                               Icons.search,
-                              color: Theme.of(context).colorScheme.onTertiary,
+                              color: Theme.of(context).colorScheme.tertiary,
                               size: 30,
                             )),
                       )
@@ -146,7 +150,8 @@ class _ThirdPageState extends State<ThirdPage> {
                               "No hay Registros de Diagnósticos Disponibles",
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: Theme.of(context).colorScheme.onSecondary,
+                                  color:
+                                      Theme.of(context).colorScheme.onSecondary,
                                   fontSize: 26,
                                   fontWeight: FontWeight.bold)),
                         )

@@ -94,13 +94,13 @@ class SearchUser extends SearchDelegate {
                 itemCount: data?.length,
                 itemBuilder: (context, index) {
                   if (data![index].stagePredicted == "1") {
-                    categoria = "1era Categoría";
+                    categoria = "Etapa: 1";
                   } else if (data[index].stagePredicted == "2") {
-                    categoria = "2da Categoría";
+                    categoria = "Etapa: 2";
                   } else if (data[index].stagePredicted == "3") {
-                    categoria = "3era Categoría";
+                    categoria = "Etapa: 3";
                   } else if (data[index].stagePredicted == "4") {
-                    categoria = "4ta Categoría";
+                    categoria = "Etapa: 4";
                   }
                   String anio = data[index].createdAt.substring(0, 4);
                   String mes = data[index].createdAt.substring(5, 7);
@@ -110,29 +110,47 @@ class SearchUser extends SearchDelegate {
                   String mes2 = data[index].createdAt.substring(5, 7);
                   String dia2 = data[index].createdAt.substring(8, 10);
                   mes2 = meses[mes2]!;
-                  return Container(
-                    width: size.width * 0.9,
-                    padding: const EdgeInsets.only(bottom: 5),
-                    constraints: BoxConstraints(
-                        maxWidth: MediaQuery.of(context).size.width),
-                    child: Card(
-                      semanticContainer: true,
-                      borderOnForeground: true,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(25.0),
-                      ),
-                      elevation: 20,
-                      color: Colors.white,
-                      child: Column(
-                        children: [
-                          SizedBox(height: size.height * 0.02),
-                          Padding(
-                            padding: const EdgeInsets.only(left: paddingHori),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Flexible(
-                                  child: Text(
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DiagnosisPageByPatient(
+                                    idDiagnosis: data[index].id,
+                                    idPatient: data[index].patientId,
+                                  )));
+                    },
+                    child: Container(
+                      width: size.width * 0.85,
+                      padding: const EdgeInsets.only(bottom: 5, top: 15),
+                      constraints: BoxConstraints(
+                          maxWidth: MediaQuery.of(context).size.width),
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                          side: BorderSide(
+                            color: Theme.of(context).colorScheme.background,
+                            width: 1,
+                          ),
+                        ),
+                        color: Colors.white,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 12.0, horizontal: 20),
+                          child: Row(
+                            children: [
+                              CircleAvatar(
+                                radius: 40,
+                                backgroundColor: Colors.transparent,
+                                backgroundImage: ExactAssetImage(
+                                    "assets/images/patient-logo.png"),
+                              ),
+                              SizedBox(width: size.width * 0.05),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(height: size.height * 0.02),
+                                  Text(
                                       isHome
                                           ? data[index].patientName
                                           : data[index].patientName,
@@ -142,87 +160,43 @@ class SearchUser extends SearchDelegate {
                                           .copyWith(
                                               color: Theme.of(context)
                                                   .colorScheme
-                                                  .tertiary)),
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                DiagnosisPageByPatient(
-                                                  idDiagnosis: data[index].id,
-                                                  idPatient:
-                                                      data[index].patientId,
-                                                )));
-                                  },
-                                  child: Padding(
-                                    padding: EdgeInsets.only(right: 16.0),
-                                    child: ImageIcon(
-                                      AssetImage(
-                                          "assets/images/search-icon.png"),
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .tertiary,
-                                      size: 36,
-                                    ),
+                                                  .tertiary,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold)),
+                                  const SizedBox(height: 5),
+                                  Text(
+                                    categoria,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .labelMedium!
+                                        .copyWith(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onSecondary,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w600),
                                   ),
-                                ),
-                              ],
-                            ),
+                                  const SizedBox(height: 5),
+                                  Text(
+                                    isHome
+                                        ? "Fecha: $mes $dia, $anio"
+                                        : "Fecha: $mes2 $dia2, $anio2",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .labelMedium!
+                                        .copyWith(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onSecondary,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w600),
+                                  ),
+                                  SizedBox(height: size.height * 0.015),
+                                ],
+                              ),
+                            ],
                           ),
-                          const SizedBox(height: 5),
-                          Padding(
-                            padding: const EdgeInsets.only(left: paddingHori),
-                            child: Row(
-                              children: [
-                                ImageIcon(
-                                  AssetImage("assets/images/category-icon.png"),
-                                  color: Theme.of(context).colorScheme.tertiary,
-                                  size: 36,
-                                ),
-                                const SizedBox(width: 10),
-                                Text(
-                                  categoria,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelMedium!
-                                      .copyWith(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onSecondary),
-                                )
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 5),
-                          Padding(
-                            padding: const EdgeInsets.only(left: paddingHori),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.calendar_today_outlined,
-                                  color: Theme.of(context).colorScheme.tertiary,
-                                  size: 36,
-                                ),
-                                const SizedBox(width: 10),
-                                Text(
-                                  isHome
-                                      ? "$dia de $mes del $anio"
-                                      : "$dia2 de $mes2 del $anio2",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelMedium!
-                                      .copyWith(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onSecondary),
-                                )
-                              ],
-                            ),
-                          ),
-                          SizedBox(height: size.height * 0.02),
-                        ],
+                        ),
                       ),
                     ),
                   );

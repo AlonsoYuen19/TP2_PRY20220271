@@ -4,7 +4,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
-import 'package:flutter_svg/svg.dart';
+//import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:ulcernosis/services/users_service.dart';
 import 'package:ulcernosis/utils/helpers/responsive/responsive.dart';
@@ -23,7 +23,8 @@ class AppBarDrawer extends StatefulWidget {
   bool? isDiagnosisNurse;
   bool? isManagement;
   bool? isProfile;
-
+  String? title;
+  Color? color;
   AppBarDrawer({
     Key? key,
     required this.child,
@@ -32,6 +33,8 @@ class AppBarDrawer extends StatefulWidget {
     this.isDiagnosisNurse = false,
     this.isManagement = false,
     this.isProfile = false,
+    this.title = "",
+    this.color = Colors.transparent,
   }) : super(key: key);
 
   @override
@@ -165,7 +168,7 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                   height: 5,
                 ),
                 Container(
-                  width: 280,
+                  width: double.infinity,
                   padding: isResp
                       ? const EdgeInsets.all(2)
                       : const EdgeInsets.all(8),
@@ -197,10 +200,10 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                     title: Text('Menú principal',
                         style: widget.isHome == false
                             ? Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                  fontSize: isResp ? 20 : 28,
+                                  fontSize: isResp ? 16 : 24,
                                 )
                             : Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                  fontSize: isResp ? 20 : 28,
+                                  fontSize: isResp ? 16 : 24,
                                   color: Theme.of(context).colorScheme.tertiary,
                                 )),
                   ),
@@ -212,7 +215,7 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                         height: 5,
                       ),
                 Container(
-                  width: 280,
+                  width: double.infinity,
                   padding: isResp
                       ? const EdgeInsets.all(2)
                       : const EdgeInsets.all(8),
@@ -271,7 +274,7 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                       ),
                 users.role == "ROLE_MEDIC"
                     ? Container(
-                        width: 280,
+                        width: double.infinity,
                         padding: isResp
                             ? const EdgeInsets.all(2)
                             : const EdgeInsets.all(8),
@@ -326,7 +329,7 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                         height: 5,
                       ),
                 Container(
-                  width: 280,
+                  width: double.infinity,
                   padding: isResp
                       ? const EdgeInsets.all(2)
                       : const EdgeInsets.all(8),
@@ -375,6 +378,11 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                     : users.role == "ROLE_NURSE"
                         ? const Spacer()
                         : const SizedBox(height: 20),
+                size.shortestSide > 500
+                    ? Spacer(
+                        flex: 3,
+                      )
+                    : SizedBox(),
                 ListTile(
                   onTap: () async {
                     final exit = await showDialog(
@@ -410,46 +418,50 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
         ),
         child: Scaffold(
           appBar: AppBar(
-              leading: Padding(
-                padding: const EdgeInsets.only(left: 20),
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    shape: MaterialStateProperty.all(const CircleBorder()),
-                    padding:
-                        MaterialStateProperty.all(const EdgeInsets.symmetric(
+            leading: Padding(
+              padding: const EdgeInsets.only(
+                  left: 15, top: 15, bottom: 15, right: 10),
+              child: ElevatedButton(
+                style: ButtonStyle(
+                  padding: MaterialStateProperty.all(
+                    const EdgeInsets.symmetric(
                       horizontal: 8.0,
                       vertical: 8.0,
-                    )),
-                    backgroundColor: MaterialStateProperty.all(Theme.of(context)
-                        .colorScheme
-                        .tertiary), // <-- Button color
+                    ),
                   ),
-                  onPressed: _handleMenuButtonPressed,
-                  child: ValueListenableBuilder<AdvancedDrawerValue>(
-                    valueListenable: _advancedDrawerController,
-                    builder: (_, value, __) {
-                      return AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 250),
-                        child: Icon(
-                          value.visible ? Icons.clear : Icons.menu,
-                          //key: ValueKey<bool>(value.visible),
-                          color: Theme.of(context).colorScheme.onTertiary,
-                          size: 30,
-                        ),
-                      );
-                    },
-                  ),
+                  backgroundColor: MaterialStateProperty.all(Theme.of(context)
+                      .colorScheme
+                      .onSecondaryContainer), // <-- Button color
+                  elevation: MaterialStateProperty.all(0), // <-- Splash color
+                ),
+                onPressed: _handleMenuButtonPressed,
+                child: ValueListenableBuilder<AdvancedDrawerValue>(
+                  valueListenable: _advancedDrawerController,
+                  builder: (_, value, __) {
+                    return AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 250),
+                      child: Icon(
+                        value.visible ? Icons.clear : Icons.menu,
+                        //key: ValueKey<bool>(value.visible),
+                        color: Theme.of(context).colorScheme.onTertiary,
+                        size: 30,
+                      ),
+                    );
+                  },
                 ),
               ),
-              titleSpacing: 28,
-              leadingWidth: 75,
-              backgroundColor: Colors.transparent,
-              automaticallyImplyLeading: false,
-              title: SvgPicture.asset(
-                'assets/images/Ulsernosis.svg',
-                fit: BoxFit.cover,
-                height: 54,
-              )),
+            ),
+            //titleSpacing: 25,
+            leadingWidth: 80,
+            centerTitle: true,
+            backgroundColor: widget.color,
+            automaticallyImplyLeading: false,
+            title: Text(
+              widget.title!,
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 24),
+            ),
+          ),
           body: widget.child,
         ));
   }

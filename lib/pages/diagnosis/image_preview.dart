@@ -35,6 +35,7 @@ class _ImagePreviewState extends State<ImagePreview> {
   Users users = Users();
   Diagnosis? diagnosis = Diagnosis();
   Patient patient = Patient();
+  String porcentaje = "";
   String rol = "";
   final diagnosisService = DiagnosisService();
   final usersService = UsersAuthService();
@@ -71,6 +72,15 @@ class _ImagePreviewState extends State<ImagePreview> {
     } else {
       rol = "Enfermero";
     }
+    if (diagnosis!.stagePredicted == "1") {
+      porcentaje = diagnosis!.stage1;
+    } else if (diagnosis!.stagePredicted == "2") {
+      porcentaje = diagnosis!.stage2;
+    } else if (diagnosis!.stagePredicted == "3") {
+      porcentaje = diagnosis!.stage3;
+    } else if (diagnosis!.stagePredicted == "4") {
+      porcentaje = diagnosis!.stage4;
+    }
     final size = MediaQuery.of(context).size;
     return WillPopScope(
       onWillPop: () async {
@@ -99,118 +109,117 @@ class _ImagePreviewState extends State<ImagePreview> {
                       child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        Stack(
-                          children: [
-                            Container(
-                              height: MediaQuery.of(context).size.height * 0.2,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onSecondaryContainer,
-                                  borderRadius: const BorderRadius.only(
-                                      bottomRight: Radius.circular(100))),
-                              child: Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 24.0),
-                                  child: Text(
-                                    "El $rol ${users.fullName} ha diagnosticado al paciente ${patient.fullName.split(" ")[0]} brindando el siguiente resultado",
-                                    textAlign: TextAlign.center,
-                                    style: const TextStyle(
-                                        fontSize: 18, color: Colors.white),
-                                  ),
+                        const SizedBox(height: 20),
+                        Align(
+                            alignment: Alignment.topCenter,
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 24, vertical: 20),
+                              child: Text(
+                                'Resultado',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Theme.of(context).colorScheme.tertiary,
+                                  fontSize: 21,
+                                  fontWeight: FontWeight.w600,
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 30.0),
-                          child: Align(
-                            alignment: Alignment.topCenter,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(20),
+                            )),
+                        const SizedBox(height: 10),
+                        Column(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(8),
+                                topRight: Radius.circular(8),
+                              ),
                               child: SizedBox(
-                                height: size.height * 0.35,
-                                width: size.width * 0.75,
+                                height: size.height * 0.25,
+                                width: size.width * 0.8,
                                 child: Image.file(
                                   File(widget.imagePath.path),
                                   fit: BoxFit.fill,
                                 ),
                               ),
                             ),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        Align(
-                          alignment: Alignment.center,
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 10, horizontal: size.width * 0.15),
-                            child: Text(
-                                "De acuerdo a la imagen de la herida, se obtuvo un resultado en la ${diagnosis!.stagePredicted}° etapa, debido al mayor porcentaje de predicción.",
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.black54,
-                                    fontWeight: FontWeight.bold)),
-                          ),
+                            Container(
+                              //height: size.height * 0.11,
+                              width: size.width * 0.8,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 20),
+                              decoration: BoxDecoration(
+                                  color: Theme.of(context).colorScheme.tertiary,
+                                  borderRadius: BorderRadius.only(
+                                      bottomLeft: Radius.circular(8),
+                                      bottomRight: Radius.circular(8))),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Etapa: ${diagnosis!.stagePredicted}",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize: 24,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onTertiary),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    "${porcentaje.substring(0, 5)}% de predicción",
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.w400,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onTertiary),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
                         const SizedBox(height: 20),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: size.width * 0.1),
-                            child: Text("Resultados",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    color: Theme.of(context).colorScheme.onSecondary,
-                                    fontWeight: FontWeight.bold)),
-                          ),
+                        Container(
+                          width: size.width * 0.84,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 10),
+                          child: Text("Información Adicional",
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  color: Theme.of(context).colorScheme.tertiary,
+                                  fontWeight: FontWeight.bold)),
                         ),
-                        const SizedBox(height: 30),
-                        SizedBox(
-                          width: size.width * 0.85,
-                          height: size.height * 0.5,
-                          child: pieChart(),
+                        //const SizedBox(height: 10),
+                        Container(
+                          width: size.width * 0.84,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 10),
+                          child: Text(
+                            "El $rol ${diagnosis!.creatorName} ha diagnosticado al paciente ${patient.fullName.split(" ")[0]} con la condición médica en etapa ${diagnosis!.stagePredicted} de su úlcera por presión. Según el diagnóstico, la probabilidad de que el paciente se encuentre en esa etapa es de un ${porcentaje.substring(0, 5)}% de predicción",
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                                color: Theme.of(context).colorScheme.outline),
+                          ),
                         ),
                         const SizedBox(
                           height: 25,
                         ),
-                        Row(
+                        Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             SizedBox(
-                              width: 150,
+                              width: size.width * 0.8,
+                              height: size.height * 0.06,
                               child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.redAccent),
-                                  onPressed: () {
-                                    Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: ((context) =>
-                                                TakePhotoDiagnosis(
-                                                    idPatient:
-                                                        widget.idPatient))));
-                                  },
-                                  child: const Text(
-                                    "Reintentar Diagnóstico",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(fontSize: 16),
-                                  )),
-                            ),
-                            const SizedBox(
-                              width: 20,
-                            ),
-                            SizedBox(
-                              width: 150,
-                              child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      backgroundColor: Theme.of(context).colorScheme.onSecondary),
+                                      elevation: 0,
+                                      backgroundColor: Theme.of(context)
+                                          .colorScheme
+                                          .onSecondaryContainer),
                                   onPressed: () async {
                                     mostrarAlertaVolverDiagnosticos(context,
                                         "¿Está seguro de cofirmar el diagnóstico para finalizar con la operación?",
@@ -228,18 +237,56 @@ class _ImagePreviewState extends State<ImagePreview> {
                                         Navigator.pushNamedAndRemoveUntil(
                                             context, 'home', (route) => false);
                                       }
-                                    }, color: Theme.of(context).colorScheme.onSecondary);
+                                    },
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onSecondary);
                                   },
-                                  child: const Text(
+                                  child: Text(
                                     "Confirmar Diagnóstico",
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(fontSize: 16),
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
                                   )),
-                            )
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            SizedBox(
+                              width: size.width * 0.8,
+                              height: size.height * 0.06,
+                              child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      elevation: 1.2,
+                                      backgroundColor: Theme.of(context)
+                                          .colorScheme
+                                          .surface),
+                                  onPressed: () {
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: ((context) =>
+                                                TakePhotoDiagnosis(
+                                                    idPatient:
+                                                        widget.idPatient))));
+                                  },
+                                  child: Text(
+                                    "Reintentar Diagnóstico",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onSecondaryContainer,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  )),
+                            ),
                           ],
                         ),
                         const SizedBox(
-                          height: 25,
+                          height: 10,
                         ),
                       ],
                     ),
@@ -302,7 +349,8 @@ class _ImagePreviewState extends State<ImagePreview> {
                   fontSize: 18),
             ),
             chartValuesOptions: ChartValuesOptions(
-              chartValueBackgroundColor: Theme.of(context).colorScheme.onSecondary,
+              chartValueBackgroundColor:
+                  Theme.of(context).colorScheme.onSecondary,
               chartValueStyle: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,

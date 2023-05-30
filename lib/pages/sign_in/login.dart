@@ -157,7 +157,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 100),
+                    SizedBox(height: size.height * 0.15),
                     //CARD
                     SizedBox(
                       width: size.width * 0.9,

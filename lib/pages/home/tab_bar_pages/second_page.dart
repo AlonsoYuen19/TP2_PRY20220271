@@ -54,6 +54,7 @@ class _SecondPageState extends State<SecondPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView(
+        physics: BouncingScrollPhysics(),
         children: [
           diagnosis.isEmpty
               ? Container()
@@ -73,7 +74,7 @@ class _SecondPageState extends State<SecondPage> {
                       ),
                       Container(
                         decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.tertiary,
+                          color: Theme.of(context).colorScheme.background,
                           borderRadius: BorderRadius.circular(50),
                         ),
                         child: IconButton(
@@ -103,7 +104,7 @@ class _SecondPageState extends State<SecondPage> {
                             },
                             icon: Icon(
                               Icons.search,
-                              color: Theme.of(context).colorScheme.onTertiary,
+                              color: Theme.of(context).colorScheme.tertiary,
                               size: 30,
                             )),
                       )

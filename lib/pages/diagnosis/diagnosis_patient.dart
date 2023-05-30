@@ -45,12 +45,12 @@ class _DiagnosisPatientPageState extends State<DiagnosisPatientPage> {
     return Scaffold(
         body: Stack(children: [
       Container(
-        height: MediaQuery.of(context).size.height * 0.25,
+        height: MediaQuery.of(context).size.height * 0.3,
         width: double.infinity,
         decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.onSecondaryContainer,
-            borderRadius:
-                const BorderRadius.only(bottomRight: Radius.circular(100))),
+            color: Theme.of(context).colorScheme.surface,
+            borderRadius: const BorderRadius.vertical(
+                bottom: Radius.elliptical(400, 80))),
       ),
       SafeArea(
           child: SingleChildScrollView(
@@ -62,20 +62,37 @@ class _DiagnosisPatientPageState extends State<DiagnosisPatientPage> {
               alignment: Alignment.centerLeft,
               child: Row(
                 children: [
-                  IconButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      icon: const Icon(
-                        Icons.arrow_back_ios,
-                        color: Colors.white,
+                  SizedBox(
+                    width: size.width * 0.04,
+                  ),
+                  ElevatedButton(
+                    child: Icon(
+                      Icons.arrow_back_outlined,
+                      color: Theme.of(context).colorScheme.onTertiary,
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    style: ButtonStyle(
+                      padding:
+                          MaterialStateProperty.all(const EdgeInsets.symmetric(
+                        horizontal: 8.0,
+                        vertical: 16.0,
                       )),
-                  Padding(
-                    padding: EdgeInsets.only(left: 18.0),
+                      backgroundColor: MaterialStateProperty.all(
+                          Theme.of(context)
+                              .colorScheme
+                              .onSecondaryContainer), // <-- Button color
+                    ),
+                  ),
+                  SizedBox(
+                    width: size.width * 0.05,
+                  ),
+                  Flexible(
                     child: Text(
                       "Selecciona al Paciente",
                       style: TextStyle(
-                          color: Colors.white,
+                          color: Theme.of(context).colorScheme.tertiary,
                           fontSize: 24,
                           fontWeight: FontWeight.bold),
                     ),

@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:ulcernosis/utils/helpers/constant_variables.dart';
 
 const colorAccent = Color.fromRGBO(244, 179, 9, 1);
-const backgroundColor = Color.fromRGBO(5, 88, 75, 1);
+const chartColorBackground = Color.fromRGBO(14, 26, 48, 0.08);
 const backgroundColor2 = Color.fromRGBO(109, 153, 237, 1);
 
 const primaryColorApp = Color.fromRGBO(14, 26, 48, 1);
@@ -11,7 +11,7 @@ const primaryColorTextColor = Color.fromRGBO(14, 26, 48, 0.9);
 const primaryBackGroundColor = Color.fromRGBO(14, 26, 48, 0.65);
 
 const secondaryColorApp = Color.fromRGBO(255, 161, 158, 1);
-const secondaryBackgroundColorApp = Color.fromRGBO(255, 161, 158, 0.5);
+const secondaryBackgroundColorApp = Color.fromRGBO(255, 242, 241, 1);
 
 const buttonForegroundColor = Color.fromRGBO(240, 240, 240, 1);
 
@@ -30,9 +30,10 @@ ThemeData textThemes = ThemeData(
     onSecondaryContainer: secondaryColorApp,
     //secondaryBackgroundColorApp
     surface: secondaryBackgroundColorApp,
+    //chartBackgroundColor
+    background: chartColorBackground,
 
-
-    background: backgroundColor,
+    
     primary: textColor,
     secondary: colorAccent,
 
@@ -61,7 +62,7 @@ ThemeData textThemes = ThemeData(
     ),
   ),
   appBarTheme: const AppBarTheme(
-    backgroundColor: backgroundColor,
+    backgroundColor: chartColorBackground,
     elevation: 0,
     iconTheme: IconThemeData(color: Colors.black, weight: 800),
     toolbarHeight: 80,

@@ -2,7 +2,6 @@
 
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:ulcernosis/models/patient.dart';
 import 'package:ulcernosis/services/patient_service.dart';
 import '../../utils/helpers/constant_variables.dart';

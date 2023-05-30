@@ -146,7 +146,7 @@ Widget preRegisterBackgroundFigure(BuildContext context) {
     Container(
       height: size.height * 1,
       width: size.width * 1,
-      color: Theme.of(context).colorScheme.surface,
+      color: Theme.of(context).colorScheme.onTertiary,
     ),
   ]);
 }

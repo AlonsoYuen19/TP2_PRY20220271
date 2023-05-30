@@ -75,40 +75,57 @@ class _AssignItineraryPageState extends State<AssignItineraryPage> {
           height: MediaQuery.of(context).size.height * 0.3,
           width: double.infinity,
           decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.onSecondaryContainer,
-              borderRadius:
-                  const BorderRadius.only(bottomRight: Radius.circular(100))),
+              color: Theme.of(context).colorScheme.surface,
+              borderRadius: const BorderRadius.vertical(
+                  bottom: Radius.elliptical(400, 80))),
         ),
         SafeArea(
             child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 30),
+            padding: EdgeInsets.symmetric(
+                horizontal: size.width * 0.06, vertical: size.height * 0.05),
             child: Column(children: [
               Row(
                 children: [
-                  InkWell(
-                      child: const Icon(
-                        Icons.arrow_back_ios,
-                        color: Colors.white,
-                        size: 30,
-                      ),
-                      onTap: () => Navigator.pop(context)),
                   SizedBox(
-                    width: size.width * 0.1,
+                    width: size.width * 0.04,
                   ),
-                  const Flexible(
+                  ElevatedButton(
+                    child: Icon(
+                      Icons.arrow_back_outlined,
+                      color: Theme.of(context).colorScheme.onTertiary,
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    style: ButtonStyle(
+                      padding:
+                          MaterialStateProperty.all(const EdgeInsets.symmetric(
+                        horizontal: 12.0,
+                        vertical: 16.0,
+                      )),
+                      backgroundColor: MaterialStateProperty.all(
+                          Theme.of(context)
+                              .colorScheme
+                              .onSecondaryContainer), // <-- Button color
+                    ),
+                  ),
+                  SizedBox(
+                    width: size.width * 0.12,
+                  ),
+                  Flexible(
                     child: Text(
                       "Crear Cita",
                       style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold),
+                          color: Theme.of(context).colorScheme.tertiary,
+                          fontSize: 21,
+                          fontWeight: FontWeight.w600),
                     ),
                   ),
                 ],
               ),
               const SizedBox(
-                height: 35,
+                height: 40,
               ),
               FutureBuilder(
                   future: Future.delayed(const Duration(seconds: 1)),
@@ -122,8 +139,8 @@ class _AssignItineraryPageState extends State<AssignItineraryPage> {
                     return Column(
                       children: [
                         cardNurse(),
-                        const SizedBox(
-                          height: 30,
+                        SizedBox(
+                          height: size.height * 0.05,
                         ),
                         /*textFormField(
                               timeOfDayIn: true,
@@ -335,7 +352,7 @@ class _AssignItineraryPageState extends State<AssignItineraryPage> {
           borderRadius: BorderRadius.circular(15.0),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(24.0),
+          padding: const EdgeInsets.all(28.0),
           child: Column(
             children: [
               const SizedBox(
@@ -460,7 +477,7 @@ class _AssignItineraryPageState extends State<AssignItineraryPage> {
                 ),
               ),
               const SizedBox(
-                height: 5,
+                height: 15,
               ),
               Align(
                 alignment: Alignment.centerLeft,
@@ -474,112 +491,98 @@ class _AssignItineraryPageState extends State<AssignItineraryPage> {
                 ),
               ),
               const SizedBox(
-                height: 20,
+                height: 25,
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(fechaFormateada,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        )),
-                    GestureDetector(
-                      onTap: () {
-                        showDatePicker(
-                          context: context,
-                          confirmText: "Confirmar",
-                          cancelText: "Cancelar",
-                          initialDate:
-                              DateTime.now().subtract(const Duration(hours: 5)),
-                          firstDate:
-                              DateTime.now().subtract(const Duration(hours: 5)),
-                          lastDate: DateTime(2032, 12, 31),
-                          initialEntryMode: DatePickerEntryMode.calendarOnly,
-                          helpText: "Seleccione una fecha",
-                          locale: const Locale("es"),
-                          builder: (context, child) {
-                            return Theme(
-                              data: Theme.of(context).copyWith(
-                                colorScheme: ColorScheme.light(
-                                    primary: Theme.of(context)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(fechaFormateada,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      )),
+                  GestureDetector(
+                    onTap: () {
+                      showDatePicker(
+                        context: context,
+                        confirmText: "Confirmar",
+                        cancelText: "Cancelar",
+                        initialDate:
+                            DateTime.now().subtract(const Duration(hours: 5)),
+                        firstDate:
+                            DateTime.now().subtract(const Duration(hours: 5)),
+                        lastDate: DateTime(2032, 12, 31),
+                        initialEntryMode: DatePickerEntryMode.calendarOnly,
+                        helpText: "Seleccione una fecha",
+                        locale: const Locale("es"),
+                        builder: (context, child) {
+                          return Theme(
+                            data: Theme.of(context).copyWith(
+                              colorScheme: ColorScheme.light(
+                                  primary:
+                                      Theme.of(context).colorScheme.onSecondary,
+                                  onPrimary: Colors.white,
+                                  onSurface: Colors.blueAccent,
+                                  error: Colors.red),
+                              textTheme: const TextTheme(
+                                bodySmall: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
+                                bodyMedium: TextStyle(
+                                    fontSize: 50, fontWeight: FontWeight.bold),
+                                bodyLarge: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                                displaySmall: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                                displayMedium: TextStyle(
+                                    fontSize: 50, fontWeight: FontWeight.bold),
+                                displayLarge: TextStyle(
+                                    fontSize: 50, fontWeight: FontWeight.bold),
+                                titleSmall: TextStyle(
+                                    fontSize: 17, fontWeight: FontWeight.bold),
+                                titleMedium: TextStyle(
+                                    fontSize: 50, fontWeight: FontWeight.bold),
+                                titleLarge: TextStyle(
+                                    fontSize: 50, fontWeight: FontWeight.bold),
+                                labelSmall: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
+                              textButtonTheme: TextButtonThemeData(
+                                style: TextButton.styleFrom(
+                                    foregroundColor: Colors.white,
+                                    textStyle: const TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                    backgroundColor: Theme.of(context)
                                         .colorScheme
                                         .onSecondary,
-                                    onPrimary: Colors.white,
-                                    onSurface: Colors.blueAccent,
-                                    error: Colors.red),
-                                textTheme: const TextTheme(
-                                  bodySmall: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold),
-                                  bodyMedium: TextStyle(
-                                      fontSize: 50,
-                                      fontWeight: FontWeight.bold),
-                                  bodyLarge: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold),
-                                  displaySmall: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold),
-                                  displayMedium: TextStyle(
-                                      fontSize: 50,
-                                      fontWeight: FontWeight.bold),
-                                  displayLarge: TextStyle(
-                                      fontSize: 50,
-                                      fontWeight: FontWeight.bold),
-                                  titleSmall: TextStyle(
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.bold),
-                                  titleMedium: TextStyle(
-                                      fontSize: 50,
-                                      fontWeight: FontWeight.bold),
-                                  titleLarge: TextStyle(
-                                      fontSize: 50,
-                                      fontWeight: FontWeight.bold),
-                                  labelSmall: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                textButtonTheme: TextButtonThemeData(
-                                  style: TextButton.styleFrom(
-                                      foregroundColor: Colors.white,
-                                      textStyle: const TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold),
-                                      backgroundColor: Theme.of(context)
-                                          .colorScheme
-                                          .onSecondary,
-                                      elevation: 10 // button text color
-                                      ),
-                                ),
+                                    elevation: 10 // button text color
+                                    ),
                               ),
-                              child: child!,
-                            );
-                          },
-                        ).then((value) {
-                          if (value == null) {
-                            return;
-                          }
-                          setState(() {
-                            date = value;
-                          });
+                            ),
+                            child: child!,
+                          );
+                        },
+                      ).then((value) {
+                        if (value == null) {
+                          return;
+                        }
+                        setState(() {
+                          date = value;
                         });
-                      },
-                      child: Icon(
-                        Icons.calendar_month,
-                        color: Theme.of(context).colorScheme.onSecondary,
-                        size: 30,
-                      ),
-                    )
-                  ],
-                ),
+                      });
+                    },
+                    child: Icon(
+                      Icons.calendar_month,
+                      color: Theme.of(context).colorScheme.onSecondary,
+                      size: 30,
+                    ),
+                  )
+                ],
               ),
               const SizedBox(
-                height: 10,
+                height: 25,
               ),
               Align(
                 alignment: Alignment.centerLeft,
@@ -633,20 +636,17 @@ class _AssignItineraryPageState extends State<AssignItineraryPage> {
                     )
                   : const SizedBox(),
               const SizedBox(
-                height: 5,
+                height: 10,
               ),
               Align(
                 alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 18.0),
-                  child: Text(
-                    switchVariable == false ? direccion! : patient!.address,
-                    textAlign: TextAlign.start,
-                    style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700),
-                  ),
+                child: Text(
+                  switchVariable == false ? direccion! : patient!.address,
+                  textAlign: TextAlign.start,
+                  style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700),
                 ),
               ),
             ],
