@@ -180,7 +180,8 @@ class _TakePhotoQuickDiagnosisState extends State<TakePhotoQuickDiagnosis> {
                                             .colorScheme
                                             .surface),
                                     onPressed: () {
-                                      Navigator.pop(context);
+                                      Navigator.pushNamedAndRemoveUntil(context,
+                                          "diagnosis", (route) => false);
                                     },
                                     child: Container(
                                       width: size.width * 0.75,
@@ -229,7 +230,8 @@ class _TakePhotoQuickDiagnosisState extends State<TakePhotoQuickDiagnosis> {
               await diagnosisService.createQuickDiagnosis(avatar, context);
           if (image.stagePredicted.isNotEmpty) {
             return mostrarAlertaExito(
-                context, "Tomó la foto de la herida exitosamente", () async {
+                context, "Se capturó la imagen de la herida exitosamente",
+                () async {
               setState(() {
                 _isPressed = false;
               });

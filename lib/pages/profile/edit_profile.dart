@@ -19,7 +19,8 @@ class EditProfileScreen extends StatefulWidget {
 class _EditProfileScreenState extends State<EditProfileScreen> {
   Widget title(String title) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: paddingHori, vertical: 5),
+      padding:
+          const EdgeInsets.symmetric(horizontal: paddingHori, vertical: 10),
       child: Text(
         title,
         style: Theme.of(context)

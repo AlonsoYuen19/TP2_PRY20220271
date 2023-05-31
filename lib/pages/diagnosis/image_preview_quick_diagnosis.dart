@@ -46,7 +46,7 @@ class _ImagePreviewQuickDiagnosisState
 
   Future<Widget> delayPage() {
     Completer<Widget> completer = Completer();
-    Future.delayed(const Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 5), () {
       completer.complete(Container());
     });
     if (quickDiagnosis!.stagePredicted == "1") {

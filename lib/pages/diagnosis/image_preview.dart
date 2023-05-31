@@ -264,7 +264,7 @@ class _ImagePreviewState extends State<ImagePreview> {
                                           .colorScheme
                                           .surface),
                                   onPressed: () {
-                                    Navigator.pushReplacement(
+                                    Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                             builder: ((context) =>

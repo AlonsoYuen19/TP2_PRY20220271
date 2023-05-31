@@ -247,9 +247,8 @@ mostrarAlertaExito(BuildContext context, String subtitulo, Function function) {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10.0),
                         border: Border.all(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onSecondaryContainer)),
+                            width: 3,
+                            color: Theme.of(context).colorScheme.tertiary)),
                     child: const Center(
                       child:
                           Text('Aceptar', style: TextStyle(color: _secundary)),

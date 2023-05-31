@@ -188,7 +188,8 @@ class _TakePhotoDiagnosisState extends State<TakePhotoDiagnosis> {
                                             .colorScheme
                                             .surface),
                                     onPressed: () {
-                                      Navigator.pop(context);
+                                      Navigator.pushNamedAndRemoveUntil(context,
+                                          "diagnosis", (route) => false);
                                     },
                                     child: Container(
                                       width: size.width * 0.75,
@@ -240,7 +241,8 @@ class _TakePhotoDiagnosisState extends State<TakePhotoDiagnosis> {
           print(idDiag);
           if (!idDiag.isNaN && idDiag != 0) {
             return mostrarAlertaExito(
-                context, "Tomó la foto de la herida exitosamente", () async {
+                context, "Se capturó la imagen de la herida exitosamente",
+                () async {
               setState(() {
                 _isPressed = false;
               });
@@ -269,7 +271,8 @@ class _TakePhotoDiagnosisState extends State<TakePhotoDiagnosis> {
           print(idDiag2);
           if (!idDiag2.isNaN) {
             return mostrarAlertaExito(
-                context, "Tomó la foto de la herida exitosamente", () async {
+                context, "Se capturó la imagen de la herida exitosamente",
+                () async {
               setState(() {
                 _isPressed = false;
               });
