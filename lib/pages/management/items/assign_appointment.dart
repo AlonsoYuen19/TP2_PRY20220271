@@ -101,7 +101,7 @@ class _AssignItineraryPageState extends State<AssignItineraryPage> {
                     style: ButtonStyle(
                       padding:
                           MaterialStateProperty.all(const EdgeInsets.symmetric(
-                        horizontal: 12.0,
+                        horizontal: 8.0,
                         vertical: 16.0,
                       )),
                       backgroundColor: MaterialStateProperty.all(
@@ -125,7 +125,7 @@ class _AssignItineraryPageState extends State<AssignItineraryPage> {
                 ],
               ),
               const SizedBox(
-                height: 40,
+                height: 25,
               ),
               FutureBuilder(
                   future: Future.delayed(const Duration(seconds: 1)),
@@ -140,7 +140,7 @@ class _AssignItineraryPageState extends State<AssignItineraryPage> {
                       children: [
                         cardNurse(),
                         SizedBox(
-                          height: size.height * 0.05,
+                          height: size.height * 0.04,
                         ),
                         /*textFormField(
                               timeOfDayIn: true,
@@ -159,8 +159,15 @@ class _AssignItineraryPageState extends State<AssignItineraryPage> {
                               height: 30,
                             ),*/
                         SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.4,
+                          width: MediaQuery.of(context).size.width * 0.8,
                           child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                elevation: 0,
+                                backgroundColor: Theme.of(context)
+                                    .colorScheme
+                                    .onSecondaryContainer,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10))),
                             onPressed: () {
                               print(fechaFormateada);
                               print(widget.idNurse);
@@ -183,8 +190,8 @@ class _AssignItineraryPageState extends State<AssignItineraryPage> {
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.w700),
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w600),
                             ),
                           ),
                         )
@@ -346,17 +353,17 @@ class _AssignItineraryPageState extends State<AssignItineraryPage> {
     String fechaFormateada =
         "${date!.day.toString().padLeft(2, '0')}/${date!.month.toString().padLeft(2, '0')}/${date!.year}";
     return Card(
-        elevation: 10,
+        elevation: 5,
         color: Colors.white,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15.0),
+          borderRadius: BorderRadius.circular(10.0),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(28.0),
+          padding: const EdgeInsets.all(24.0),
           child: Column(
             children: [
               const SizedBox(
-                height: 5,
+                height: 10,
               ),
               Align(
                 alignment: Alignment.centerLeft,
@@ -364,117 +371,54 @@ class _AssignItineraryPageState extends State<AssignItineraryPage> {
                   "Enfermero",
                   textAlign: TextAlign.start,
                   style: TextStyle(
-                      color: Theme.of(context).colorScheme.onSecondary,
-                      fontSize: 22,
+                      color: Theme.of(context).colorScheme.tertiary,
+                      fontSize: 18,
                       fontWeight: FontWeight.w700),
                 ),
               ),
               const SizedBox(
-                height: 10,
+                height: 15,
               ),
-              Container(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    avatar.isEmpty
-                        ? Container(
-                            height: size.width * 0.2,
-                            width: size.width * 0.2,
-                            //clipBehavior: Clip.antiAlias,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: AssetImage(
-                                      "assets/images/enfermero-logo.png"),
-                                  fit: BoxFit.fitHeight),
-                              color: Theme.of(context).colorScheme.onSecondary,
-                              shape: BoxShape.circle,
-                            ),
-                          )
-                        : ClipOval(
-                            child: Image.memory(avatar,
-                                height: size.width * 0.2,
-                                width: size.width * 0.2,
-                                fit: BoxFit.cover),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  avatar.isEmpty
+                      ? Container(
+                          height: size.width * 0.2,
+                          width: size.width * 0.2,
+                          //clipBehavior: Clip.antiAlias,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                                image: AssetImage(
+                                    "assets/images/enfermero-logo.png"),
+                                fit: BoxFit.fitHeight),
+                            color: Theme.of(context).colorScheme.onSecondary,
+                            shape: BoxShape.circle,
                           ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Flexible(
-                      child: Text(
-                        cantNombreEnfermero < 2
-                            ? nurse!.fullName
-                            : '${nurse!.fullName.split(' ')[0]} ${nurse!.fullName.split(' ')[1]}',
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+                        )
+                      : ClipOval(
+                          child: Image.memory(avatar,
+                              height: size.width * 0.2,
+                              width: size.width * 0.2,
+                              fit: BoxFit.cover),
                         ),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  Flexible(
+                    child: Text(
+                      cantNombreEnfermero < 2
+                          ? nurse!.fullName
+                          : '${nurse!.fullName.split(' ')[0]} ${nurse!.fullName.split(' ')[1]}',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.outline,
+                        fontSize: 17,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "Paciente",
-                  textAlign: TextAlign.start,
-                  style: TextStyle(
-                      color: Theme.of(context).colorScheme.onSecondary,
-                      fontSize: 22,
-                      fontWeight: FontWeight.w700),
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Container(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    avatar2.isEmpty
-                        ? Container(
-                            height: size.width * 0.2,
-                            width: size.width * 0.2,
-                            decoration: const BoxDecoration(
-                              image: DecorationImage(
-                                  image: AssetImage(
-                                      "assets/images/patient-logo.png"),
-                                  fit: BoxFit.fitHeight),
-                              color: Colors.black26,
-                              shape: BoxShape.circle,
-                            ),
-                          )
-                        : ClipOval(
-                            child: Image.memory(avatar2,
-                                height: size.width * 0.2,
-                                width: size.width * 0.2,
-                                fit: BoxFit.cover),
-                          ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Flexible(
-                      child: Text(
-                        cantNombrePaciente < 2
-                            ? patient!.fullName
-                            : '${patient!.fullName.split(' ')[0]} ${patient!.fullName.split(' ')[1]}',
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
               const SizedBox(
                 height: 15,
@@ -482,12 +426,70 @@ class _AssignItineraryPageState extends State<AssignItineraryPage> {
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
+                  "Paciente",
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                      color: Theme.of(context).colorScheme.tertiary,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700),
+                ),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  avatar2.isEmpty
+                      ? Container(
+                          height: size.width * 0.2,
+                          width: size.width * 0.2,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                                image: AssetImage(
+                                    "assets/images/patient-logo.png"),
+                                fit: BoxFit.fitHeight),
+                            color: Theme.of(context).colorScheme.tertiary,
+                            shape: BoxShape.circle,
+                          ),
+                        )
+                      : ClipOval(
+                          child: Image.memory(avatar2,
+                              height: size.width * 0.2,
+                              width: size.width * 0.2,
+                              fit: BoxFit.cover),
+                        ),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  Flexible(
+                    child: Text(
+                      cantNombrePaciente < 2
+                          ? patient!.fullName
+                          : '${patient!.fullName.split(' ')[0]} ${patient!.fullName.split(' ')[1]}',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.outline,
+                        fontSize: 17,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
                   "Fecha de cita programada",
                   textAlign: TextAlign.start,
                   style: TextStyle(
-                      color: Theme.of(context).colorScheme.onSecondary,
-                      fontSize: 22,
-                      fontWeight: FontWeight.w700),
+                    color: Theme.of(context).colorScheme.tertiary,
+                    fontSize: 17,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
               const SizedBox(
@@ -498,10 +500,10 @@ class _AssignItineraryPageState extends State<AssignItineraryPage> {
                 children: [
                   Text(fechaFormateada,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.outline,
+                        fontSize: 17,
+                        fontWeight: FontWeight.w700,
                       )),
                   GestureDetector(
                     onTap: () {
@@ -590,9 +592,10 @@ class _AssignItineraryPageState extends State<AssignItineraryPage> {
                   "Dirección",
                   textAlign: TextAlign.start,
                   style: TextStyle(
-                      color: Theme.of(context).colorScheme.onSecondary,
-                      fontSize: 22,
-                      fontWeight: FontWeight.w700),
+                    color: Theme.of(context).colorScheme.tertiary,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
               const SizedBox(
@@ -611,7 +614,7 @@ class _AssignItineraryPageState extends State<AssignItineraryPage> {
                               style: TextStyle(
                                   color:
                                       Theme.of(context).colorScheme.onSecondary,
-                                  fontSize: 13,
+                                  fontSize: 14,
                                   fontWeight: FontWeight.w700),
                             ),
                           ),
@@ -643,10 +646,11 @@ class _AssignItineraryPageState extends State<AssignItineraryPage> {
                 child: Text(
                   switchVariable == false ? direccion! : patient!.address,
                   textAlign: TextAlign.start,
-                  style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w700),
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.outline,
+                    fontSize: 17,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
             ],

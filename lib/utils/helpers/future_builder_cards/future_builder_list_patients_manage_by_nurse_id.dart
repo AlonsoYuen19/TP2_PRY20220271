@@ -80,14 +80,12 @@ class _MyFutureBuilderListPatientsByNurseIdState
                           child: Row(
                             children: [
                               Icon(Icons.info_outline,
-                                  color:
-                                      Theme.of(context).colorScheme.tertiary,
+                                  color: Theme.of(context).colorScheme.tertiary,
                                   size: 28),
                               const SizedBox(width: 10),
                               Text(
                                 "Paciente",
-                                style:
-                                    Theme.of(context).textTheme.labelMedium,
+                                style: Theme.of(context).textTheme.labelMedium,
                               )
                             ],
                           ),
@@ -105,8 +103,7 @@ class _MyFutureBuilderListPatientsByNurseIdState
                               const SizedBox(width: 10),
                               Text(
                                 '${data[index].address}',
-                                style:
-                                    Theme.of(context).textTheme.labelMedium,
+                                style: Theme.of(context).textTheme.labelMedium,
                               )
                             ],
                           ),

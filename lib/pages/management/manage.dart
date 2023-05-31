@@ -147,32 +147,35 @@ class _ManageScreenState extends State<ManageScreen> {
 
   Widget cardNurseSelectorEmpty() {
     final size = MediaQuery.of(context).size;
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
-      margin: const EdgeInsets.symmetric(horizontal: 20),
-      elevation: 10,
-      color: Colors.white,
-      child: Center(
-        child: Padding(
-          padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
-          child: Container(
-            height: size.height * 0.1,
-            width: size.width * 0.15,
-            decoration: BoxDecoration(
-              border: Border.all(width: 0, color: Colors.transparent),
-              image: const DecorationImage(
-                image: AssetImage('assets/images/add-friend.png'),
-                fit: BoxFit.contain,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        //margin: const EdgeInsets.symmetric(horizontal: 30),
+        elevation: 10,
+        color: Colors.white,
+        child: Center(
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
+            child: Container(
+              height: size.height * 0.1,
+              width: size.width * 0.15,
+              decoration: BoxDecoration(
+                border: Border.all(width: 0, color: Colors.transparent),
+                image: const DecorationImage(
+                  image: AssetImage('assets/images/add-friend.png'),
+                  fit: BoxFit.contain,
+                ),
               ),
-            ),
-            child: InkWell(
-              radius: 10,
-              borderRadius: BorderRadius.circular(100),
-              onTap: () {
-                Navigator.pushNamed(context, 'addNurse');
-              },
+              child: InkWell(
+                radius: 10,
+                borderRadius: BorderRadius.circular(100),
+                onTap: () {
+                  Navigator.pushNamed(context, 'addNurse');
+                },
+              ),
             ),
           ),
         ),

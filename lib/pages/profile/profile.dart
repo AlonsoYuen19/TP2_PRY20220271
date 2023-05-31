@@ -54,12 +54,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     if (prefs.idMedic != 0) {
       avatar = (await userService.getMedicImageFromBackend());
+      patientsLength = (await patientService.getPatientsByMedics());
     }
     if (prefs.idNurse != 0) {
       nurse = (await nurseService.getNurseById(context))!;
       avatar2 = (await userService.getNurseImageFromBackend());
     }
-    patientsLength = (await patientService.getPatientsByMedics());
+
     //avatar3 = (await patientService.getAvatarPatient());
     setState(() {});
   }
@@ -431,7 +432,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     if (users.role == 'ROLE_MEDIC') {
       role = "Médico\nespecialista";
     } else {
-      role = "Enfermero especialista";
+      role = "Enfermero\nespecialista";
     }
 
     if (nurse.itWasNotified == true) {
@@ -455,7 +456,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
         Column(children: [
           SizedBox(
-            height: users.role == "ROLE_NURSE" ? 90 : 12,
+            height: 12,
           ),
           Padding(
             padding: const EdgeInsets.all(12.0),
@@ -556,11 +557,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     "Dirección",
                     users.address),
                 const SizedBox(
-                  height: 20,
+                  height: 25,
                 ),
                 users.role == "ROLE_NURSE"
                     ? Padding(
-                        padding: const EdgeInsets.all(4.0),
+                        padding: const EdgeInsets.all(20.0),
                         child: Text(equipoMedico!,
                             textAlign: TextAlign.center,
                             style: Theme.of(context)
@@ -574,10 +575,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ],
             ),
           ),
-          const Divider(
-            height: 0,
-            thickness: 1,
-          ),
+          users.role == "ROLE_NURSE"
+              ? const SizedBox()
+              : Divider(
+                  height: 0,
+                  thickness: 1,
+                ),
           if (users.role == "ROLE_MEDIC") ...[
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 35, vertical: 20),

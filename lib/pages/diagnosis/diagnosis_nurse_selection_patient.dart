@@ -80,28 +80,18 @@ class _DiagnosisScreenState extends State<DiagnosisNurseSelectionScreen> {
         child: SingleChildScrollView(
       child: Padding(
         padding: EdgeInsets.symmetric(
-            horizontal: size.width * 0.06, vertical: size.height * 0.05),
+            horizontal: size.width * 0.03, vertical: size.height * 0.05),
         child: Column(
           children: [
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Row(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: 18.0),
-                    child: Text(
-                      "Selecciona al Paciente\nAsignado",
-                      style: TextStyle(
-                          color: Theme.of(context).colorScheme.onSecondary,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ],
-              ),
+            Text(
+              "Selecciona al Paciente Asignado",
+              style: TextStyle(
+                  color: Theme.of(context).colorScheme.tertiary,
+                  fontSize: 21,
+                  fontWeight: FontWeight.bold),
             ),
             SizedBox(
-              height: size.height * 0.04,
+              height: size.height * 0.025,
             ),
             patientsNurses.isEmpty
                 ? FutureBuilder(

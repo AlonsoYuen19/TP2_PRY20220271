@@ -96,12 +96,11 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
     final size = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      child: Column(
         children: [
           if (_currentStep > 0) ...[
             SizedBox(
-              width: size.width * 0.35,
+              width: size.width * 0.85,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.grey, elevation: 0),
@@ -115,12 +114,13 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
                 ),
               ),
             ),
+            const SizedBox(height: 10),
             SizedBox(
-              width: size.width * 0.35,
+              width: size.width * 0.85,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   elevation: 0,
-                  backgroundColor: const Color.fromRGBO(14, 26, 48, 1),
+                  backgroundColor: const Color.fromRGBO(255, 161, 158, 1),
                 ),
                 onPressed: () async {
                   final isValidForm = _formKey.currentState!.validate();
@@ -167,12 +167,12 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
             ),
           ] else if (_currentStep == 0) ...[
             SizedBox(
-              width: size.width * 0.35,
+              width: size.width * 0.85,
               child: ElevatedButton(
                 onPressed: details.onStepContinue,
                 style: ElevatedButton.styleFrom(
                     elevation: 0,
-                    backgroundColor: const Color.fromRGBO(14, 26, 48, 1)),
+                    backgroundColor: const Color.fromRGBO(255, 161, 158, 1)),
                 child: Text('Siguiente',
                     style: Theme.of(context).textTheme.labelMedium!.copyWith(
                           color: Theme.of(context).colorScheme.onTertiary,

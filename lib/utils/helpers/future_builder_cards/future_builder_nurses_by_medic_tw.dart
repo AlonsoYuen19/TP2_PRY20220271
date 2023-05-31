@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import '../../../pages/management/team_work_nurse_profile.dart';
 import '../../../services/team_work_service.dart';
 import '../../widgets/alert_dialog.dart';
-import '../constant_variables.dart';
 
 class MyFutureBuilderNursesByMedicsTW extends StatefulWidget {
   final Future<List> myFuture;
@@ -24,7 +23,7 @@ class _MyFutureBuilderNursesByMedicsTWState
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: FutureBuilder<List>(
         future: widget.myFuture,
         builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
@@ -55,114 +54,104 @@ class _MyFutureBuilderNursesByMedicsTWState
                                 )));
                   },
                   child: Container(
-                    width: size.width * 0.9,
-                    padding: const EdgeInsets.only(bottom: 5),
+                    width: size.width * 0.85,
                     constraints: BoxConstraints(
                         maxWidth: MediaQuery.of(context).size.width),
                     child: Card(
                       semanticContainer: true,
                       borderOnForeground: true,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(25.0),
+                        borderRadius: BorderRadius.circular(10.0),
                       ),
-                      elevation: 20,
-                      color: colorCard,
-                      child: Column(
-                        children: [
-                          SizedBox(height: size.height * 0.02),
-                          Padding(
-                            padding: const EdgeInsets.only(left: paddingHori),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Flexible(
-                                  child: Text(
+                      elevation: 5,
+                      color: Theme.of(context).colorScheme.surface,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 12.0, horizontal: 15),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          //crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            CircleAvatar(
+                              radius: 40,
+                              backgroundColor: Colors.transparent,
+                              backgroundImage: ExactAssetImage(
+                                  "assets/images/patient-logo.png"),
+                            ),
+                            SizedBox(width: size.width * 0.03),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
                                     '${data[index].fullName}',
                                     style: TextStyle(
                                         color: Theme.of(context)
                                             .colorScheme
                                             .tertiary,
-                                        fontSize: 20),
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w900),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 5),
-                          Padding(
-                            padding: const EdgeInsets.only(left: paddingHori),
-                            child: Row(
-                              children: [
-                                Icon(Icons.info_outline,
-                                    color:
-                                        Theme.of(context).colorScheme.tertiary,
-                                    size: 28),
-                                const SizedBox(width: 10),
-                                Text(
-                                  "Enfermero",
-                                  style:
-                                      Theme.of(context).textTheme.labelMedium,
-                                )
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 5),
-                          Padding(
-                            padding: const EdgeInsets.only(left: paddingHori),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.location_pin,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .tertiary,
-                                      size: 28,
-                                    ),
-                                    const SizedBox(width: 10),
-                                    Text(
-                                      '${data[index].address}',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .labelMedium,
-                                    )
-                                  ],
-                                ),
-                                InkWell(
-                                  child: const Padding(
-                                    padding: EdgeInsets.only(right: 16.0),
-                                    child: Icon(Icons.delete_forever,
-                                        color: Colors.red, size: 28),
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    "Enfermero especializado",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .labelMedium!
+                                        .copyWith(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onSecondary,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w500),
                                   ),
-                                  onTap: () async {
-                                    final teamWorkService = TeamWorkService();
-                                    String name = data[index]
-                                        .fullName
-                                        .toString()
-                                        .substring(
-                                            0,
-                                            data[index]
-                                                .fullName
-                                                .toString()
-                                                .indexOf(" "));
-                                    await mostrarAlertaRegistro(context,
-                                        "Desea eliminar al enfermero $name de tu equipo médico",
-                                        () {
-                                      int idNurse = data[index].id;
-                                      teamWorkService
-                                          .deleteNurseOfTheTeamWork(idNurse);
-                                      Navigator.pushNamedAndRemoveUntil(
-                                          context, 'manage', (route) => false);
-                                    }, color: Colors.red);
-                                  },
-                                ),
-                              ],
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    '${data[index].address}',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .labelMedium!
+                                        .copyWith(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onSecondary,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w500),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                          SizedBox(height: size.height * 0.02),
-                        ],
+                            SizedBox(width: size.width * 0.03),
+                            Padding(
+                              padding: EdgeInsets.only(top: size.height * 0.09),
+                              child: InkWell(
+                                child: Icon(Icons.delete_forever,
+                                    color: Colors.red, size: 30),
+                                onTap: () async {
+                                  final teamWorkService = TeamWorkService();
+                                  String name = data[index]
+                                      .fullName
+                                      .toString()
+                                      .substring(
+                                          0,
+                                          data[index]
+                                              .fullName
+                                              .toString()
+                                              .indexOf(" "));
+                                  await mostrarAlertaRegistro(context,
+                                      "Desea eliminar al enfermero $name de tu equipo médico",
+                                      () {
+                                    int idNurse = data[index].id;
+                                    teamWorkService
+                                        .deleteNurseOfTheTeamWork(idNurse);
+                                    Navigator.pushNamedAndRemoveUntil(
+                                        context, 'manage', (route) => false);
+                                  }, color: Colors.red);
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
