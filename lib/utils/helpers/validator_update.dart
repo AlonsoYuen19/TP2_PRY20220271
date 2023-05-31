@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class ValidatorEditDoctor {
   static FormFieldValidator<String> nameValidEdit(String errorMessage) {
     return (value) {
-      if (!RegExp(r'^[a-z A-Z]+$').hasMatch(value!)) {
+      if (!RegExp(r'^[a-z A-ZáéíóúÁÉÍÓÚüÜ]+$').hasMatch(value!)) {
         return errorMessage;
       } else {
         return null;
@@ -13,7 +13,7 @@ class ValidatorEditDoctor {
 
   static FormFieldValidator<String> lastNameValidEdit(String errorMessage) {
     return (value) {
-      if (!RegExp(r'^[a-z A-Z]+$').hasMatch(value!)) {
+      if (!RegExp(r'^[a-z A-ZáéíóúÁÉÍÓÚüÜ]+$').hasMatch(value!)) {
         return errorMessage;
       } else {
         return null;

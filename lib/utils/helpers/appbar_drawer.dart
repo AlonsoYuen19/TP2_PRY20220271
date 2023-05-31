@@ -110,13 +110,18 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
             child: Column(
               mainAxisSize: MainAxisSize.max,
               children: [
+                size.shortestSide > 500
+                    ? SizedBox(
+                        height: 80,
+                      )
+                    : const SizedBox(),
                 Column(
                   children: [
-                    SizedBox(height: users.role == "ROLE_NURSE" ? 40 : 10),
+                    SizedBox(height: users.role == "ROLE_NURSE" ? 40 : 20),
                     avatar.isEmpty && avatar2.isEmpty
                         ? Container(
                             height:
-                                isResp ? size.width * 0.25 : size.width * 0.3,
+                                isResp ? size.width * 0.25 : size.width * 0.28,
                             margin: const EdgeInsets.only(
                               top: 24.0,
                               bottom: 16.0,
@@ -136,15 +141,15 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                             child: Image.memory(
                                 prefs.idMedic != 0 ? avatar : avatar2,
                                 height: isResp
-                                    ? size.width * 0.25
-                                    : size.width * 0.3,
+                                    ? size.width * 0.3
+                                    : size.width * 0.32,
                                 width: isResp
-                                    ? size.width * 0.25
-                                    : size.width * 0.3,
+                                    ? size.width * 0.28
+                                    : size.width * 0.32,
                                 fit: BoxFit.cover),
                           ),
                     const SizedBox(
-                      height: 10,
+                      height: 20,
                     ),
                     Text(
                       users.fullName,
@@ -157,15 +162,11 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                   ],
                 ),
                 SizedBox(
-                  height: isResp
-                      ? 20
-                      : users.role == "ROLE_NURSE"
-                          ? 80
-                          : 60,
+                  height: isResp ? 20 : 60,
                 ),
                 const Divider(
                   color: Colors.white30,
-                  height: 5,
+                  height: 6,
                 ),
                 Container(
                   width: double.infinity,
@@ -212,7 +213,7 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                     ? const SizedBox()
                     : const Divider(
                         color: Colors.white30,
-                        height: 5,
+                        height: 10,
                       ),
                 Container(
                   width: double.infinity,
@@ -258,10 +259,10 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                         style: widget.isDiagnosis == false &&
                                 widget.isDiagnosisNurse == false
                             ? Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                  fontSize: isResp ? 22 : 28,
+                                  fontSize: isResp ? 16 : 24,
                                 )
                             : Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                  fontSize: isResp ? 22 : 28,
+                                  fontSize: isResp ? 16 : 24,
                                   color: Theme.of(context).colorScheme.tertiary,
                                 )),
                   ),
@@ -270,7 +271,7 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                     ? const SizedBox()
                     : const Divider(
                         color: Colors.white30,
-                        height: 5,
+                        height: 10,
                       ),
                 users.role == "ROLE_MEDIC"
                     ? Container(
@@ -309,13 +310,13 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                                         .textTheme
                                         .bodyLarge!
                                         .copyWith(
-                                          fontSize: isResp ? 22 : 28,
+                                          fontSize: isResp ? 16 : 24,
                                         )
                                     : Theme.of(context)
                                         .textTheme
                                         .bodyLarge!
                                         .copyWith(
-                                          fontSize: isResp ? 22 : 28,
+                                          fontSize: isResp ? 16 : 24,
                                           color: Theme.of(context)
                                               .colorScheme
                                               .tertiary,
@@ -324,9 +325,9 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                     : const SizedBox(),
                 isResp
                     ? const SizedBox()
-                    : const Divider(
+                    : Divider(
                         color: Colors.white30,
-                        height: 5,
+                        height: users.role == "ROLE_MEDIC" ? 10 : 5,
                       ),
                 Container(
                   width: double.infinity,
@@ -361,10 +362,10 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                       title: Text('Perfil',
                           style: widget.isProfile == false
                               ? Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                    fontSize: isResp ? 22 : 28,
+                                    fontSize: isResp ? 16 : 24,
                                   )
                               : Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                    fontSize: isResp ? 22 : 28,
+                                    fontSize: isResp ? 16 : 24,
                                     color:
                                         Theme.of(context).colorScheme.tertiary,
                                   ))),
@@ -373,14 +374,10 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                   color: Colors.white30,
                   height: 5,
                 ),
-                isResp
-                    ? const SizedBox()
-                    : users.role == "ROLE_NURSE"
-                        ? const Spacer()
-                        : const SizedBox(height: 20),
+                isResp ? const SizedBox() : SizedBox(height: 5),
                 size.shortestSide > 500
                     ? Spacer(
-                        flex: 3,
+                        flex: 2,
                       )
                     : SizedBox(),
                 ListTile(
@@ -396,7 +393,7 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                   ),
                   title: Text('Cerrar Sesión',
                       style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                            fontSize: isResp ? 22 : 28,
+                            fontSize: isResp ? 16 : 24,
                           )),
                 ),
                 const Spacer(),
@@ -419,8 +416,7 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
         child: Scaffold(
           appBar: AppBar(
             leading: Padding(
-              padding: const EdgeInsets.only(
-                  left: 15, top: 15, bottom: 15, right: 10),
+              padding: const EdgeInsets.only(left: 25, top: 20, bottom: 20),
               child: ElevatedButton(
                 style: ButtonStyle(
                   padding: MaterialStateProperty.all(
@@ -452,8 +448,9 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
               ),
             ),
             //titleSpacing: 25,
-            leadingWidth: 80,
+            leadingWidth: 90,
             centerTitle: true,
+            toolbarHeight: 100,
             backgroundColor: widget.color,
             automaticallyImplyLeading: false,
             title: Text(

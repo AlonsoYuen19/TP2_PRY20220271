@@ -87,7 +87,7 @@ class _AssignPatientPageState extends State<AssignPatientPage> {
                 ],
               ),
               SizedBox(
-                height: size.height * 0.07,
+                height: size.height * 0.04,
               ),
               listPatients.isEmpty
                   ? FutureBuilder(

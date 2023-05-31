@@ -622,14 +622,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 children: [
                   Flexible(
                     child: Text(
-                      "Seleccione el icono de búsqueda\npara filtrar por nombres del\npaciente",
+                      "Seleccione el icono de búsqueda para filtrar por nombres del paciente",
                       style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                           color: Theme.of(context).colorScheme.outline,
                           fontSize: 16),
                     ),
                   ),
-                  SizedBox(
-                    width: size.width * 0.08,
+                  const SizedBox(
+                    width: 10,
                   ),
                   Container(
                     decoration: BoxDecoration(
@@ -664,9 +664,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           color: Theme.of(context).colorScheme.tertiary,
                           size: 30,
                         )),
-                  )
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
                 ],
               ),
+            ),
+            const SizedBox(
+              height: 10,
             ),
             FutureBuilder<List<Patient>>(
               future: patientService.getPatientsByMedics(),

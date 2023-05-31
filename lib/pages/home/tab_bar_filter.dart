@@ -137,7 +137,7 @@ class _TabBarFilterState extends State<TabBarFilter>
                       ),
                     ),
                   ),
-                  leadingWidth: 75,
+                  leadingWidth: 95,
                   toolbarHeight: MediaQuery.of(context).size.height * 0.11,
                   title: Text('Filtrado por Etapa',
                       style: TextStyle(

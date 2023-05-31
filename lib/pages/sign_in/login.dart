@@ -205,36 +205,35 @@ class _LoginScreenState extends State<LoginScreen> {
                             SizedBox(height: size.height * 0.02),
                             signInButton(context),
                             const SizedBox(height: 5),
-                            Center(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "No tienes una cuenta?",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium!
-                                        .copyWith(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .outline),
-                                  ),
-                                  TextButton(
-                                      onPressed: () async {
-                                        Navigator.pushNamed(
-                                            context, "preRegister");
-                                      },
-                                      child: Text("Registrate",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .displaySmall!
-                                              .copyWith(
-                                                  fontWeight: FontWeight.bold,
-                                                  decoration: TextDecoration
-                                                      .underline)))
-                                ],
-                              ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "No tienes una cuenta?",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium!
+                                      .copyWith(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .outline),
+                                ),
+                                TextButton(
+                                    onPressed: () async {
+                                      Navigator.pushNamed(
+                                          context, "preRegister");
+                                    },
+                                    child: Text("Registrate",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .displaySmall!
+                                            .copyWith(
+                                                fontWeight: FontWeight.bold,
+                                                decoration:
+                                                    TextDecoration.underline)))
+                              ],
                             ),
+                            const SizedBox(height: 10),
                           ],
                         ),
                       ),
@@ -376,11 +375,14 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget signInButton(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return ElevatedButton(
         onPressed: _isPressed == false ? _handleButton : null,
         child: Container(
+          width: size.width * 0.76,
           padding: const EdgeInsets.all(5.0),
           child: Text("Iniciar sesión",
+              textAlign: TextAlign.center,
               style: Theme.of(context)
                   .textTheme
                   .labelMedium!

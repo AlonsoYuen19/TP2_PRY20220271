@@ -277,6 +277,7 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
                                   GetTextFormField(
                                       labelText: "Nombre Completo",
                                       placeholder: name,
+                                      maxLength: 36,
                                       icon: const Icon(
                                           Icons.person_add_alt_1_sharp),
                                       keyboardType: TextInputType.name,

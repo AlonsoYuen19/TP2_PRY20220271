@@ -205,17 +205,19 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const LoaderDiagnosisScreen();
             }
-            return AppBarDrawer(isDiagnosis: true, title: "Diagnósticos", child: _selectOption());
+            return AppBarDrawer(
+                isDiagnosis: true,
+                title: "Diagnósticos",
+                child: _selectOption());
           },
         ));
   }
 
   Widget _selectOption() {
+    final size = MediaQuery.of(context).size;
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const SizedBox(
-          height: 70,
-        ),
         Align(
           alignment: Alignment.centerLeft,
           child: Padding(
@@ -244,7 +246,7 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
                         builder: (context) => const DiagnosisPatientPage()));
               },
               child: Container(
-                width: 160,
+                width: size.width * 0.35,
                 height: 180,
                 decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.onSecondaryContainer,
@@ -274,7 +276,7 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
                 selectImage();
               },
               child: Container(
-                width: 160,
+                width: size.width * 0.35,
                 height: 180,
                 decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.onSecondaryContainer,
@@ -342,7 +344,10 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
                       size: 50)),
             ),
           ],
-        )
+        ),
+        SizedBox(
+          height: size.height * 0.1,
+        ),
       ],
     );
   }

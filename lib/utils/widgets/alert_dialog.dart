@@ -71,6 +71,7 @@ class CustomDialogWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Shimmer(
       duration: const Duration(seconds: 2),
       interval: const Duration(seconds: 2),
@@ -94,7 +95,7 @@ class CustomDialogWidget extends StatelessWidget {
                   "assets/images/alert-icon.png",
                   height: 150,
                 ),
-                const SizedBox(height: 10),
+                SizedBox(height: size.height * 0.02),
                 const Text(
                   "¿Estas seguro que deseas cerrar la sesión?",
                   textAlign: TextAlign.center,
@@ -103,7 +104,7 @@ class CustomDialogWidget extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 32),
+                SizedBox(height: size.height * 0.03),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -150,25 +151,9 @@ class CustomDialogWidget extends StatelessWidget {
                           child: const Text("Confirmar")),
                     ),
                   ],
-                )
+                ),
+                SizedBox(height: size.height * 0.02),
               ],
-            ),
-          ),
-          Positioned(
-            top: 20,
-            right: 18,
-            height: 60,
-            width: 60,
-            child: OutlinedButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              style: OutlinedButton.styleFrom(
-                  padding: const EdgeInsets.all(8),
-                  shape: const CircleBorder(),
-                  backgroundColor: Colors.transparent,
-                  side: const BorderSide(color: Colors.transparent)),
-              child: Image.asset("assets/images/equis.png"),
             ),
           ),
         ]),
@@ -187,6 +172,7 @@ mostrarAlertaError(BuildContext context, String subtitulo, Function function,
       child: Wrap(
         children: [
           AlertDialog(
+            backgroundColor: Theme.of(context).colorScheme.surface,
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10.0))),
             title: Center(
@@ -228,6 +214,7 @@ mostrarAlertaError(BuildContext context, String subtitulo, Function function,
 }
 
 mostrarAlertaExito(BuildContext context, String subtitulo, Function function) {
+  final size = MediaQuery.of(context).size;
   showDialog(
     barrierDismissible: false,
     context: context,
@@ -235,6 +222,7 @@ mostrarAlertaExito(BuildContext context, String subtitulo, Function function) {
       child: Wrap(
         children: [
           AlertDialog(
+            backgroundColor: Theme.of(context).colorScheme.surface,
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10.0))),
             title: const Center(
@@ -250,15 +238,18 @@ mostrarAlertaExito(BuildContext context, String subtitulo, Function function) {
                 Text(subtitulo,
                     textAlign: TextAlign.center,
                     style: const TextStyle(color: _secundary, fontSize: 26)),
-                const SizedBox(height: 15.0),
+                SizedBox(height: size.height * 0.04),
                 TextButton(
                   onPressed: function as void Function()?,
                   child: Container(
-                    width: 150.0,
+                    width: size.width * 0.8,
                     padding: const EdgeInsets.all(10.0),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10.0),
-                        border: Border.all(color: _secundary)),
+                        border: Border.all(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSecondaryContainer)),
                     child: const Center(
                       child:
                           Text('Aceptar', style: TextStyle(color: _secundary)),
@@ -284,6 +275,7 @@ mostrarAlertaRegistro(BuildContext context, String subtitulo, Function function,
       child: Wrap(
         children: [
           AlertDialog(
+            backgroundColor: Theme.of(context).colorScheme.surface,
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10.0))),
             title: Center(
@@ -295,8 +287,7 @@ mostrarAlertaRegistro(BuildContext context, String subtitulo, Function function,
                     textAlign: TextAlign.center,
                     style: const TextStyle(color: _secundary, fontSize: 26)),
                 const SizedBox(height: 30.0),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                Column(
                   children: [
                     ElevatedButton(
                       onPressed: () {
@@ -308,18 +299,20 @@ mostrarAlertaRegistro(BuildContext context, String subtitulo, Function function,
                         child: Padding(
                           padding: EdgeInsets.all(10.0),
                           child: Text('Cancelar',
-                              style: TextStyle(color: Colors.white)),
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16)),
                         ),
                       ),
                     ),
-                    const SizedBox(width: 15),
+                    const SizedBox(height: 15),
                     ElevatedButton(
                       onPressed: function as void Function()?,
                       child: const Center(
                         child: Padding(
                           padding: EdgeInsets.all(10.0),
                           child: Text('Aceptar',
-                              style: TextStyle(color: Colors.white)),
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16)),
                         ),
                       ),
                     ),
@@ -345,6 +338,7 @@ mostrarAlertaRegistroAsignacion(
       child: Wrap(
         children: [
           AlertDialog(
+            backgroundColor: Theme.of(context).colorScheme.surface,
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10.0))),
             title: Center(
@@ -356,8 +350,7 @@ mostrarAlertaRegistroAsignacion(
                     textAlign: TextAlign.center,
                     style: const TextStyle(color: _secundary, fontSize: 26)),
                 const SizedBox(height: 30.0),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                Column(
                   children: [
                     ElevatedButton(
                       onPressed: () {
@@ -373,7 +366,7 @@ mostrarAlertaRegistroAsignacion(
                         ),
                       ),
                     ),
-                    const SizedBox(width: 15),
+                    const SizedBox(height: 15),
                     ElevatedButton(
                       onPressed: function as void Function()?,
                       child: const Center(
@@ -406,6 +399,7 @@ mostrarAlertaVolverDiagnosticos(
       child: Wrap(
         children: [
           AlertDialog(
+            backgroundColor: Theme.of(context).colorScheme.surface,
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10.0))),
             title: Center(
@@ -417,8 +411,7 @@ mostrarAlertaVolverDiagnosticos(
                     textAlign: TextAlign.center,
                     style: const TextStyle(color: _secundary, fontSize: 26)),
                 const SizedBox(height: 30.0),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                Column(
                   children: [
                     ElevatedButton(
                       onPressed: () {
@@ -434,7 +427,7 @@ mostrarAlertaVolverDiagnosticos(
                         ),
                       ),
                     ),
-                    const SizedBox(width: 15),
+                    const SizedBox(height: 15),
                     ElevatedButton(
                       onPressed: function as void Function()?,
                       child: const Center(

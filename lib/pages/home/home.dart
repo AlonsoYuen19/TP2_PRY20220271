@@ -101,6 +101,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     .bodyMedium!
                     .copyWith(color: Theme.of(context).colorScheme.onSecondary),
               ),
+              const SizedBox(
+                width: 10,
+              ),
               TextButton(
                   onPressed: () {
                     Navigator.pushNamed(context, 'tabBarFilter');
@@ -115,54 +118,52 @@ class _HomeScreenState extends State<HomeScreen> {
           const SizedBox(
             height: 10,
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Flexible(
-                  child: Text(
-                    "Seleccione el icono de búsqueda\npara filtrar, de acuedo al nombre\ndel paciente",
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        color: Theme.of(context).colorScheme.onSecondary,
-                        fontSize: 16.5),
-                  ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Flexible(
+                child: Text(
+                  "Seleccione el icono de búsqueda\npara filtrar, de acuedo al nombre\ndel paciente",
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                      color: Theme.of(context).colorScheme.onSecondary,
+                      fontSize: 16.5),
                 ),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.background,
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                  child: IconButton(
-                      style: ButtonStyle(
-                        shape: MaterialStateProperty.all(const CircleBorder()),
-                        padding: MaterialStateProperty.all(
-                            const EdgeInsets.symmetric(
-                          horizontal: 8.0,
-                          vertical: 8.0,
-                        )),
-                      ),
-                      onPressed: () async {
-                        await showSearch(
-                            context: context,
-                            delegate: user.role == "ROLE_MEDIC"
-                                ? SearchUser(
-                                    isHome: true,
-                                    cmp: medic.cmp,
-                                    isEtapa: false)
-                                : SearchNurse(
-                                    isHome: true,
-                                    cep: nurse.cep,
-                                    isEtapa: false));
-                      },
-                      icon: Icon(
-                        Icons.search,
-                        color: Theme.of(context).colorScheme.tertiary,
-                        size: 30,
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.background,
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                child: IconButton(
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all(const CircleBorder()),
+                      padding:
+                          MaterialStateProperty.all(const EdgeInsets.symmetric(
+                        horizontal: 8.0,
+                        vertical: 8.0,
                       )),
-                )
-              ],
-            ),
+                    ),
+                    onPressed: () async {
+                      await showSearch(
+                          context: context,
+                          delegate: user.role == "ROLE_MEDIC"
+                              ? SearchUser(
+                                  isHome: true, cmp: medic.cmp, isEtapa: false)
+                              : SearchNurse(
+                                  isHome: true,
+                                  cep: nurse.cep,
+                                  isEtapa: false));
+                    },
+                    icon: Icon(
+                      Icons.search,
+                      color: Theme.of(context).colorScheme.tertiary,
+                      size: 30,
+                    )),
+              )
+            ],
           ),
           const SizedBox(
             height: 20,

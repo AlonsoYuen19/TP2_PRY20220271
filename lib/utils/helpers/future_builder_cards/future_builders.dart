@@ -21,14 +21,14 @@ class _MyFutureBuilderState extends State<MyFutureBuilder> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      padding: const EdgeInsets.symmetric(horizontal: 25.0),
       child: FutureBuilder<List>(
         future: widget.myFuture,
         builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
           var data = snapshot.data ?? [];
 
           return ListView.builder(
-              physics: const BouncingScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               //itemCount: widget.isHome ? 4 : data.length,
               shrinkWrap: true,
               itemCount: data.length > 4 ? 4 : data.length,

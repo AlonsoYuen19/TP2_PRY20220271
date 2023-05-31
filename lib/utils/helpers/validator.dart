@@ -7,7 +7,7 @@ import 'package:flutter/material.dart'
 class Validator {
   static FormFieldValidator<String> nameValid(String errorMessage) {
     return (value) {
-      if (value!.isEmpty || !RegExp(r'^[a-z A-Z]+$').hasMatch(value)) {
+      if (value!.isEmpty || !RegExp(r'^[a-z A-ZáéíóúÁÉÍÓÚüÜ]+$').hasMatch(value)) {
         return errorMessage;
       } else {
         return null;
@@ -132,7 +132,7 @@ class Validator {
 
   static FormFieldValidator<String> addressValid(String errorMessage) {
     return (value) {
-      if (value!.isEmpty || !RegExp(r'^[a-zA-Z0-9., ñ]+$').hasMatch(value)) {
+      if (value!.isEmpty || !RegExp(r'^[a-zA-Z0-9., ñáéíóúÁÉÍÓÚüÜ]+$').hasMatch(value)) {
         return errorMessage;
       } else {
         return null;

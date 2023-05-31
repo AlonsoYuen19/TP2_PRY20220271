@@ -266,6 +266,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 children: [
                                   GetTextFormField(
                                       labelText: "Nombre Completo",
+                                      maxLength: 36,
                                       placeholder: name,
                                       icon: const Icon(
                                           Icons.person_add_alt_1_sharp),
