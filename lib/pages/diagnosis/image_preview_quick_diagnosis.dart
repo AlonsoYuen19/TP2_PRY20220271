@@ -16,7 +16,9 @@ import '../../services/users_service.dart';
 
 class ImagePreviewQuickDiagnosis extends StatefulWidget {
   final XFile imagePath;
-  const ImagePreviewQuickDiagnosis({super.key, required this.imagePath});
+  final bool isFromGallery;
+  const ImagePreviewQuickDiagnosis(
+      {super.key, required this.imagePath, required this.isFromGallery});
 
   @override
   State<ImagePreviewQuickDiagnosis> createState() =>
@@ -35,18 +37,20 @@ class _ImagePreviewQuickDiagnosisState
   String? stage2;
   String? stage3;
   String? stage4;
-  String? porcentaje;
+  String porcentaje = "";
   Future init() async {
     users = (await usersService.getUsersById())!;
     quickDiagnosis = await diagnosisService.createQuickDiagnosis(
-        File(widget.imagePath.path).readAsBytesSync(), context);
+        File(widget.imagePath.path).readAsBytesSync(),
+        context,
+        widget.isFromGallery);
     print("El id del Quick diagnóstico es: ${quickDiagnosis!.stage1}");
     setState(() {});
   }
 
   Future<Widget> delayPage() {
     Completer<Widget> completer = Completer();
-    Future.delayed(const Duration(seconds: 5), () {
+    Future.delayed(const Duration(milliseconds: 100), () {
       completer.complete(Container());
     });
     if (quickDiagnosis!.stagePredicted == "1") {
@@ -61,14 +65,14 @@ class _ImagePreviewQuickDiagnosisState
     return completer.future;
   }
 
-  Future<QuickDiagnosis> getQuickDiagnosis() async {
+  /*Future<QuickDiagnosis> getQuickDiagnosis() async {
     QuickDiagnosis quickDiagnosis = await diagnosisService.createQuickDiagnosis(
-        File(widget.imagePath.path).readAsBytesSync(), context);
+        File(widget.imagePath.path).readAsBytesSync(), context,widget.isFromGallery);
     setState(() {
       diagnosis!.stagePredicted = quickDiagnosis.stagePredicted;
     });
     return quickDiagnosis;
-  }
+  }*/
 
   @override
   void initState() {
@@ -95,158 +99,170 @@ class _ImagePreviewQuickDiagnosisState
             FutureBuilder(
                 future: delayPage(),
                 builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return SizedBox(
-                      height: 70,
-                      width: 70,
-                      child: CircularProgressIndicator(
-                        color: Colors.transparent,
+                  if (snapshot.connectionState == ConnectionState.waiting &&
+                      porcentaje == "") {
+                    return Container();
+                  }
+                  if (porcentaje != "") {
+                    return SafeArea(
+                        child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 20),
+                          Align(
+                              alignment: Alignment.topCenter,
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 24, vertical: 20),
+                                child: Text(
+                                  'Resultado',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color:
+                                        Theme.of(context).colorScheme.tertiary,
+                                    fontSize: 21,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              )),
+                          const SizedBox(height: 10),
+                          Column(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(8),
+                                  topRight: Radius.circular(8),
+                                ),
+                                child: SizedBox(
+                                  height: size.height * 0.25,
+                                  width: size.width * 0.8,
+                                  child: Image.file(
+                                    File(widget.imagePath.path),
+                                    fit: BoxFit.fill,
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                //height: size.height * 0.11,
+                                width: size.width * 0.8,
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 20),
+                                decoration: BoxDecoration(
+                                    color:
+                                        Theme.of(context).colorScheme.tertiary,
+                                    borderRadius: BorderRadius.only(
+                                        bottomLeft: Radius.circular(8),
+                                        bottomRight: Radius.circular(8))),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Etapa: ${quickDiagnosis!.stagePredicted}",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontSize: 24,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onTertiary),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Text(
+                                      porcentaje.isEmpty
+                                          ? "$porcentaje"
+                                          : "${porcentaje.substring(0, 5)}% de predicción",
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w400,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onTertiary),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          Container(
+                            width: size.width * 0.84,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 10),
+                            child: Text("Información Adicional",
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    color:
+                                        Theme.of(context).colorScheme.tertiary,
+                                    fontWeight: FontWeight.bold)),
+                          ),
+                          //const SizedBox(height: 10),
+                          Container(
+                            width: size.width * 0.84,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 10),
+                            child: Text(
+                              porcentaje.isEmpty
+                                  ? ""
+                                  : "El médico ${users.fullName} ha realizado el siguiente diagnóstico rápido, cuyo resultado se encuentra en la etapa ${quickDiagnosis!.stagePredicted}. De acuerdo a este resultado, la probabilidad de que el diagnóstico se encuentre en esta etapa es de un ${porcentaje.substring(0, 5)}% de predicción",
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                  color: Theme.of(context).colorScheme.outline),
+                            ),
+                          ),
+                          SizedBox(height: size.height * 0.09),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                width: size.width * 0.8,
+                                height: size.height * 0.06,
+                                child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        elevation: 0,
+                                        backgroundColor: Theme.of(context)
+                                            .colorScheme
+                                            .onSecondaryContainer),
+                                    onPressed: () async {
+                                      mostrarAlertaVolverDiagnosticos(context,
+                                          "¿Está seguro de cofirmar el diagnóstico para finalizar con la operación?",
+                                          () async {
+                                        if (prefs.idMedic != 0) {
+                                          Navigator.pushNamedAndRemoveUntil(
+                                              context,
+                                              'home',
+                                              (route) => false);
+                                        }
+                                        prefs.deleteImageQuickDiag();
+                                        prefs.deleteImageQuickDiagFile();
+                                      },
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSecondary);
+                                    },
+                                    child: Text(
+                                      "Confirmar Diagnóstico",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
+                                    )),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                        ],
                       ),
+                    ));
+                  } else {
+                    return const Center(
+                      child: Text("No se pudo realizar el diagnóstico"),
                     );
                   }
-                  return SafeArea(
-                      child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 20),
-                        Align(
-                            alignment: Alignment.topCenter,
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 24, vertical: 20),
-                              child: Text(
-                                'Resultado',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Theme.of(context).colorScheme.tertiary,
-                                  fontSize: 21,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            )),
-                        const SizedBox(height: 10),
-                        Column(
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(8),
-                                topRight: Radius.circular(8),
-                              ),
-                              child: SizedBox(
-                                height: size.height * 0.25,
-                                width: size.width * 0.8,
-                                child: Image.file(
-                                  File(widget.imagePath.path),
-                                  fit: BoxFit.fill,
-                                ),
-                              ),
-                            ),
-                            Container(
-                              //height: size.height * 0.11,
-                              width: size.width * 0.8,
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 20),
-                              decoration: BoxDecoration(
-                                  color: Theme.of(context).colorScheme.tertiary,
-                                  borderRadius: BorderRadius.only(
-                                      bottomLeft: Radius.circular(8),
-                                      bottomRight: Radius.circular(8))),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Etapa: ${quickDiagnosis!.stagePredicted}",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontSize: 24,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onTertiary),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Text(
-                                    "${porcentaje!.substring(0, 5)}% de predicción",
-                                    textAlign: TextAlign.start,
-                                    style: TextStyle(
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.w400,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onTertiary),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 10),
-                        Container(
-                          width: size.width * 0.84,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 10),
-                          child: Text("Información Adicional",
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  color: Theme.of(context).colorScheme.tertiary,
-                                  fontWeight: FontWeight.bold)),
-                        ),
-                        //const SizedBox(height: 10),
-                        Container(
-                          width: size.width * 0.84,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 10),
-                          child: Text(
-                            "El médico ${users.fullName} ha realizado el siguiente diagnóstico rápido, cuyo resultado se encuentra en la etapa ${quickDiagnosis!.stagePredicted}. De acuerdo a este resultado, la probabilidad de que el diagnóstico se encuentre en esta etapa es de un ${porcentaje!.substring(0, 5)}% de predicción",
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
-                                color: Theme.of(context).colorScheme.outline),
-                          ),
-                        ),
-                        SizedBox(height: size.height * 0.09),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              width: size.width * 0.8,
-                              height: size.height * 0.06,
-                              child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      elevation: 0,
-                                      backgroundColor: Theme.of(context)
-                                          .colorScheme
-                                          .onSecondaryContainer),
-                                  onPressed: () async {
-                                    mostrarAlertaVolverDiagnosticos(context,
-                                        "¿Está seguro de cofirmar el diagnóstico para finalizar con la operación?",
-                                        () async {
-                                      if (prefs.idMedic != 0) {
-                                        Navigator.pushNamedAndRemoveUntil(
-                                            context, 'home', (route) => false);
-                                      }
-                                    },
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onSecondary);
-                                  },
-                                  child: Text(
-                                    "Confirmar Diagnóstico",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold),
-                                  )),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                      ],
-                    ),
-                  ));
                 })
           ],
         )));

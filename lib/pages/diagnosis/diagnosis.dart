@@ -79,6 +79,7 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
                                         builder: (context) =>
                                             ImagePreviewQuickDiagnosis(
                                               imagePath: image,
+                                              isFromGallery: true,
                                             )));
                               });
                             } else {

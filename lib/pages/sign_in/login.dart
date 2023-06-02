@@ -379,7 +379,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return ElevatedButton(
         onPressed: _isPressed == false ? _handleButton : null,
         child: Container(
-          width: size.width * 0.76,
+          width: size.width * 0.71,
           padding: const EdgeInsets.all(5.0),
           child: Text("Iniciar sesión",
               textAlign: TextAlign.center,

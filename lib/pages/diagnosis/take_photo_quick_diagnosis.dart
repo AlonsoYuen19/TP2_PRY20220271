@@ -227,7 +227,7 @@ class _TakePhotoQuickDiagnosisState extends State<TakePhotoQuickDiagnosis> {
         avatar = await value.readAsBytes();
         if (prefs.idMedic != 0) {
           QuickDiagnosis image =
-              await diagnosisService.createQuickDiagnosis(avatar, context);
+              await diagnosisService.createQuickDiagnosis(avatar, context,false);
           if (image.stagePredicted.isNotEmpty) {
             return mostrarAlertaExito(
                 context, "Se capturó la imagen de la herida exitosamente",
@@ -241,6 +241,7 @@ class _TakePhotoQuickDiagnosisState extends State<TakePhotoQuickDiagnosis> {
                       builder: (BuildContext context) =>
                           ImagePreviewQuickDiagnosis(
                             imagePath: value,
+                            isFromGallery: false,
                           )));
             });
           } else {

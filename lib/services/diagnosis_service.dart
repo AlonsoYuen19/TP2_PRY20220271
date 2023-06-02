@@ -87,11 +87,12 @@ class DiagnosisService {
 
   QuickDiagnosis quickDiagnosis = QuickDiagnosis();
   Future<QuickDiagnosis> createQuickDiagnosis(
-      Uint8List imageBytes, BuildContext context) async {
+      Uint8List imageBytes, BuildContext context, bool isGallery) async {
     const url = '${authURL}diagnosis/quick-diagnosis';
     final request = http.MultipartRequest('POST', Uri.parse(url));
     final multipartFile = http.MultipartFile.fromBytes('file', imageBytes,
-        filename: prefs.imageQuickDiag,
+        filename:
+            isGallery == true ? prefs.imageQuickDiagFile : prefs.imageQuickDiag,
         contentType: MediaType('image', 'jpeg'));
     request.headers['Authorization'] = 'Bearer ${prefs.token}';
     request.headers['Content-Type'] = 'multipart/form-data';
