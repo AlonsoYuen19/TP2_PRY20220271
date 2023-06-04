@@ -152,7 +152,8 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                                         TextInputType.name,
                                         validNameEditDoctor(
                                             "Escriba el nombre con el formato correcto"),
-                                        const Icon(Icons.person),
+                                        Icon(Icons.person,
+                                        color: Theme.of(context).colorScheme.tertiary,),
                                         isName: true,
                                         btnText1: name!),
                                   ],
@@ -195,7 +196,8 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                                         TextInputType.emailAddress,
                                         validEmail(
                                             "Escriba el correo electrónico con el formato correcto"),
-                                        const Icon(Icons.email),
+                                        Icon(Icons.email,
+                                        color: Theme.of(context).colorScheme.tertiary),
                                         isEmail: true,
                                         btnText1: email!),
                                   ],
@@ -238,7 +240,8 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                                         TextInputType.name,
                                         validStateCivil(
                                             "Escriba el estado civil con el formato correcto"),
-                                        const Icon(Icons.person_2),
+                                        Icon(Icons.person_2,
+                                        color: Theme.of(context).colorScheme.tertiary),
                                         isStateCivil: true,
                                         btnText1: stateCivil!),
                                   ],
@@ -281,7 +284,8 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                                         TextInputType.streetAddress,
                                         validAddressEditDoctor(
                                             "Escriba la dirección con el formato correcto"),
-                                        const Icon(Icons.person_2),
+                                        Icon(Icons.person_2,
+                                        color: Theme.of(context).colorScheme.tertiary),
                                         isDirection: true,
                                         btnText1: address!),
                                   ],
@@ -321,7 +325,8 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                                         TextInputType.phone,
                                         validPhoneEditDoctor(
                                             "Escriba el número de celular con el formato correcto"),
-                                        const Icon(Icons.phone),
+                                        Icon(Icons.phone,
+                                        color: Theme.of(context).colorScheme.tertiary),
                                         isPhone: true,
                                         btnText1: phone!),
                                   ],
@@ -362,7 +367,8 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                                         validAgeEditDoctor(
                                             "Escriba la edad con el formato correcto",
                                             _ageController),
-                                        const Icon(Icons.document_scanner),
+                                        Icon(Icons.document_scanner,
+                                        color: Theme.of(context).colorScheme.tertiary),
                                         isAge: true,
                                         btnText1: age.toString()),
                                   ],
@@ -402,7 +408,8 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                                         TextInputType.number,
                                         validDniEditDoctor(
                                             "Escriba el dni con el formato correcto"),
-                                        const Icon(Icons.numbers),
+                                        Icon(Icons.numbers,
+                                        color: Theme.of(context).colorScheme.tertiary),
                                         isDni: true,
                                         btnText1: dni!),
                                   ],

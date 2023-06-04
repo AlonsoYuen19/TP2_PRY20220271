@@ -87,6 +87,7 @@ class _MyFutureBuilderState extends State<MyFutureBuilder> {
                     constraints: BoxConstraints(
                         maxWidth: MediaQuery.of(context).size.width),
                     child: Card(
+                      elevation: 0,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.0),
                         side: BorderSide(

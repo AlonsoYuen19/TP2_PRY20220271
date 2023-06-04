@@ -68,7 +68,7 @@ class _DiagnosisScreenState extends State<DiagnosisNurseSelectionScreen> {
             }
             return AppBarDrawer(
                 isDiagnosisNurse: true,
-                title: "Diangósticos",
+                title: "Diagnósticos",
                 child: _selectOption());
           },
         ));

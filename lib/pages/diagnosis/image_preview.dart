@@ -85,7 +85,7 @@ class _ImagePreviewState extends State<ImagePreview> {
     return WillPopScope(
       onWillPop: () async {
         mostrarAlertaVolverDiagnosticos(context,
-            "¿Esta usted seguro de que desea regresar a la pantalla para escoger a los pacientes a diagnosticar?",
+            "¿Esta usted seguro de que desea regresar a la sección de diagnósticos?",
             () {
           Navigator.pushNamedAndRemoveUntil(
               context, 'diagnosis', (route) => false);

@@ -204,7 +204,7 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                                   fontSize: isResp ? 16 : 24,
                                 )
                             : Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                  fontSize: isResp ? 16 : 24,
+                                  fontSize: isResp ? 16 : 16,
                                   color: Theme.of(context).colorScheme.tertiary,
                                 )),
                   ),
@@ -456,7 +456,7 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
             title: Text(
               widget.title!,
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 24),
+              style: TextStyle(fontSize: 20),
             ),
           ),
           body: widget.child,

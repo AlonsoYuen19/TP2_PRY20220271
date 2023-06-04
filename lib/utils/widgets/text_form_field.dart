@@ -147,7 +147,8 @@ class _GetTextFormFieldState extends State<GetTextFormField> {
                   counterStyle: TextStyle(fontWeight: FontWeight.w600),
                   helperText: null,
                   labelStyle:
-                      TextStyle(color: _color, fontWeight: FontWeight.w400),
+                      TextStyle(color: _color, fontWeight: FontWeight.w400,
+                      fontSize:14),
                   errorStyle: TextStyle(
                     height: 0,
                     color: Theme.of(context).colorScheme.error,

@@ -103,7 +103,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             style: Theme.of(context)
                                 .textTheme
                                 .titleSmall!
-                                .copyWith(fontWeight: FontWeight.bold),
+                                .copyWith(fontWeight: FontWeight.bold,
+                                fontSize: 30),
                           ),
                         ),
                         SizedBox(height: size.height * 0.05),

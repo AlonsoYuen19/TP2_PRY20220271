@@ -149,6 +149,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 child: Text('Siguiente',
                     style: Theme.of(context).textTheme.labelMedium!.copyWith(
                           color: Theme.of(context).colorScheme.onTertiary,
+                          fontSize: 14
                         )),
               ),
             ),

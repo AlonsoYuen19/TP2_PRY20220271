@@ -360,13 +360,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     text1,
                     style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                         color: Theme.of(context).colorScheme.tertiary,
-                        fontSize: 17),
+                        fontSize: 17,),
                   ),
                   Text(
                     text2,
                     style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                         color: Theme.of(context).colorScheme.outline,
-                        fontSize: 17),
+                        fontSize: 17,
+                        fontWeight: FontWeight.w300),
                   ),
                 ],
               ),
@@ -410,6 +411,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                               color: Theme.of(context).colorScheme.outline,
                               fontSize: 17,
+                              fontWeight: FontWeight.w300,
                               overflow: TextOverflow.ellipsis,
                             ),
                         maxLines:
@@ -542,7 +544,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 rowWidget(
                     "assets/svgImages/especialidad.svg",
                     "assets/svgImages/dni.svg",
-                    "Especialdad",
+                    "Especialidad",
                     role,
                     "DNI",
                     users.dni),

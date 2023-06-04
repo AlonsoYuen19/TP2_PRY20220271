@@ -259,8 +259,8 @@ class _ImagePreviewQuickDiagnosisState
                       ),
                     ));
                   } else {
-                    return const Center(
-                      child: Text("No se pudo realizar el diagnóstico"),
+                    return Container(
+                      
                     );
                   }
                 })
