@@ -91,82 +91,102 @@ class _HomeScreenState extends State<HomeScreen> {
       physics: BouncingScrollPhysics(),
       child: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Text(
-                "Deseas filtrar por etapas?",
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyMedium!
-                    .copyWith(color: Theme.of(context).colorScheme.onSecondary),
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, 'tabBarFilter');
-                  },
-                  child: Text("Filtrar",
-                      style: Theme.of(context).textTheme.displaySmall!.copyWith(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          decoration: TextDecoration.underline)))
-            ],
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Flexible(
-                child: Text(
-                  "Seleccione el icono de búsqueda\npara filtrar, de acuedo al nombre\ndel paciente",
+          Padding(
+            padding: const EdgeInsets.only(left: 20.0, right: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Deseas filtrar por etapas?",
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                       color: Theme.of(context).colorScheme.onSecondary,
-                      fontSize: 16.5),
+                      fontSize: 15,
+                      fontWeight: FontWeight.w400),
                 ),
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.background,
-                  borderRadius: BorderRadius.circular(50),
-                ),
-                child: IconButton(
-                    style: ButtonStyle(
-                      shape: MaterialStateProperty.all(const CircleBorder()),
-                      padding:
-                          MaterialStateProperty.all(const EdgeInsets.symmetric(
-                        horizontal: 8.0,
-                        vertical: 8.0,
-                      )),
-                    ),
-                    onPressed: () async {
-                      await showSearch(
-                          context: context,
-                          delegate: user.role == "ROLE_MEDIC"
-                              ? SearchUser(
-                                  isHome: true, cmp: medic.cmp, isEtapa: false)
-                              : SearchNurse(
-                                  isHome: true,
-                                  cep: nurse.cep,
-                                  isEtapa: false));
+                TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, 'tabBarFilter');
                     },
-                    icon: Icon(
-                      Icons.search,
-                      color: Theme.of(context).colorScheme.tertiary,
-                      size: 30,
-                    )),
-              )
-            ],
+                    child: Text("Filtrar",
+                        style: Theme.of(context)
+                            .textTheme
+                            .displaySmall!
+                            .copyWith(
+                                fontSize: 15,
+                                decoration: TextDecoration.underline)))
+              ],
+            ),
           ),
           const SizedBox(
-            height: 20,
+            height: 4,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 20.0, right: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Pacientes",
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          color: Theme.of(context).colorScheme.tertiary,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600),
+                    ),
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    Text(
+                      "Buscar diagnóstico por nombre del paciente",
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          color: Theme.of(context).colorScheme.onSecondary,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w400),
+                    ),
+                  ],
+                ),
+                Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.background,
+                    borderRadius: BorderRadius.circular(40),
+                  ),
+                  child: IconButton(
+                      style: ButtonStyle(
+                        shape: MaterialStateProperty.all(const CircleBorder()),
+                        /*padding: MaterialStateProperty.all(
+                            const EdgeInsets.symmetric(
+                          horizontal: 8.0,
+                          vertical: 8.0,
+                        )),*/
+                      ),
+                      onPressed: () async {
+                        await showSearch(
+                            context: context,
+                            delegate: user.role == "ROLE_MEDIC"
+                                ? SearchUser(
+                                    isHome: true,
+                                    cmp: medic.cmp,
+                                    isEtapa: false)
+                                : SearchNurse(
+                                    isHome: true,
+                                    cep: nurse.cep,
+                                    isEtapa: false));
+                      },
+                      icon: Icon(
+                        Icons.search,
+                        color: Theme.of(context).colorScheme.tertiary,
+                        size: 17.49,
+                      )),
+                )
+              ],
+            ),
+          ),
+          const SizedBox(
+            height: 16,
           ),
           listDiagnosis.isEmpty
               ? FutureBuilder(
@@ -213,15 +233,21 @@ class _HomeScreenState extends State<HomeScreen> {
                     );
                   })
               : user.role == "ROLE_MEDIC"
-                  ? MyFutureBuilder(
-                      myFuture:
-                          diagnosisService.getDiagnosisByMedicCMP(medic.cmp),
-                      isHome: true,
+                  ? Padding(
+                      padding: const EdgeInsets.only(left: 20.0, right: 20),
+                      child: MyFutureBuilder(
+                        myFuture:
+                            diagnosisService.getDiagnosisByMedicCMP(medic.cmp),
+                        isHome: true,
+                      ),
                     )
-                  : MyFutureBuilder(
-                      myFuture:
-                          diagnosisService.getDiagnosisByNurseCEP(nurse.cep),
-                      isHome: true,
+                  : Padding(
+                      padding: const EdgeInsets.only(left: 20.0, right: 20),
+                      child: MyFutureBuilder(
+                        myFuture:
+                            diagnosisService.getDiagnosisByNurseCEP(nurse.cep),
+                        isHome: true,
+                      ),
                     ),
           const SizedBox(
             height: 20,

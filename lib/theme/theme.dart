@@ -3,11 +3,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:ulcernosis/utils/helpers/constant_variables.dart';
 
 const colorAccent = Color.fromRGBO(244, 179, 9, 1);
-const chartColorBackground = Color.fromRGBO(14, 26, 48, 0.08);
+const chartColorBackground = Color.fromRGBO(224, 224, 224, 1);
 const backgroundColor2 = Color.fromRGBO(109, 153, 237, 1);
 
 const primaryColorApp = Color.fromRGBO(14, 26, 48, 1);
-const primaryColorTextColor = Color.fromRGBO(14, 26, 48, 0.9);
+const primaryColorTextColor = Color.fromRGBO(133, 133, 133, 1);
 const primaryBackGroundColor = Color.fromRGBO(14, 26, 48, 0.65);
 
 const secondaryColorApp = Color.fromRGBO(255, 161, 158, 1);
@@ -33,7 +33,6 @@ ThemeData textThemes = ThemeData(
     //chartBackgroundColor
     background: chartColorBackground,
 
-    
     primary: textColor,
     secondary: colorAccent,
 
@@ -113,33 +112,27 @@ ThemeData textThemes = ThemeData(
     animationDuration: Duration(seconds: 2),
     iconColor: MaterialStatePropertyAll(colorAccent),
   )),
-  textTheme: GoogleFonts.aBeeZeeTextTheme(
+  textTheme: GoogleFonts.robotoTextTheme(
     ThemeData(
         textTheme: const TextTheme(
       //buttonText
       labelLarge: TextStyle(
-        color: Colors.white,
-        fontSize: 24,
-        fontWeight: FontWeight.bold,
+        fontSize: 16,
       ),
       labelMedium: TextStyle(
-        color: Colors.black,
-        fontSize: 18,
-        fontWeight: FontWeight.bold,
+        fontSize: 16,
       ),
       labelSmall: TextStyle(
-        color: Colors.black,
-        fontSize: 10,
+        fontSize: 16,
       ),
       //login.dart TexTButton
       displaySmall: TextStyle(
           color: primaryColorApp,
-          fontSize: 18,
-          fontStyle: FontStyle.italic,
+          fontSize: 16,
           decoration: TextDecoration.underline),
       //text parragraph
       bodyMedium: TextStyle(
-          color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+          color: Colors.white, fontSize: 16, fontWeight: FontWeight.w400),
       //title text
       titleSmall: TextStyle(color: Colors.white, fontSize: 40),
       //drawer text

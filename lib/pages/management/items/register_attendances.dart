@@ -43,9 +43,46 @@ class _RegisterAttendancePageState extends State<RegisterAttendancePage> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        leading: Padding(
+          padding:
+              const EdgeInsets.only(left: 20, right: 20, top: 16, bottom: 16),
+          child: ElevatedButton(
+              style: ButtonStyle(
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                ),
+                backgroundColor: MaterialStateProperty.all(Theme.of(context)
+                    .colorScheme
+                    .onSecondaryContainer), // <-- Button color
+                elevation: MaterialStateProperty.all(0), // <-- Splash color
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Icon(Icons.arrow_back_outlined,
+                  color: Theme.of(context).colorScheme.onTertiary, size: 18)),
+        ),
+        leadingWidth: 96,
+        centerTitle: true,
+        toolbarHeight: 98,
+        automaticallyImplyLeading: false,
+        title: Text(
+          "Registro de Citas",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w400,
+            color: Theme.of(context).colorScheme.tertiary,
+          ),
+        ),
+      ),
       body: Stack(children: [
         Container(
-          height: MediaQuery.of(context).size.height * 0.3,
+          height: MediaQuery.of(context).size.height * 0.1,
           width: double.infinity,
           decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.surface,
@@ -54,103 +91,65 @@ class _RegisterAttendancePageState extends State<RegisterAttendancePage> {
         ),
         SafeArea(
             child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: size.width * 0.06, vertical: size.height * 0.05),
-            child: Column(children: [
-              Row(
-                children: [
-                  SizedBox(
-                    width: size.width * 0.04,
-                  ),
-                  ElevatedButton(
-                    child: Icon(
-                      Icons.arrow_back_outlined,
-                      color: Theme.of(context).colorScheme.onTertiary,
-                    ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    style: ButtonStyle(
-                      padding:
-                          MaterialStateProperty.all(const EdgeInsets.symmetric(
-                        horizontal: 12.0,
-                        vertical: 16.0,
-                      )),
-                      backgroundColor: MaterialStateProperty.all(
-                          Theme.of(context)
-                              .colorScheme
-                              .onSecondaryContainer), // <-- Button color
-                    ),
-                  ),
-                  SizedBox(
-                    width: size.width * 0.12,
-                  ),
-                  Flexible(
-                    child: Text(
-                      "Registro de Citas",
-                      style: TextStyle(
-                          color: Theme.of(context).colorScheme.tertiary,
-                          fontSize: 21,
-                          fontWeight: FontWeight.w400),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 35,
-              ),
-              FutureBuilder(
-                  future: delayPage(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return SizedBox(
+          child: Column(children: [
+            const SizedBox(
+              height: 16,
+            ),
+            FutureBuilder(
+                future: delayPage(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: SizedBox(
                         height: 70,
                         width: 70,
                         child: CircularProgressIndicator(
-                          color: Theme.of(context).colorScheme.secondary,
+                          color: Theme.of(context).colorScheme.tertiary,
                         ),
-                      );
-                    }
-                    return listAppointments.isEmpty
-                        ? Column(
-                            children: [
-                              SizedBox(
-                                height: size.height * 0.15,
-                              ),
-                              Container(
-                                height: 280,
-                                width: 280,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                      width: 0, color: Colors.transparent),
-                                  image: const DecorationImage(
-                                    image: AssetImage(
-                                        'assets/images/out-of-stock.png'),
-                                    fit: BoxFit.contain,
-                                  ),
+                      ),
+                    );
+                  }
+                  return listAppointments.isEmpty
+                      ? Column(
+                          children: [
+                            SizedBox(
+                              height: size.height * 0.15,
+                            ),
+                            Container(
+                              height: 280,
+                              width: 280,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    width: 0, color: Colors.transparent),
+                                image: const DecorationImage(
+                                  image: AssetImage(
+                                      'assets/images/out-of-stock.png'),
+                                  fit: BoxFit.contain,
                                 ),
                               ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              const Text(
-                                  "No hay Registros de Asistencias Disponibles",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 30,
-                                      fontWeight: FontWeight.bold))
-                            ],
-                          )
-                        : MyFutureBuilderAppointmentByNurse(
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            const Text(
+                                "No hay Registros de Asistencias Disponibles",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.bold))
+                          ],
+                        )
+                      : Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          child: MyFutureBuilderAppointmentByNurse(
                             myFuture: appointmentService
                                 .getAppointmentsByNurseId(widget.idNurse),
                             idNurse: widget.idNurse,
-                          );
-                  })
-            ]),
-          ),
+                          ),
+                        );
+                })
+          ]),
         ))
       ]),
     );

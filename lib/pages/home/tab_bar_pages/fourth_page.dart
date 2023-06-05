@@ -52,19 +52,20 @@ class _FourthPageState extends State<FourthPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(
+      body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
-        children: [
-          diagnosis.isEmpty
-              ? Container()
-              : Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Flexible(
-                        child: Text(
-                          "Seleccione el icono de búsqueda\npara filtrar por nombres del\npaciente",
+        child: Column(
+          children: [
+            const SizedBox(height: 16),
+            diagnosis.isEmpty
+                ? Container()
+                : Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Realice la búsqueda de un paciente",
                           style: Theme.of(context)
                               .textTheme
                               .bodyMedium!
@@ -73,100 +74,101 @@ class _FourthPageState extends State<FourthPage> {
                                       .colorScheme
                                       .onSecondary),
                         ),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.background,
-                          borderRadius: BorderRadius.circular(50),
-                        ),
-                        child: IconButton(
-                            style: ButtonStyle(
-                              shape: MaterialStateProperty.all(
-                                  const CircleBorder()),
-                              padding: MaterialStateProperty.all(
-                                  const EdgeInsets.symmetric(
-                                horizontal: 8.0,
-                                vertical: 8.0,
-                              )),
-                            ),
-                            onPressed: () async {
-                              await showSearch(
-                                  context: context,
-                                  delegate: user.role == "ROLE_MEDIC"
-                                      ? SearchUser(
-                                          isHome: false,
-                                          cmp: medic.cmp,
-                                          isEtapa: true,
-                                          stagePredicted: "4")
-                                      : SearchNurse(
-                                          isHome: false,
-                                          cep: nurse.cep,
-                                          isEtapa: true,
-                                          stagePredicted: "4"));
-                            },
-                            icon: Icon(
-                              Icons.search,
-                              color: Theme.of(context).colorScheme.tertiary,
-                              size: 30,
-                            )),
-                      )
-                    ],
-                  ),
-                ),
-          diagnosis.isEmpty
-              ? FutureBuilder(
-                  future: Future.delayed(const Duration(seconds: 1)),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(
-                          child: CircularProgressIndicator(
-                        color: Colors.transparent,
-                      ));
-                    }
-                    return Column(
-                      children: [
-                        SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.1),
                         Container(
-                          height: 200,
-                          width: 200,
+                          height: 40,
+                          width: 40,
                           decoration: BoxDecoration(
-                            border:
-                                Border.all(width: 0, color: Colors.transparent),
-                            image: const DecorationImage(
-                              image: AssetImage(
-                                  'assets/images/out-stock-diagnostico.png'),
-                              fit: BoxFit.contain,
-                            ),
+                            color: Theme.of(context).colorScheme.background,
+                            borderRadius: BorderRadius.circular(40),
                           ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16.0),
-                          child: Text(
-                              "No hay Registros de Diagnósticos Disponibles",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color:
-                                      Theme.of(context).colorScheme.onSecondary,
-                                  fontSize: 26,
-                                  fontWeight: FontWeight.bold)),
+                          child: IconButton(
+                              onPressed: () async {
+                                await showSearch(
+                                    context: context,
+                                    delegate: user.role == "ROLE_MEDIC"
+                                        ? SearchUser(
+                                            isHome: false,
+                                            cmp: medic.cmp,
+                                            isEtapa: true,
+                                            stagePredicted: "4")
+                                        : SearchNurse(
+                                            isHome: false,
+                                            cep: nurse.cep,
+                                            isEtapa: true,
+                                            stagePredicted: "4"));
+                              },
+                              icon: Icon(
+                                Icons.search,
+                                color: Theme.of(context).colorScheme.tertiary,
+                                size: 17.49,
+                              )),
                         )
                       ],
-                    );
-                  })
-              : user.role == "ROLE_MEDIC"
-                  ? MyFutureBuilderFilter(
-                      myFuture: diagnosisService.getDiagnosisByCMPByStage(
-                          medic.cmp, "4"),
-                    )
-                  : MyFutureBuilderFilter(
-                      myFuture: diagnosisService.getDiagnosisByCEPByStage(
-                          nurse.cep, "4"),
                     ),
-        ],
+                  ),
+            const SizedBox(height: 16),
+            diagnosis.isEmpty
+                ? FutureBuilder(
+                    future: Future.delayed(const Duration(seconds: 1)),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                            child: CircularProgressIndicator(
+                          color: Colors.transparent,
+                        ));
+                      }
+                      return Column(
+                        children: [
+                          SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.1),
+                          Container(
+                            height: 200,
+                            width: 200,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                  width: 0, color: Colors.transparent),
+                              image: const DecorationImage(
+                                image: AssetImage(
+                                    'assets/images/out-stock-diagnostico.png'),
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 16.0),
+                            child: Text(
+                                "No hay Registros de Diagnósticos Disponibles",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSecondary,
+                                    fontSize: 26,
+                                    fontWeight: FontWeight.bold)),
+                          )
+                        ],
+                      );
+                    })
+                : user.role == "ROLE_MEDIC"
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: MyFutureBuilderFilter(
+                          myFuture: diagnosisService.getDiagnosisByCMPByStage(
+                              medic.cmp, "4"),
+                        ),
+                      )
+                    : Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: MyFutureBuilderFilter(
+                          myFuture: diagnosisService.getDiagnosisByCEPByStage(
+                              nurse.cep, "4"),
+                        ),
+                      ),
+          ],
+        ),
       ),
     );
   }

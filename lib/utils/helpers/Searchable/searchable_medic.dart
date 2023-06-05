@@ -48,7 +48,6 @@ class SearchUser extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: FutureBuilder<List<Diagnosis>>(
@@ -89,18 +88,21 @@ class SearchUser extends SearchDelegate {
             }
             List<Diagnosis>? data = snapshot.data;
             String categoria = "";
-            return ListView.builder(
+            return ListView.separated(
+                separatorBuilder: (context, index) => const SizedBox(
+                      height: 12,
+                    ),
                 physics: const BouncingScrollPhysics(),
-                itemCount: data?.length,
+                itemCount: data!.length,
                 itemBuilder: (context, index) {
-                  if (data![index].stagePredicted == "1") {
-                    categoria = "Etapa: 1";
+                  if (data[index].stagePredicted == "1") {
+                    categoria = "1";
                   } else if (data[index].stagePredicted == "2") {
-                    categoria = "Etapa: 2";
+                    categoria = "2";
                   } else if (data[index].stagePredicted == "3") {
-                    categoria = "Etapa: 3";
+                    categoria = "3";
                   } else if (data[index].stagePredicted == "4") {
-                    categoria = "Etapa: 4";
+                    categoria = "4";
                   }
                   String anio = data[index].createdAt.substring(0, 4);
                   String mes = data[index].createdAt.substring(5, 7);
@@ -120,82 +122,100 @@ class SearchUser extends SearchDelegate {
                                     idPatient: data[index].patientId,
                                   )));
                     },
-                    child: Container(
-                      width: size.width * 0.85,
-                      padding: const EdgeInsets.only(bottom: 5, top: 15),
-                      constraints: BoxConstraints(
-                          maxWidth: MediaQuery.of(context).size.width),
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                          side: BorderSide(
-                            color: Theme.of(context).colorScheme.background,
-                            width: 1,
-                          ),
+                    child: Card(
+                      margin: EdgeInsets.zero,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4.0),
+                        side: BorderSide(
+                          color: Theme.of(context).colorScheme.background,
+                          width: 1,
                         ),
-                        color: Colors.white,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 12.0, horizontal: 20),
-                          child: Row(
-                            children: [
-                              CircleAvatar(
-                                radius: 40,
-                                backgroundColor: Colors.transparent,
-                                backgroundImage: ExactAssetImage(
-                                    "assets/images/patient-logo.png"),
-                              ),
-                              SizedBox(width: size.width * 0.05),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(height: size.height * 0.02),
-                                  Text(
-                                      isHome
-                                          ? data[index].patientName
-                                          : data[index].patientName,
+                      ),
+                      color: Colors.white,
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            top: 16.0, left: 16, bottom: 16),
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              radius: 30,
+                              backgroundColor: Colors.transparent,
+                              backgroundImage: ExactAssetImage(
+                                  "assets/images/patient-logo.png"),
+                            ),
+                            SizedBox(width: 12),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                    isHome
+                                        ? data[index].patientName
+                                        : data[index].patientName,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .labelMedium!
+                                        .copyWith(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .tertiary,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600)),
+                                Row(
+                                  children: [
+                                    Text(
+                                      "Etapa: ",
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSecondary,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    Text(
+                                      categoria,
                                       style: Theme.of(context)
                                           .textTheme
                                           .labelMedium!
                                           .copyWith(
                                               color: Theme.of(context)
                                                   .colorScheme
-                                                  .tertiary,
+                                                  .onSecondary,
                                               fontSize: 16,
-                                              fontWeight: FontWeight.bold)),
-                                  const SizedBox(height: 5),
-                                  Text(
-                                    categoria,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .labelMedium!
-                                        .copyWith(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .onSecondary,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w600),
-                                  ),
-                                  const SizedBox(height: 5),
-                                  Text(
-                                    isHome
-                                        ? "Fecha: $mes $dia, $anio"
-                                        : "Fecha: $mes2 $dia2, $anio2",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .labelMedium!
-                                        .copyWith(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .onSecondary,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w600),
-                                  ),
-                                  SizedBox(height: size.height * 0.015),
-                                ],
-                              ),
-                            ],
-                          ),
+                                              fontWeight: FontWeight.w400),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      "Fecha: ",
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSecondary,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    Text(
+                                      isHome
+                                          ? "$mes $dia, $anio"
+                                          : "$mes2 $dia2, $anio2",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .labelMedium!
+                                          .copyWith(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSecondary,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w400),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
                     ),

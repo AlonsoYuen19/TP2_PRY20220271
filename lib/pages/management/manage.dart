@@ -84,25 +84,24 @@ class _ManageScreenState extends State<ManageScreen> {
   }
 
   Widget managePage() {
-    final size = MediaQuery.of(context).size;
     final nurseAvailableService = TeamWorkService();
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
       child: Column(
         children: [
           Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: size.width * 0.1, vertical: size.height * 0.03),
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text("Lista de Enfermeros",
+                Text("Lista de Enfermeros",
                     style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold)),
+                        color: Theme.of(context).colorScheme.tertiary,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600)),
                 listNurses.length < 3
                     ? Tooltip(
+                        textStyle: TextStyle(fontSize: 15),
                         triggerMode: TooltipTriggerMode.tap,
                         decoration: BoxDecoration(
                             color: Theme.of(context)
@@ -111,7 +110,7 @@ class _ManageScreenState extends State<ManageScreen> {
                             borderRadius:
                                 BorderRadius.all(Radius.circular(10))),
                         padding:
-                            EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                         showDuration: Duration(seconds: 4),
                         message:
                             "Selecciona el icono para\nagregar enfermeros\na tu equipo médico",
@@ -124,16 +123,19 @@ class _ManageScreenState extends State<ManageScreen> {
               ],
             ),
           ),
-          SizedBox(
-            height: size.height * 0.02,
+          const SizedBox(
+            height: 16,
           ),
           listNurses.isEmpty
               ? Container()
-              : MyFutureBuilderNursesByMedicsTW(
-                  myFuture: nurseAvailableService.getNursesByTeamWork(),
+              : Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: MyFutureBuilderNursesByMedicsTW(
+                    myFuture: nurseAvailableService.getNursesByTeamWork(),
+                  ),
                 ),
-          SizedBox(
-            height: size.height * 0.02,
+          const SizedBox(
+            height: 16,
           ),
           if (listNurses.length < 3) ...[
             cardNurseSelectorEmpty(),
@@ -147,35 +149,51 @@ class _ManageScreenState extends State<ManageScreen> {
 
   Widget cardNurseSelectorEmpty() {
     final size = MediaQuery.of(context).size;
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-        //margin: const EdgeInsets.symmetric(horizontal: 30),
-        elevation: 10,
-        color: Colors.white,
-        child: Center(
-          child: Padding(
-            padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
-            child: Container(
-              height: size.height * 0.1,
-              width: size.width * 0.15,
-              decoration: BoxDecoration(
-                border: Border.all(width: 0, color: Colors.transparent),
-                image: const DecorationImage(
-                  image: AssetImage('assets/images/add-friend.png'),
-                  fit: BoxFit.contain,
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, 'addNurse');
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+            side: BorderSide(
+              color: Theme.of(context).colorScheme.background,
+              width: 1,
+            ),
+          ),
+          elevation: 0,
+          color: Colors.white,
+          child: Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  child: Container(
+                    height: size.height * 0.09,
+                    width: size.width * 0.095,
+                    decoration: BoxDecoration(
+                      border: Border.all(width: 1, color: Colors.transparent),
+                      image: const DecorationImage(
+                        image: AssetImage('assets/images/add-friend.png'),
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-              child: InkWell(
-                radius: 10,
-                borderRadius: BorderRadius.circular(100),
-                onTap: () {
-                  Navigator.pushNamed(context, 'addNurse');
-                },
-              ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  "Añadir",
+                  style: TextStyle(
+                      color: Theme.of(context).colorScheme.tertiary,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600),
+                ),
+              ],
             ),
           ),
         ),

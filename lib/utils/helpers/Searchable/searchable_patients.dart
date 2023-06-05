@@ -36,7 +36,7 @@ class SearchUserPatient extends SearchDelegate {
   @override
   Widget buildResults(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
       child: FutureBuilder<List<Patient>>(
           future: _patientList.getPatientsByMedics(query: query),
           builder: (context, snapshot) {
@@ -70,31 +70,30 @@ class SearchUserPatient extends SearchDelegate {
               );
             }
             List<Patient>? data = snapshot.data;
-            return ListView.builder(
+            return ListView.separated(
+                separatorBuilder: (context, index) => const SizedBox(
+                      height: 12,
+                    ),
                 physics: const BouncingScrollPhysics(),
-                itemCount: data?.length,
+                itemCount: data!.length,
                 itemBuilder: (context, index) {
-                  String anio = data![index].createdAt.substring(0, 4);
+                  String anio = data[index].createdAt.substring(0, 4);
                   String mes = data[index].createdAt.substring(5, 7);
                   String dia = data[index].createdAt.substring(8, 10);
                   mes = meses[mes];
-                  return Padding(
-                    padding: const EdgeInsets.only(
-                        bottom: 15, left: 15, right: 15, top: 15),
-                    child: FancyCardSearchPatient(
-                      image: Image.asset("assets/images/patient-logo.png"),
-                      title: snapshot.data![index].fullName,
-                      date: "Fecha: $mes $dia, $anio",
-                      function: () {
-                        prefs.idPatient = snapshot.data![index].id;
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => PatientProfileScreen(),
-                          ),
-                        );
-                      },
-                    ),
+                  return FancyCardSearchPatient(
+                    image: Image.asset("assets/images/patient-logo.png"),
+                    title: snapshot.data![index].fullName,
+                    date: "Fecha: $mes $dia, $anio",
+                    function: () {
+                      prefs.idPatient = snapshot.data![index].id;
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PatientProfileScreen(),
+                        ),
+                      );
+                    },
                   );
                 });
           }),

@@ -89,22 +89,20 @@ class _TakePhotoDiagnosisState extends State<TakePhotoDiagnosis> {
               child: SingleChildScrollView(
             child: Column(children: [
               const SizedBox(
-                height: 30,
+                height: 20,
               ),
-              Align(
-                  alignment: Alignment.topCenter,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 24),
-                    child: Text(
-                      'Capture la imagen de la úlcera, dentro del recuadro',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.tertiary,
-                        fontSize: 21,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  )),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: Text(
+                  'Capture la imagen de la úlcera, dentro del recuadro',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.tertiary,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
               (cameras == null)
                   ? CircularProgressIndicator(
                       color: Theme.of(context).colorScheme.secondary,
@@ -114,24 +112,21 @@ class _TakePhotoDiagnosisState extends State<TakePhotoDiagnosis> {
                         Column(
                           children: [
                             Padding(
-                              padding: const EdgeInsets.only(top: 50),
-                              child: Align(
-                                  alignment: Alignment.topCenter,
-                                  child: Container(
-                                      height: size.height * 0.55,
-                                      width: size.width * 0.75,
-                                      color: Colors.transparent,
-                                      child: controller == null
-                                          ? Container()
-                                          : CameraPreview(controller!))),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 20),
+                              child: Container(
+                                  height: size.height * 0.55,
+                                  width: size.width * 1,
+                                  color: Colors.transparent,
+                                  child: controller == null
+                                      ? Container()
+                                      : CameraPreview(controller!)),
                             ),
-                            Center(
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20.0),
                               child: Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  const SizedBox(
-                                    height: 40,
-                                  ),
                                   ElevatedButton(
                                     style: ElevatedButton.styleFrom(
                                         elevation: 0,
@@ -142,33 +137,36 @@ class _TakePhotoDiagnosisState extends State<TakePhotoDiagnosis> {
                                         ? handleButton
                                         : null,
                                     child: _isPressed == true
-                                        ? Container(
-                                            width: size.width * 0.74,
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                const CircularProgressIndicator(
+                                        ? Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Container(
+                                                height: 15,
+                                                width: 15,
+                                                child:
+                                                    const CircularProgressIndicator(
                                                   color: Color.fromRGBO(
                                                       114, 146, 171, 1),
                                                   strokeWidth: 5,
                                                 ),
-                                                const SizedBox(
-                                                  width: 20,
-                                                ),
-                                                const Text(
-                                                    'Por favor espere ...',
-                                                    style: TextStyle(
-                                                        color: Color.fromRGBO(
-                                                            114, 146, 171, 1),
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                            FontWeight.bold)),
-                                              ],
-                                            ),
+                                              ),
+                                              const SizedBox(
+                                                width: 20,
+                                              ),
+                                              const Text('Por favor espere ...',
+                                                  style: TextStyle(
+                                                      color: Color.fromRGBO(
+                                                          114, 146, 171, 1),
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.bold)),
+                                            ],
                                           )
                                         : Container(
-                                            width: size.width * 0.75,
+                                            alignment: Alignment.center,
+                                            width: size.width * 1,
+                                            height: 56,
                                             padding: EdgeInsets.symmetric(
                                                 horizontal: 20),
                                             child: Text('Capture la imagen',
@@ -180,10 +178,15 @@ class _TakePhotoDiagnosisState extends State<TakePhotoDiagnosis> {
                                                         FontWeight.bold)),
                                           ),
                                   ),
-                                  const SizedBox(height: 20),
+                                  const SizedBox(height: 24),
                                   ElevatedButton(
                                     style: ElevatedButton.styleFrom(
-                                        elevation: 1.2,
+                                        side: BorderSide(
+                                            width: 1,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onSecondaryContainer),
+                                        elevation: 0,
                                         backgroundColor: Theme.of(context)
                                             .colorScheme
                                             .surface),
@@ -192,9 +195,9 @@ class _TakePhotoDiagnosisState extends State<TakePhotoDiagnosis> {
                                           "diagnosis", (route) => false);
                                     },
                                     child: Container(
-                                      width: size.width * 0.75,
-                                      padding:
-                                          EdgeInsets.symmetric(horizontal: 35),
+                                      alignment: Alignment.center,
+                                      width: size.width * 1,
+                                      height: 56,
                                       child: Text('Regresar',
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
@@ -205,7 +208,7 @@ class _TakePhotoDiagnosisState extends State<TakePhotoDiagnosis> {
                                               fontWeight: FontWeight.bold)),
                                     ),
                                   ),
-                                  const SizedBox(height: 20)
+                                  
                                 ],
                               ),
                             )

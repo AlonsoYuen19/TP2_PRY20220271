@@ -121,7 +121,7 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                     avatar.isEmpty && avatar2.isEmpty
                         ? Container(
                             height:
-                                isResp ? size.width * 0.25 : size.width * 0.28,
+                                isResp ? size.width * 0.26 : size.width * 0.28,
                             margin: const EdgeInsets.only(
                               top: 24.0,
                               bottom: 16.0,
@@ -141,11 +141,11 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                             child: Image.memory(
                                 prefs.idMedic != 0 ? avatar : avatar2,
                                 height: isResp
-                                    ? size.width * 0.3
-                                    : size.width * 0.32,
+                                    ? size.width * 0.26
+                                    : size.width * 0.28,
                                 width: isResp
-                                    ? size.width * 0.28
-                                    : size.width * 0.32,
+                                    ? size.width * 0.24
+                                    : size.width * 0.28,
                                 fit: BoxFit.cover),
                           ),
                     const SizedBox(
@@ -157,7 +157,7 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                       style: Theme.of(context)
                           .textTheme
                           .bodyMedium!
-                          .copyWith(fontSize: isResp ? 22 : 28),
+                          .copyWith(fontSize: isResp ? 14 : 20),
                     )
                   ],
                 ),
@@ -196,15 +196,15 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                       color: widget.isHome == false
                           ? Theme.of(context).colorScheme.onTertiary
                           : Theme.of(context).colorScheme.tertiary,
-                      size: isResp ? 30 : 40,
+                      size: isResp ? 20 : 30,
                     ),
                     title: Text('Menú principal',
                         style: widget.isHome == false
                             ? Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                  fontSize: isResp ? 16 : 24,
+                                  fontSize: isResp ? 14 : 18,
                                 )
                             : Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                  fontSize: isResp ? 16 : 16,
+                                  fontSize: isResp ? 14 : 18,
                                   color: Theme.of(context).colorScheme.tertiary,
                                 )),
                   ),
@@ -253,16 +253,16 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                               widget.isDiagnosisNurse == false
                           ? Theme.of(context).colorScheme.onTertiary
                           : Theme.of(context).colorScheme.tertiary,
-                      size: isResp ? 30 : 40,
+                      size: isResp ? 20 : 30,
                     ),
                     title: Text('Diagnóstico',
                         style: widget.isDiagnosis == false &&
                                 widget.isDiagnosisNurse == false
                             ? Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                  fontSize: isResp ? 16 : 24,
+                                  fontSize: isResp ? 14 : 18,
                                 )
                             : Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                  fontSize: isResp ? 16 : 24,
+                                  fontSize: isResp ? 14 : 18,
                                   color: Theme.of(context).colorScheme.tertiary,
                                 )),
                   ),
@@ -302,7 +302,7 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                               color: widget.isManagement == false
                                   ? Theme.of(context).colorScheme.onTertiary
                                   : Theme.of(context).colorScheme.tertiary,
-                              size: isResp ? 30 : 40,
+                              size: isResp ? 20 : 30,
                             ),
                             title: Text('Gestión',
                                 style: widget.isManagement == false
@@ -310,13 +310,13 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                                         .textTheme
                                         .bodyLarge!
                                         .copyWith(
-                                          fontSize: isResp ? 16 : 24,
+                                          fontSize: isResp ? 14 : 18,
                                         )
                                     : Theme.of(context)
                                         .textTheme
                                         .bodyLarge!
                                         .copyWith(
-                                          fontSize: isResp ? 16 : 24,
+                                          fontSize: isResp ? 14 : 18,
                                           color: Theme.of(context)
                                               .colorScheme
                                               .tertiary,
@@ -357,15 +357,15 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                         color: widget.isProfile == false
                             ? Theme.of(context).colorScheme.onTertiary
                             : Theme.of(context).colorScheme.tertiary,
-                        size: isResp ? 30 : 40,
+                        size: isResp ? 20 : 30,
                       ),
                       title: Text('Perfil',
                           style: widget.isProfile == false
                               ? Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                    fontSize: isResp ? 16 : 24,
+                                    fontSize: isResp ? 14 : 18,
                                   )
                               : Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                    fontSize: isResp ? 16 : 24,
+                                    fontSize: isResp ? 14 : 18,
                                     color:
                                         Theme.of(context).colorScheme.tertiary,
                                   ))),
@@ -380,26 +380,38 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                         flex: 2,
                       )
                     : SizedBox(),
-                ListTile(
-                  onTap: () async {
-                    final exit = await showDialog(
-                        context: context,
-                        builder: ((context) => const CustomDialogWidget()));
-                    return exit;
-                  },
-                  leading: Icon(
-                    Icons.account_circle_rounded,
-                    size: isResp ? 30 : 40,
+                Container(
+                  width: double.infinity,
+                  padding: isResp
+                      ? const EdgeInsets.all(2)
+                      : const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(16),
+                      bottom: Radius.circular(16),
+                    ),
                   ),
-                  title: Text('Cerrar Sesión',
-                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                            fontSize: isResp ? 16 : 24,
-                          )),
+                  child: ListTile(
+                    onTap: () async {
+                      final exit = await showDialog(
+                          context: context,
+                          builder: ((context) => const CustomDialogWidget()));
+                      return exit;
+                    },
+                    leading: Icon(
+                      Icons.account_circle_rounded,
+                      size: isResp ? 20 : 30,
+                    ),
+                    title: Text('Cerrar Sesión',
+                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                              fontSize: isResp ? 14 : 16,
+                            )),
+                  ),
                 ),
                 const Spacer(),
                 DefaultTextStyle(
-                  style: const TextStyle(
-                    fontSize: 16,
+                  style: TextStyle(
+                    fontSize: isResp ? 14 : 18,
                     color: Colors.white54,
                   ),
                   child: Container(
@@ -416,13 +428,13 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
         child: Scaffold(
           appBar: AppBar(
             leading: Padding(
-              padding: const EdgeInsets.only(left: 25, top: 20, bottom: 20),
+              padding: const EdgeInsets.only(
+                  left: 20, right: 20, top: 16, bottom: 16),
               child: ElevatedButton(
                 style: ButtonStyle(
-                  padding: MaterialStateProperty.all(
-                    const EdgeInsets.symmetric(
-                      horizontal: 8.0,
-                      vertical: 8.0,
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
                     ),
                   ),
                   backgroundColor: MaterialStateProperty.all(Theme.of(context)
@@ -436,27 +448,29 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                   builder: (_, value, __) {
                     return AnimatedSwitcher(
                       duration: const Duration(milliseconds: 250),
-                      child: Icon(
-                        value.visible ? Icons.clear : Icons.menu,
-                        //key: ValueKey<bool>(value.visible),
-                        color: Theme.of(context).colorScheme.onTertiary,
-                        size: 30,
-                      ),
+                      child: Icon(value.visible ? Icons.clear : Icons.menu,
+                          //key: ValueKey<bool>(value.visible),
+                          color: Theme.of(context).colorScheme.onTertiary,
+                          size: 18),
                     );
                   },
                 ),
               ),
             ),
             //titleSpacing: 25,
-            leadingWidth: 90,
+            leadingWidth: 96,
             centerTitle: true,
-            toolbarHeight: 100,
+            toolbarHeight: 98,
             backgroundColor: widget.color,
             automaticallyImplyLeading: false,
             title: Text(
               widget.title!,
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 20),
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w400,
+                color: Theme.of(context).colorScheme.tertiary,
+              ),
             ),
           ),
           body: widget.child,

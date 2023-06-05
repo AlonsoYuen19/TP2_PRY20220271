@@ -114,22 +114,19 @@ class _TabBarFilterState extends State<TabBarFilter>
               return <Widget>[
                 SliverAppBar(
                   leading: Padding(
-                    padding:
-                        const EdgeInsets.only(left: 20, top: 20, bottom: 20),
+                    padding: const EdgeInsets.only(
+                        left: 20, right: 20, top: 16, bottom: 16),
                     child: ElevatedButton(
                       child: Icon(
                         Icons.arrow_back_outlined,
                         color: Theme.of(context).colorScheme.onTertiary,
+                        size: 18,
                       ),
                       onPressed: () {
                         Navigator.pop(context);
                       },
                       style: ButtonStyle(
-                        padding: MaterialStateProperty.all(
-                            const EdgeInsets.symmetric(
-                          horizontal: 8.0,
-                          vertical: 8.0,
-                        )),
+                        elevation: MaterialStateProperty.all(0),
                         backgroundColor: MaterialStateProperty.all(
                             Theme.of(context)
                                 .colorScheme
@@ -137,13 +134,14 @@ class _TabBarFilterState extends State<TabBarFilter>
                       ),
                     ),
                   ),
-                  leadingWidth: 95,
-                  toolbarHeight: MediaQuery.of(context).size.height * 0.11,
+                  leadingWidth: 96,
+                  toolbarHeight: 98,
                   title: Text('Filtrado por Etapa',
                       style: TextStyle(
-                          color: Theme.of(context).colorScheme.tertiary,
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold)),
+                        color: Theme.of(context).colorScheme.tertiary,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w400,
+                      )),
                   centerTitle: true,
                   backgroundColor: Theme.of(context).colorScheme.onTertiary,
                   elevation: 10.0,

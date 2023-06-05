@@ -70,9 +70,46 @@ class _AssignItineraryPageState extends State<AssignItineraryPage> {
     String fechaFormateada =
         "${date!.day.toString().padLeft(2, '0')}/${date!.month.toString().padLeft(2, '0')}/${date!.year}";
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        leading: Padding(
+          padding:
+              const EdgeInsets.only(left: 20, right: 20, top: 16, bottom: 16),
+          child: ElevatedButton(
+              style: ButtonStyle(
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                ),
+                backgroundColor: MaterialStateProperty.all(Theme.of(context)
+                    .colorScheme
+                    .onSecondaryContainer), // <-- Button color
+                elevation: MaterialStateProperty.all(0), // <-- Splash color
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Icon(Icons.arrow_back_outlined,
+                  color: Theme.of(context).colorScheme.onTertiary, size: 18)),
+        ),
+        leadingWidth: 96,
+        centerTitle: true,
+        toolbarHeight: 98,
+        automaticallyImplyLeading: false,
+        title: Text(
+          "Crear Cita",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w400,
+            color: Theme.of(context).colorScheme.tertiary,
+          ),
+        ),
+      ),
       body: Stack(children: [
         Container(
-          height: MediaQuery.of(context).size.height * 0.3,
+          height: MediaQuery.of(context).size.height * 0.1,
           width: double.infinity,
           decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.surface,
@@ -80,127 +117,73 @@ class _AssignItineraryPageState extends State<AssignItineraryPage> {
                   bottom: Radius.elliptical(400, 80))),
         ),
         SafeArea(
-            child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: size.width * 0.06, vertical: size.height * 0.05),
-            child: Column(children: [
-              Row(
-                children: [
-                  SizedBox(
-                    width: size.width * 0.04,
-                  ),
-                  ElevatedButton(
-                    child: Icon(
-                      Icons.arrow_back_outlined,
-                      color: Theme.of(context).colorScheme.onTertiary,
-                    ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    style: ButtonStyle(
-                      padding:
-                          MaterialStateProperty.all(const EdgeInsets.symmetric(
-                        horizontal: 8.0,
-                        vertical: 16.0,
-                      )),
-                      backgroundColor: MaterialStateProperty.all(
-                          Theme.of(context)
-                              .colorScheme
-                              .onSecondaryContainer), // <-- Button color
-                    ),
-                  ),
-                  SizedBox(
-                    width: size.width * 0.12,
-                  ),
-                  Flexible(
-                    child: Text(
-                      "Crear Cita",
-                      style: TextStyle(
-                          color: Theme.of(context).colorScheme.tertiary,
-                          fontSize: 21,
-                          fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 25,
-              ),
-              FutureBuilder(
-                  future: Future.delayed(const Duration(seconds: 1)),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(
-                          child: CircularProgressIndicator(
-                        color: Colors.transparent,
-                      ));
-                    }
-                    return Column(
-                      children: [
-                        cardNurse(),
-                        SizedBox(
-                          height: size.height * 0.04,
-                        ),
-                        /*textFormField(
-                              timeOfDayIn: true,
-                              labelText: "Hora de entrada",
-                              controller: _controllerIn,
-                            ),
-                            const SizedBox(
-                              height: 30,
-                            ),
-                            textFormField(
-                              timeOfDayIn: false,
-                              labelText: "Hora de salida",
-                              controller: _controllerOut,
-                            ),
-                            const SizedBox(
-                              height: 30,
-                            ),*/
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.8,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                elevation: 0,
-                                backgroundColor: Theme.of(context)
-                                    .colorScheme
-                                    .onSecondaryContainer,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10))),
-                            onPressed: () {
-                              print(fechaFormateada);
-                              print(widget.idNurse);
-                              print(widget.idPatient);
-                              if (switchVariable == false) {
-                                direccion = "Centro Médico";
-                              } else {
-                                direccion = patient!.address;
-                              }
-                              print(direccion);
-                              appointmentService.createAppointment(
-                                  context,
-                                  fechaFormateada,
-                                  direccion!,
-                                  widget.idNurse,
-                                  widget.idPatient);
-                            },
-                            child: const Text(
-                              "Crear Cita",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w600),
+            child: FutureBuilder(
+                future: Future.delayed(const Duration(seconds: 1)),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                        child: CircularProgressIndicator(
+                      color: Colors.transparent,
+                    ));
+                  }
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: size.height * 0.2,
+                      ),
+                      cardNurse(),
+                      SizedBox(
+                        height: size.height * 0.04,
+                      ),
+                      Expanded(
+                        child: Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * 1,
+                            height: 56,
+                            margin: EdgeInsets.symmetric(horizontal: 20.0),
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  elevation: 0,
+                                  backgroundColor: Theme.of(context)
+                                      .colorScheme
+                                      .onSecondaryContainer,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10))),
+                              onPressed: () {
+                                print(fechaFormateada);
+                                print(widget.idNurse);
+                                print(widget.idPatient);
+                                if (switchVariable == false) {
+                                  direccion = "Centro Médico";
+                                } else {
+                                  direccion = patient!.address;
+                                }
+                                print(direccion);
+                                appointmentService.createAppointment(
+                                    context,
+                                    fechaFormateada,
+                                    direccion!,
+                                    widget.idNurse,
+                                    widget.idPatient);
+                              },
+                              child: const Text(
+                                "Crear Cita",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600),
+                              ),
                             ),
                           ),
-                        )
-                      ],
-                    );
-                  })
-            ]),
-          ),
-        ))
+                        ),
+                      ),
+                      const SizedBox(height: 35),
+                    ],
+                  );
+                }))
       ]),
     );
   }
@@ -347,314 +330,184 @@ class _AssignItineraryPageState extends State<AssignItineraryPage> {
   }
 
   Widget cardNurse() {
-    final size = MediaQuery.of(context).size;
-    int cantNombreEnfermero = nurse!.fullName.split(" ").length;
-    int cantNombrePaciente = patient!.fullName.split(" ").length;
     String fechaFormateada =
         "${date!.day.toString().padLeft(2, '0')}/${date!.month.toString().padLeft(2, '0')}/${date!.year}";
-    return Card(
-        elevation: 5,
-        color: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
+        children: [
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              "Fecha de cita programada",
+              textAlign: TextAlign.start,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.tertiary,
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 25,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const SizedBox(
-                height: 10,
-              ),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "Enfermero",
-                  textAlign: TextAlign.start,
-                  style: TextStyle(
-                      color: Theme.of(context).colorScheme.tertiary,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w700),
-                ),
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  avatar.isEmpty
-                      ? Container(
-                          height: size.width * 0.2,
-                          width: size.width * 0.2,
-                          //clipBehavior: Clip.antiAlias,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: AssetImage(
-                                    "assets/images/enfermero-logo.png"),
-                                fit: BoxFit.fitHeight),
-                            color: Theme.of(context).colorScheme.onSecondary,
-                            shape: BoxShape.circle,
-                          ),
-                        )
-                      : ClipOval(
-                          child: Image.memory(avatar,
-                              height: size.width * 0.2,
-                              width: size.width * 0.2,
-                              fit: BoxFit.cover),
-                        ),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  Flexible(
-                    child: Text(
-                      cantNombreEnfermero < 2
-                          ? nurse!.fullName
-                          : '${nurse!.fullName.split(' ')[0]} ${nurse!.fullName.split(' ')[1]}',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.outline,
-                        fontSize: 17,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "Paciente",
-                  textAlign: TextAlign.start,
-                  style: TextStyle(
-                      color: Theme.of(context).colorScheme.tertiary,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w700),
-                ),
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  avatar2.isEmpty
-                      ? Container(
-                          height: size.width * 0.2,
-                          width: size.width * 0.2,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: AssetImage(
-                                    "assets/images/patient-logo.png"),
-                                fit: BoxFit.fitHeight),
-                            color: Theme.of(context).colorScheme.tertiary,
-                            shape: BoxShape.circle,
-                          ),
-                        )
-                      : ClipOval(
-                          child: Image.memory(avatar2,
-                              height: size.width * 0.2,
-                              width: size.width * 0.2,
-                              fit: BoxFit.cover),
-                        ),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  Flexible(
-                    child: Text(
-                      cantNombrePaciente < 2
-                          ? patient!.fullName
-                          : '${patient!.fullName.split(' ')[0]} ${patient!.fullName.split(' ')[1]}',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.outline,
-                        fontSize: 17,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "Fecha de cita programada",
-                  textAlign: TextAlign.start,
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.tertiary,
-                    fontSize: 17,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 25,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(fechaFormateada,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.outline,
-                        fontSize: 17,
-                        fontWeight: FontWeight.w700,
-                      )),
-                  GestureDetector(
-                    onTap: () {
-                      showDatePicker(
-                        context: context,
-                        confirmText: "Confirmar",
-                        cancelText: "Cancelar",
-                        initialDate:
-                            DateTime.now().subtract(const Duration(hours: 5)),
-                        firstDate:
-                            DateTime.now().subtract(const Duration(hours: 5)),
-                        lastDate: DateTime(2032, 12, 31),
-                        initialEntryMode: DatePickerEntryMode.calendarOnly,
-                        helpText: "Seleccione una fecha",
-                        locale: const Locale("es"),
-                        builder: (context, child) {
-                          return Theme(
-                            data: Theme.of(context).copyWith(
-                              colorScheme: ColorScheme.light(
-                                  primary:
-                                      Theme.of(context).colorScheme.onSecondary,
-                                  onPrimary: Colors.white,
-                                  onSurface: Colors.blueAccent,
-                                  error: Colors.red),
-                              textTheme: const TextTheme(
-                                bodySmall: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
-                                bodyMedium: TextStyle(
-                                    fontSize: 50, fontWeight: FontWeight.bold),
-                                bodyLarge: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold),
-                                displaySmall: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold),
-                                displayMedium: TextStyle(
-                                    fontSize: 50, fontWeight: FontWeight.bold),
-                                displayLarge: TextStyle(
-                                    fontSize: 50, fontWeight: FontWeight.bold),
-                                titleSmall: TextStyle(
-                                    fontSize: 17, fontWeight: FontWeight.bold),
-                                titleMedium: TextStyle(
-                                    fontSize: 50, fontWeight: FontWeight.bold),
-                                titleLarge: TextStyle(
-                                    fontSize: 50, fontWeight: FontWeight.bold),
-                                labelSmall: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold),
-                              ),
-                              textButtonTheme: TextButtonThemeData(
-                                style: TextButton.styleFrom(
-                                    foregroundColor: Colors.white,
-                                    textStyle: const TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
-                                    backgroundColor: Theme.of(context)
-                                        .colorScheme
-                                        .onSecondary,
-                                    elevation: 10 // button text color
-                                    ),
-                              ),
-                            ),
-                            child: child!,
-                          );
-                        },
-                      ).then((value) {
-                        if (value == null) {
-                          return;
-                        }
-                        setState(() {
-                          date = value;
-                        });
-                      });
-                    },
-                    child: Icon(
-                      Icons.calendar_month,
-                      color: Theme.of(context).colorScheme.onSecondary,
-                      size: 30,
-                    ),
-                  )
-                ],
-              ),
-              const SizedBox(
-                height: 25,
-              ),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "Dirección",
-                  textAlign: TextAlign.start,
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.tertiary,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              nurse!.isAuxiliar == true
-                  ? Align(
-                      alignment: Alignment.centerRight,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Flexible(
-                            child: Text(
-                              "¿Atenderá en la dirección del paciente?",
-                              textAlign: TextAlign.start,
-                              style: TextStyle(
-                                  color:
-                                      Theme.of(context).colorScheme.onSecondary,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w700),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          Switch(
-                            value: switchVariable,
-                            onChanged: (value) {
-                              setState(() {
-                                switchVariable = value;
-                              });
-                              print(
-                                  "El valor del switch es: ${switchVariable.toString()}");
-                            },
-                            activeTrackColor:
-                                Theme.of(context).colorScheme.onSecondary,
-                            activeColor: Colors.white,
-                          ),
-                        ],
-                      ),
-                    )
-                  : const SizedBox(),
-              const SizedBox(
-                height: 10,
-              ),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  switchVariable == false ? direccion! : patient!.address,
-                  textAlign: TextAlign.start,
+              Text(fechaFormateada,
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.outline,
-                    fontSize: 17,
-                    fontWeight: FontWeight.w700,
-                  ),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                  )),
+              GestureDetector(
+                onTap: () {
+                  showDatePicker(
+                    context: context,
+                    confirmText: "Confirmar",
+                    cancelText: "Cancelar",
+                    initialDate:
+                        DateTime.now().subtract(const Duration(hours: 5)),
+                    firstDate:
+                        DateTime.now().subtract(const Duration(hours: 5)),
+                    lastDate: DateTime(2032, 12, 31),
+                    initialEntryMode: DatePickerEntryMode.calendarOnly,
+                    helpText: "Seleccione una fecha",
+                    locale: const Locale("es"),
+                    builder: (context, child) {
+                      return Theme(
+                        data: Theme.of(context).copyWith(
+                          colorScheme: ColorScheme.light(
+                              primary:
+                                  Theme.of(context).colorScheme.onSecondary,
+                              onPrimary: Colors.white,
+                              onSurface: Colors.blueAccent,
+                              error: Colors.red),
+                          textTheme: const TextTheme(
+                            bodySmall: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                            bodyMedium: TextStyle(
+                                fontSize: 50, fontWeight: FontWeight.bold),
+                            bodyLarge: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                            displaySmall: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                            displayMedium: TextStyle(
+                                fontSize: 50, fontWeight: FontWeight.bold),
+                            displayLarge: TextStyle(
+                                fontSize: 50, fontWeight: FontWeight.bold),
+                            titleSmall: TextStyle(
+                                fontSize: 17, fontWeight: FontWeight.bold),
+                            titleMedium: TextStyle(
+                                fontSize: 50, fontWeight: FontWeight.bold),
+                            titleLarge: TextStyle(
+                                fontSize: 50, fontWeight: FontWeight.bold),
+                            labelSmall: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                          textButtonTheme: TextButtonThemeData(
+                            style: TextButton.styleFrom(
+                                foregroundColor: Colors.white,
+                                textStyle: const TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                                backgroundColor:
+                                    Theme.of(context).colorScheme.onSecondary,
+                                elevation: 10 // button text color
+                                ),
+                          ),
+                        ),
+                        child: child!,
+                      );
+                    },
+                  ).then((value) {
+                    if (value == null) {
+                      return;
+                    }
+                    setState(() {
+                      date = value;
+                    });
+                  });
+                },
+                child: Icon(
+                  Icons.calendar_month,
+                  color: Theme.of(context).colorScheme.onSecondary,
+                  size: 30,
                 ),
-              ),
+              )
             ],
           ),
-        ));
+          const SizedBox(
+            height: 25,
+          ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              "Dirección",
+              textAlign: TextAlign.start,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.tertiary,
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          nurse!.isAuxiliar == true
+              ? Align(
+                  alignment: Alignment.centerRight,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Flexible(
+                        child: Text(
+                          "¿Atenderá en la dirección del paciente?",
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.onSecondary,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      Switch(
+                        value: switchVariable,
+                        onChanged: (value) {
+                          setState(() {
+                            switchVariable = value;
+                          });
+                          print(
+                              "El valor del switch es: ${switchVariable.toString()}");
+                        },
+                        activeTrackColor:
+                            Theme.of(context).colorScheme.onSecondary,
+                        activeColor: Colors.white,
+                      ),
+                    ],
+                  ),
+                )
+              : const SizedBox(),
+          const SizedBox(
+            height: 10,
+          ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              switchVariable == false ? direccion! : patient!.address,
+              textAlign: TextAlign.start,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.outline,
+                fontSize: 16,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

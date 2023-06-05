@@ -222,87 +222,90 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
         Align(
           alignment: Alignment.centerLeft,
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 32.0),
+            padding: EdgeInsets.symmetric(horizontal: 20.0),
             child: Text(
               "Seleccione una opción para realizar el diagnóstico:",
               textAlign: TextAlign.start,
               style: TextStyle(
-                  fontSize: 24,
+                  fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).colorScheme.onSecondary),
             ),
           ),
         ),
         const SizedBox(
-          height: 70,
+          height: 40,
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const DiagnosisPatientPage()));
-              },
-              child: Container(
-                width: size.width * 0.35,
-                height: 180,
-                decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.onSecondaryContainer,
-                    borderRadius: BorderRadius.circular(20)),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Icon(
-                      Icons.person,
-                      size: 50,
-                      color: Colors.white,
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      "Paciente Registrado",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.white, fontSize: 20),
-                    )
-                  ],
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const DiagnosisPatientPage()));
+                },
+                child: Container(
+                  width: size.width * 0.43,
+                  height: 188,
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.onSecondaryContainer,
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(
+                        Icons.person,
+                        size: 36,
+                        color: Colors.white,
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "Paciente Registrado",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      )
+                    ],
+                  ),
                 ),
               ),
-            ),
-            GestureDetector(
-              onTap: () {
-                selectImage();
-              },
-              child: Container(
-                width: size.width * 0.35,
-                height: 180,
-                decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.onSecondaryContainer,
-                    borderRadius: BorderRadius.circular(20)),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Icon(
-                      Icons.medical_services,
-                      size: 50,
-                      color: Colors.white,
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      "Diagnóstico Rápido",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.white, fontSize: 20),
-                    )
-                  ],
+              GestureDetector(
+                onTap: () {
+                  selectImage();
+                },
+                child: Container(
+                  width: size.width * 0.43,
+                  height: 188,
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.onSecondaryContainer,
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(
+                        Icons.medical_services,
+                        size: 36,
+                        color: Colors.white,
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "Diagnóstico\nRápido",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      )
+                    ],
+                  ),
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
         const SizedBox(
           height: 30,
@@ -321,11 +324,11 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
                   padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                   showDuration: Duration(seconds: 6),
                   message:
-                      "Seleccione la opción 'Paciente Registrado' si desea realizar un diagnóstico a un paciente registrado en el sistema",
-                  textStyle: TextStyle(fontSize: 18),
+                      "Seleccione la opción 'Paciente Registrado' si desea realizar un diagnóstico a un paciente registrado en el sistema.",
+                  textStyle: TextStyle(fontSize: 16),
                   child: Icon(Icons.info_outline,
                       color: Theme.of(context).colorScheme.onSecondaryContainer,
-                      size: 50)),
+                      size: 36)),
             ),
             Padding(
               padding: EdgeInsets.only(right: 16.0),
@@ -338,16 +341,16 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
                   padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                   showDuration: Duration(seconds: 6),
                   message:
-                      "Seleccione la opción 'Diagnóstico Rápido' si desea realizar un diagnóstico a un paciente que no se encuentra registrado en el sistema",
-                  textStyle: TextStyle(fontSize: 18),
+                      "Seleccione la opción 'Diagnóstico Rápido' para realizar una revalidación de su diagnóstico.",
+                  textStyle: TextStyle(fontSize: 16),
                   child: Icon(Icons.info_outline,
                       color: Theme.of(context).colorScheme.onSecondaryContainer,
-                      size: 50)),
+                      size: 36)),
             ),
           ],
         ),
         SizedBox(
-          height: size.height * 0.1,
+          height: 30,
         ),
       ],
     );

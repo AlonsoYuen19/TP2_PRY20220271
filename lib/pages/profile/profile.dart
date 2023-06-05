@@ -329,100 +329,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
         });
   }
 
-  Widget rowWidget(String icon, String icon2, String text1, String text2,
-      String text3, String text4) {
-    final size = MediaQuery.of(context).size;
+  Widget subTitle(String icon, String text1, String text2) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        SvgPicture.asset(
+          icon,
+          height: 18,
+        ),
         const SizedBox(
-          width: 25,
+          width: 11,
         ),
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SvgPicture.asset(
-                icon,
-                fit: BoxFit.cover,
-                height: size.shortestSide > 500 ? 24 : 20,
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    text1,
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        color: Theme.of(context).colorScheme.tertiary,
-                        fontSize: 17,),
-                  ),
-                  Text(
-                    text2,
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        color: Theme.of(context).colorScheme.outline,
-                        fontSize: 17,
-                        fontWeight: FontWeight.w300),
-                  ),
-                ],
-              ),
-            ],
-          ),
+        Text(
+          text1,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              color: Theme.of(context).colorScheme.tertiary,
+              fontSize: 16,
+              fontWeight: FontWeight.w600),
         ),
-        SizedBox(
-          width: size.shortestSide > 500 ? 60 : 35,
+        const SizedBox(
+          width: 4,
         ),
-        Flexible(
-          child: Align(
-            alignment: Alignment.centerRight,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SvgPicture.asset(
-                  icon2,
-                  fit: BoxFit.cover,
-                  height: size.shortestSide > 500 ? 24 : 20,
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                Container(
-                  constraints: BoxConstraints(
-                    maxWidth: size.shortestSide > 500 ? 250 : 170,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        text3,
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                            color: Theme.of(context).colorScheme.tertiary,
-                            fontSize: 17,
-                            overflow: TextOverflow.ellipsis),
-                      ),
-                      Text(
-                        text4,
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                              color: Theme.of(context).colorScheme.outline,
-                              fontSize: 17,
-                              fontWeight: FontWeight.w300,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                        maxLines:
-                            2, // Limita el número máximo de líneas del texto
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
+        Text(
+          text2,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              color: Theme.of(context).colorScheme.outline,
+              fontSize: 16,
+              fontWeight: FontWeight.w400),
         ),
       ],
     );
@@ -432,9 +367,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final size = MediaQuery.of(context).size;
     String role = "";
     if (users.role == 'ROLE_MEDIC') {
-      role = "Médico\nespecialista";
+      role = "Médico especialista";
     } else {
-      role = "Enfermero\nespecialista";
+      role = "Enfermero especialista";
     }
 
     if (nurse.itWasNotified == true) {
@@ -516,9 +451,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     users.fullName,
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.displayMedium!.copyWith(
-                        fontSize: 24,
+                        fontSize: 20,
                         fontWeight: FontWeight.w600,
-                        color: Theme.of(context).colorScheme.onSecondary),
+                        color: Theme.of(context).colorScheme.tertiary),
                   ),
                 ),
                 const SizedBox(
@@ -541,25 +476,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 SizedBox(
                   height: size.height * 0.065,
                 ),
-                rowWidget(
-                    "assets/svgImages/especialidad.svg",
-                    "assets/svgImages/dni.svg",
-                    "Especialidad",
-                    role,
-                    "DNI",
-                    users.dni),
+                subTitle("assets/svgImages/especialidad.svg", "Especialidad: ",
+                    role),
                 const SizedBox(
-                  height: 10,
+                  height: 14,
                 ),
-                rowWidget(
-                    "assets/svgImages/celular.svg",
-                    "assets/svgImages/direccion.svg",
-                    "Celular",
-                    users.phone,
-                    "Dirección",
+                subTitle("assets/svgImages/dni.svg", "DNI: ", users.dni),
+                const SizedBox(
+                  height: 14,
+                ),
+                subTitle(
+                    "assets/svgImages/celular.svg", "Celular: ", users.phone),
+                const SizedBox(
+                  height: 14,
+                ),
+                subTitle("assets/svgImages/direccion.svg", "Dirección: ",
                     users.address),
                 const SizedBox(
-                  height: 25,
+                  height: 14,
                 ),
                 users.role == "ROLE_NURSE"
                     ? Padding(
@@ -584,8 +518,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   thickness: 1,
                 ),
           if (users.role == "ROLE_MEDIC") ...[
+            const SizedBox(
+              height: 24,
+            ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 35, vertical: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -593,8 +530,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     "Lista de Pacientes (${patientsLength.length})",
                     style: Theme.of(context).textTheme.titleSmall!.copyWith(
                         color: Theme.of(context).colorScheme.tertiary,
-                        fontSize: 21,
-                        fontWeight: FontWeight.bold),
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600),
                   ),
                   const SizedBox(
                     width: 10,
@@ -618,36 +555,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
               height: 10,
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 35.0),
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Flexible(
-                    child: Text(
-                      "Seleccione el icono de búsqueda para filtrar por nombres del paciente",
-                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          color: Theme.of(context).colorScheme.outline,
-                          fontSize: 16),
-                    ),
+                  Text(
+                    "Búsqueda de pacientes por Nombre",
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        color: Theme.of(context).colorScheme.outline,
+                        fontSize: 16),
                   ),
                   const SizedBox(
                     width: 10,
                   ),
                   Container(
+                    height: 40,
+                    width: 40,
                     decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.background,
-                      borderRadius: BorderRadius.circular(50),
+                      borderRadius: BorderRadius.circular(40),
                     ),
                     child: IconButton(
-                        style: ButtonStyle(
-                          shape:
-                              MaterialStateProperty.all(const CircleBorder()),
-                          padding: MaterialStateProperty.all(
-                              const EdgeInsets.symmetric(
-                            horizontal: 8.0,
-                            vertical: 8.0,
-                          )),
-                        ),
+                        style: ButtonStyle(),
                         onPressed: () async {
                           if (users.role == "ROLE_MEDIC") {
                             await showSearch(
@@ -664,11 +593,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         icon: Icon(
                           Icons.search,
                           color: Theme.of(context).colorScheme.tertiary,
-                          size: 30,
+                          size: 20,
                         )),
-                  ),
-                  const SizedBox(
-                    width: 10,
                   ),
                 ],
               ),
@@ -676,79 +602,82 @@ class _ProfileScreenState extends State<ProfileScreen> {
             const SizedBox(
               height: 10,
             ),
-            FutureBuilder<List<Patient>>(
-              future: patientService.getPatientsByMedics(),
-              builder: (context, snapshot) {
-                List<Patient>? data = snapshot.data;
-                //var nurse = nurseProvider.getNurses();
-                if (!snapshot.hasData) {
-                  return const Center(
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: FutureBuilder<List<Patient>>(
+                future: patientService.getPatientsByMedics(),
+                builder: (context, snapshot) {
+                  List<Patient>? data = snapshot.data;
+                  //var nurse = nurseProvider.getNurses();
+                  if (!snapshot.hasData) {
+                    return const Center(
+                        child: CircularProgressIndicator(
+                      color: Colors.red,
+                    ));
+                  }
+                  if (data!.isEmpty) {
+                    return Center(
+                      child: Text("No hay pacientes registrados",
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium!
+                              .copyWith(color: Colors.red)),
+                    );
+                  }
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    Future.delayed(const Duration(seconds: 1));
+                    return Center(
+                        child: SizedBox(
+                      width: 100,
+                      height: 100,
                       child: CircularProgressIndicator(
-                    color: Colors.red,
-                  ));
-                }
-                if (data!.isEmpty) {
-                  return Center(
-                    child: Text("No hay pacientes registrados",
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium!
-                            .copyWith(color: Colors.red)),
-                  );
-                }
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  Future.delayed(const Duration(seconds: 1));
-                  return Center(
-                      child: SizedBox(
-                    width: 100,
-                    height: 100,
-                    child: CircularProgressIndicator(
-                      color: Theme.of(context).colorScheme.onTertiary,
-                    ),
-                  ));
-                }
-                if (snapshot.hasError) {
-                  return Center(
-                    child: Text("Error al cargar los datos",
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium!
-                            .copyWith(color: Colors.red)),
-                  );
-                }
-                return ListView.separated(
-                    separatorBuilder: (context, index) => const SizedBox(
-                          height: 5,
-                        ),
-                    scrollDirection: Axis.vertical,
-                    physics: const BouncingScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount:
-                        snapshot.data!.length > 5 ? 5 : snapshot.data!.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      String anio = data[index].createdAt.substring(0, 4);
-                      String mes = data[index].createdAt.substring(5, 7);
-                      String dia = data[index].createdAt.substring(8, 10);
-                      //mapa de meses
-                      mes = meses[mes]!;
-                      return FancyCard(
-                        image: Image.asset("assets/images/patient-logo.png"),
-                        //image2: avatar3,
-                        title: snapshot.data![index].fullName,
-                        date: "Fecha: $mes $dia, $anio",
-                        function: () {
-                          //id para enviar a la siguiente pantalla
-                          prefs.idPatient = snapshot.data![index].id;
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => PatientProfileScreen(),
-                            ),
-                          );
-                        },
-                      );
-                    });
-              },
+                        color: Theme.of(context).colorScheme.onTertiary,
+                      ),
+                    ));
+                  }
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Text("Error al cargar los datos",
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium!
+                              .copyWith(color: Colors.red)),
+                    );
+                  }
+                  return ListView.separated(
+                      separatorBuilder: (context, index) => const SizedBox(
+                            height: 12,
+                          ),
+                      scrollDirection: Axis.vertical,
+                      physics: const BouncingScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount:
+                          snapshot.data!.length > 5 ? 5 : snapshot.data!.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        String anio = data[index].createdAt.substring(0, 4);
+                        String mes = data[index].createdAt.substring(5, 7);
+                        String dia = data[index].createdAt.substring(8, 10);
+                        //mapa de meses
+                        mes = meses[mes]!;
+                        return FancyCard(
+                          image: Image.asset("assets/images/patient-logo.png"),
+                          //image2: avatar3,
+                          title: snapshot.data![index].fullName,
+                          date: "Fecha: $mes $dia, $anio",
+                          function: () {
+                            //id para enviar a la siguiente pantalla
+                            prefs.idPatient = snapshot.data![index].id;
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => PatientProfileScreen(),
+                              ),
+                            );
+                          },
+                        );
+                      });
+                },
+              ),
             ),
           ]
         ]),
