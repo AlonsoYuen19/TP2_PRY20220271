@@ -464,11 +464,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Navigator.pushNamed(context, 'editProfile');
                   },
                   child: Text(
-                    "Editar Datos",
+                    "Editar Datos Personales",
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.displayMedium!.copyWith(
                         fontSize: 16,
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w600,
                         color:
                             Theme.of(context).colorScheme.onSecondaryContainer),
                   ),
@@ -678,6 +678,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       });
                 },
               ),
+            ),
+            const SizedBox(
+              height: 16,
             ),
           ]
         ]),

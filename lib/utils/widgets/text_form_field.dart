@@ -1,7 +1,6 @@
 import 'package:fancy_password_field/fancy_password_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:ulcernosis/utils/helpers/constant_variables.dart';
 
 class GetTextFormField extends StatefulWidget {
   final String labelText;
@@ -59,7 +58,7 @@ class _GetTextFormFieldState extends State<GetTextFormField> {
           ? Container(
               padding: widget.isRegisterPassword
                   ? null
-                  : const EdgeInsets.symmetric(horizontal: paddingHori),
+                  : const EdgeInsets.symmetric(horizontal: 20),
               child: FancyPasswordField(
                 maxLength: 20,
                 focusNode: _focusNode,
@@ -103,14 +102,16 @@ class _GetTextFormFieldState extends State<GetTextFormField> {
                                       children: [
                                         const Icon(
                                           Icons.check,
+                                          size: 24,
                                           color: Colors.green,
                                         ),
                                         const SizedBox(width: 12),
                                         Text(
                                           rule.name,
                                           style: const TextStyle(
-                                            color: Colors.green,
-                                          ),
+                                              color: Colors.green,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w400),
                                         ),
                                       ],
                                     )
@@ -118,14 +119,16 @@ class _GetTextFormFieldState extends State<GetTextFormField> {
                                       children: [
                                         const Icon(
                                           Icons.close,
+                                          size: 24,
                                           color: Colors.red,
                                         ),
                                         const SizedBox(width: 12),
                                         Text(
                                           rule.name,
                                           style: const TextStyle(
-                                            color: Colors.red,
-                                          ),
+                                              color: Colors.red,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w400),
                                         ),
                                       ],
                                     ),
@@ -140,15 +143,21 @@ class _GetTextFormFieldState extends State<GetTextFormField> {
                 style: TextStyle(
                     color: _color,
                     fontSize: 16,
+                    fontWeight: FontWeight.w400,
                     decoration: TextDecoration.none),
                 controller: widget.controllerr,
                 decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: const BorderRadius.all(Radius.circular(4)),
+                    borderSide: BorderSide(
+                        color: Theme.of(context).colorScheme.secondary,
+                        width: 1),
+                  ),
                   counterText: widget.isRegisterPassword ? null : "",
                   counterStyle: TextStyle(fontWeight: FontWeight.w600),
                   helperText: null,
-                  labelStyle:
-                      TextStyle(color: _color, fontWeight: FontWeight.w400,
-                      fontSize:14),
+                  labelStyle: TextStyle(
+                      color: _color, fontWeight: FontWeight.w400, fontSize: 16),
                   errorStyle: TextStyle(
                     height: 0,
                     color: Theme.of(context).colorScheme.error,
@@ -164,23 +173,23 @@ class _GetTextFormFieldState extends State<GetTextFormField> {
                   hintText: widget.placeholder,
                   filled: true,
                   fillColor: Colors.white,
-                  contentPadding: const EdgeInsets.all(20.0),
+                  contentPadding: const EdgeInsets.all(16.0),
                   focusedBorder: OutlineInputBorder(
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    borderRadius: const BorderRadius.all(Radius.circular(4)),
                     borderSide: BorderSide(color: Colors.green, width: 2),
                   ),
                   errorBorder: OutlineInputBorder(
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    borderRadius: const BorderRadius.all(Radius.circular(4)),
                     borderSide: BorderSide(
                         color: Theme.of(context).colorScheme.error, width: 1.2),
                   ),
                   focusedErrorBorder: OutlineInputBorder(
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    borderRadius: const BorderRadius.all(Radius.circular(4)),
                     borderSide: BorderSide(
                         color: Theme.of(context).colorScheme.error, width: 1.2),
                   ),
                   enabledBorder: OutlineInputBorder(
-                      borderRadius: const BorderRadius.all(Radius.circular(10)),
+                      borderRadius: const BorderRadius.all(Radius.circular(4)),
                       borderSide: BorderSide(color: _color, width: 1.2)),
                 ),
               ),
@@ -188,7 +197,7 @@ class _GetTextFormFieldState extends State<GetTextFormField> {
           : Container(
               padding: widget.isRegisterPassword
                   ? null
-                  : const EdgeInsets.symmetric(horizontal: paddingHori),
+                  : const EdgeInsets.symmetric(horizontal: 20),
               child: TextFormField(
                 maxLength: widget.maxLength,
                 focusNode: _focusNode,
@@ -221,24 +230,23 @@ class _GetTextFormFieldState extends State<GetTextFormField> {
                   errorMaxLines: 2,
                   labelText: widget.labelText,
                   hintText: widget.placeholder,
-                  contentPadding:
-                      EdgeInsets.all(widget.isEditProfile == false ? 20 : 15),
+                  contentPadding: const EdgeInsets.all(16),
                   focusedBorder: OutlineInputBorder(
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    borderRadius: const BorderRadius.all(Radius.circular(4)),
                     borderSide: BorderSide(color: Colors.green, width: 2),
                   ),
                   errorBorder: OutlineInputBorder(
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    borderRadius: const BorderRadius.all(Radius.circular(4)),
                     borderSide: BorderSide(
                         color: Theme.of(context).colorScheme.error, width: 1.2),
                   ),
                   focusedErrorBorder: OutlineInputBorder(
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    borderRadius: const BorderRadius.all(Radius.circular(4)),
                     borderSide: BorderSide(
                         color: Theme.of(context).colorScheme.error, width: 1.2),
                   ),
                   enabledBorder: OutlineInputBorder(
-                      borderRadius: const BorderRadius.all(Radius.circular(10)),
+                      borderRadius: const BorderRadius.all(Radius.circular(4)),
                       borderSide: BorderSide(color: _color, width: 1.2)),
                 ),
               ),

@@ -93,6 +93,22 @@ class _ImagePreviewState extends State<ImagePreview> {
         return false;
       },
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          leadingWidth: 96,
+          centerTitle: true,
+          toolbarHeight: 98,
+          automaticallyImplyLeading: false,
+          title: Text(
+            "Resultado",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w400,
+              color: Theme.of(context).colorScheme.tertiary,
+            ),
+          ),
+        ),
         body: FutureBuilder(
             future: delayPage(),
             builder: (context, snapshot) {
@@ -106,27 +122,11 @@ class _ImagePreviewState extends State<ImagePreview> {
               return Stack(
                 children: [
                   SafeArea(
-                      child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 20),
-                        Align(
-                            alignment: Alignment.topCenter,
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 24, vertical: 20),
-                              child: Text(
-                                'Resultado',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Theme.of(context).colorScheme.tertiary,
-                                  fontSize: 21,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            )),
-                        const SizedBox(height: 10),
-                        Column(
+                      child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Column(
                           children: [
                             ClipRRect(
                               borderRadius: BorderRadius.only(
@@ -134,8 +134,8 @@ class _ImagePreviewState extends State<ImagePreview> {
                                 topRight: Radius.circular(8),
                               ),
                               child: SizedBox(
-                                height: size.height * 0.25,
-                                width: size.width * 0.8,
+                                height: size.height * 0.24,
+                                width: size.width * 1,
                                 child: Image.file(
                                   File(widget.imagePath.path),
                                   fit: BoxFit.fill,
@@ -144,7 +144,7 @@ class _ImagePreviewState extends State<ImagePreview> {
                             ),
                             Container(
                               //height: size.height * 0.11,
-                              width: size.width * 0.8,
+                              width: size.width * 1,
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 20),
                               decoration: BoxDecoration(
@@ -160,7 +160,8 @@ class _ImagePreviewState extends State<ImagePreview> {
                                     "Etapa: ${diagnosis!.stagePredicted}",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                        fontSize: 24,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600,
                                         color: Theme.of(context)
                                             .colorScheme
                                             .onTertiary),
@@ -170,7 +171,7 @@ class _ImagePreviewState extends State<ImagePreview> {
                                     "${porcentaje.substring(0, 5)}% de predicción",
                                     textAlign: TextAlign.start,
                                     style: TextStyle(
-                                        fontSize: 17,
+                                        fontSize: 16,
                                         fontWeight: FontWeight.w400,
                                         color: Theme.of(context)
                                             .colorScheme
@@ -181,115 +182,136 @@ class _ImagePreviewState extends State<ImagePreview> {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 20),
-                        Container(
-                          width: size.width * 0.84,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 10),
-                          child: Text("Información Adicional",
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  color: Theme.of(context).colorScheme.tertiary,
-                                  fontWeight: FontWeight.bold)),
-                        ),
-                        //const SizedBox(height: 10),
-                        Container(
-                          width: size.width * 0.84,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 10),
-                          child: Text(
-                            "El $rol ${diagnosis!.creatorName} ha diagnosticado al paciente ${patient.fullName.split(" ")[0]} con la condición médica en etapa ${diagnosis!.stagePredicted} de su úlcera por presión. Según el diagnóstico, la probabilidad de que el paciente se encuentre en esa etapa es de un ${porcentaje.substring(0, 5)}% de predicción",
+                      ),
+                      const SizedBox(height: 18),
+                      Container(
+                        width: size.width * 1,
+                        margin: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Text("Información Adicional",
                             style: TextStyle(
                                 fontSize: 16,
-                                fontWeight: FontWeight.w400,
-                                color: Theme.of(context).colorScheme.outline),
+                                color: Theme.of(context).colorScheme.tertiary,
+                                fontWeight: FontWeight.w600)),
+                      ),
+                      const SizedBox(height: 4),
+                      Container(
+                        width: size.width * 1,
+                        margin: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Text(
+                          "El $rol ${diagnosis!.creatorName} ha diagnosticado al paciente ${patient.fullName.split(" ")[0]} con la condición médica en etapa ${diagnosis!.stagePredicted} de su úlcera por presión. Según el diagnóstico, la probabilidad de que el paciente se encuentre en esa etapa es de un ${porcentaje.substring(0, 5)}% de predicción",
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              color: Theme.of(context).colorScheme.outline),
+                        ),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              SizedBox(
+                                width: size.width * 1,
+                                child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        elevation: 0,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(8)),
+                                        backgroundColor: Theme.of(context)
+                                            .colorScheme
+                                            .onSecondaryContainer),
+                                    onPressed: () async {
+                                      mostrarAlertaVolverDiagnosticos(context,
+                                          "¿Está seguro de cofirmar el diagnóstico para finalizar con la operación?",
+                                          () async {
+                                        if (prefs.idMedic != 0) {
+                                          await diagnosisService
+                                              .confirmDiagnosticMedic(
+                                                  context, diagnosis!.id);
+                                          Navigator.pushNamedAndRemoveUntil(
+                                              context,
+                                              'home',
+                                              (route) => false);
+                                        } else {
+                                          await diagnosisService
+                                              .confirmDiagnosticNurse(
+                                                  context, diagnosis!.id);
+                                          Navigator.pushNamedAndRemoveUntil(
+                                              context,
+                                              'home',
+                                              (route) => false);
+                                        }
+                                      },
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSecondary);
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 10),
+                                      child: Text(
+                                        "Confirmar Diagnóstico",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    )),
+                              ),
+                              const SizedBox(
+                                height: 14,
+                              ),
+                              Container(
+                                width: size.width * 1,
+                                child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        shape: RoundedRectangleBorder(
+                                            side: BorderSide(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onSecondaryContainer,
+                                                width: 1),
+                                            borderRadius:
+                                                BorderRadius.circular(8)),
+                                        elevation: 0,
+                                        backgroundColor: Theme.of(context)
+                                            .colorScheme
+                                            .surface),
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: ((context) =>
+                                                  TakePhotoDiagnosis(
+                                                      idPatient:
+                                                          widget.idPatient))));
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 10),
+                                      child: Text(
+                                        "Reintentar Diagnóstico",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onSecondaryContainer,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    )),
+                              ),
+                              const SizedBox(
+                                height: 35,
+                              ),
+                            ],
                           ),
                         ),
-                        const SizedBox(
-                          height: 25,
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              width: size.width * 0.8,
-                              height: size.height * 0.06,
-                              child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      elevation: 0,
-                                      backgroundColor: Theme.of(context)
-                                          .colorScheme
-                                          .onSecondaryContainer),
-                                  onPressed: () async {
-                                    mostrarAlertaVolverDiagnosticos(context,
-                                        "¿Está seguro de cofirmar el diagnóstico para finalizar con la operación?",
-                                        () async {
-                                      if (prefs.idMedic != 0) {
-                                        await diagnosisService
-                                            .confirmDiagnosticMedic(
-                                                context, diagnosis!.id);
-                                        Navigator.pushNamedAndRemoveUntil(
-                                            context, 'home', (route) => false);
-                                      } else {
-                                        await diagnosisService
-                                            .confirmDiagnosticNurse(
-                                                context, diagnosis!.id);
-                                        Navigator.pushNamedAndRemoveUntil(
-                                            context, 'home', (route) => false);
-                                      }
-                                    },
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onSecondary);
-                                  },
-                                  child: Text(
-                                    "Confirmar Diagnóstico",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold),
-                                  )),
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            SizedBox(
-                              width: size.width * 0.8,
-                              height: size.height * 0.06,
-                              child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      elevation: 1.2,
-                                      backgroundColor: Theme.of(context)
-                                          .colorScheme
-                                          .surface),
-                                  onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: ((context) =>
-                                                TakePhotoDiagnosis(
-                                                    idPatient:
-                                                        widget.idPatient))));
-                                  },
-                                  child: Text(
-                                    "Reintentar Diagnóstico",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onSecondaryContainer,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold),
-                                  )),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ))
                 ],
               );

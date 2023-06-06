@@ -148,7 +148,6 @@ class _ManageScreenState extends State<ManageScreen> {
   }
 
   Widget cardNurseSelectorEmpty() {
-    final size = MediaQuery.of(context).size;
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(context, 'addNurse');
@@ -157,7 +156,7 @@ class _ManageScreenState extends State<ManageScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Card(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(4),
             side: BorderSide(
               color: Theme.of(context).colorScheme.background,
               width: 1,
@@ -170,15 +169,15 @@ class _ManageScreenState extends State<ManageScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10),
+                  padding: EdgeInsets.symmetric(vertical: 20),
                   child: Container(
-                    height: size.height * 0.09,
-                    width: size.width * 0.095,
+                    height: 50,
+                    width: 50,
                     decoration: BoxDecoration(
                       border: Border.all(width: 1, color: Colors.transparent),
                       image: const DecorationImage(
                         image: AssetImage('assets/images/add-friend.png'),
-                        fit: BoxFit.contain,
+                        fit: BoxFit.cover,
                       ),
                     ),
                   ),

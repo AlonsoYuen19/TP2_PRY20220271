@@ -5,7 +5,6 @@ import 'package:ulcernosis/services/medic_service.dart';
 import 'package:ulcernosis/services/users_service.dart';
 import '../../services/nurse_services.dart';
 import '../../utils/helpers/constant_variables.dart';
-import '../../utils/widgets/background_figure.dart';
 import '../../utils/widgets/DropDowns/drop_down.dart';
 import '../../utils/widgets/text_form_field.dart';
 
@@ -23,10 +22,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           const EdgeInsets.symmetric(horizontal: paddingHori, vertical: 10),
       child: Text(
         title,
-        style: Theme.of(context)
-            .textTheme
-            .bodyMedium!
-            .copyWith(color: Theme.of(context).colorScheme.onSecondary),
+        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+            color: Theme.of(context).colorScheme.onSecondary,
+            fontSize: 16,
+            fontWeight: FontWeight.w400),
       ),
     );
   }
@@ -80,34 +79,56 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     final medicService = MedicAuthServic();
     final nurseService = NurseAuthService();
     return Scaffold(
-      body: SingleChildScrollView(
-        child: SafeArea(
-          child: Stack(children: [
-            backgroundFigure(context, x: 400, y: 150, height: 0.12),
-            Column(
+      appBar: AppBar(
+        backgroundColor: Color.fromRGBO(250, 250, 250, 1),
+        leading: Padding(
+          padding:
+              const EdgeInsets.only(left: 20, right: 20, top: 16, bottom: 16),
+          child: ElevatedButton(
+              style: ButtonStyle(
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                ),
+                backgroundColor: MaterialStateProperty.all(Theme.of(context)
+                    .colorScheme
+                    .onSecondaryContainer), // <-- Button color
+                elevation: MaterialStateProperty.all(0), // <-- Splash color
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Icon(Icons.arrow_back_outlined,
+                  color: Theme.of(context).colorScheme.onTertiary, size: 18)),
+        ),
+        leadingWidth: 96,
+        centerTitle: true,
+        toolbarHeight: 98,
+        automaticallyImplyLeading: false,
+        title: Text(
+          "Editar Datos Personales",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w400,
+            color: Theme.of(context).colorScheme.tertiary,
+          ),
+        ),
+      ),
+      body: SafeArea(
+        child: Stack(children: [
+          SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Column(
               children: [
                 Form(
                   key: _formKey,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: paddingHori),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Column(
                       children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 20, horizontal: 10),
-                          child: Text(
-                            "Editar Perfil",
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleSmall!
-                                .copyWith(fontWeight: FontWeight.bold,
-                                fontSize: 30),
-                          ),
-                        ),
-                        SizedBox(height: size.height * 0.05),
                         title("Nombre Completo"),
                         GetTextFormField(
                           labelText: name,
@@ -174,90 +195,69 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         DropDownWithSearch(
                           searchController: _stateCivil,
                         ),
-                        SizedBox(height: size.height * 0.03),
+                        const SizedBox(height: 16),
                       ],
                     ),
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    SizedBox(
-                      width: size.width * 0.35,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.grey, elevation: 0),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        child: Text(
-                          "Retroceder",
-                          style: Theme.of(context)
-                              .textTheme
-                              .labelMedium
-                              ?.copyWith(color: Colors.white),
-                        ),
-                      ),
+                const SizedBox(height: 16),
+                Container(
+                  width: size.width * 1,
+                  height: 56,
+                  margin: const EdgeInsets.symmetric(horizontal: 20),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      elevation: 0,
+                      backgroundColor:
+                          Theme.of(context).colorScheme.onSecondaryContainer,
                     ),
-                    SizedBox(
-                      width: size.width * 0.4,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          elevation: 0,
-                          backgroundColor:
-                              Theme.of(context).colorScheme.tertiary,
-                        ),
-                        onPressed: () async {
-                          final isValidForm = _formKey.currentState!.validate();
-                          if (isValidForm) {
-                            print("Nombre Completo: " + _name.text);
-                            print("Direccion: " + _address.text);
-                            print("phone: " + _phone.text);
-                            print("DNI: " + _dni.text);
-                            print("Edad: " + _age.text);
-                            print("Estado Civil: " + _stateCivil.text);
-                            int age = int.parse(_age.text.trim());
-                            if (user!.role == "ROLE_MEDIC") {
-                              await medicService.updateMedic(context,
-                                  fullNameMedic: _name.text.trim(),
-                                  stateCivil: _stateCivil.text.trim(),
-                                  address: _address.text.trim(),
-                                  phone: _phone.text.trim(),
-                                  dni: _dni.text.trim(),
-                                  age: age);
-                            } else {
-                              await nurseService.updateNurse(context,
-                                  fullName: _name.text.trim(),
-                                  stateCivil: _stateCivil.text.trim(),
-                                  address: _address.text.trim(),
-                                  phone: _phone.text.trim(),
-                                  dni: _dni.text.trim(),
-                                  age: age);
-                            }
+                    onPressed: () async {
+                      final isValidForm = _formKey.currentState!.validate();
+                      if (isValidForm) {
+                        print("Nombre Completo: " + _name.text);
+                        print("Direccion: " + _address.text);
+                        print("phone: " + _phone.text);
+                        print("DNI: " + _dni.text);
+                        print("Edad: " + _age.text);
+                        print("Estado Civil: " + _stateCivil.text);
+                        int age = int.parse(_age.text.trim());
+                        if (user!.role == "ROLE_MEDIC") {
+                          await medicService.updateMedic(context,
+                              fullNameMedic: _name.text.trim(),
+                              stateCivil: _stateCivil.text.trim(),
+                              address: _address.text.trim(),
+                              phone: _phone.text.trim(),
+                              dni: _dni.text.trim(),
+                              age: age);
+                        } else {
+                          await nurseService.updateNurse(context,
+                              fullName: _name.text.trim(),
+                              stateCivil: _stateCivil.text.trim(),
+                              address: _address.text.trim(),
+                              phone: _phone.text.trim(),
+                              dni: _dni.text.trim(),
+                              age: age);
+                        }
 
-                            if (!mounted) {
-                              return;
-                            }
-                          }
-                        },
-                        child: Text(
-                          "Guardar",
-                          style: Theme.of(context)
-                              .textTheme
-                              .labelMedium!
-                              .copyWith(
-                                color: Theme.of(context).colorScheme.onTertiary,
-                              ),
-                        ),
-                      ),
+                        if (!mounted) {
+                          return;
+                        }
+                      }
+                    },
+                    child: Text(
+                      "Guardar",
+                      style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                          color: Theme.of(context).colorScheme.onTertiary,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600),
                     ),
-                  ],
+                  ),
                 ),
-                SizedBox(height: size.height * 0.05),
+                const SizedBox(height: 30),
               ],
             ),
-          ]),
-        ),
+          ),
+        ]),
       ),
     );
   }

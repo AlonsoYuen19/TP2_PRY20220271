@@ -11,6 +11,8 @@ const primaryColorTextColor = Color.fromRGBO(133, 133, 133, 1);
 const primaryBackGroundColor = Color.fromRGBO(14, 26, 48, 0.65);
 
 const secondaryColorApp = Color.fromRGBO(255, 161, 158, 1);
+const secondaryAppbarBackground = Color.fromRGBO(255, 225, 224, 1);
+const secondaryAppbarText = Color.fromRGBO(242, 144, 141, 1);
 const secondaryBackgroundColorApp = Color.fromRGBO(255, 242, 241, 1);
 
 const buttonForegroundColor = Color.fromRGBO(240, 240, 240, 1);
@@ -28,6 +30,8 @@ ThemeData textThemes = ThemeData(
     onBackground: primaryBackGroundColor,
     //secondaryColorApp
     onSecondaryContainer: secondaryColorApp,
+    inversePrimary: secondaryAppbarText,
+    inverseSurface: secondaryAppbarBackground,
     //secondaryBackgroundColorApp
     surface: secondaryBackgroundColorApp,
     //chartBackgroundColor

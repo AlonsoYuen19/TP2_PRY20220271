@@ -28,7 +28,7 @@ class _DropDownWithAuxiliarState extends State<DropDownWithAuxiliar> {
       children: [
         Container(
           decoration: BoxDecoration(
-            borderRadius: const BorderRadius.all(Radius.circular(10)),
+            borderRadius: const BorderRadius.all(Radius.circular(4)),
             color: Colors.white,
             border: Border.all(
                 width: 1.2,
@@ -36,12 +36,12 @@ class _DropDownWithAuxiliarState extends State<DropDownWithAuxiliar> {
                 color: Color.fromRGBO(14, 26, 48, 1)),
           ),
           child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 18),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: DropdownButton<String>(
                 dropdownColor: Colors.white,
                 underline: const SizedBox(),
                 focusColor: Colors.green,
-                borderRadius: const BorderRadius.all(Radius.circular(10)),
+                borderRadius: const BorderRadius.all(Radius.circular(4)),
                 icon: const Icon(
                   Icons.arrow_drop_down,
                   color: Color.fromRGBO(14, 26, 48, 1),
@@ -55,7 +55,9 @@ class _DropDownWithAuxiliarState extends State<DropDownWithAuxiliar> {
                     child: Text(
                       value,
                       style: const TextStyle(
-                          fontSize: 16, color: Color.fromRGBO(14, 26, 48, 1)),
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          color: Color.fromRGBO(14, 26, 48, 1)),
                     ),
                   );
                 }).toList(),
@@ -70,6 +72,7 @@ class _DropDownWithAuxiliarState extends State<DropDownWithAuxiliar> {
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 16,
+                  fontWeight: FontWeight.w400,
                 ),
                 isExpanded: true,
                 iconEnabledColor: Colors.white,

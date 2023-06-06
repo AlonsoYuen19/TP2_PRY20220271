@@ -1,12 +1,8 @@
 // ignore_for_file: use_build_context_synchronously
 import 'dart:async';
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:starsview/config/StarsConfig.dart';
-import 'package:starsview/starsview.dart';
 import 'package:ulcernosis/services/nurse_services.dart';
 import 'package:ulcernosis/utils/widgets/background_figure.dart';
 import '../../models/users.dart';
@@ -84,166 +80,103 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    print(size);
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      body: Stack(
-        children: <Widget>[
-          backgroundFigure(context, height: 0.3),
-          const StarsView(
-            fps: 60,
-            starsConfig: StarsConfig(
-              starCount: 30,
-              minStarSize: 2,
-              maxStarSize: 5,
-            ),
-          ),
-          SingleChildScrollView(
-            child: SafeArea(
-              child: Form(
-                key: _formKey,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                child: Column(
-                  children: <Widget>[
-                    SizedBox(height: size.height * 0.03),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Container(
-                          height: size.height * 0.15,
-                          width: size.width * 0.5,
-                          padding: const EdgeInsets.only(bottom: 50),
-                          decoration: const BoxDecoration(
-                            image: DecorationImage(
-                              image:
-                                  AssetImage('assets/images/hospital-bed.png'),
-                              fit: BoxFit.fitHeight,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 12.0),
-                          child: SizedBox(
-                            width: size.width * 0.4,
-                            child: AnimatedTextKit(
-                                repeatForever: true,
-                                displayFullTextOnTap: false,
-                                animatedTexts: [
-                                  ScaleAnimatedText(
-                                    texts[0],
-                                    textAlign: TextAlign.center,
-                                    textStyle:
-                                        Theme.of(context).textTheme.labelLarge,
-                                  ),
-                                  ScaleAnimatedText(
-                                    texts[1],
-                                    textAlign: TextAlign.center,
-                                    textStyle:
-                                        Theme.of(context).textTheme.labelLarge,
-                                  ),
-                                  ScaleAnimatedText(
-                                    texts[2],
-                                    textAlign: TextAlign.center,
-                                    textStyle:
-                                        Theme.of(context).textTheme.labelLarge,
-                                  ),
-                                  ScaleAnimatedText(
-                                    texts[3],
-                                    textAlign: TextAlign.center,
-                                    textStyle:
-                                        Theme.of(context).textTheme.labelLarge,
-                                  ),
-                                ]),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: size.height * 0.15),
-                    //CARD
-                    SizedBox(
-                      width: size.width * 0.9,
-                      child: Card(
-                        semanticContainer: true,
-                        borderOnForeground: true,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25.0),
-                        ),
-                        elevation: 20,
-                        color: Colors.white,
-                        child: Column(
-                          children: [
-                            SizedBox(height: size.height * 0.03),
-                            Center(
-                                child: SvgPicture.asset(
-                              'assets/images/Ulsernosis.svg',
-                              fit: BoxFit.cover,
-                              height: 55,
-                            )),
-                            SizedBox(height: size.height * 0.035),
-                            GetTextFormField(
-                              labelText: "Correo",
-                              placeholder: email,
-                              controllerr: emailController,
-                              icon: const Icon(Icons.email),
-                              keyboardType: TextInputType.emailAddress,
-                              validator: validEmail(
-                                  "Escriba el correo con el formato correcto"),
-                              obscureText: false,
-                              isRegisterPassword: false,
-                            ),
-                            SizedBox(height: size.height * 0.03),
-                            GetTextFormField(
-                              labelText: "Contraseña",
-                              placeholder: password,
-                              controllerr: passwordController,
-                              icon: const Icon(Icons.lock),
-                              keyboardType: TextInputType.visiblePassword,
-                              validator:
-                                  validPasswordLogin("Rellene la contraseña"),
-                              obscureText: true,
-                              isRegisterPassword: false,
-                            ),
-                            SizedBox(height: size.height * 0.02),
-                            signInButton(context),
-                            const SizedBox(height: 5),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "No tienes una cuenta?",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium!
-                                      .copyWith(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .outline),
-                                ),
-                                TextButton(
-                                    onPressed: () async {
-                                      Navigator.pushNamed(
-                                          context, "preRegister");
-                                    },
-                                    child: Text("Registrate",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .displaySmall!
-                                            .copyWith(
-                                                fontWeight: FontWeight.bold,
-                                                decoration:
-                                                    TextDecoration.underline)))
-                              ],
-                            ),
-                            const SizedBox(height: 10),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            Stack(
+              children: [
+                backgroundFigure(
+                  context,
+                  height: 0.3,
                 ),
-              ),
+                Positioned(
+                  bottom: 40,
+                  left: size.width * 0.39,
+                  child: Image.asset(
+                    'assets/images/just_logo.png',
+                    fit: BoxFit.cover,
+                    height: 55,
+                  ),
+                ),
+              ],
             ),
-          )
-        ],
+            Form(
+              key: _formKey,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(height: size.height * 0.043),
+                  GetTextFormField(
+                    labelText: "Correo",
+                    placeholder: email,
+                    controllerr: emailController,
+                    icon: const Icon(Icons.email),
+                    keyboardType: TextInputType.emailAddress,
+                    validator:
+                        validEmail("Escriba el correo con el formato correcto"),
+                    obscureText: false,
+                    isRegisterPassword: false,
+                  ),
+                  SizedBox(height: 28),
+                  GetTextFormField(
+                    labelText: "Contraseña",
+                    placeholder: password,
+                    controllerr: passwordController,
+                    icon: const Icon(Icons.lock),
+                    keyboardType: TextInputType.visiblePassword,
+                    validator: validPasswordLogin("Rellene la contraseña"),
+                    obscureText: true,
+                    isRegisterPassword: false,
+                  ),
+                  SizedBox(height: size.height * 0.096),
+                  signInButton(context),
+                  SizedBox(height: size.height * 0.02),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "¿Aún no tienes una cuenta? ",
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            color: Theme.of(context).colorScheme.tertiary,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      TextButton(
+                          onPressed: () async {
+                            Navigator.pushNamed(context, "preRegister");
+                          },
+                          child: Text("Crear cuenta",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .displaySmall!
+                                  .copyWith(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSecondaryContainer)))
+                    ],
+                  ),
+                  size.longestSide < 600
+                      ? SizedBox(height: 40)
+                      : SizedBox(height: size.height * 0.195),
+                  DefaultTextStyle(
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                      color: Color.fromRGBO(213, 213, 213, 1),
+                    ),
+                    child: const Text("$appTitle"),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -376,17 +309,27 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget signInButton(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return ElevatedButton(
-        onPressed: _isPressed == false ? _handleButton : null,
-        child: Container(
-          width: size.width * 0.71,
-          padding: const EdgeInsets.all(5.0),
-          child: Text("Iniciar sesión",
-              textAlign: TextAlign.center,
-              style: Theme.of(context)
-                  .textTheme
-                  .labelMedium!
-                  .copyWith(color: Colors.white)),
-        ));
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+              elevation: 0,
+              backgroundColor:
+                  Theme.of(context).colorScheme.onSecondaryContainer,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              )),
+          onPressed: _isPressed == false ? _handleButton : null,
+          child: Container(
+            width: size.width * 1,
+            padding: const EdgeInsets.all(6),
+            child: Text("Ingresar",
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500)),
+          )),
+    );
   }
 }

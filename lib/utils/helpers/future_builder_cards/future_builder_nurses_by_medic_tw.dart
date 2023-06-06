@@ -63,7 +63,7 @@ class _MyFutureBuilderNursesByMedicsTWState
                     ),
                   ),
                   elevation: 0,
-                  color: Theme.of(context).colorScheme.surface,
+                  color: Colors.white,
                   child: Padding(
                     padding: const EdgeInsets.only(
                         top: 16.0, left: 16, bottom: 16, right: 16),

@@ -83,6 +83,43 @@ class _DiagnosisPageByPatientState extends State<DiagnosisPageByPatient> {
         return false;
       },
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          leading: Padding(
+            padding:
+                const EdgeInsets.only(left: 20, right: 20, top: 16, bottom: 16),
+            child: ElevatedButton(
+                style: ButtonStyle(
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                  ),
+                  backgroundColor: MaterialStateProperty.all(Theme.of(context)
+                      .colorScheme
+                      .onSecondaryContainer), // <-- Button color
+                  elevation: MaterialStateProperty.all(0), // <-- Splash color
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Icon(Icons.arrow_back_outlined,
+                    color: Theme.of(context).colorScheme.onTertiary, size: 18)),
+          ),
+          leadingWidth: 96,
+          centerTitle: true,
+          toolbarHeight: 98,
+          automaticallyImplyLeading: false,
+          title: Text(
+            "Resultado",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w400,
+              color: Theme.of(context).colorScheme.tertiary,
+            ),
+          ),
+        ),
         body: FutureBuilder(
             future: delayPage(),
             builder: (context, snapshot) {
@@ -99,23 +136,7 @@ class _DiagnosisPageByPatientState extends State<DiagnosisPageByPatient> {
                       child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(height: 20),
-                      Align(
-                          alignment: Alignment.topCenter,
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 24, vertical: 20),
-                            child: Text(
-                              'Resultado',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Theme.of(context).colorScheme.tertiary,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          )),
-                      const SizedBox(height: 36),
+                      const SizedBox(height: 8),
                       Container(
                         width: size.width * 1,
                         margin: const EdgeInsets.symmetric(horizontal: 20),

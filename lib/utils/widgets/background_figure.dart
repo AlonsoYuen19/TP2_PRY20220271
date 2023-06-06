@@ -20,7 +20,7 @@ Widget backgroundFigure(BuildContext context,
         height: size.height * height,
         width: size.width * 1,
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.onSecondaryContainer,
+          color: Color.fromRGBO(255, 242, 241, 1),
           borderRadius: footer
               ? BorderRadius.vertical(top: Radius.elliptical(x, y))
               : BorderRadius.vertical(bottom: Radius.elliptical(x, y)),

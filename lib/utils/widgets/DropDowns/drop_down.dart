@@ -36,7 +36,7 @@ class _DropDownWithSearchState extends State<DropDownWithSearch> {
       children: [
         Container(
           decoration: BoxDecoration(
-            borderRadius: const BorderRadius.all(Radius.circular(10)),
+            borderRadius: const BorderRadius.all(Radius.circular(4)),
             color: Colors.white,
             border: Border.all(
                 width: 1.2,
@@ -44,7 +44,7 @@ class _DropDownWithSearchState extends State<DropDownWithSearch> {
                 color: Color.fromRGBO(14, 26, 48, 1)),
           ),
           child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 18),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: DropdownButton<String>(
                 dropdownColor: Colors.white,
                 underline: const SizedBox(),
@@ -53,7 +53,7 @@ class _DropDownWithSearchState extends State<DropDownWithSearch> {
                   color: Color.fromRGBO(14, 26, 48, 1),
                 ),
                 focusColor: Colors.green,
-                borderRadius: const BorderRadius.all(Radius.circular(10)),
+                borderRadius: const BorderRadius.all(Radius.circular(4)),
                 iconSize: 30,
                 value: widget.searchController.text,
                 items: <String>[
@@ -67,7 +67,9 @@ class _DropDownWithSearchState extends State<DropDownWithSearch> {
                     child: Text(
                       value,
                       style: const TextStyle(
-                          fontSize: 16, color: Color.fromRGBO(14, 26, 48, 1)),
+                          fontSize: 16,
+                          color: Color.fromRGBO(14, 26, 48, 1),
+                          fontWeight: FontWeight.w400),
                     ),
                   );
                 }).toList(),
@@ -80,9 +82,9 @@ class _DropDownWithSearchState extends State<DropDownWithSearch> {
                   print(widget.searchController.text);
                 },
                 style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                ),
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400),
                 isExpanded: true,
                 iconEnabledColor: Colors.white,
               )),
