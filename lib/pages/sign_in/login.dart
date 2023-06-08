@@ -80,102 +80,106 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    print(size);
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Stack(
-              children: [
-                backgroundFigure(
-                  context,
-                  height: 0.3,
-                ),
-                Positioned(
-                  bottom: 40,
-                  left: size.width * 0.39,
-                  child: Image.asset(
-                    'assets/images/just_logo.png',
-                    fit: BoxFit.cover,
-                    height: 55,
+    return SafeArea(
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        body: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Stack(
+                children: [
+                  backgroundFigure(
+                    context,
+                    height: 0.3,
                   ),
-                ),
-              ],
-            ),
-            Form(
-              key: _formKey,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(height: size.height * 0.043),
-                  GetTextFormField(
-                    labelText: "Correo",
-                    placeholder: email,
-                    controllerr: emailController,
-                    icon: const Icon(Icons.email),
-                    keyboardType: TextInputType.emailAddress,
-                    validator:
-                        validEmail("Escriba el correo con el formato correcto"),
-                    obscureText: false,
-                    isRegisterPassword: false,
-                  ),
-                  SizedBox(height: 28),
-                  GetTextFormField(
-                    labelText: "Contraseña",
-                    placeholder: password,
-                    controllerr: passwordController,
-                    icon: const Icon(Icons.lock),
-                    keyboardType: TextInputType.visiblePassword,
-                    validator: validPasswordLogin("Rellene la contraseña"),
-                    obscureText: true,
-                    isRegisterPassword: false,
-                  ),
-                  SizedBox(height: size.height * 0.096),
-                  signInButton(context),
-                  SizedBox(height: size.height * 0.02),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "¿Aún no tienes una cuenta? ",
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                            color: Theme.of(context).colorScheme.tertiary,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      TextButton(
-                          onPressed: () async {
-                            Navigator.pushNamed(context, "preRegister");
-                          },
-                          child: Text("Crear cuenta",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .displaySmall!
-                                  .copyWith(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onSecondaryContainer)))
-                    ],
-                  ),
-                  size.longestSide < 600
-                      ? SizedBox(height: 40)
-                      : SizedBox(height: size.height * 0.195),
-                  DefaultTextStyle(
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700,
-                      color: Color.fromRGBO(213, 213, 213, 1),
+                  Positioned(
+                    bottom: 40,
+                    left: size.width * 0.39,
+                    child: Image.asset(
+                      'assets/images/just_logo.png',
+                      fit: BoxFit.cover,
+                      height: 55,
                     ),
-                    child: const Text("$appTitle"),
                   ),
                 ],
               ),
-            )
-          ],
+              Form(
+                key: _formKey,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(height: size.height * 0.043),
+                    GetTextFormField(
+                      labelText: "Correo",
+                      placeholder: email,
+                      controllerr: emailController,
+                      icon: const Icon(Icons.email),
+                      keyboardType: TextInputType.emailAddress,
+                      validator: validEmail(
+                          "Escriba el correo con el formato correcto"),
+                      obscureText: false,
+                      isRegisterPassword: false,
+                    ),
+                    SizedBox(height: 28),
+                    GetTextFormField(
+                      labelText: "Contraseña",
+                      placeholder: password,
+                      controllerr: passwordController,
+                      icon: const Icon(Icons.lock),
+                      keyboardType: TextInputType.visiblePassword,
+                      validator: validPasswordLogin("Rellene la contraseña"),
+                      obscureText: true,
+                      isRegisterPassword: false,
+                    ),
+                    SizedBox(height: size.height * 0.096),
+                    signInButton(context),
+                    SizedBox(height: size.height * 0.02),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "¿Aún no tienes una cuenta? ",
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium!
+                              .copyWith(
+                                  color: Theme.of(context).colorScheme.tertiary,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
+                        ),
+                        TextButton(
+                            onPressed: () async {
+                              Navigator.pushNamed(context, "preRegister");
+                            },
+                            child: Text("Crear cuenta",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .displaySmall!
+                                    .copyWith(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onSecondaryContainer)))
+                      ],
+                    ),
+                    size.longestSide < 600
+                        ? SizedBox(height: 40)
+                        : SizedBox(height: size.height * 0.195),
+                    DefaultTextStyle(
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                        color: Color.fromRGBO(213, 213, 213, 1),
+                      ),
+                      child: const Text("$appTitle"),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -196,7 +200,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     CircularProgressIndicator(
-                      color: !isLogged ? Colors.red : Colors.green,
+                      color: !isLogged
+                          ? Colors.red
+                          : Theme.of(context).colorScheme.onSecondaryContainer,
                     ),
                     const SizedBox(
                       height: 20,
@@ -292,7 +298,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   : "Enfermero logueado correctamente",
               style: const TextStyle(color: Colors.white),
             ),
-            backgroundColor: Colors.green,
+            backgroundColor: Theme.of(context).colorScheme.onSecondaryContainer,
           ),
         );
         if (type == "ROLE_MEDIC") {

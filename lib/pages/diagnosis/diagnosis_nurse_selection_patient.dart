@@ -10,7 +10,8 @@ import '../../services/patient_service.dart';
 import '../../services/users_service.dart';
 import '../../utils/helpers/appbar_drawer.dart';
 import '../../utils/helpers/future_builder_cards/future_builder_patients_diagnosis.dart';
-import '../../utils/helpers/loaders_screens/loader_diagnosis_screen.dart';
+
+import '../../utils/helpers/loaders_screens/loader_home_screen.dart';
 import '../../utils/widgets/alert_dialog.dart';
 
 class DiagnosisNurseSelectionScreen extends StatefulWidget {
@@ -64,7 +65,7 @@ class _DiagnosisScreenState extends State<DiagnosisNurseSelectionScreen> {
           future: delayPage(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const LoaderDiagnosisScreen();
+              return const LoaderScreen();
             }
             return AppBarDrawer(
                 isDiagnosisNurse: true,

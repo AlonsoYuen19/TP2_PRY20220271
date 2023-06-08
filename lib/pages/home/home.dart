@@ -35,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Diagnosis> listDiagnosis = [];
   Future<Widget> delayPage() {
     Completer<Widget> completer = Completer();
-    Future.delayed(const Duration(seconds: 2), () {
+    Future.delayed(const Duration(seconds: 3), () {
       completer.complete(Container());
     });
 
@@ -77,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
           future: delayPage(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const LoaderHomeScreen();
+              return const LoaderScreen();
             }
             return AppBarDrawer(
                 isHome: true, title: "Últimos Diagnósticos", child: homePage());
@@ -201,34 +201,28 @@ class _HomeScreenState extends State<HomeScreen> {
                     return Column(
                       children: [
                         SizedBox(
-                          height: size.height * 0.05,
+                          height: size.height * 0.24,
                         ),
                         Container(
-                          height: 200,
-                          width: 200,
-                          decoration: BoxDecoration(
-                            border:
-                                Border.all(width: 0, color: Colors.transparent),
-                            image: const DecorationImage(
-                              image: AssetImage(
-                                  'assets/images/out-stock-diagnostico.png'),
-                              fit: BoxFit.contain,
-                            ),
+                          height: 60,
+                          width: 60,
+                          child: Image.asset(
+                            'assets/images/Group.png',
+                            color: Colors.grey,
+                            filterQuality: FilterQuality.high,
+                            fit: BoxFit.fitWidth,
                           ),
                         ),
                         const SizedBox(
                           height: 20,
                         ),
-                        const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16.0),
-                          child: Text(
-                              "No hay Registros de Diagnósticos Disponibles",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 26,
-                                  fontWeight: FontWeight.bold)),
-                        )
+                        const Text(
+                            "No se encontraron registros de diagnósticos disponibles",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Color.fromRGBO(213, 213, 213, 1),
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600))
                       ],
                     );
                   })

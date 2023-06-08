@@ -69,122 +69,125 @@ class _AssignItineraryPageState extends State<AssignItineraryPage> {
     final size = MediaQuery.of(context).size;
     String fechaFormateada =
         "${date!.day.toString().padLeft(2, '0')}/${date!.month.toString().padLeft(2, '0')}/${date!.year}";
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        leading: Padding(
-          padding:
-              const EdgeInsets.only(left: 20, right: 20, top: 16, bottom: 16),
-          child: ElevatedButton(
-              style: ButtonStyle(
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.surface,
+          leading: Padding(
+            padding:
+                const EdgeInsets.only(left: 20, right: 20, top: 16, bottom: 16),
+            child: ElevatedButton(
+                style: ButtonStyle(
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
                   ),
+                  backgroundColor: MaterialStateProperty.all(Theme.of(context)
+                      .colorScheme
+                      .onSecondaryContainer), // <-- Button color
+                  elevation: MaterialStateProperty.all(0), // <-- Splash color
                 ),
-                backgroundColor: MaterialStateProperty.all(Theme.of(context)
-                    .colorScheme
-                    .onSecondaryContainer), // <-- Button color
-                elevation: MaterialStateProperty.all(0), // <-- Splash color
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Icon(Icons.arrow_back_outlined,
-                  color: Theme.of(context).colorScheme.onTertiary, size: 18)),
-        ),
-        leadingWidth: 96,
-        centerTitle: true,
-        toolbarHeight: 98,
-        automaticallyImplyLeading: false,
-        title: Text(
-          "Crear Cita",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w400,
-            color: Theme.of(context).colorScheme.tertiary,
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Icon(Icons.arrow_back_outlined,
+                    color: Theme.of(context).colorScheme.onTertiary, size: 18)),
+          ),
+          leadingWidth: 96,
+          centerTitle: true,
+          toolbarHeight: 98,
+          automaticallyImplyLeading: false,
+          title: Text(
+            "Crear Cita",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w400,
+              color: Theme.of(context).colorScheme.tertiary,
+            ),
           ),
         ),
-      ),
-      body: Stack(children: [
-        Container(
-          height: MediaQuery.of(context).size.height * 0.1,
-          width: double.infinity,
-          decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface,
-              borderRadius: const BorderRadius.vertical(
-                  bottom: Radius.elliptical(400, 80))),
-        ),
-        SafeArea(
-            child: FutureBuilder(
-                future: Future.delayed(const Duration(seconds: 1)),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                        child: CircularProgressIndicator(
-                      color: Colors.transparent,
-                    ));
-                  }
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: size.height * 0.2,
-                      ),
-                      cardNurse(),
-                      SizedBox(
-                        height: size.height * 0.04,
-                      ),
-                      Expanded(
-                        child: Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Container(
-                            width: MediaQuery.of(context).size.width * 1,
-                            height: 56,
-                            margin: EdgeInsets.symmetric(horizontal: 20.0),
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  elevation: 0,
-                                  backgroundColor: Theme.of(context)
-                                      .colorScheme
-                                      .onSecondaryContainer,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10))),
-                              onPressed: () {
-                                print(fechaFormateada);
-                                print(widget.idNurse);
-                                print(widget.idPatient);
-                                if (switchVariable == false) {
-                                  direccion = "Centro Médico";
-                                } else {
-                                  direccion = patient!.address;
-                                }
-                                print(direccion);
-                                appointmentService.createAppointment(
-                                    context,
-                                    fechaFormateada,
-                                    direccion!,
-                                    widget.idNurse,
-                                    widget.idPatient);
-                              },
-                              child: const Text(
-                                "Crear Cita",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600),
+        body: Stack(children: [
+          Container(
+            height: MediaQuery.of(context).size.height * 0.1,
+            width: double.infinity,
+            decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface,
+                borderRadius: const BorderRadius.vertical(
+                    bottom: Radius.elliptical(400, 80))),
+          ),
+          SafeArea(
+              child: FutureBuilder(
+                  future: Future.delayed(const Duration(milliseconds: 300)),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                          child: CircularProgressIndicator(
+                        color: Colors.transparent,
+                      ));
+                    }
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: size.height * 0.2,
+                        ),
+                        cardNurse(),
+                        SizedBox(
+                          height: size.height * 0.04,
+                        ),
+                        Expanded(
+                          child: Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 1,
+                              height: 56,
+                              margin: EdgeInsets.symmetric(horizontal: 20.0),
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    elevation: 0,
+                                    backgroundColor: Theme.of(context)
+                                        .colorScheme
+                                        .onSecondaryContainer,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10))),
+                                onPressed: () {
+                                  print(fechaFormateada);
+                                  print(widget.idNurse);
+                                  print(widget.idPatient);
+                                  if (switchVariable == false) {
+                                    direccion = "Centro Médico";
+                                  } else {
+                                    direccion = patient!.address;
+                                  }
+                                  print(direccion);
+                                  appointmentService.createAppointment(
+                                      context,
+                                      fechaFormateada,
+                                      direccion!,
+                                      widget.idNurse,
+                                      widget.idPatient);
+                                },
+                                child: const Text(
+                                  "Crear Cita",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600),
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 35),
-                    ],
-                  );
-                }))
-      ]),
+                        const SizedBox(height: 35),
+                      ],
+                    );
+                  }))
+        ]),
+      ),
     );
   }
 
@@ -379,10 +382,11 @@ class _AssignItineraryPageState extends State<AssignItineraryPage> {
                       return Theme(
                         data: Theme.of(context).copyWith(
                           colorScheme: ColorScheme.light(
-                              primary:
-                                  Theme.of(context).colorScheme.onSecondary,
+                              primary: Theme.of(context)
+                                  .colorScheme
+                                  .onSecondaryContainer,
                               onPrimary: Colors.white,
-                              onSurface: Colors.blueAccent,
+                              onSurface: Theme.of(context).colorScheme.tertiary,
                               error: Colors.red),
                           textTheme: const TextTheme(
                             bodySmall: TextStyle(
@@ -409,10 +413,14 @@ class _AssignItineraryPageState extends State<AssignItineraryPage> {
                           textButtonTheme: TextButtonThemeData(
                             style: TextButton.styleFrom(
                                 foregroundColor: Colors.white,
-                                textStyle: const TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold),
-                                backgroundColor:
-                                    Theme.of(context).colorScheme.onSecondary,
+                                textStyle: TextStyle(
+                                    color:
+                                        Theme.of(context).colorScheme.tertiary,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold),
+                                backgroundColor: Theme.of(context)
+                                    .colorScheme
+                                    .onSecondaryContainer,
                                 elevation: 10 // button text color
                                 ),
                           ),
@@ -484,7 +492,7 @@ class _AssignItineraryPageState extends State<AssignItineraryPage> {
                               "El valor del switch es: ${switchVariable.toString()}");
                         },
                         activeTrackColor:
-                            Theme.of(context).colorScheme.onSecondary,
+                            Theme.of(context).colorScheme.onSecondaryContainer,
                         activeColor: Colors.white,
                       ),
                     ],

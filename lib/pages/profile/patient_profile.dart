@@ -4,8 +4,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:ulcernosis/models/patient.dart';
 import 'package:ulcernosis/services/patient_service.dart';
+import 'package:ulcernosis/utils/helpers/loaders_screens/loader_home_screen.dart';
 import '../../utils/helpers/constant_variables.dart';
-import '../../utils/helpers/loaders_screens/loader_patient_profile_screen.dart';
 import '../../utils/widgets/DropDowns/drop_down.dart';
 import '../../utils/widgets/background_figure.dart';
 
@@ -105,7 +105,7 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
               future: _myFuture,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: LoaderPatientProfileScreen());
+                  return const Center(child: LoaderScreen());
                 }
                 return Column(
                   children: [
@@ -152,8 +152,12 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                                         TextInputType.name,
                                         validNameEditDoctor(
                                             "Escriba el nombre con el formato correcto"),
-                                        Icon(Icons.person,
-                                        color: Theme.of(context).colorScheme.tertiary,),
+                                        Icon(
+                                          Icons.person,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .tertiary,
+                                        ),
                                         isName: true,
                                         btnText1: name!),
                                   ],
@@ -197,7 +201,9 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                                         validEmail(
                                             "Escriba el correo electrónico con el formato correcto"),
                                         Icon(Icons.email,
-                                        color: Theme.of(context).colorScheme.tertiary),
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .tertiary),
                                         isEmail: true,
                                         btnText1: email!),
                                   ],
@@ -241,7 +247,9 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                                         validStateCivil(
                                             "Escriba el estado civil con el formato correcto"),
                                         Icon(Icons.person_2,
-                                        color: Theme.of(context).colorScheme.tertiary),
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .tertiary),
                                         isStateCivil: true,
                                         btnText1: stateCivil!),
                                   ],
@@ -285,7 +293,9 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                                         validAddressEditDoctor(
                                             "Escriba la dirección con el formato correcto"),
                                         Icon(Icons.person_2,
-                                        color: Theme.of(context).colorScheme.tertiary),
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .tertiary),
                                         isDirection: true,
                                         btnText1: address!),
                                   ],
@@ -326,7 +336,9 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                                         validPhoneEditDoctor(
                                             "Escriba el número de celular con el formato correcto"),
                                         Icon(Icons.phone,
-                                        color: Theme.of(context).colorScheme.tertiary),
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .tertiary),
                                         isPhone: true,
                                         btnText1: phone!),
                                   ],
@@ -368,7 +380,9 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                                             "Escriba la edad con el formato correcto",
                                             _ageController),
                                         Icon(Icons.document_scanner,
-                                        color: Theme.of(context).colorScheme.tertiary),
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .tertiary),
                                         isAge: true,
                                         btnText1: age.toString()),
                                   ],
@@ -409,7 +423,9 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                                         validDniEditDoctor(
                                             "Escriba el dni con el formato correcto"),
                                         Icon(Icons.numbers,
-                                        color: Theme.of(context).colorScheme.tertiary),
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .tertiary),
                                         isDni: true,
                                         btnText1: dni!),
                                   ],

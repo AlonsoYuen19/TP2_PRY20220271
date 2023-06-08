@@ -8,6 +8,7 @@ import 'package:pie_chart/pie_chart.dart';
 import 'package:ulcernosis/models/diagnosis.dart';
 import 'package:ulcernosis/models/users.dart';
 import 'package:ulcernosis/utils/helpers/constant_variables.dart';
+import 'package:ulcernosis/utils/helpers/loaders_screens/loader_home_screen.dart';
 import 'package:ulcernosis/utils/widgets/alert_dialog.dart';
 
 import '../../models/quick_diagnosis.dart';
@@ -48,9 +49,9 @@ class _ImagePreviewQuickDiagnosisState
     setState(() {});
   }
 
-  Future<Widget> delayPage() {
+  Future<Widget> delayPage() async {
     Completer<Widget> completer = Completer();
-    Future.delayed(const Duration(milliseconds: 100), () {
+    Future.delayed(const Duration(seconds: 2), () {
       completer.complete(Container());
     });
     if (quickDiagnosis!.stagePredicted == "1") {
@@ -64,15 +65,6 @@ class _ImagePreviewQuickDiagnosisState
     }
     return completer.future;
   }
-
-  /*Future<QuickDiagnosis> getQuickDiagnosis() async {
-    QuickDiagnosis quickDiagnosis = await diagnosisService.createQuickDiagnosis(
-        File(widget.imagePath.path).readAsBytesSync(), context,widget.isFromGallery);
-    setState(() {
-      diagnosis!.stagePredicted = quickDiagnosis.stagePredicted;
-    });
-    return quickDiagnosis;
-  }*/
 
   @override
   void initState() {
@@ -93,34 +85,35 @@ class _ImagePreviewQuickDiagnosisState
           }, color: Colors.orangeAccent);
           return false;
         },
-        child: Scaffold(
-            appBar: AppBar(
-              backgroundColor: Colors.white,
-              leadingWidth: 96,
-              centerTitle: true,
-              toolbarHeight: 98,
-              automaticallyImplyLeading: false,
-              title: Text(
-                "Resultado",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w400,
-                  color: Theme.of(context).colorScheme.tertiary,
-                ),
-              ),
-            ),
-            body: Stack(
-              children: [
-                FutureBuilder(
-                    future: delayPage(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting &&
-                          porcentaje == "") {
-                        return Container();
-                      }
-                      if (porcentaje != "") {
-                        return SafeArea(
+        child: SafeArea(
+            child: FutureBuilder(
+                future: delayPage(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting &&
+                      porcentaje == "") {
+                    return LoaderScreen();
+                  }
+                  if (porcentaje != "" &&
+                      snapshot.connectionState == ConnectionState.done) {
+                    return Scaffold(
+                        backgroundColor: Colors.white,
+                        appBar: AppBar(
+                          backgroundColor: Colors.white,
+                          leadingWidth: 96,
+                          centerTitle: true,
+                          toolbarHeight: 98,
+                          automaticallyImplyLeading: false,
+                          title: Text(
+                            "Resultado",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w400,
+                              color: Theme.of(context).colorScheme.tertiary,
+                            ),
+                          ),
+                        ),
+                        body: SafeArea(
                             child: Column(
                           children: [
                             Padding(
@@ -236,7 +229,7 @@ class _ImagePreviewQuickDiagnosisState
                                           onPressed: () async {
                                             mostrarAlertaVolverDiagnosticos(
                                                 context,
-                                                "¿Está seguro de cofirmar el diagnóstico para finalizar con la operación?",
+                                                "¿Está seguro de confirmar el diagnóstico para finalizar con la operación?",
                                                 () async {
                                               if (prefs.idMedic != 0) {
                                                 Navigator
@@ -269,13 +262,15 @@ class _ImagePreviewQuickDiagnosisState
                               ),
                             ),
                           ],
-                        ));
-                      } else {
-                        return Container();
-                      }
-                    })
-              ],
-            )));
+                        )));
+                  } else {
+                    return Container(
+                      width: double.infinity,
+                      height: double.infinity,
+                      color: Colors.white,
+                    );
+                  }
+                })));
   }
 
   Widget pieChart() {

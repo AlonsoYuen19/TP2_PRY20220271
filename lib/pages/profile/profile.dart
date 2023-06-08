@@ -16,7 +16,7 @@ import '../../services/patient_service.dart';
 import '../../utils/helpers/appbar_drawer.dart';
 import '../../utils/helpers/constant_variables.dart';
 import '../../utils/helpers/Searchable/searchable_patients.dart';
-import '../../utils/helpers/loaders_screens/loader_profile_screen.dart';
+import '../../utils/helpers/loaders_screens/loader_home_screen.dart';
 import '../../utils/widgets/alert_dialog.dart';
 import '../../utils/widgets/fancy_card.dart';
 
@@ -89,7 +89,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           future: _myFuture,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const LoaderProfileScreen();
+              return const LoaderScreen();
             }
             return AppBarDrawer(
                 isProfile: true,
@@ -616,12 +616,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ));
                   }
                   if (data!.isEmpty) {
-                    return Center(
-                      child: Text("No hay pacientes registrados",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium!
-                              .copyWith(color: Colors.red)),
+                    return Column(
+                      children: [
+                        Container(
+                          height: 60,
+                          width: 60,
+                          child: Image.asset(
+                            'assets/images/Group.png',
+                            color: Colors.grey,
+                            filterQuality: FilterQuality.high,
+                            fit: BoxFit.fitWidth,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        const Text(
+                            "No se encontraron registros de citas disponibles",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Color.fromRGBO(213, 213, 213, 1),
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600))
+                      ],
                     );
                   }
                   if (snapshot.connectionState == ConnectionState.waiting) {

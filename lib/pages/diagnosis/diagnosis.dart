@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:ulcernosis/pages/diagnosis/take_photo_quick_diagnosis.dart';
 import '../../utils/helpers/appbar_drawer.dart';
 import '../../utils/helpers/constant_variables.dart';
-import '../../utils/helpers/loaders_screens/loader_diagnosis_screen.dart';
+import '../../utils/helpers/loaders_screens/loader_home_screen.dart';
 import '../../utils/widgets/alert_dialog.dart';
 import 'diagnosis_patient.dart';
 import 'image_preview_quick_diagnosis.dart';
@@ -39,7 +39,7 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
         builder: (BuildContext context) {
           return Dialog(
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0)), //this right here
+                borderRadius: BorderRadius.circular(8.0)),
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -50,8 +50,8 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         color: Theme.of(context).colorScheme.tertiary,
-                        fontSize: 24.0,
-                        fontWeight: FontWeight.bold),
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.w600),
                   ),
                   const SizedBox(
                     height: 20,
@@ -102,30 +102,28 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
                             ));
                           }
                         },
-                        child: Card(
-                            elevation: 5,
-                            child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Column(
-                                children: [
-                                  Image.asset(
-                                    'assets/images/gallery-icon.png',
-                                    height: 80,
-                                    width: 80,
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  Text('Galería',
-                                      style: TextStyle(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .tertiary,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold)),
-                                ],
+                        child: SizedBox(
+                          width: size.width * 0.32,
+                          child: Column(
+                            children: [
+                              Image.asset(
+                                'assets/images/gallery-icon.png',
+                                height: 80,
+                                width: 80,
                               ),
-                            )),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Text('Galería',
+                                  style: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .tertiary,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold)),
+                            ],
+                          ),
+                        ),
                       ),
                       GestureDetector(
                         onTap: () {
@@ -135,30 +133,28 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
                                   builder: (context) =>
                                       const TakePhotoQuickDiagnosis()));
                         },
-                        child: Card(
-                            elevation: 5,
-                            child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Column(
-                                children: [
-                                  Image.asset(
-                                    'assets/images/take_a_photo.png',
-                                    height: 80,
-                                    width: 80,
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  Text('Cámara',
-                                      style: TextStyle(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .tertiary,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold)),
-                                ],
+                        child: Container(
+                          width: size.width * 0.32,
+                          child: Column(
+                            children: [
+                              Image.asset(
+                                'assets/images/take_a_photo.png',
+                                height: 80,
+                                width: 80,
                               ),
-                            )),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Text('Cámara',
+                                  style: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .tertiary,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold)),
+                            ],
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -166,22 +162,25 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
                     height: 20,
                   ),
                   SizedBox(
-                    width: size.width * 0.35,
+                    width: size.width * 1,
+                    height: 56,
                     child: ElevatedButton(
                       onPressed: () {
                         Navigator.pop(context);
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Theme.of(context).colorScheme.tertiary,
+                        elevation: 0,
+                        backgroundColor:
+                            Theme.of(context).colorScheme.onSecondaryContainer,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
+                          borderRadius: BorderRadius.circular(8.0),
                         ),
                       ),
                       child: const Text('Regresar',
                           style: TextStyle(
                               color: Colors.white,
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold)),
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600)),
                     ),
                   ),
                 ],
@@ -204,7 +203,7 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
           future: delayPage(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const LoaderDiagnosisScreen();
+              return const LoaderScreen();
             }
             return AppBarDrawer(
                 isDiagnosis: true,
@@ -217,8 +216,11 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
   Widget _selectOption() {
     final size = MediaQuery.of(context).size;
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
+        const SizedBox(
+          height: 20,
+        ),
         Align(
           alignment: Alignment.centerLeft,
           child: Padding(
@@ -234,7 +236,7 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
           ),
         ),
         const SizedBox(
-          height: 40,
+          height: 20,
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0),

@@ -56,10 +56,14 @@ class _MyFutureBuilderAvailableNursesState
                 child: Card(
                   semanticContainer: true,
                   borderOnForeground: true,
+                  elevation: 0,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0),
+                    side: BorderSide(
+                      color: Theme.of(context).colorScheme.background,
+                      width: 1,
+                    ),
                   ),
-                  elevation: 5,
                   child: Padding(
                     padding:
                         const EdgeInsets.only(top: 16.0, left: 16, bottom: 16),

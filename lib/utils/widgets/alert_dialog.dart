@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shimmer_animation/shimmer_animation.dart';
 import 'package:ulcernosis/services/users_service.dart';
 import 'package:ulcernosis/utils/providers/auth_token.dart';
 import '../../shared/user_prefs.dart';
 
 class ReturnAlert {
-  static Future<bool?> showWarning(BuildContext context) async =>
+  /*static Future<bool?> showWarning(BuildContext context) async =>
       showDialog<bool>(
           context: context,
           builder: (context) => AlertDialog(
@@ -34,7 +33,7 @@ class ReturnAlert {
                       },
                       child: const Text("Confirmar")),
                 ],
-              ));
+              ));*/
   static Future<bool?> showWarningHome(BuildContext context) async =>
       showDialog<bool>(
           context: context,
@@ -72,92 +71,100 @@ class CustomDialogWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Shimmer(
-      duration: const Duration(seconds: 2),
-      interval: const Duration(seconds: 2),
-      color: Colors.white,
-      enabled: true,
-      direction: const ShimmerDirection.fromLTRB(),
-      child: Dialog(
-        backgroundColor: Colors.transparent,
-        child: Stack(children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-            margin: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.tertiary,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Image.asset(
-                  "assets/images/alert-icon.png",
-                  height: 150,
-                ),
-                SizedBox(height: size.height * 0.02),
-                const Text(
-                  "¿Estas seguro que deseas cerrar la sesión?",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(height: size.height * 0.03),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.28,
-                      height: 60,
-                      child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.grey.withOpacity(0.9)),
-                          onPressed: () => Navigator.pop(context, false),
-                          child: const Text("Cancelar")),
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.28,
-                      height: 60,
-                      child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.red),
-                          onPressed: () async {
-                            final token = Provider.of<AuthProvider>(context,
-                                listen: false);
-                            final prefs = SaveData();
-                            final tokencito = UsersAuthService();
-                            prefs.login = false;
-                            if (!context.mounted) {
-                              return;
-                            }
-                            await tokencito.logOutToken();
-                            await token.deleteToken(context);
-                            prefs.deleteIdUsers();
-                            prefs.deleteIdMedic();
-                            prefs.deleteIdNurse();
-                            prefs.deleteIdPatient();
-                            prefs.deleteImage();
-                            prefs.deleteEmail();
-                            prefs.deletePassword();
-                            prefs.deleteLogin();
-                            prefs.deleteImageDiag();
-                            prefs.deleteImageQuickDiag();
-                            prefs.deleteImageQuickDiagFile();
-                            Navigator.pushNamedAndRemoveUntil(
-                                context, 'login', (_) => false);
-                          },
-                          child: const Text("Confirmar")),
-                    ),
-                  ],
-                ),
-                SizedBox(height: size.height * 0.02),
-              ],
-            ),
+    return Dialog(
+      backgroundColor: Colors.transparent,
+      child: Stack(children: [
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(8),
           ),
-        ]),
-      ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image.asset(
+                "assets/images/alert-icon.png",
+                height: 50,
+              ),
+              SizedBox(height: size.height * 0.02),
+              Text(
+                "¿Estas seguro que deseas cerrar la sesión?",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Theme.of(context).colorScheme.tertiary,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: size.height * 0.03),
+              Column(
+                children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 1,
+                    height: 56,
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            elevation: 0,
+                            backgroundColor: Theme.of(context)
+                                .colorScheme
+                                .onSecondaryContainer),
+                        onPressed: () async {
+                          final token =
+                              Provider.of<AuthProvider>(context, listen: false);
+                          final prefs = SaveData();
+                          final tokencito = UsersAuthService();
+                          prefs.login = false;
+                          if (!context.mounted) {
+                            return;
+                          }
+                          await tokencito.logOutToken();
+                          await token.deleteToken(context);
+                          prefs.deleteIdUsers();
+                          prefs.deleteIdMedic();
+                          prefs.deleteIdNurse();
+                          prefs.deleteIdPatient();
+                          prefs.deleteImage();
+                          prefs.deleteEmail();
+                          prefs.deletePassword();
+                          prefs.deleteLogin();
+                          prefs.deleteImageDiag();
+                          prefs.deleteImageQuickDiag();
+                          prefs.deleteImageQuickDiagFile();
+                          Navigator.pushNamedAndRemoveUntil(
+                              context, 'login', (_) => false);
+                        },
+                        child: const Text("Confirmar",
+                            style: TextStyle(fontSize: 16))),
+                  ),
+                  const SizedBox(height: 14),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 1,
+                    height: 56,
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            elevation: 0,
+                            side: BorderSide(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onSecondaryContainer,
+                                width: 1.5),
+                            backgroundColor: Color.fromRGBO(255, 232, 230, 1)),
+                        onPressed: () => Navigator.pop(context, false),
+                        child: Text("Cancelar",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onSecondaryContainer))),
+                  ),
+                ],
+              ),
+              SizedBox(height: size.height * 0.02),
+            ],
+          ),
+        ),
+      ]),
     );
   }
 }
@@ -165,6 +172,7 @@ class CustomDialogWidget extends StatelessWidget {
 const _secundary = Color.fromRGBO(34, 70, 95, 1);
 mostrarAlertaError(BuildContext context, String subtitulo, Function function,
     {bool faltaDatos = false}) {
+  final size = MediaQuery.of(context).size;
   showDialog(
     barrierDismissible: false,
     context: context,
@@ -172,38 +180,42 @@ mostrarAlertaError(BuildContext context, String subtitulo, Function function,
       child: Wrap(
         children: [
           AlertDialog(
-            backgroundColor: Theme.of(context).colorScheme.surface,
+            backgroundColor: Colors.white,
             shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(10.0))),
-            title: Center(
-              child: CircleAvatar(
-                radius: 40,
-                backgroundColor:
-                    faltaDatos == false ? Colors.redAccent : Colors.yellow,
-                child: const Icon(Icons.priority_high_rounded,
-                    color: Colors.white, size: 60),
-              ),
+                borderRadius: BorderRadius.all(Radius.circular(8.0))),
+            title: Image.asset(
+              "assets/images/alert-icon.png",
+              height: 60,
             ),
             content: Column(
               children: [
                 Text(subtitulo,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(color: _secundary, fontSize: 20)),
-                const SizedBox(height: 15.0),
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.tertiary,
+                        fontSize: 20)),
+                SizedBox(height: size.height * 0.03),
                 TextButton(
                   onPressed: function as void Function()?,
                   child: Container(
-                    width: 150.0,
-                    padding: const EdgeInsets.all(10.0),
+                    width: size.width * 1,
+                    padding: const EdgeInsets.all(14.0),
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.0),
-                        border: Border.all(color: _secundary)),
+                        color:
+                            Theme.of(context).colorScheme.onSecondaryContainer,
+                        borderRadius: BorderRadius.circular(8.0),
+                        border: Border.all(
+                            width: 1.5,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSecondaryContainer)),
                     child: const Center(
-                      child:
-                          Text('Aceptar', style: TextStyle(color: _secundary)),
+                      child: Text('Aceptar',
+                          style: TextStyle(color: Colors.white)),
                     ),
                   ),
                 ),
+                const SizedBox(height: 10),
               ],
             ),
           ),
@@ -222,36 +234,38 @@ mostrarAlertaExito(BuildContext context, String subtitulo, Function function) {
       child: Wrap(
         children: [
           AlertDialog(
-            backgroundColor: Theme.of(context).colorScheme.surface,
+            backgroundColor: Colors.white,
             shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(10.0))),
-            title: const Center(
-              child: CircleAvatar(
-                radius: 60,
-                backgroundColor: Colors.green,
-                child: Icon(Icons.check, color: Colors.white, size: 70),
-              ),
+                borderRadius: BorderRadius.all(Radius.circular(8.0))),
+            title: Image.asset(
+              "assets/images/alert-icon.png",
+              height: 60,
             ),
             content: Column(
               children: [
-                const SizedBox(height: 10),
                 Text(subtitulo,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(color: _secundary, fontSize: 26)),
-                SizedBox(height: size.height * 0.04),
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.tertiary,
+                        fontSize: 20)),
+                SizedBox(height: size.height * 0.03),
                 TextButton(
                   onPressed: function as void Function()?,
                   child: Container(
-                    width: size.width * 0.8,
-                    padding: const EdgeInsets.all(10.0),
+                    width: size.width * 1,
+                    padding: const EdgeInsets.all(14.0),
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.0),
+                        color:
+                            Theme.of(context).colorScheme.onSecondaryContainer,
+                        borderRadius: BorderRadius.circular(8.0),
                         border: Border.all(
-                            width: 3,
-                            color: Theme.of(context).colorScheme.tertiary)),
+                            width: 1.5,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSecondaryContainer)),
                     child: const Center(
-                      child:
-                          Text('Aceptar', style: TextStyle(color: _secundary)),
+                      child: Text('Aceptar',
+                          style: TextStyle(color: Colors.white)),
                     ),
                   ),
                 ),
@@ -274,37 +288,29 @@ mostrarAlertaRegistro(BuildContext context, String subtitulo, Function function,
       child: Wrap(
         children: [
           AlertDialog(
-            backgroundColor: Theme.of(context).colorScheme.surface,
+            backgroundColor: Colors.white,
             shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(10.0))),
-            title: Center(
-              child: Icon(Icons.info, color: color, size: 120),
+                borderRadius: BorderRadius.all(Radius.circular(8.0))),
+            title: Image.asset(
+              "assets/images/alert-icon.png",
+              height: 60,
             ),
             content: Column(
               children: [
                 Text(subtitulo,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(color: _secundary, fontSize: 26)),
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.tertiary,
+                        fontSize: 20)),
                 const SizedBox(height: 30.0),
                 Column(
                   children: [
                     ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      style:
-                          ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                      child: const Center(
-                        child: Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: Text('Cancelar',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 16)),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 15),
-                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          elevation: 0,
+                          backgroundColor: Theme.of(context)
+                              .colorScheme
+                              .onSecondaryContainer),
                       onPressed: function as void Function()?,
                       child: const Center(
                         child: Padding(
@@ -315,9 +321,34 @@ mostrarAlertaRegistro(BuildContext context, String subtitulo, Function function,
                         ),
                       ),
                     ),
+                    const SizedBox(height: 15),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      style: ElevatedButton.styleFrom(
+                          elevation: 0,
+                          backgroundColor:
+                              Theme.of(context).colorScheme.surface,
+                          side: BorderSide(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSecondaryContainer,
+                              width: 1.5)),
+                      child: Center(
+                        child: Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: Text('Cancelar',
+                              style: TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSecondaryContainer,
+                                  fontSize: 16)),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
-                const SizedBox(height: 10),
               ],
             ),
           ),
@@ -337,48 +368,67 @@ mostrarAlertaRegistroAsignacion(
       child: Wrap(
         children: [
           AlertDialog(
-            backgroundColor: Theme.of(context).colorScheme.surface,
+            backgroundColor: Colors.white,
             shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(10.0))),
-            title: Center(
-              child: Icon(Icons.info, color: color, size: 120),
+                borderRadius: BorderRadius.all(Radius.circular(8.0))),
+            title: Image.asset(
+              "assets/images/alert-icon.png",
+              height: 60,
             ),
             content: Column(
               children: [
                 Text(subtitulo,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(color: _secundary, fontSize: 26)),
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.tertiary,
+                        fontSize: 20)),
                 const SizedBox(height: 30.0),
                 Column(
                   children: [
                     ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      style:
-                          ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                      child: const Center(
-                        child: Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: Text('Cancelar',
-                              style: TextStyle(color: Colors.white)),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 15),
-                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          elevation: 0,
+                          backgroundColor: Theme.of(context)
+                              .colorScheme
+                              .onSecondaryContainer),
                       onPressed: function as void Function()?,
                       child: const Center(
                         child: Padding(
                           padding: EdgeInsets.all(10.0),
                           child: Text('Aceptar',
-                              style: TextStyle(color: Colors.white)),
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16)),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 15),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      style: ElevatedButton.styleFrom(
+                          elevation: 0,
+                          backgroundColor:
+                              Theme.of(context).colorScheme.surface,
+                          side: BorderSide(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSecondaryContainer,
+                              width: 1.5)),
+                      child: Center(
+                        child: Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: Text('Cancelar',
+                              style: TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSecondaryContainer,
+                                  fontSize: 16)),
                         ),
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 10),
               ],
             ),
           ),
@@ -398,48 +448,67 @@ mostrarAlertaVolverDiagnosticos(
       child: Wrap(
         children: [
           AlertDialog(
-            backgroundColor: Theme.of(context).colorScheme.surface,
+            backgroundColor: Colors.white,
             shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(10.0))),
-            title: Center(
-              child: Icon(Icons.info, color: color, size: 120),
+                borderRadius: BorderRadius.all(Radius.circular(8.0))),
+            title: Image.asset(
+              "assets/images/alert-icon.png",
+              height: 60,
             ),
             content: Column(
               children: [
                 Text(subtitulo,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(color: _secundary, fontSize: 26)),
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.tertiary,
+                        fontSize: 20)),
                 const SizedBox(height: 30.0),
                 Column(
                   children: [
                     ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      style:
-                          ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                      child: const Center(
-                        child: Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: Text('Cancelar',
-                              style: TextStyle(color: Colors.white)),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 15),
-                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          elevation: 0,
+                          backgroundColor: Theme.of(context)
+                              .colorScheme
+                              .onSecondaryContainer),
                       onPressed: function as void Function()?,
                       child: const Center(
                         child: Padding(
                           padding: EdgeInsets.all(10.0),
                           child: Text('Aceptar',
-                              style: TextStyle(color: Colors.white)),
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16)),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 15),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      style: ElevatedButton.styleFrom(
+                          elevation: 0,
+                          backgroundColor:
+                              Theme.of(context).colorScheme.surface,
+                          side: BorderSide(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSecondaryContainer,
+                              width: 1.5)),
+                      child: Center(
+                        child: Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: Text('Cancelar',
+                              style: TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSecondaryContainer,
+                                  fontSize: 16)),
                         ),
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 10),
               ],
             ),
           ),

@@ -78,186 +78,191 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     final size = MediaQuery.of(context).size;
     final medicService = MedicAuthServic();
     final nurseService = NurseAuthService();
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color.fromRGBO(250, 250, 250, 1),
-        leading: Padding(
-          padding:
-              const EdgeInsets.only(left: 20, right: 20, top: 16, bottom: 16),
-          child: ElevatedButton(
-              style: ButtonStyle(
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Color.fromRGBO(250, 250, 250, 1),
+          leading: Padding(
+            padding:
+                const EdgeInsets.only(left: 20, right: 20, top: 16, bottom: 16),
+            child: ElevatedButton(
+                style: ButtonStyle(
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
                   ),
+                  backgroundColor: MaterialStateProperty.all(Theme.of(context)
+                      .colorScheme
+                      .onSecondaryContainer), // <-- Button color
+                  elevation: MaterialStateProperty.all(0), // <-- Splash color
                 ),
-                backgroundColor: MaterialStateProperty.all(Theme.of(context)
-                    .colorScheme
-                    .onSecondaryContainer), // <-- Button color
-                elevation: MaterialStateProperty.all(0), // <-- Splash color
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Icon(Icons.arrow_back_outlined,
-                  color: Theme.of(context).colorScheme.onTertiary, size: 18)),
-        ),
-        leadingWidth: 96,
-        centerTitle: true,
-        toolbarHeight: 98,
-        automaticallyImplyLeading: false,
-        title: Text(
-          "Editar Datos Personales",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w400,
-            color: Theme.of(context).colorScheme.tertiary,
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Icon(Icons.arrow_back_outlined,
+                    color: Theme.of(context).colorScheme.onTertiary, size: 18)),
           ),
-        ),
-      ),
-      body: SafeArea(
-        child: Stack(children: [
-          SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            child: Column(
-              children: [
-                Form(
-                  key: _formKey,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Column(
-                      children: [
-                        title("Nombre Completo"),
-                        GetTextFormField(
-                          labelText: name,
-                          placeholder: "",
-                          icon: const Icon(Icons.person_add_alt_1_sharp),
-                          keyboardType: TextInputType.name,
-                          validator: validNameEditDoctor(
-                              "Escriba el nombre con el formato correcto"),
-                          controllerr: _name,
-                          obscureText: false,
-                          isEditProfile: true,
-                        ),
-                        title("Telefono	"),
-                        GetTextFormField(
-                            labelText: phone,
-                            placeholder: "",
-                            icon: const Icon(Icons.phone),
-                            keyboardType: TextInputType.phone,
-                            validator: validPhoneEditDoctor(
-                                "El número de teléfono debe ser de 9 dígitos"),
-                            obscureText: false,
-                            controllerr: _phone,
-                            isEditProfile: true),
-                        title("Dirección"),
-                        GetTextFormField(
-                          labelText: address,
-                          placeholder: "",
-                          icon: const Icon(Icons.house),
-                          keyboardType: TextInputType.streetAddress,
-                          validator: validAddressEditDoctor(
-                              "Escriba el correo con el formato correcto"),
-                          obscureText: false,
-                          controllerr: _address,
-                          isEditProfile: true,
-                        ),
-                        SizedBox(height: size.height * 0.01),
-                        title("Dni"),
-                        GetTextFormField(
-                          labelText: dni,
-                          placeholder: "",
-                          icon: const Icon(Icons.card_membership),
-                          keyboardType: TextInputType.number,
-                          validator: validDniEditDoctor(
-                              "El número del dni debe ser de 8 dígitos"),
-                          obscureText: false,
-                          controllerr: _dni,
-                          isEditProfile: true,
-                        ),
-                        SizedBox(height: size.height * 0.01),
-                        title("Edad"),
-                        GetTextFormField(
-                          labelText: age,
-                          placeholder: "",
-                          icon: const Icon(Icons.numbers),
-                          keyboardType: TextInputType.number,
-                          validator: validAge(
-                              "La edad debe tener el formato correcto", _age),
-                          obscureText: false,
-                          controllerr: _age,
-                          isEditProfile: true,
-                        ),
-                        SizedBox(height: size.height * 0.01),
-                        title("Estado Civil"),
-                        DropDownWithSearch(
-                          searchController: _stateCivil,
-                        ),
-                        const SizedBox(height: 16),
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Container(
-                  width: size.width * 1,
-                  height: 56,
-                  margin: const EdgeInsets.symmetric(horizontal: 20),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      elevation: 0,
-                      backgroundColor:
-                          Theme.of(context).colorScheme.onSecondaryContainer,
-                    ),
-                    onPressed: () async {
-                      final isValidForm = _formKey.currentState!.validate();
-                      if (isValidForm) {
-                        print("Nombre Completo: " + _name.text);
-                        print("Direccion: " + _address.text);
-                        print("phone: " + _phone.text);
-                        print("DNI: " + _dni.text);
-                        print("Edad: " + _age.text);
-                        print("Estado Civil: " + _stateCivil.text);
-                        int age = int.parse(_age.text.trim());
-                        if (user!.role == "ROLE_MEDIC") {
-                          await medicService.updateMedic(context,
-                              fullNameMedic: _name.text.trim(),
-                              stateCivil: _stateCivil.text.trim(),
-                              address: _address.text.trim(),
-                              phone: _phone.text.trim(),
-                              dni: _dni.text.trim(),
-                              age: age);
-                        } else {
-                          await nurseService.updateNurse(context,
-                              fullName: _name.text.trim(),
-                              stateCivil: _stateCivil.text.trim(),
-                              address: _address.text.trim(),
-                              phone: _phone.text.trim(),
-                              dni: _dni.text.trim(),
-                              age: age);
-                        }
-
-                        if (!mounted) {
-                          return;
-                        }
-                      }
-                    },
-                    child: Text(
-                      "Guardar",
-                      style: Theme.of(context).textTheme.labelMedium!.copyWith(
-                          color: Theme.of(context).colorScheme.onTertiary,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 30),
-              ],
+          leadingWidth: 96,
+          centerTitle: true,
+          toolbarHeight: 98,
+          automaticallyImplyLeading: false,
+          title: Text(
+            "Editar Datos Personales",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w400,
+              color: Theme.of(context).colorScheme.tertiary,
             ),
           ),
-        ]),
+        ),
+        body: SafeArea(
+          child: Stack(children: [
+            SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Column(
+                children: [
+                  Form(
+                    key: _formKey,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Column(
+                        children: [
+                          title("Nombre Completo"),
+                          GetTextFormField(
+                            labelText: name,
+                            placeholder: "",
+                            icon: const Icon(Icons.person_add_alt_1_sharp),
+                            keyboardType: TextInputType.name,
+                            validator: validNameEditDoctor(
+                                "Escriba el nombre con el formato correcto"),
+                            controllerr: _name,
+                            obscureText: false,
+                            isEditProfile: true,
+                          ),
+                          title("Telefono	"),
+                          GetTextFormField(
+                              labelText: phone,
+                              placeholder: "",
+                              icon: const Icon(Icons.phone),
+                              keyboardType: TextInputType.phone,
+                              validator: validPhoneEditDoctor(
+                                  "El número de teléfono debe ser de 9 dígitos"),
+                              obscureText: false,
+                              controllerr: _phone,
+                              isEditProfile: true),
+                          title("Dirección"),
+                          GetTextFormField(
+                            labelText: address,
+                            placeholder: "",
+                            icon: const Icon(Icons.house),
+                            keyboardType: TextInputType.streetAddress,
+                            validator: validAddressEditDoctor(
+                                "Escriba el correo con el formato correcto"),
+                            obscureText: false,
+                            controllerr: _address,
+                            isEditProfile: true,
+                          ),
+                          SizedBox(height: size.height * 0.01),
+                          title("Dni"),
+                          GetTextFormField(
+                            labelText: dni,
+                            placeholder: "",
+                            icon: const Icon(Icons.card_membership),
+                            keyboardType: TextInputType.number,
+                            validator: validDniEditDoctor(
+                                "El número del dni debe ser de 8 dígitos"),
+                            obscureText: false,
+                            controllerr: _dni,
+                            isEditProfile: true,
+                          ),
+                          SizedBox(height: size.height * 0.01),
+                          title("Edad"),
+                          GetTextFormField(
+                            labelText: age,
+                            placeholder: "",
+                            icon: const Icon(Icons.numbers),
+                            keyboardType: TextInputType.number,
+                            validator: validAge(
+                                "La edad debe tener el formato correcto", _age),
+                            obscureText: false,
+                            controllerr: _age,
+                            isEditProfile: true,
+                          ),
+                          SizedBox(height: size.height * 0.01),
+                          title("Estado Civil"),
+                          DropDownWithSearch(
+                            searchController: _stateCivil,
+                          ),
+                          const SizedBox(height: 16),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Container(
+                    width: size.width * 1,
+                    height: 56,
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        elevation: 0,
+                        backgroundColor:
+                            Theme.of(context).colorScheme.onSecondaryContainer,
+                      ),
+                      onPressed: () async {
+                        final isValidForm = _formKey.currentState!.validate();
+                        if (isValidForm) {
+                          print("Nombre Completo: " + _name.text);
+                          print("Direccion: " + _address.text);
+                          print("phone: " + _phone.text);
+                          print("DNI: " + _dni.text);
+                          print("Edad: " + _age.text);
+                          print("Estado Civil: " + _stateCivil.text);
+                          int age = int.parse(_age.text.trim());
+                          if (user!.role == "ROLE_MEDIC") {
+                            await medicService.updateMedic(context,
+                                fullNameMedic: _name.text.trim(),
+                                stateCivil: _stateCivil.text.trim(),
+                                address: _address.text.trim(),
+                                phone: _phone.text.trim(),
+                                dni: _dni.text.trim(),
+                                age: age);
+                          } else {
+                            await nurseService.updateNurse(context,
+                                fullName: _name.text.trim(),
+                                stateCivil: _stateCivil.text.trim(),
+                                address: _address.text.trim(),
+                                phone: _phone.text.trim(),
+                                dni: _dni.text.trim(),
+                                age: age);
+                          }
+
+                          if (!mounted) {
+                            return;
+                          }
+                        }
+                      },
+                      child: Text(
+                        "Guardar",
+                        style: Theme.of(context)
+                            .textTheme
+                            .labelMedium!
+                            .copyWith(
+                                color: Theme.of(context).colorScheme.onTertiary,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                ],
+              ),
+            ),
+          ]),
+        ),
       ),
     );
   }

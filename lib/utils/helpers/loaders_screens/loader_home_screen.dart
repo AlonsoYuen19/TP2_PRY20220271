@@ -1,61 +1,94 @@
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 
-class LoaderHomeScreen extends StatefulWidget {
-  const LoaderHomeScreen({super.key});
+class LoaderScreen extends StatefulWidget {
+  const LoaderScreen({super.key});
 
   @override
-  State<LoaderHomeScreen> createState() => _LoaderHomeScreenState();
+  State<LoaderScreen> createState() => _LoaderScreenState();
 }
 
-class _LoaderHomeScreenState extends State<LoaderHomeScreen> {
+class _LoaderScreenState extends State<LoaderScreen>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation<double> _animation;
+
+  final List<Color> _colors = [
+    Color.fromRGBO(255, 161, 158, 1),
+    Color.fromRGBO(235, 235, 235, 1),
+  ];
+
+  int _currentSquareIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _animationController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 300),
+    );
+
+    _animation = Tween<double>(begin: 0, end: 1).animate(_animationController)
+      ..addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          setState(() {
+            _currentSquareIndex = (_currentSquareIndex + 1) % 5;
+          });
+          _animationController.reset();
+          _animationController.forward();
+        }
+      });
+
+    _animationController.forward();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Center(
-        child: Stack(
-          children: [
-            Container(
-              height: double.infinity,
-              width: double.infinity,
-              color: const Color.fromRGBO(114, 195, 201, 1),
-            ),
-            Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    height: size.height * 0.6,
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('assets/loaders/home_loader.gif'),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 50),
-                  SizedBox(
-                    width: 50,
-                    height: 50,
-                    child: CircularProgressIndicator(
-                      color: Theme.of(context).colorScheme.onTertiary,
-                      strokeWidth: 10,
-                    ),
-                  ),
-                  const SizedBox(height: 50),
-                  AnimatedTextKit(
-                    animatedTexts: [
-                      WavyAnimatedText("Cargando...",
-                          textStyle: const TextStyle(fontSize: 26))
-                    ],
-                    isRepeatingAnimation: true,
-                  )
-                ],
+    return SafeArea(
+      child: Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                'assets/images/just_logo.png',
+                fit: BoxFit.cover,
+                height: 70,
               ),
-            ),
-          ],
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(
+                  5,
+                  (index) => AnimatedBuilder(
+                    animation: _animation,
+                    builder: (BuildContext context, Widget? child) {
+                      final color =
+                          _colors[index == _currentSquareIndex ? 0 : 1];
+                      final colorOpacity =
+                          index == _currentSquareIndex ? 1.0 : _animation.value;
+                      return AnimatedOpacity(
+                        opacity: colorOpacity,
+                        duration: Duration(milliseconds: 300),
+                        child: Container(
+                          width: 15,
+                          height: 15,
+                          margin: EdgeInsets.all(10),
+                          color: color,
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

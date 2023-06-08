@@ -67,196 +67,204 @@ class _TakePhotoQuickDiagnosisState extends State<TakePhotoQuickDiagnosis> {
             context, 'diagnosis', (route) => false);
         return Future.value(false);
       },
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.surface,
-          leading: Padding(
-            padding:
-                const EdgeInsets.only(left: 20, right: 20, top: 16, bottom: 16),
-            child: ElevatedButton(
-                style: ButtonStyle(
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
+      child: SafeArea(
+        child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: Theme.of(context).colorScheme.surface,
+            leading: Padding(
+              padding: const EdgeInsets.only(
+                  left: 20, right: 20, top: 16, bottom: 16),
+              child: ElevatedButton(
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
                     ),
+                    backgroundColor: MaterialStateProperty.all(Theme.of(context)
+                        .colorScheme
+                        .onSecondaryContainer), // <-- Button color
+                    elevation: MaterialStateProperty.all(0), // <-- Splash color
                   ),
-                  backgroundColor: MaterialStateProperty.all(Theme.of(context)
-                      .colorScheme
-                      .onSecondaryContainer), // <-- Button color
-                  elevation: MaterialStateProperty.all(0), // <-- Splash color
-                ),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Icon(Icons.arrow_back_outlined,
-                    color: Theme.of(context).colorScheme.onTertiary, size: 18)),
-          ),
-          leadingWidth: 96,
-          centerTitle: true,
-          toolbarHeight: 98,
-          automaticallyImplyLeading: false,
-          title: Text(
-            "Realizar Diagnóstico",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w400,
-              color: Theme.of(context).colorScheme.tertiary,
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Icon(Icons.arrow_back_outlined,
+                      color: Theme.of(context).colorScheme.onTertiary,
+                      size: 18)),
+            ),
+            leadingWidth: 96,
+            centerTitle: true,
+            toolbarHeight: 98,
+            automaticallyImplyLeading: false,
+            title: Text(
+              "Realizar Diagnóstico",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w400,
+                color: Theme.of(context).colorScheme.tertiary,
+              ),
             ),
           ),
-        ),
-        body: Stack(children: [
-          Container(
-            height: MediaQuery.of(context).size.height * 0.1,
-            width: double.infinity,
-            decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surface,
-                borderRadius: const BorderRadius.vertical(
-                    bottom: Radius.elliptical(400, 80))),
-          ),
-          SafeArea(
-              child: Column(children: [
-            (cameras == null)
-                ? CircularProgressIndicator(
-                    color: Theme.of(context).colorScheme.secondary,
-                  )
-                : Stack(
-                    children: [
-                      Column(
-                        children: [
-                          const SizedBox(
-                            height: 16,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text("Captura la foto de la herida",
-                                  style: TextStyle(
-                                      color:
-                                          Theme.of(context).colorScheme.outline,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400)),
+          body: Stack(children: [
+            Container(
+              height: MediaQuery.of(context).size.height * 0.1,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surface,
+                  borderRadius: const BorderRadius.vertical(
+                      bottom: Radius.elliptical(400, 80))),
+            ),
+            SafeArea(
+                child: Column(children: [
+              (cameras == null)
+                  ? CircularProgressIndicator(
+                      color: Theme.of(context).colorScheme.secondary,
+                    )
+                  : Stack(
+                      children: [
+                        Column(
+                          children: [
+                            const SizedBox(
+                              height: 16,
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                right: 20, left: 20, top: 16),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(8.0),
-                                topRight: Radius.circular(8.0),
-                                bottomRight: Radius.circular(8.0),
-                                bottomLeft: Radius.circular(8.0),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20),
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text("Captura la foto de la herida",
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .outline,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400)),
                               ),
-                              child: Container(
-                                  height: size.height * 0.5,
-                                  width: double.infinity,
-                                  child: controller == null
-                                      ? Container()
-                                      : CameraPreview(controller!)),
                             ),
-                          ),
-                          SizedBox(
-                            height: size.height * 0.05,
-                          ),
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 20.0),
-                            child: Column(
-                              children: [
-                                ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      elevation: 0,
-                                      backgroundColor: Theme.of(context)
-                                          .colorScheme
-                                          .onSecondaryContainer),
-                                  onPressed:
-                                      _isPressed == false ? handleButton : null,
-                                  child: _isPressed == true
-                                      ? Container(
-                                          alignment: Alignment.center,
-                                          height: 36,
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Container(
-                                                height: 15,
-                                                width: 15,
-                                                child:
-                                                    const CircularProgressIndicator(
-                                                  color: Color.fromRGBO(
-                                                      114, 146, 171, 1),
-                                                  strokeWidth: 5,
-                                                ),
-                                              ),
-                                              const SizedBox(
-                                                width: 20,
-                                              ),
-                                              const Text('Por favor espere ...',
-                                                  style: TextStyle(
-                                                      color: Color.fromRGBO(
-                                                          114, 146, 171, 1),
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                            ],
-                                          ),
-                                        )
-                                      : Container(
-                                          alignment: Alignment.center,
-                                          width: size.width * 1,
-                                          height: 36,
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 20),
-                                          child: Text('Capture la imagen',
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.bold)),
-                                        ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  right: 20, left: 20, top: 16),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(8.0),
+                                  topRight: Radius.circular(8.0),
+                                  bottomRight: Radius.circular(8.0),
+                                  bottomLeft: Radius.circular(8.0),
                                 ),
-                                const SizedBox(height: 14),
-                                ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      elevation: 0,
-                                      side: BorderSide(
-                                          width: 1,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onSecondaryContainer),
-                                      backgroundColor: Theme.of(context)
-                                          .colorScheme
-                                          .surface),
-                                  onPressed: () {
-                                    Navigator.pushNamedAndRemoveUntil(
-                                        context, "diagnosis", (route) => false);
-                                  },
-                                  child: Container(
-                                    width: size.width * 1,
-                                    height: 36,
-                                    alignment: Alignment.center,
-                                    child: Text('Regresar',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
+                                child: Container(
+                                    height: size.height * 0.5,
+                                    width: double.infinity,
+                                    child: controller == null
+                                        ? Container()
+                                        : CameraPreview(controller!)),
+                              ),
+                            ),
+                            SizedBox(
+                              height: size.height * 0.05,
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20.0),
+                              child: Column(
+                                children: [
+                                  ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        elevation: 0,
+                                        backgroundColor: Theme.of(context)
+                                            .colorScheme
+                                            .onSecondaryContainer),
+                                    onPressed: _isPressed == false
+                                        ? handleButton
+                                        : null,
+                                    child: _isPressed == true
+                                        ? Container(
+                                            alignment: Alignment.center,
+                                            height: 36,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Container(
+                                                  height: 15,
+                                                  width: 15,
+                                                  child:
+                                                      const CircularProgressIndicator(
+                                                    color: Color.fromRGBO(
+                                                        114, 146, 171, 1),
+                                                    strokeWidth: 5,
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  width: 20,
+                                                ),
+                                                const Text(
+                                                    'Por favor espere ...',
+                                                    style: TextStyle(
+                                                        color: Color.fromRGBO(
+                                                            114, 146, 171, 1),
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.bold)),
+                                              ],
+                                            ),
+                                          )
+                                        : Container(
+                                            alignment: Alignment.center,
+                                            width: size.width * 1,
+                                            height: 36,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 20),
+                                            child: Text('Capture la imagen',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                          ),
+                                  ),
+                                  const SizedBox(height: 14),
+                                  ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        elevation: 0,
+                                        side: BorderSide(
+                                            width: 1.5,
                                             color: Theme.of(context)
                                                 .colorScheme
-                                                .onSecondaryContainer,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold)),
+                                                .onSecondaryContainer),
+                                        backgroundColor: Theme.of(context)
+                                            .colorScheme
+                                            .surface),
+                                    onPressed: () {
+                                      Navigator.pushNamedAndRemoveUntil(context,
+                                          "diagnosis", (route) => false);
+                                    },
+                                    child: Container(
+                                      width: size.width * 1,
+                                      height: 36,
+                                      alignment: Alignment.center,
+                                      child: Text('Regresar',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSecondaryContainer,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold)),
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ],
-                  )
-          ]))
-        ]),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ],
+                    )
+            ]))
+          ]),
+        ),
       ),
     );
   }

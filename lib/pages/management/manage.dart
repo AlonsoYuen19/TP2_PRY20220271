@@ -3,11 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:ulcernosis/models/users.dart';
 import 'package:ulcernosis/services/users_service.dart';
-import 'package:ulcernosis/utils/helpers/loaders_screens/loader_manage_screen.dart';
 
 import '../../services/team_work_service.dart';
 import '../../utils/helpers/appbar_drawer.dart';
 import '../../utils/helpers/future_builder_cards/future_builder_nurses_by_medic_tw.dart';
+import '../../utils/helpers/loaders_screens/loader_home_screen.dart';
 import '../../utils/widgets/alert_dialog.dart';
 
 class ManageScreen extends StatefulWidget {
@@ -20,7 +20,7 @@ class ManageScreen extends StatefulWidget {
 class _ManageScreenState extends State<ManageScreen> {
   Future<Widget> delayPage() {
     Completer<Widget> completer = Completer();
-    Future.delayed(const Duration(seconds: 2), () {
+    Future.delayed(const Duration(seconds: 3), () {
       completer.complete(Container());
     });
 
@@ -73,7 +73,7 @@ class _ManageScreenState extends State<ManageScreen> {
           future: delayPage(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const LoaderManageScreen();
+              return const LoaderScreen();
             }
             return AppBarDrawer(
                 isManagement: true,

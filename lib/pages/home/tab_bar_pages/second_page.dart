@@ -52,6 +52,7 @@ class _SecondPageState extends State<SecondPage> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
@@ -119,39 +120,32 @@ class _SecondPageState extends State<SecondPage> {
                         ));
                       }
                       return Column(
-                        children: [
-                          SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.1),
-                          Container(
-                            height: 200,
-                            width: 200,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                  width: 0, color: Colors.transparent),
-                              image: const DecorationImage(
-                                image: AssetImage(
-                                    'assets/images/out-stock-diagnostico.png'),
-                                fit: BoxFit.contain,
+                            children: [
+                              SizedBox(
+                                height: size.height * 0.15,
                               ),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 16.0),
-                            child: Text(
-                                "No hay Registros de Diagnósticos Disponibles",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSecondary,
-                                    fontSize: 26,
-                                    fontWeight: FontWeight.bold)),
-                          )
-                        ],
-                      );
+                              Container(
+                                height: 60,
+                                width: 60,
+                                child: Image.asset(
+                                  'assets/images/Group.png',
+                                  color: Colors.grey,
+                                  filterQuality: FilterQuality.high,
+                                  fit: BoxFit.fitWidth,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              const Text(
+                                  "No se encontraron registros de diagnósticos disponibles",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Color.fromRGBO(213, 213, 213, 1),
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w600))
+                            ],
+                          );
                     })
                 : user.role == "ROLE_MEDIC"
                     ? Padding(

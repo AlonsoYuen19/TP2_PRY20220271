@@ -104,102 +104,106 @@ class _TabBarFilterState extends State<TabBarFilter>
     ];
     return DefaultTabController(
         length: 4,
-        child: Scaffold(
-          body: NestedScrollView(
-            //physics: NeverScrollableScrollPhysics(),
-            floatHeaderSlivers: true,
-            controller: _scrollController,
-            headerSliverBuilder:
-                (BuildContext context, bool innerBoxIsScrolled) {
-              return <Widget>[
-                SliverAppBar(
-                  leading: Padding(
-                    padding: const EdgeInsets.only(
-                        left: 20, right: 20, top: 16, bottom: 16),
-                    child: ElevatedButton(
-                      child: Icon(
-                        Icons.arrow_back_outlined,
-                        color: Theme.of(context).colorScheme.onTertiary,
-                        size: 18,
-                      ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      style: ButtonStyle(
-                        elevation: MaterialStateProperty.all(0),
-                        backgroundColor: MaterialStateProperty.all(
-                            Theme.of(context)
-                                .colorScheme
-                                .onSecondaryContainer), // <-- Button color
-                      ),
-                    ),
-                  ),
-                  leadingWidth: 96,
-                  toolbarHeight: 98,
-                  title: Text('Filtrado por Etapa',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.tertiary,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w400,
-                      )),
-                  centerTitle: true,
-                  backgroundColor: Theme.of(context).colorScheme.onTertiary,
-                  elevation: 10.0,
-                  pinned: false,
-                  floating: true,
-                  forceElevated: innerBoxIsScrolled,
-                  bottom: TabBar(
-                    controller: tabController,
-                    tabs: tabss,
-                    indicator: BoxDecoration(
-                      color: Theme.of(context).colorScheme.onSecondaryContainer,
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    labelColor: Colors.white,
-                    unselectedLabelColor: Theme.of(context)
-                        .colorScheme
-                        .tertiary, // <-- label color
-                  ),
-                )
-              ];
-            },
-            body: SizedBox(
-              width: double.infinity,
-              child: FutureBuilder(
-                  future: delayPage(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return TabBarView(
-                        physics: const NeverScrollableScrollPhysics(),
-                        controller: tabController,
-                        children: const [
-                          //Primera Etapa
-                          Tab(
-                            child: FirstPage(),
-                          ),
-                          //Segunda Etapa
-                          Tab(child: SecondPage()),
-                          //Tercera Etapa
-                          Tab(
-                            child: ThirdPage(),
-                          ),
-                          //Cuarta Etapa
-                          Tab(
-                            child: FourthPage(),
-                          ),
-                        ],
-                      );
-                    } else {
-                      return Center(
-                        child: SizedBox(
-                          height: 100,
-                          width: 100,
-                          child: CircularProgressIndicator(
-                              color: Theme.of(context).colorScheme.onSecondary),
+        child: SafeArea(
+          child: Scaffold(
+            body: NestedScrollView(
+              //physics: NeverScrollableScrollPhysics(),
+              floatHeaderSlivers: true,
+              controller: _scrollController,
+              headerSliverBuilder:
+                  (BuildContext context, bool innerBoxIsScrolled) {
+                return <Widget>[
+                  SliverAppBar(
+                    leading: Padding(
+                      padding: const EdgeInsets.only(
+                          left: 20, right: 20, top: 16, bottom: 16),
+                      child: ElevatedButton(
+                        child: Icon(
+                          Icons.arrow_back_outlined,
+                          color: Theme.of(context).colorScheme.onTertiary,
+                          size: 18,
                         ),
-                      );
-                    }
-                  }),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        style: ButtonStyle(
+                          elevation: MaterialStateProperty.all(0),
+                          backgroundColor: MaterialStateProperty.all(
+                              Theme.of(context)
+                                  .colorScheme
+                                  .onSecondaryContainer), // <-- Button color
+                        ),
+                      ),
+                    ),
+                    leadingWidth: 96,
+                    toolbarHeight: 98,
+                    title: Text('Filtrado por Etapa',
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.tertiary,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w400,
+                        )),
+                    centerTitle: true,
+                    backgroundColor: Theme.of(context).colorScheme.onTertiary,
+                    elevation: 10.0,
+                    pinned: false,
+                    floating: true,
+                    forceElevated: innerBoxIsScrolled,
+                    bottom: TabBar(
+                      controller: tabController,
+                      tabs: tabss,
+                      indicator: BoxDecoration(
+                        color:
+                            Theme.of(context).colorScheme.onSecondaryContainer,
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      labelColor: Colors.white,
+                      unselectedLabelColor: Theme.of(context)
+                          .colorScheme
+                          .tertiary, // <-- label color
+                    ),
+                  )
+                ];
+              },
+              body: SizedBox(
+                width: double.infinity,
+                child: FutureBuilder(
+                    future: delayPage(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return TabBarView(
+                          physics: const NeverScrollableScrollPhysics(),
+                          controller: tabController,
+                          children: const [
+                            //Primera Etapa
+                            Tab(
+                              child: FirstPage(),
+                            ),
+                            //Segunda Etapa
+                            Tab(child: SecondPage()),
+                            //Tercera Etapa
+                            Tab(
+                              child: ThirdPage(),
+                            ),
+                            //Cuarta Etapa
+                            Tab(
+                              child: FourthPage(),
+                            ),
+                          ],
+                        );
+                      } else {
+                        return Center(
+                          child: SizedBox(
+                            height: 100,
+                            width: 100,
+                            child: CircularProgressIndicator(
+                                color:
+                                    Theme.of(context).colorScheme.onSecondary),
+                          ),
+                        );
+                      }
+                    }),
+              ),
             ),
           ),
         ));

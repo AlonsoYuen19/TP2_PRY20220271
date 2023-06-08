@@ -20,7 +20,7 @@ class GetTextFormField extends StatefulWidget {
       this.controllerr,
       required this.icon,
       required this.keyboardType,
-      this.validator,
+      required this.validator,
       this.obscureText = false,
       this.isRegisterPassword = true,
       this.isEditProfile = false,
@@ -40,6 +40,7 @@ class _GetTextFormFieldState extends State<GetTextFormField> {
   final _focusNode = FocusNode();
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return RawKeyboardListener(
       focusNode: FocusNode(onKey: (node, event) {
         if (event.isKeyPressed(LogicalKeyboardKey.enter)) {
@@ -80,18 +81,16 @@ class _GetTextFormFieldState extends State<GetTextFormField> {
                 },
                 validationRuleBuilder: (rules, value) {
                   if (value.isEmpty) {
-                    return Padding(
-                      padding: EdgeInsets.symmetric(vertical: 4.0),
-                      child: Text(
-                        "Ingrese una contraseña",
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.tertiary,
-                        ),
-                      ),
+                    return Text(
+                      "Ingrese una contraseña",
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.red),
                     );
                   }
                   return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5.0),
+                    padding: EdgeInsets.only(left: size.width * 0.15),
                     child: ListView(
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
@@ -99,6 +98,8 @@ class _GetTextFormFieldState extends State<GetTextFormField> {
                             .map(
                               (rule) => rule.validate(value)
                                   ? Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       children: [
                                         const Icon(
                                           Icons.check,
@@ -116,6 +117,8 @@ class _GetTextFormFieldState extends State<GetTextFormField> {
                                       ],
                                     )
                                   : Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       children: [
                                         const Icon(
                                           Icons.close,
