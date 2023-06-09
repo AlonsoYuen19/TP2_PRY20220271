@@ -120,6 +120,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           "Escriba el correo con el formato correcto"),
                       obscureText: false,
                       isRegisterPassword: false,
+                      option: TextInputAction.next,
                     ),
                     SizedBox(height: 28),
                     GetTextFormField(
@@ -131,6 +132,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       validator: validPasswordLogin("Rellene la contraseña"),
                       obscureText: true,
                       isRegisterPassword: false,
+                      option: TextInputAction.send,
+                      onSubmit: (p0) {
+                        _handleButton();
+                      },
                     ),
                     SizedBox(height: size.height * 0.096),
                     signInButton(context),

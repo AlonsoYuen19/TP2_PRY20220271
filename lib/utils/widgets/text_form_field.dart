@@ -13,6 +13,9 @@ class GetTextFormField extends StatefulWidget {
   final bool isRegisterPassword;
   final bool isEditProfile;
   final int maxLength;
+  final TextInputAction? option;
+  final Function(String)? onSubmit;
+  final GlobalKey<FormState>? keyy;
   const GetTextFormField(
       {super.key,
       required this.labelText,
@@ -24,7 +27,9 @@ class GetTextFormField extends StatefulWidget {
       this.obscureText = false,
       this.isRegisterPassword = true,
       this.isEditProfile = false,
-      this.maxLength = 30});
+      this.maxLength = 30,
+      this.option,
+      this.onSubmit, this.keyy});
 
   @override
   State<GetTextFormField> createState() => _GetTextFormFieldState();
@@ -37,11 +42,15 @@ class _GetTextFormFieldState extends State<GetTextFormField> {
   }
 
   Color _color = Color.fromRGBO(14, 26, 48, 1);
-  final _focusNode = FocusNode();
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return RawKeyboardListener(
+    return /*RawKeyboardListener(
       focusNode: FocusNode(onKey: (node, event) {
         if (event.isKeyPressed(LogicalKeyboardKey.enter)) {
           _focusNode.nextFocus();
@@ -50,210 +59,223 @@ class _GetTextFormFieldState extends State<GetTextFormField> {
           return KeyEventResult.ignored;
         }
       }),
-      onKey: (event) {
-        if (event.isKeyPressed(LogicalKeyboardKey.enter)) {
-          _focusNode.nextFocus();
+      onKey: (value) {
+        if (value.isKeyPressed(LogicalKeyboardKey.enter)) {
+          _focusNode.requestFocus();
         }
       },
-      child: widget.obscureText
-          ? Container(
-              padding: widget.isRegisterPassword
-                  ? null
-                  : const EdgeInsets.symmetric(horizontal: 20),
-              child: FancyPasswordField(
-                maxLength: 20,
-                focusNode: _focusNode,
-                hasShowHidePassword: true,
-                hasStrengthIndicator: false,
-                hasValidationRules: widget.isRegisterPassword,
-                validationRules: {
-                  DigitValidationRule(customText: "Debe tener un número"),
-                  UppercaseValidationRule(
-                      customText: "Debe tener una mayúscula"),
-                  LowercaseValidationRule(
-                      customText: "Debe tener una minúscula"),
-                  SpecialCharacterValidationRule(
-                      customText: "Debe tener un caracter\nespecial"),
-                  MinAndMaxCharactersValidationRule(
-                      min: 8,
-                      max: 20,
-                      customText: "Debe tener entre 8 y 20\ncaracteres")
-                },
-                validationRuleBuilder: (rules, value) {
-                  if (value.isEmpty) {
-                    return Text(
-                      "Ingrese una contraseña",
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.red),
+      child: */
+        widget.obscureText
+            ? Container(
+                padding: widget.isRegisterPassword
+                    ? null
+                    : const EdgeInsets.symmetric(horizontal: 20),
+                child: FancyPasswordField(
+                  maxLength: 20,
+                  hasShowHidePassword: true,
+                  hasStrengthIndicator: false,
+                  hasValidationRules: widget.isRegisterPassword,
+                  validationRules: {
+                    DigitValidationRule(customText: "Debe tener un número"),
+                    UppercaseValidationRule(
+                        customText: "Debe tener una mayúscula"),
+                    LowercaseValidationRule(
+                        customText: "Debe tener una minúscula"),
+                    SpecialCharacterValidationRule(
+                        customText: "Debe tener un caracter\nespecial"),
+                    MinAndMaxCharactersValidationRule(
+                        min: 8,
+                        max: 20,
+                        customText: "Debe tener entre 8 y 20\ncaracteres")
+                  },
+                  validationRuleBuilder: (rules, value) {
+                    if (value.isEmpty) {
+                      return Text(
+                        "Ingrese una contraseña",
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.red),
+                      );
+                    }
+                    return Padding(
+                      padding: EdgeInsets.only(left: size.width * 0.15),
+                      child: ListView(
+                          physics: NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          children: rules
+                              .map(
+                                (rule) => rule.validate(value)
+                                    ? Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          const Icon(
+                                            Icons.check,
+                                            size: 24,
+                                            color: Colors.green,
+                                          ),
+                                          const SizedBox(width: 12),
+                                          Text(
+                                            rule.name,
+                                            style: const TextStyle(
+                                                color: Colors.green,
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                        ],
+                                      )
+                                    : Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          const Icon(
+                                            Icons.close,
+                                            size: 24,
+                                            color: Colors.red,
+                                          ),
+                                          const SizedBox(width: 12),
+                                          Text(
+                                            rule.name,
+                                            style: const TextStyle(
+                                                color: Colors.red,
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                        ],
+                                      ),
+                              )
+                              .toList()),
                     );
-                  }
-                  return Padding(
-                    padding: EdgeInsets.only(left: size.width * 0.15),
-                    child: ListView(
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        children: rules
-                            .map(
-                              (rule) => rule.validate(value)
-                                  ? Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        const Icon(
-                                          Icons.check,
-                                          size: 24,
-                                          color: Colors.green,
-                                        ),
-                                        const SizedBox(width: 12),
-                                        Text(
-                                          rule.name,
-                                          style: const TextStyle(
-                                              color: Colors.green,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w400),
-                                        ),
-                                      ],
-                                    )
-                                  : Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        const Icon(
-                                          Icons.close,
-                                          size: 24,
-                                          color: Colors.red,
-                                        ),
-                                        const SizedBox(width: 12),
-                                        Text(
-                                          rule.name,
-                                          style: const TextStyle(
-                                              color: Colors.red,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w400),
-                                        ),
-                                      ],
-                                    ),
-                            )
-                            .toList()),
-                  );
-                },
-                obscuringCharacter: "*",
-                validator: widget.validator,
-                keyboardType: widget.keyboardType,
-                cursorColor: _color,
-                style: TextStyle(
-                    color: _color,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                    decoration: TextDecoration.none),
-                controller: widget.controllerr,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: const BorderRadius.all(Radius.circular(4)),
-                    borderSide: BorderSide(
-                        color: Theme.of(context).colorScheme.secondary,
-                        width: 1),
-                  ),
-                  counterText: widget.isRegisterPassword ? null : "",
-                  counterStyle: TextStyle(fontWeight: FontWeight.w600),
-                  helperText: null,
-                  labelStyle: TextStyle(
-                      color: _color, fontWeight: FontWeight.w400, fontSize: 16),
-                  errorStyle: TextStyle(
-                    height: 0,
-                    color: Theme.of(context).colorScheme.error,
-                    fontSize: Theme.of(context)
-                        .textTheme
-                        .bodyMedium!
-                        .copyWith(fontSize: 16)
-                        .fontSize,
-                  ),
-                  errorMaxLines: 2,
-                  suffixIconColor: _color,
-                  labelText: widget.labelText,
-                  hintText: widget.placeholder,
-                  filled: true,
-                  fillColor: Colors.white,
-                  contentPadding: const EdgeInsets.all(16.0),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: const BorderRadius.all(Radius.circular(4)),
-                    borderSide: BorderSide(color: Colors.green, width: 2),
-                  ),
-                  errorBorder: OutlineInputBorder(
-                    borderRadius: const BorderRadius.all(Radius.circular(4)),
-                    borderSide: BorderSide(
-                        color: Theme.of(context).colorScheme.error, width: 1.2),
-                  ),
-                  focusedErrorBorder: OutlineInputBorder(
-                    borderRadius: const BorderRadius.all(Radius.circular(4)),
-                    borderSide: BorderSide(
-                        color: Theme.of(context).colorScheme.error, width: 1.2),
-                  ),
-                  enabledBorder: OutlineInputBorder(
+                  },
+                  obscuringCharacter: "*",
+                  onFieldSubmitted: widget.onSubmit,
+                  textInputAction: widget.option,
+                  validator: widget.validator,
+                  keyboardType: widget.keyboardType,
+                  cursorColor: _color,
+                  style: TextStyle(
+                      color: _color,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      decoration: TextDecoration.none),
+                  controller: widget.controllerr,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
                       borderRadius: const BorderRadius.all(Radius.circular(4)),
-                      borderSide: BorderSide(color: _color, width: 1.2)),
-                ),
-              ),
-            )
-          : Container(
-              padding: widget.isRegisterPassword
-                  ? null
-                  : const EdgeInsets.symmetric(horizontal: 20),
-              child: TextFormField(
-                maxLength: widget.maxLength,
-                focusNode: _focusNode,
-                autofocus: false,
-                validator: widget.validator,
-                keyboardType: widget.keyboardType,
-                cursorColor: _color,
-                style: TextStyle(
-                    color: _color,
-                    fontSize: 16,
-                    decoration: TextDecoration.none,
-                    decorationThickness: 0),
-                controller: widget.controllerr,
-                decoration: InputDecoration(
-                  counterText: "",
-                  filled: true,
-                  fillColor: Colors.white,
-                  labelStyle: TextStyle(
-                      backgroundColor: Colors.transparent,
-                      color: Color.fromRGBO(14, 26, 48, 1),
-                      fontWeight: FontWeight.w400),
-                  errorStyle: TextStyle(
-                    color: Theme.of(context).colorScheme.error,
-                    fontSize: Theme.of(context)
-                        .textTheme
-                        .bodyMedium!
-                        .copyWith(fontSize: 16)
-                        .fontSize,
-                  ),
-                  errorMaxLines: 2,
-                  labelText: widget.labelText,
-                  hintText: widget.placeholder,
-                  contentPadding: const EdgeInsets.all(16),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: const BorderRadius.all(Radius.circular(4)),
-                    borderSide: BorderSide(color: Colors.green, width: 2),
-                  ),
-                  errorBorder: OutlineInputBorder(
-                    borderRadius: const BorderRadius.all(Radius.circular(4)),
-                    borderSide: BorderSide(
-                        color: Theme.of(context).colorScheme.error, width: 1.2),
-                  ),
-                  focusedErrorBorder: OutlineInputBorder(
-                    borderRadius: const BorderRadius.all(Radius.circular(4)),
-                    borderSide: BorderSide(
-                        color: Theme.of(context).colorScheme.error, width: 1.2),
-                  ),
-                  enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Theme.of(context).colorScheme.secondary,
+                          width: 1),
+                    ),
+                    counterText: widget.isRegisterPassword ? null : "",
+                    counterStyle: TextStyle(fontWeight: FontWeight.w600),
+                    helperText: null,
+                    labelStyle: TextStyle(
+                        color: _color,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16),
+                    errorStyle: TextStyle(
+                      height: 0,
+                      color: Theme.of(context).colorScheme.error,
+                      fontSize: Theme.of(context)
+                          .textTheme
+                          .bodyMedium!
+                          .copyWith(fontSize: 16)
+                          .fontSize,
+                    ),
+                    errorMaxLines: 2,
+                    suffixIconColor: _color,
+                    labelText: widget.labelText,
+                    hintText: widget.placeholder,
+                    filled: true,
+                    fillColor: Colors.white,
+                    contentPadding: const EdgeInsets.all(16.0),
+                    focusedBorder: OutlineInputBorder(
                       borderRadius: const BorderRadius.all(Radius.circular(4)),
-                      borderSide: BorderSide(color: _color, width: 1.2)),
+                      borderSide: BorderSide(color: Colors.green, width: 2),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: const BorderRadius.all(Radius.circular(4)),
+                      borderSide: BorderSide(
+                          color: Theme.of(context).colorScheme.error,
+                          width: 1.2),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: const BorderRadius.all(Radius.circular(4)),
+                      borderSide: BorderSide(
+                          color: Theme.of(context).colorScheme.error,
+                          width: 1.2),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(4)),
+                        borderSide: BorderSide(color: _color, width: 1.2)),
+                  ),
                 ),
-              ),
-            ),
-    );
+              )
+            : Container(
+                padding: widget.isRegisterPassword
+                    ? null
+                    : const EdgeInsets.symmetric(horizontal: 20),
+                child: TextFormField(
+                  key: widget.key,
+                  maxLength: widget.maxLength,
+                  onFieldSubmitted: widget.onSubmit,
+                  textInputAction: widget.option,
+                  autofocus: false,
+                  validator: widget.validator,
+                  keyboardType: widget.keyboardType,
+                  cursorColor: _color,
+                  style: TextStyle(
+                      color: _color,
+                      fontSize: 16,
+                      decoration: TextDecoration.none,
+                      decorationThickness: 0),
+                  controller: widget.controllerr,
+                  decoration: InputDecoration(
+                    counterText: "",
+                    filled: true,
+                    fillColor: Colors.white,
+                    labelStyle: TextStyle(
+                        backgroundColor: Colors.transparent,
+                        color: Color.fromRGBO(14, 26, 48, 1),
+                        fontWeight: FontWeight.w400),
+                    errorStyle: TextStyle(
+                      color: Theme.of(context).colorScheme.error,
+                      fontSize: Theme.of(context)
+                          .textTheme
+                          .bodyMedium!
+                          .copyWith(fontSize: 16)
+                          .fontSize,
+                    ),
+                    errorMaxLines: 2,
+                    labelText: widget.labelText,
+                    hintText: widget.placeholder,
+                    contentPadding: const EdgeInsets.all(16),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: const BorderRadius.all(Radius.circular(4)),
+                      borderSide: BorderSide(color: Colors.green, width: 2),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: const BorderRadius.all(Radius.circular(4)),
+                      borderSide: BorderSide(
+                          color: Theme.of(context).colorScheme.error,
+                          width: 1.2),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: const BorderRadius.all(Radius.circular(4)),
+                      borderSide: BorderSide(
+                          color: Theme.of(context).colorScheme.error,
+                          width: 1.2),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(4)),
+                        borderSide: BorderSide(color: _color, width: 1.2)),
+                  ),
+                ),
+              );
+    //),
+    //);
   }
 }

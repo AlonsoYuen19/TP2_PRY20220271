@@ -269,177 +269,223 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: const Color.fromRGBO(250, 250, 250, 1),
-          leading: Padding(
-            padding:
-                const EdgeInsets.only(left: 20, right: 20, top: 16, bottom: 16),
-            child: ElevatedButton(
-                style: ButtonStyle(
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                  ),
-                  backgroundColor: MaterialStateProperty.all(Theme.of(context)
-                      .colorScheme
-                      .onSecondaryContainer), // <-- Button color
-                  elevation: MaterialStateProperty.all(0), // <-- Splash color
-                ),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Icon(Icons.arrow_back_outlined,
-                    color: Theme.of(context).colorScheme.onTertiary, size: 18)),
-          ),
-          leadingWidth: 96,
-          centerTitle: true,
-          toolbarHeight: 90,
-          automaticallyImplyLeading: false,
-          title: Text(
-            "Registro",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w400,
-              color: Theme.of(context).colorScheme.tertiary,
+    return WillPopScope(
+      onWillPop: () async {
+        if (_currentStep == 0) {
+          return true;
+        } else {
+          setState(() {
+            _currentStep = _currentStep - 1;
+          });
+          return false;
+        }
+      },
+      child: SafeArea(
+        child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: const Color.fromRGBO(250, 250, 250, 1),
+            leading: _currentStep == 0
+                ? Padding(
+                    padding: const EdgeInsets.only(
+                        left: 20, right: 20, top: 16, bottom: 16),
+                    child: ElevatedButton(
+                        style: ButtonStyle(
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                          ),
+                          backgroundColor: MaterialStateProperty.all(
+                              Theme.of(context)
+                                  .colorScheme
+                                  .onSecondaryContainer), // <-- Button color
+                          elevation:
+                              MaterialStateProperty.all(0), // <-- Splash color
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Icon(Icons.arrow_back_outlined,
+                            color: Theme.of(context).colorScheme.onTertiary,
+                            size: 18)),
+                  )
+                : Container(),
+            leadingWidth: 96,
+            centerTitle: true,
+            toolbarHeight: 90,
+            automaticallyImplyLeading: false,
+            title: Text(
+              "Registro",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w400,
+                color: Theme.of(context).colorScheme.tertiary,
+              ),
             ),
           ),
-        ),
-        backgroundColor: const Color.fromRGBO(250, 250, 250, 1),
-        body: Stepper(
-          stepIconBuilder: (stepIndex, stepState) {
-            return Container(
-              width: 30,
-              height: 30,
-              decoration: BoxDecoration(
-                color: stepIndex == _currentStep
-                    ? Theme.of(context).colorScheme.onSecondaryContainer
-                    : Theme.of(context).colorScheme.outline,
-                borderRadius: BorderRadius.circular(30),
-              ),
-              child: Center(
-                child: Text(
-                  "${stepIndex + 1}",
-                  style: Theme.of(context).textTheme.labelMedium!.copyWith(
-                      color: Theme.of(context).colorScheme.onTertiary,
-                      fontSize: 14),
+          backgroundColor: const Color.fromRGBO(250, 250, 250, 1),
+          body: Stepper(
+            stepIconBuilder: (stepIndex, stepState) {
+              return Container(
+                width: 30,
+                height: 30,
+                decoration: BoxDecoration(
+                  color: stepIndex == _currentStep
+                      ? Theme.of(context).colorScheme.onSecondaryContainer
+                      : Theme.of(context).colorScheme.outline,
+                  borderRadius: BorderRadius.circular(30),
                 ),
-              ),
-            );
-          },
-          margin: EdgeInsets.zero,
-          type: StepperType.horizontal,
-          onStepTapped: null,
-          physics: const BouncingScrollPhysics(),
-          currentStep: _currentStep,
-          onStepCancel: cancel,
-          onStepContinue: continuedStep,
-          //onStepTapped: tapped,
-          controlsBuilder: controlBuilders,
-          elevation: 0,
-          steps: [
-            Step(
-                title: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(_currentStep == 0 ? "Credenciales" : "",
-                      style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: Theme.of(context).colorScheme.outline)),
+                child: Center(
+                  child: Text(
+                    "${stepIndex + 1}",
+                    style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                        color: Theme.of(context).colorScheme.onTertiary,
+                        fontSize: 14),
+                  ),
                 ),
-                content: Form(
-                  key: _formKey,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      GetTextFormField(
-                          labelText: "Correo",
-                          placeholder: email,
-                          maxLength: 20,
-                          icon: const Icon(Icons.email),
-                          keyboardType: TextInputType.emailAddress,
-                          validator: validEmail(
-                              "Escriba el correo con el formato correcto"),
-                          obscureText: false,
-                          controllerr: _email),
-                      const SizedBox(height: 20),
-                      GetTextFormField(
-                        labelText: "Contraseña",
-                        placeholder: password,
-                        icon: const Icon(Icons.lock),
-                        keyboardType: TextInputType.visiblePassword,
-                        obscureText: true,
-                        validator: validPassword(""),
-                        controllerr: _password,
+              );
+            },
+            margin: EdgeInsets.zero,
+            type: StepperType.horizontal,
+            onStepTapped: null,
+            physics: const BouncingScrollPhysics(),
+            currentStep: _currentStep,
+            onStepCancel: cancel,
+            onStepContinue: continuedStep,
+            //onStepTapped: tapped,
+            controlsBuilder: controlBuilders,
+            elevation: 0,
+            steps: [
+              Step(
+                  title: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(_currentStep == 0 ? "Credenciales" : "",
+                        style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Theme.of(context).colorScheme.outline)),
+                  ),
+                  content: Form(
+                    key: _formKey,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    child: FocusTraversalGroup(
+                      policy: OrderedTraversalPolicy(),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          GetTextFormField(
+                              labelText: "Correo",
+                              placeholder: email,
+                              maxLength: 20,
+                              icon: const Icon(Icons.email),
+                              keyboardType: TextInputType.emailAddress,
+                              validator: validEmail(
+                                  "Escriba el correo con el formato correcto"),
+                              obscureText: false,
+                              controllerr: _email,
+                              option: TextInputAction.next),
+                          const SizedBox(height: 20),
+                          GetTextFormField(
+                              labelText: "Contraseña",
+                              placeholder: password,
+                              icon: const Icon(Icons.lock),
+                              keyboardType: TextInputType.visiblePassword,
+                              obscureText: true,
+                              validator: validPassword(""),
+                              controllerr: _password,
+                              option: TextInputAction.next,
+                              onSubmit: (value) {
+                                if (_formKey.currentState!.validate()) {
+                                  _formKey.currentState!.save();
+                                  _currentStep += 1;
+                                  print(_formKey.currentState!.validate());
+                                  FocusScope.of(context).unfocus();
+                                  setState(() {});
+                                }
+                              }),
+                          SizedBox(height: size.height * 0.225),
+                        ],
                       ),
-                      SizedBox(height: size.height * 0.225),
-                    ],
+                    ),
                   ),
-                ),
-                isActive: _currentStep >= 0,
-                state: _currentStep >= 0
-                    ? StepState.complete
-                    : StepState.disabled),
-            Step(
-                title: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(_currentStep == 1 ? "Identificacion" : "",
-                      style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: Theme.of(context).colorScheme.outline)),
-                ),
-                content: Form(
-                  key: _formKey2,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  child: Column(
-                    children: [
-                      GetTextFormField(
-                          labelText: "CEP",
-                          placeholder: cep,
-                          icon: const Icon(Icons.code),
-                          keyboardType: TextInputType.phone,
-                          validator: validCep(
-                              "El número de teléfono debe ser de 6 dígitos"),
-                          obscureText: false,
-                          controllerr: _cep),
-                      const SizedBox(height: 20),
-                      GetTextFormField(
-                          labelText: "Dni",
-                          placeholder: dni,
-                          icon: const Icon(Icons.article_outlined),
-                          keyboardType: TextInputType.number,
-                          validator: validDni(
-                              "El número del dni debe ser de 8 dígitos"),
-                          obscureText: false,
-                          controllerr: _dni),
-                      SizedBox(height: size.height * 0.295),
-                    ],
+                  isActive: _currentStep >= 0,
+                  state: _currentStep >= 0
+                      ? StepState.complete
+                      : StepState.disabled),
+              Step(
+                  title: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(_currentStep == 1 ? "Identificacion" : "",
+                        style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Theme.of(context).colorScheme.outline)),
                   ),
-                ),
-                isActive: _currentStep >= 0,
-                state: _currentStep >= 1
-                    ? StepState.complete
-                    : StepState.disabled),
-            Step(
-                title: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(_currentStep == 2 ? "Información\npersonal" : "",
-                      style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: Theme.of(context).colorScheme.outline)),
-                ),
-                content: Form(
-                  key: _formKey3,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  child: Column(
-                    children: [
-                      GetTextFormField(
+                  content: Form(
+                    key: _formKey2,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    child: FocusTraversalGroup(
+                      policy: OrderedTraversalPolicy(),
+                      child: Column(
+                        children: [
+                          GetTextFormField(
+                            labelText: "CEP",
+                            placeholder: cep,
+                            icon: const Icon(Icons.code),
+                            keyboardType: TextInputType.phone,
+                            validator: validCep(
+                                "El número de teléfono debe ser de 6 dígitos"),
+                            obscureText: false,
+                            controllerr: _cep,
+                            option: TextInputAction.next,
+                          ),
+                          const SizedBox(height: 20),
+                          GetTextFormField(
+                            labelText: "Dni",
+                            placeholder: dni,
+                            icon: const Icon(Icons.article_outlined),
+                            keyboardType: TextInputType.number,
+                            validator: validDni(
+                                "El número del dni debe ser de 8 dígitos"),
+                            obscureText: false,
+                            controllerr: _dni,
+                            option: TextInputAction.none,
+                            onSubmit: (value) {
+                              if (_formKey2.currentState!.validate()) {
+                                _formKey2.currentState!.save();
+                                _currentStep += 1;
+                                print(_formKey2.currentState!.validate());
+                                setState(() {});
+                              }
+                            },
+                          ),
+                          SizedBox(height: size.height * 0.295),
+                        ],
+                      ),
+                    ),
+                  ),
+                  isActive: _currentStep >= 0,
+                  state: _currentStep >= 1
+                      ? StepState.complete
+                      : StepState.disabled),
+              Step(
+                  title: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                        _currentStep == 2 ? "Información\npersonal" : "",
+                        style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Theme.of(context).colorScheme.outline)),
+                  ),
+                  content: Form(
+                    key: _formKey3,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    child: Column(
+                      children: [
+                        GetTextFormField(
                           labelText: "Nombre Completo",
                           maxLength: 36,
                           placeholder: name,
@@ -448,9 +494,11 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
                           validator: validName(
                               "Escriba el nombre con el formato correcto"),
                           controllerr: _name,
-                          obscureText: false),
-                      SizedBox(height: 20),
-                      GetTextFormField(
+                          obscureText: false,
+                          option: TextInputAction.next,
+                        ),
+                        SizedBox(height: 20),
+                        GetTextFormField(
                           labelText: "Telefono",
                           placeholder: phone,
                           icon: const Icon(Icons.phone),
@@ -458,9 +506,11 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
                           validator: validPhone(
                               "El número de teléfono debe ser de 9 dígitos"),
                           obscureText: false,
-                          controllerr: _phone),
-                      SizedBox(height: 20),
-                      GetTextFormField(
+                          controllerr: _phone,
+                          option: TextInputAction.next,
+                        ),
+                        SizedBox(height: 20),
+                        GetTextFormField(
                           labelText: "Dirección",
                           placeholder: address,
                           icon: const Icon(Icons.house),
@@ -468,57 +518,70 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
                           validator: validAddress(
                               "Escriba la dirección con el formato correcto"),
                           obscureText: false,
-                          controllerr: _address),
-                      SizedBox(height: size.height * 0.19),
-                    ],
+                          controllerr: _address,
+                          option: TextInputAction.send,
+                          onSubmit: (value) {
+                            if (_formKey3.currentState!.validate()) {
+                              _formKey3.currentState!.save();
+                              _currentStep += 1;
+                              print(_formKey3.currentState!.validate());
+                              setState(() {});
+                            }
+                          },
+                        ),
+                        SizedBox(height: size.height * 0.19),
+                      ],
+                    ),
                   ),
-                ),
-                isActive: _currentStep >= 0,
-                state: _currentStep >= 2
-                    ? StepState.complete
-                    : StepState.disabled),
-            Step(
-                title: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(_currentStep == 3 ? "Información\nadicional" : "",
-                      style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: Theme.of(context).colorScheme.outline)),
-                ),
-                content: Form(
-                  key: _formKey4,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  child: Column(
-                    children: [
-                      GetTextFormField(
-                          labelText: "Edad",
-                          placeholder: age,
-                          icon: const Icon(Icons.numbers),
-                          keyboardType: TextInputType.number,
-                          validator: validAge(
-                              "La edad debe tener el formato correcto", _age),
-                          obscureText: false,
-                          controllerr: _age),
-                      SizedBox(height: 20),
-                      title("Estado Civil"),
-                      DropDownWithSearch(
-                        searchController: _stateCivil,
-                      ),
-                      const SizedBox(height: 20),
-                      title("¿Estará disponible para ser enfermero auxiliar"),
-                      DropDownWithAuxiliar(
-                        searchController: _auxiliar,
-                      ),
-                      SizedBox(height: size.height * 0.17),
-                    ],
+                  isActive: _currentStep >= 0,
+                  state: _currentStep >= 2
+                      ? StepState.complete
+                      : StepState.disabled),
+              Step(
+                  title: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                        _currentStep == 3 ? "Información\nadicional" : "",
+                        style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Theme.of(context).colorScheme.outline)),
                   ),
-                ),
-                isActive: _currentStep >= 0,
-                state: _currentStep >= 3
-                    ? StepState.complete
-                    : StepState.disabled),
-          ],
+                  content: Form(
+                    key: _formKey4,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    child: Column(
+                      children: [
+                        GetTextFormField(
+                            labelText: "Edad",
+                            placeholder: age,
+                            icon: const Icon(Icons.numbers),
+                            keyboardType: TextInputType.number,
+                            validator: validAge(
+                                "La edad debe tener el formato correcto", _age),
+                            obscureText: false,
+                            controllerr: _age,
+                            option: TextInputAction.done),
+                        SizedBox(height: 20),
+                        title("Estado Civil"),
+                        DropDownWithSearch(
+                          searchController: _stateCivil,
+                        ),
+                        const SizedBox(height: 20),
+                        title("¿Estará disponible para ser enfermero auxiliar"),
+                        DropDownWithAuxiliar(
+                          searchController: _auxiliar,
+                        ),
+                        SizedBox(height: size.height * 0.17),
+                      ],
+                    ),
+                  ),
+                  isActive: _currentStep >= 0,
+                  state: _currentStep >= 3
+                      ? StepState.complete
+                      : StepState.disabled),
+            ],
+          ),
         ),
       ),
     );
