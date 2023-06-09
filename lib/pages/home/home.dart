@@ -35,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Diagnosis> listDiagnosis = [];
   Future<Widget> delayPage() {
     Completer<Widget> completer = Completer();
-    Future.delayed(const Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 2), () {
       completer.complete(Container());
     });
 
