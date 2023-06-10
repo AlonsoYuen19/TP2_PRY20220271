@@ -282,6 +282,7 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
       },
       child: SafeArea(
         child: Scaffold(
+          resizeToAvoidBottomInset: _currentStep==2?true: false,
           appBar: AppBar(
             backgroundColor: const Color.fromRGBO(250, 250, 250, 1),
             leading: _currentStep == 0

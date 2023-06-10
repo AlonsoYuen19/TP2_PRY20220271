@@ -270,6 +270,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       },
       child: SafeArea(
         child: Scaffold(
+          resizeToAvoidBottomInset: _currentStep==2?true: false,
           appBar: AppBar(
             backgroundColor: const Color.fromRGBO(250, 250, 250, 1),
             leading: _currentStep == 0
