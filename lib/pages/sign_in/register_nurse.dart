@@ -142,10 +142,10 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
                     isValidForm2 &&
                     isValidForm3 &&
                     isValidForm4) {
-                  print("Nombre Completo: " + _name.text);
+                  print("Nombre Completo: " + capitalizeSentences(_name.text));
                   print("Contraseña: " + _password.text);
                   print("Correo: " + _email.text);
-                  print("Direccion: " + _address.text);
+                  print("Direccion: " + capitalizeSentences(_address.text));
                   print("phone: " + _phone.text);
                   print("DNI: " + _dni.text);
                   print("Edad: " + _age.text);
@@ -160,12 +160,12 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
                   print("El valor es :" + isAuxiliar.toString());
                   await nurseService.registerNurse(
                       context,
-                      _name.text.trim(),
+                      capitalizeSentences(_name.text.trim()),
                       _email.text.trim(),
                       _password.text.trim(),
                       _dni.text.trim(),
                       _age.text.trim(),
-                      _address.text.trim(),
+                      capitalizeSentences(_address.text.trim()),
                       _phone.text.trim(),
                       _cep.text.trim(),
                       "ROLE_NURSE",
@@ -511,6 +511,7 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
                         ),
                         SizedBox(height: 20),
                         GetTextFormField(
+                          maxLength: 50,
                           labelText: "Dirección",
                           placeholder: address,
                           icon: const Icon(Icons.house),

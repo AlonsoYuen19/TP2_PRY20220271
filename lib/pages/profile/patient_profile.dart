@@ -668,7 +668,8 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                               if (isValidForm) {
                                 await patientService.updatePatient(context,
                                     fullName: isName!
-                                        ? controller.text.trim()
+                                        ? capitalizeSentences(
+                                            controller.text.trim())
                                         : patientUser.fullName,
                                     email: isEmail!
                                         ? controller.text.trim()
@@ -677,7 +678,8 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                                         ? controller.text.trim()
                                         : patientUser.civilStatus,
                                     address: isDirection!
-                                        ? controller.text.trim()
+                                        ? capitalizeSentences(
+                                            controller.text.trim())
                                         : patientUser.address,
                                     phone: isPhone!
                                         ? controller.text.trim()
@@ -690,7 +692,8 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                                         : patientUser.dni, onSuccess: () {
                                   setState(() {
                                     if (widget.isName == true) {
-                                      patientUser.fullName = controller.text;
+                                      patientUser.fullName =
+                                          capitalizeSentences(controller.text);
                                     }
                                     if (widget.isEmail == true) {
                                       patientUser.email = controller.text;
@@ -699,7 +702,8 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                                       patientUser.civilStatus = controller.text;
                                     }
                                     if (widget.isAddress == true) {
-                                      patientUser.address = controller.text;
+                                      patientUser.address =
+                                          capitalizeSentences(controller.text);
                                     }
 
                                     if (widget.isPhone == true) {

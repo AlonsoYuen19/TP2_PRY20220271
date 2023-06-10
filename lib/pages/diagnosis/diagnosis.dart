@@ -46,7 +46,7 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    'Evalué una imágen de una escara desde tu...',
+                    'Evalúe una imágen de una escara desde tu...',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         color: Theme.of(context).colorScheme.tertiary,
@@ -96,10 +96,11 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
                             setState(() {});
                           } else {
                             if (!mounted) {}
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(const SnackBar(
-                              content: Text("Imagen no seleccionada !"),
-                            ));
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("Imagen no seleccionada !"),
+                              ),
+                            );
                           }
                         },
                         child: SizedBox(
@@ -119,8 +120,8 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
                                       color: Theme.of(context)
                                           .colorScheme
                                           .tertiary,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold)),
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600)),
                             ],
                           ),
                         ),

@@ -31,6 +31,30 @@ const validAgeEditDoctor = ValidatorEditDoctor.ageValidEdit;
 const validAddressEditDoctor = ValidatorEditDoctor.addressValidEdit;
 const validPhoneEditDoctor = ValidatorEditDoctor.phoneValidEdit;
 final prefs = SaveData();
+
+String capitalizeSentences(String input) {
+  var sentences = input.split(
+      '.'); // Separar el string en oraciones utilizando el punto como delimitador
+
+  var capitalizedSentences = sentences.map((sentence) {
+    if (sentence.trim().isEmpty)
+      return sentence; // Ignorar las oraciones vacías
+
+    var words = sentence.trim().split(' '); // Separar la oración en palabras
+    var capitalizedWords = words.map((word) {
+      if (word.trim().isEmpty) return word; // Ignorar las palabras vacías
+      if (word == 'de' || word == 'del') return word; // Excluir 'de' y 'del'
+      return word.replaceRange(0, 1, word[0].toUpperCase());
+    }).toList();
+
+    return capitalizedWords
+        .join(' '); // Unir las palabras capitalizadas nuevamente en una oración
+  }).toList();
+
+  return capitalizedSentences.join(
+      '. '); // Unir las oraciones capitalizadas nuevamente en un solo string
+}
+
 const authURL = "http://10.0.2.2:8080/api/v1/";
 //const authURL = "http://192.168.1.26:8080/api/v1/";
 //const authURL = "http://192.168.189.137:8080/api/v1/";
@@ -38,10 +62,6 @@ const authURL = "http://10.0.2.2:8080/api/v1/";
 const camaraFunction = GaleryOptions.selectImageFromCamera;
 const galleryFunction = GaleryOptions.selectImageFromGallery;
 const colorCard = Color.fromRGBO(207, 234, 254, 1);
-
-
-
-
 
 Map meses = {
   "01": "Enero",

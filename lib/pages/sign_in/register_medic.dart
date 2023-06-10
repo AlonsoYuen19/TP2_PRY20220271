@@ -132,12 +132,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   print("CMP: " + _cmp.text);
                   await authService.registerMedic(
                     context,
-                    _name.text.trim(),
+                    capitalizeSentences(_name.text.trim()),
                     _email.text.trim(),
                     _password.text.trim(),
                     _dni.text.trim(),
                     _age.text.trim(),
-                    _address.text.trim(),
+                    capitalizeSentences(_address.text.trim()),
                     _phone.text.trim(),
                     _cmp.text.trim(),
                     "ROLE_MEDIC",
@@ -507,6 +507,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         SizedBox(height: 20),
                         GetTextFormField(
+                          maxLength: 50,
                           labelText: "Dirección",
                           placeholder: address,
                           icon: const Icon(Icons.house),

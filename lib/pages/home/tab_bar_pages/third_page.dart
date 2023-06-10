@@ -119,33 +119,36 @@ class _ThirdPageState extends State<ThirdPage> {
                           color: Colors.transparent,
                         ));
                       }
-                      return Column(
-                            children: [
-                              SizedBox(
-                                height: size.height * 0.15,
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: size.height * 0.18,
+                            ),
+                            Container(
+                              height: 60,
+                              width: 60,
+                              child: Image.asset(
+                                'assets/images/Group.png',
+                                color: Colors.grey,
+                                filterQuality: FilterQuality.high,
+                                fit: BoxFit.fitWidth,
                               ),
-                              Container(
-                                height: 60,
-                                width: 60,
-                                child: Image.asset(
-                                  'assets/images/Group.png',
-                                  color: Colors.grey,
-                                  filterQuality: FilterQuality.high,
-                                  fit: BoxFit.fitWidth,
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              const Text(
-                                  "No se encontraron registros de diagnósticos disponibles",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Color.fromRGBO(213, 213, 213, 1),
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w600))
-                            ],
-                          );
+                            ),
+                            const SizedBox(
+                              height: 16,
+                            ),
+                            const Text(
+                                "No se encontraron registros de diagnósticos disponibles",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Color.fromRGBO(213, 213, 213, 1),
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600))
+                          ],
+                        ),
+                      );
                     })
                 : user.role == "ROLE_MEDIC"
                     ? Padding(

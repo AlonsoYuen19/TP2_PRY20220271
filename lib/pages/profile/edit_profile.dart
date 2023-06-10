@@ -76,8 +76,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final medicService = MedicAuthServic();
-    final nurseService = NurseAuthService();
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -141,18 +139,21 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             controllerr: _name,
                             obscureText: false,
                             isEditProfile: true,
+                            option: TextInputAction.next,
                           ),
                           title("Telefono	"),
                           GetTextFormField(
-                              labelText: phone,
-                              placeholder: "",
-                              icon: const Icon(Icons.phone),
-                              keyboardType: TextInputType.phone,
-                              validator: validPhoneEditDoctor(
-                                  "El número de teléfono debe ser de 9 dígitos"),
-                              obscureText: false,
-                              controllerr: _phone,
-                              isEditProfile: true),
+                            labelText: phone,
+                            placeholder: "",
+                            icon: const Icon(Icons.phone),
+                            keyboardType: TextInputType.phone,
+                            validator: validPhoneEditDoctor(
+                                "El número de teléfono debe ser de 9 dígitos"),
+                            obscureText: false,
+                            controllerr: _phone,
+                            isEditProfile: true,
+                            option: TextInputAction.next,
+                          ),
                           title("Dirección"),
                           GetTextFormField(
                             labelText: address,
@@ -164,6 +165,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             obscureText: false,
                             controllerr: _address,
                             isEditProfile: true,
+                            option: TextInputAction.next,
                           ),
                           SizedBox(height: size.height * 0.01),
                           title("Dni"),
@@ -177,6 +179,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             obscureText: false,
                             controllerr: _dni,
                             isEditProfile: true,
+                            option: TextInputAction.next,
                           ),
                           SizedBox(height: size.height * 0.01),
                           title("Edad"),
@@ -190,6 +193,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             obscureText: false,
                             controllerr: _age,
                             isEditProfile: true,
+                            option: TextInputAction.done,
                           ),
                           SizedBox(height: size.height * 0.01),
                           title("Estado Civil"),
@@ -212,39 +216,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         backgroundColor:
                             Theme.of(context).colorScheme.onSecondaryContainer,
                       ),
-                      onPressed: () async {
-                        final isValidForm = _formKey.currentState!.validate();
-                        if (isValidForm) {
-                          print("Nombre Completo: " + _name.text);
-                          print("Direccion: " + _address.text);
-                          print("phone: " + _phone.text);
-                          print("DNI: " + _dni.text);
-                          print("Edad: " + _age.text);
-                          print("Estado Civil: " + _stateCivil.text);
-                          int age = int.parse(_age.text.trim());
-                          if (user!.role == "ROLE_MEDIC") {
-                            await medicService.updateMedic(context,
-                                fullNameMedic: _name.text.trim(),
-                                stateCivil: _stateCivil.text.trim(),
-                                address: _address.text.trim(),
-                                phone: _phone.text.trim(),
-                                dni: _dni.text.trim(),
-                                age: age);
-                          } else {
-                            await nurseService.updateNurse(context,
-                                fullName: _name.text.trim(),
-                                stateCivil: _stateCivil.text.trim(),
-                                address: _address.text.trim(),
-                                phone: _phone.text.trim(),
-                                dni: _dni.text.trim(),
-                                age: age);
-                          }
-
-                          if (!mounted) {
-                            return;
-                          }
-                        }
-                      },
+                      onPressed: handleButton,
                       child: Text(
                         "Guardar",
                         style: Theme.of(context)
@@ -265,5 +237,41 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         ),
       ),
     );
+  }
+
+  Future handleButton() async {
+    final medicService = MedicAuthServic();
+    final nurseService = NurseAuthService();
+    final isValidForm = _formKey.currentState!.validate();
+    if (isValidForm) {
+      print("Nombre Completo: " + capitalizeSentences(_name.text));
+      print("Direccion: " + _address.text);
+      print("phone: " + _phone.text);
+      print("DNI: " + _dni.text);
+      print("Edad: " + _age.text);
+      print("Estado Civil: " + _stateCivil.text);
+      int age = int.parse(_age.text.trim());
+      if (user!.role == "ROLE_MEDIC") {
+        await medicService.updateMedic(context,
+            fullNameMedic: capitalizeSentences(_name.text.trim()),
+            stateCivil: _stateCivil.text.trim(),
+            address: capitalizeSentences(_address.text.trim()),
+            phone: _phone.text.trim(),
+            dni: _dni.text.trim(),
+            age: age);
+      } else {
+        await nurseService.updateNurse(context,
+            fullName: capitalizeSentences(_name.text.trim()),
+            stateCivil: _stateCivil.text.trim(),
+            address: capitalizeSentences(_address.text.trim()),
+            phone: _phone.text.trim(),
+            dni: _dni.text.trim(),
+            age: age);
+      }
+
+      if (!mounted) {
+        return;
+      }
+    }
   }
 }

@@ -108,19 +108,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
         builder: (BuildContext context) {
           return Dialog(
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0)), //this right here
+                borderRadius: BorderRadius.circular(8.0)),
             child: Padding(
-              padding: const EdgeInsets.all(12.0),
+              padding: const EdgeInsets.all(16.0),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    'Selecciona una imagen desde tu...',
+                    'Evalúe una imágen de una escara desde tu...',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         color: Theme.of(context).colorScheme.tertiary,
-                        fontSize: 24.0,
-                        fontWeight: FontWeight.bold),
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.w600),
                   ),
                   const SizedBox(
                     height: 20,
@@ -185,30 +185,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ));
                           }
                         },
-                        child: Card(
-                            elevation: 5,
-                            child: Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: Column(
-                                children: [
-                                  Image.asset(
-                                    'assets/images/gallery-icon.png',
-                                    height: 80,
-                                    width: 80,
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  Text('Galería',
-                                      style: TextStyle(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .tertiary,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold)),
-                                ],
+                        child: SizedBox(
+                          width: size.width * 0.32,
+                          child: Column(
+                            children: [
+                              Image.asset(
+                                'assets/images/gallery-icon.png',
+                                height: 80,
+                                width: 80,
                               ),
-                            )),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Text('Galería',
+                                  style: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .tertiary,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600)),
+                            ],
+                          ),
+                        ),
                       ),
                       GestureDetector(
                         onTap: () async {
@@ -273,30 +271,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ));
                           }
                         },
-                        child: Card(
-                            elevation: 5,
-                            child: Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: Column(
-                                children: [
-                                  Image.asset(
-                                    'assets/images/camera-icon.png',
-                                    height: 80,
-                                    width: 80,
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  Text('Cámara',
-                                      style: TextStyle(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .tertiary,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold)),
-                                ],
+                        child: SizedBox(
+                          width: size.width * 0.32,
+                          child: Column(
+                            children: [
+                              Image.asset(
+                                'assets/images/camera-icon.png',
+                                height: 80,
+                                width: 80,
                               ),
-                            )),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Text('Cámara',
+                                  style: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .tertiary,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600)),
+                            ],
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -304,22 +300,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     height: 20,
                   ),
                   SizedBox(
-                    width: size.width * 0.35,
+                    width: size.width * 1,
+                    height: 56,
                     child: ElevatedButton(
                       onPressed: () {
                         Navigator.pop(context);
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Theme.of(context).colorScheme.tertiary,
+                        elevation: 0,
+                        backgroundColor:
+                            Theme.of(context).colorScheme.onSecondaryContainer,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
+                          borderRadius: BorderRadius.circular(8.0),
                         ),
                       ),
                       child: const Text('Regresar',
                           style: TextStyle(
                               color: Colors.white,
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold)),
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600)),
                     ),
                   ),
                 ],
@@ -392,56 +391,76 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   bottom: Radius.elliptical(400, 80))),
         ),
         Column(children: [
-          SizedBox(
-            height: 12,
-          ),
           Padding(
-            padding: const EdgeInsets.all(12.0),
+            padding: const EdgeInsets.all(8.0),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
-                  margin: EdgeInsets.only(left: size.width * 0.2),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      ClipOval(
-                        child: Container(
-                          color: Theme.of(context).colorScheme.background,
-                          //margin: const EdgeInsets.only(left: 8.0),
-                          child: IconButton(
-                            onPressed: () {
-                              selectImage();
-                              setState(() {});
-                            },
-                            icon: Icon(
-                              Icons.add_a_photo,
-                              size: 30,
-                              color: Theme.of(context).colorScheme.tertiary,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 12,
-                      ),
-                      avatar.isEmpty && avatar2.isEmpty
-                          ? CircleAvatar(
+                  child: avatar.isEmpty && avatar2.isEmpty
+                      ? Center(
+                          child: Stack(children: [
+                            CircleAvatar(
                               backgroundColor: Colors.lightBlue,
                               backgroundImage: AssetImage(prefs.idMedic == 0
                                   ? "assets/images/enfermero-logo.png"
                                   : "assets/images/doctor-logo.png"),
-                              radius: 50,
-                            )
-                          : ClipOval(
-                              child: Image.memory(
-                                  prefs.idMedic != 0 ? avatar : avatar2,
-                                  height: size.width * 0.28,
-                                  width: size.width * 0.28,
-                                  fit: BoxFit.cover),
+                              radius: 66,
                             ),
-                    ],
-                  ),
+                            Positioned(
+                              left: 85,
+                              top: 85,
+                              child: ClipOval(
+                                child: Container(
+                                  color: Colors.grey[200],
+                                  child: IconButton(
+                                    onPressed: () {
+                                      selectImage();
+                                      setState(() {});
+                                    },
+                                    icon: Icon(
+                                      Icons.add_a_photo,
+                                      size: 30,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .tertiary,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ]),
+                        )
+                      : Stack(children: [
+                          ClipOval(
+                            child: Image.memory(
+                                prefs.idMedic != 0 ? avatar : avatar2,
+                                height: size.width * 0.32,
+                                width: size.width * 0.32,
+                                fit: BoxFit.cover),
+                          ),
+                          Positioned(
+                            left: 85,
+                            top: 85,
+                            child: ClipOval(
+                              child: Container(
+                                color: Colors.grey[200],
+                                child: IconButton(
+                                  onPressed: () {
+                                    selectImage();
+                                    setState(() {});
+                                  },
+                                  icon: Icon(
+                                    Icons.add_a_photo,
+                                    size: 30,
+                                    color:
+                                        Theme.of(context).colorScheme.tertiary,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ]),
                 ),
                 const SizedBox(
                   height: 15,
@@ -493,18 +512,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 subTitle("assets/svgImages/direccion.svg", "Dirección: ",
                     users.address),
                 const SizedBox(
-                  height: 14,
+                  height: 28,
                 ),
                 users.role == "ROLE_NURSE"
                     ? Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Text(equipoMedico!,
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium!
-                                .copyWith(
-                                    color: colorEquipoMedico, fontSize: 22)),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 10),
+                        child: Column(
+                          children: [
+                            Container(
+                              height: 60,
+                              width: 60,
+                              child: Image.asset(
+                                'assets/images/Group.png',
+                                color: colorEquipoMedico,
+                                filterQuality: FilterQuality.high,
+                                fit: BoxFit.fitWidth,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Text(equipoMedico!,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: colorEquipoMedico,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600))
+                          ],
+                        ),
                       )
                     : const SizedBox(),
                 const SizedBox(height: 9),
@@ -616,29 +652,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ));
                   }
                   if (data!.isEmpty) {
-                    return Column(
-                      children: [
-                        Container(
-                          height: 60,
-                          width: 60,
-                          child: Image.asset(
-                            'assets/images/Group.png',
-                            color: Colors.grey,
-                            filterQuality: FilterQuality.high,
-                            fit: BoxFit.fitWidth,
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 60,
+                            width: 60,
+                            child: Image.asset(
+                              'assets/images/Group.png',
+                              color: Colors.grey,
+                              filterQuality: FilterQuality.high,
+                              fit: BoxFit.fitWidth,
+                            ),
                           ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        const Text(
-                            "No se encontraron registros de citas disponibles",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: Color.fromRGBO(213, 213, 213, 1),
-                                fontSize: 20,
-                                fontWeight: FontWeight.w600))
-                      ],
+                          const SizedBox(
+                            height: 16,
+                          ),
+                          const Text(
+                              "No se encontraron registros de pacientes disponibles",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Color.fromRGBO(213, 213, 213, 1),
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w600))
+                        ],
+                      ),
                     );
                   }
                   if (snapshot.connectionState == ConnectionState.waiting) {

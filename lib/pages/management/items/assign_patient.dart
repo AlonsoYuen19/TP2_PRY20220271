@@ -81,6 +81,7 @@ class _AssignPatientPageState extends State<AssignPatientPage> {
           ),
           SafeArea(
               child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
             child: Column(children: [
               const SizedBox(
                 height: 16,
@@ -125,7 +126,8 @@ class _AssignPatientPageState extends State<AssignPatientPage> {
                         );
                       })
                   : Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 16),
                       child: MyFutureBuilderPatientsByNurse(
                         myFuture: patientService.getPatientsNotassigned(),
                         idNurse: widget.idNurse,

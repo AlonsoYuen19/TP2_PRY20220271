@@ -29,7 +29,8 @@ class GetTextFormField extends StatefulWidget {
       this.isEditProfile = false,
       this.maxLength = 30,
       this.option,
-      this.onSubmit, this.keyy});
+      this.onSubmit,
+      this.keyy});
 
   @override
   State<GetTextFormField> createState() => _GetTextFormFieldState();
@@ -218,6 +219,7 @@ class _GetTextFormFieldState extends State<GetTextFormField> {
                     ? null
                     : const EdgeInsets.symmetric(horizontal: 20),
                 child: TextFormField(
+                  textCapitalization: TextCapitalization.sentences,
                   key: widget.key,
                   maxLength: widget.maxLength,
                   onFieldSubmitted: widget.onSubmit,

@@ -68,13 +68,15 @@ class _AddNursePageState extends State<AddNursePage> {
           centerTitle: true,
           toolbarHeight: 98,
           automaticallyImplyLeading: false,
-          title: Text(
-            "Enfermeros disponibles",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w400,
-              color: Theme.of(context).colorScheme.tertiary,
+          title: Flexible(
+            child: Text(
+              "Añadir Enfermeros",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w400,
+                color: Theme.of(context).colorScheme.tertiary,
+              ),
             ),
           ),
         ),
@@ -104,33 +106,37 @@ class _AddNursePageState extends State<AddNursePage> {
                             height: 20,
                           ),
                           nursesAvailable.isEmpty
-                              ? Column(
-                                  children: [
-                                    SizedBox(
-                                      height: size.height * 0.24,
-                                    ),
-                                    Container(
-                                      height: 60,
-                                      width: 60,
-                                      child: Image.asset(
-                                        'assets/images/Group.png',
-                                        color: Colors.grey,
-                                        filterQuality: FilterQuality.high,
-                                        fit: BoxFit.fitWidth,
+                              ? Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20),
+                                  child: Column(
+                                    children: [
+                                      SizedBox(
+                                        height: size.height * 0.24,
                                       ),
-                                    ),
-                                    const SizedBox(
-                                      height: 20,
-                                    ),
-                                    const Text(
-                                        "No se encontraron registros de enfermeros disponibles",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            color: Color.fromRGBO(
-                                                213, 213, 213, 1),
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w600))
-                                  ],
+                                      Container(
+                                        height: 60,
+                                        width: 60,
+                                        child: Image.asset(
+                                          'assets/images/Group.png',
+                                          color: Colors.grey,
+                                          filterQuality: FilterQuality.high,
+                                          fit: BoxFit.fitWidth,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 20,
+                                      ),
+                                      const Text(
+                                          "No se encontraron registros de enfermeros disponibles",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              color: Color.fromRGBO(
+                                                  213, 213, 213, 1),
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w600))
+                                    ],
+                                  ),
                                 )
                               : Padding(
                                   padding: const EdgeInsets.symmetric(
