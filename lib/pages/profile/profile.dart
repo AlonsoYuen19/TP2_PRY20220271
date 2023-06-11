@@ -334,7 +334,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       children: [
         SvgPicture.asset(
           icon,
-          height: 18,
+          height: 26,
+          color: Color.fromRGBO(14, 26, 48, 1),
         ),
         const SizedBox(
           width: 11,

@@ -230,8 +230,8 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
               "Seleccione una opción para realizar el diagnóstico:",
               textAlign: TextAlign.start,
               style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
                   color: Theme.of(context).colorScheme.onSecondary),
             ),
           ),

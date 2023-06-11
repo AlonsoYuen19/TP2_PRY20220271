@@ -270,7 +270,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       },
       child: SafeArea(
         child: Scaffold(
-          resizeToAvoidBottomInset: _currentStep==2?true: false,
+          resizeToAvoidBottomInset: _currentStep == 2 ? true : false,
           appBar: AppBar(
             backgroundColor: const Color.fromRGBO(250, 250, 250, 1),
             leading: _currentStep == 0
@@ -339,7 +339,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             margin: EdgeInsets.zero,
             type: StepperType.horizontal,
             onStepTapped: null,
-            physics: const BouncingScrollPhysics(),
+            //physics: const BouncingScrollPhysics(),
             currentStep: _currentStep,
             onStepCancel: cancel,
             onStepContinue: continuedStep,

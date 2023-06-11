@@ -152,34 +152,38 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(height: size.height * 0.096),
                     signInButton(context),
                     SizedBox(height: size.height * 0.02),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "¿Aún no tienes una cuenta? ",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium!
-                              .copyWith(
-                                  color: Theme.of(context).colorScheme.tertiary,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500),
-                        ),
-                        TextButton(
-                            onPressed: () async {
-                              Navigator.pushNamed(context, "preRegister");
-                            },
-                            child: Text("Crear cuenta",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .displaySmall!
-                                    .copyWith(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onSecondaryContainer)))
-                      ],
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "¿Aún no tienes una cuenta? ",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(
+                                    color:
+                                        Theme.of(context).colorScheme.tertiary,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500),
+                          ),
+                          TextButton(
+                              onPressed: () async {
+                                Navigator.pushNamed(context, "preRegister");
+                              },
+                              child: Text("Crear cuenta",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .displaySmall!
+                                      .copyWith(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSecondaryContainer)))
+                        ],
+                      ),
                     ),
                     size.longestSide < 600
                         ? SizedBox(height: 40)
