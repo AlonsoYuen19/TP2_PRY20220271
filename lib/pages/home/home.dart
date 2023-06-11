@@ -12,7 +12,6 @@ import 'package:ulcernosis/utils/helpers/constant_variables.dart';
 import 'package:ulcernosis/utils/helpers/Searchable/searchable_medic.dart';
 import 'package:ulcernosis/utils/widgets/text_form_field.dart';
 import '../../utils/helpers/Searchable/searchable_nurse.dart';
-import '../../utils/helpers/Searchable/searchable_widget.dart';
 import '../../utils/helpers/appbar_drawer.dart';
 import '../../utils/helpers/future_builder_cards/future_builders.dart';
 import '../../utils/helpers/loaders_screens/loader_home_screen.dart';

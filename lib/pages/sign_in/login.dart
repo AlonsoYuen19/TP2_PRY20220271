@@ -134,7 +134,19 @@ class _LoginScreenState extends State<LoginScreen> {
                       isRegisterPassword: false,
                       option: TextInputAction.send,
                       onSubmit: (p0) {
-                        _handleButton();
+                        setState(() {
+                          _isPressed = true;
+                          Future.delayed(const Duration(seconds: 6), () {
+                            setState(() {
+                              _isPressed = false;
+                            });
+                          });
+                        });
+                        if (_isPressed == true) {
+                          _handleButton();
+                        } else {
+                          null;
+                        }
                       },
                     ),
                     SizedBox(height: size.height * 0.096),
