@@ -107,11 +107,11 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: LoaderScreen());
                 }
-                return Column(
-                  children: [
-                    backgroundFigureAppbarPatient(context, height: 0.1),
-                    Expanded(
-                      child: Container(
+                return SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      backgroundFigureAppbarPatient(context, height: 0.1),
+                      Container(
                         padding: const EdgeInsets.symmetric(vertical: 15),
                         width: size.width * 0.8,
                         child: Card(
@@ -435,10 +435,10 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                           ),
                         ),
                       ),
-                    ),
-                    backgroundFigureFooterPatient(context,
-                        footer: true, height: 0.1),
-                  ],
+                      backgroundFigureFooterPatient(context,
+                          footer: true, height: 0.1),
+                    ],
+                  ),
                 );
               }),
         ),

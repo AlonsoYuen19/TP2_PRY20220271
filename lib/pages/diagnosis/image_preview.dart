@@ -2,6 +2,7 @@
 
 import 'dart:async';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ import 'package:ulcernosis/utils/widgets/alert_dialog.dart';
 import '../../services/diagnosis_service.dart';
 import '../../services/patient_service.dart';
 import '../../services/users_service.dart';
+import '../../utils/helpers/zoom_preview_image/preview_image.dart';
 
 class ImagePreview extends StatefulWidget {
   final XFile imagePath;
@@ -58,12 +60,15 @@ class _ImagePreviewState extends State<ImagePreview> {
     return completer.future;
   }
 
+
+
   @override
   void initState() {
     super.initState();
     init();
   }
 
+  String tag = "diagnosis";
   @override
   Widget build(BuildContext context) {
     String role = users.role;
@@ -129,17 +134,34 @@ class _ImagePreviewState extends State<ImagePreview> {
                           padding: const EdgeInsets.symmetric(horizontal: 20),
                           child: Column(
                             children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(8),
-                                  topRight: Radius.circular(8),
-                                ),
-                                child: SizedBox(
-                                  height: size.height * 0.24,
-                                  width: size.width * 1,
-                                  child: Image.file(
-                                    File(widget.imagePath.path),
-                                    fit: BoxFit.fill,
+                              GestureDetector(
+                                onTap: () {
+                                  Uint8List bytes = File(widget.imagePath.path)
+                                      .readAsBytesSync();
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              PreviewImagePage(
+                                                avatar: bytes,
+                                                tag: tag,
+                                              )));
+                                },
+                                child: Hero(
+                                  tag: tag,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(8),
+                                      topRight: Radius.circular(8),
+                                    ),
+                                    child: SizedBox(
+                                      height: size.height * 0.24,
+                                      width: size.width * 1,
+                                      child: Image.file(
+                                        File(widget.imagePath.path),
+                                        fit: BoxFit.fill,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),

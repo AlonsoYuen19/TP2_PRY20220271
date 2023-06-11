@@ -155,7 +155,7 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                     ],
                   ),
                   SizedBox(
-                    height: 29,
+                    height: 19,
                   ),
                   Container(
                     width: double.infinity,
@@ -361,7 +361,7 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                                     ))),
                   ),
                   const SizedBox(
-                    height: 28,
+                    height: 18,
                   ),
                   Container(
                     width: double.infinity,
@@ -405,7 +405,9 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                       child: const Text("$appTitle"),
                     ),
                   ),
-                  const SizedBox(height: 32),
+                  SizedBox(
+                    height: size.height * 0.02,
+                  ),
                 ],
               ),
             ),

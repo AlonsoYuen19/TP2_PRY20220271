@@ -364,6 +364,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget profilePage() {
     final size = MediaQuery.of(context).size;
+    print(size);
     String role = "";
     if (users.role == 'ROLE_MEDIC') {
       role = "Médico especialista";
@@ -383,7 +384,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       physics: BouncingScrollPhysics(),
       child: Stack(children: [
         Container(
-          height: size.height * 0.28,
+          height:
+              size.shortestSide < 400 ? size.height * 0.37 : size.height * 0.28,
           width: double.infinity,
           decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.surface,
@@ -435,13 +437,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ClipOval(
                             child: Image.memory(
                                 prefs.idMedic != 0 ? avatar : avatar2,
-                                height: size.width * 0.32,
-                                width: size.width * 0.32,
+                                height: 120,
+                                width: 120,
                                 fit: BoxFit.cover),
                           ),
                           Positioned(
-                            left: 85,
-                            top: 85,
+                            left: 75,
+                            top: 75,
                             child: ClipOval(
                               child: Container(
                                 color: Colors.grey[200],
@@ -452,7 +454,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   },
                                   icon: Icon(
                                     Icons.add_a_photo,
-                                    size: 30,
+                                    size: 28,
                                     color:
                                         Theme.of(context).colorScheme.tertiary,
                                   ),
