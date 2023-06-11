@@ -16,6 +16,8 @@ class GetTextFormField extends StatefulWidget {
   final TextInputAction? option;
   final Function(String)? onSubmit;
   final GlobalKey<FormState>? keyy;
+  final bool? enabled;
+  final Widget? prefixIcon;
   const GetTextFormField(
       {super.key,
       required this.labelText,
@@ -30,7 +32,9 @@ class GetTextFormField extends StatefulWidget {
       this.maxLength = 30,
       this.option,
       this.onSubmit,
-      this.keyy});
+      this.keyy,
+      this.enabled,
+      this.prefixIcon});
 
   @override
   State<GetTextFormField> createState() => _GetTextFormFieldState();
@@ -72,6 +76,7 @@ class _GetTextFormFieldState extends State<GetTextFormField> {
                     ? null
                     : const EdgeInsets.symmetric(horizontal: 20),
                 child: FancyPasswordField(
+                  enabled: widget.enabled ?? true,
                   maxLength: 20,
                   hasShowHidePassword: true,
                   hasStrengthIndicator: false,
@@ -219,6 +224,7 @@ class _GetTextFormFieldState extends State<GetTextFormField> {
                     ? null
                     : const EdgeInsets.symmetric(horizontal: 20),
                 child: TextFormField(
+                  enabled: widget.enabled ?? true,
                   textCapitalization: TextCapitalization.sentences,
                   key: widget.key,
                   maxLength: widget.maxLength,
@@ -235,6 +241,7 @@ class _GetTextFormFieldState extends State<GetTextFormField> {
                       decorationThickness: 0),
                   controller: widget.controllerr,
                   decoration: InputDecoration(
+                    prefixIcon: widget.prefixIcon,
                     counterText: "",
                     filled: true,
                     fillColor: Colors.white,

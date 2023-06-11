@@ -10,7 +10,9 @@ import 'package:ulcernosis/services/nurse_services.dart';
 import 'package:ulcernosis/services/users_service.dart';
 import 'package:ulcernosis/utils/helpers/constant_variables.dart';
 import 'package:ulcernosis/utils/helpers/Searchable/searchable_medic.dart';
+import 'package:ulcernosis/utils/widgets/text_form_field.dart';
 import '../../utils/helpers/Searchable/searchable_nurse.dart';
+import '../../utils/helpers/Searchable/searchable_widget.dart';
 import '../../utils/helpers/appbar_drawer.dart';
 import '../../utils/helpers/future_builder_cards/future_builders.dart';
 import '../../utils/helpers/loaders_screens/loader_home_screen.dart';
@@ -97,92 +99,54 @@ class _HomeScreenState extends State<HomeScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Deseas filtrar por etapas?",
+                  "Últimos Diagnósticos",
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      color: Theme.of(context).colorScheme.onSecondary,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w400),
+                      color: Theme.of(context).colorScheme.tertiary,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600),
                 ),
                 TextButton(
                     onPressed: () {
                       Navigator.pushNamed(context, 'tabBarFilter');
                     },
-                    child: Text("Filtrar",
-                        style: Theme.of(context)
-                            .textTheme
-                            .displaySmall!
-                            .copyWith(
-                                fontSize: 15,
-                                decoration: TextDecoration.underline)))
+                    child: Text("Filtrar por etapas",
+                        style:
+                            Theme.of(context).textTheme.displaySmall!.copyWith(
+                                  fontSize: 16,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSecondaryContainer,
+                                )))
               ],
             ),
           ),
           const SizedBox(
             height: 4,
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 20.0, right: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Pacientes",
-                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          color: Theme.of(context).colorScheme.tertiary,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    const SizedBox(
-                      height: 4,
-                    ),
-                    Text(
-                      "Buscar diagnóstico por nombre del paciente",
-                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          color: Theme.of(context).colorScheme.onSecondary,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w400),
-                    ),
-                  ],
-                ),
-                Container(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.background,
-                    borderRadius: BorderRadius.circular(40),
-                  ),
-                  child: IconButton(
-                      style: ButtonStyle(
-                        shape: MaterialStateProperty.all(const CircleBorder()),
-                        /*padding: MaterialStateProperty.all(
-                            const EdgeInsets.symmetric(
-                          horizontal: 8.0,
-                          vertical: 8.0,
-                        )),*/
-                      ),
-                      onPressed: () async {
-                        await showSearch(
-                            context: context,
-                            delegate: user.role == "ROLE_MEDIC"
-                                ? SearchUser(
-                                    isHome: true,
-                                    cmp: medic.cmp,
-                                    isEtapa: false)
-                                : SearchNurse(
-                                    isHome: true,
-                                    cep: nurse.cep,
-                                    isEtapa: false));
-                      },
-                      icon: Icon(
-                        Icons.search,
-                        color: Theme.of(context).colorScheme.tertiary,
-                        size: 17.49,
-                      )),
-                )
-              ],
+          GestureDetector(
+            onTap: () async {
+              await showSearch(
+                  context: context,
+                  delegate: user.role == "ROLE_MEDIC"
+                      ? SearchUser(isHome: true, cmp: medic.cmp, isEtapa: false)
+                      : SearchNurse(
+                          isHome: true, cep: nurse.cep, isEtapa: false));
+            },
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 20),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(4),
+                  border: Border.all(
+                      color: Theme.of(context).colorScheme.background,
+                      width: 1.5)),
+              child: GetTextFormField(
+                  icon: Icon(Icons.search),
+                  prefixIcon: Icon(Icons.search),
+                  enabled: false,
+                  placeholder: "Buscar...",
+                  labelText: 'Buscar...',
+                  keyboardType: TextInputType.name,
+                  validator: null),
             ),
           ),
           const SizedBox(
