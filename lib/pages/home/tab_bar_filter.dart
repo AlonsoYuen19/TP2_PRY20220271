@@ -139,7 +139,7 @@ class _TabBarFilterState extends State<TabBarFilter>
                     toolbarHeight: 98,
                     title: Text('Filtrado por Etapa',
                         style: TextStyle(
-                          color: Theme.of(context).colorScheme.tertiary,
+                          color: Theme.of(context).colorScheme.onBackground,
                           fontSize: 20,
                           fontWeight: FontWeight.w400,
                         )),

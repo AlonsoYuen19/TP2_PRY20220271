@@ -29,7 +29,9 @@ class _MyFutureBuilderDiagnosisState extends State<MyFutureBuilderDiagnosis> {
             itemCount: data.length,
             itemBuilder: (context, index) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: SizedBox());
+                return const Center(
+                    child:
+                        CircularProgressIndicator(color: Colors.transparent));
               }
               return GestureDetector(
                 onTap: () {
@@ -62,7 +64,7 @@ class _MyFutureBuilderDiagnosisState extends State<MyFutureBuilderDiagnosis> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         CircleAvatar(
-                          radius: 30,
+                          radius: 32,
                           backgroundColor: Colors.transparent,
                           backgroundImage:
                               ExactAssetImage("assets/images/patient-logo.png"),
@@ -80,15 +82,18 @@ class _MyFutureBuilderDiagnosisState extends State<MyFutureBuilderDiagnosis> {
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600),
                             ),
+                            const SizedBox(height: 6),
                             Text(
                               'Paciente',
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
                               style: TextStyle(
-                                  color: Theme.of(context).colorScheme.outline,
+                                  color:
+                                      Theme.of(context).colorScheme.onSecondary,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400),
                             ),
+                            const SizedBox(height: 6),
                             Text(
                               '${data[index].address}',
                               overflow: TextOverflow.ellipsis,
@@ -96,8 +101,9 @@ class _MyFutureBuilderDiagnosisState extends State<MyFutureBuilderDiagnosis> {
                                   .textTheme
                                   .labelMedium!
                                   .copyWith(
-                                      color:
-                                          Theme.of(context).colorScheme.outline,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSecondary,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w400),
                             ),

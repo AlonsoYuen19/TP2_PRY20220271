@@ -54,6 +54,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
     super.dispose();
   }
 
+  bool enableStep1 = false;
+  bool enableStep2 = false;
+  bool enableStep3 = false;
+  bool enableStep4 = false;
   tapped(int step) {
     setState(() {
       _currentStep = step;
@@ -271,6 +275,237 @@ class _RegisterScreenState extends State<RegisterScreen> {
       child: SafeArea(
         child: Scaffold(
           resizeToAvoidBottomInset: _currentStep == 2 ? true : false,
+          bottomNavigationBar: Container(
+            height: _currentStep == 0 ? 110 : 170,
+            decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(color: Colors.grey.withOpacity(0.6)),
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(8), topRight: Radius.circular(8))),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (_currentStep == 3) ...[
+                    SizedBox(
+                      width: size.width * 1,
+                      height: 56,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          elevation: 0,
+                          backgroundColor: Color.fromRGBO(255, 161, 158, 1),
+                        ),
+                        onPressed: () async {
+                          final isValidForm = _formKey.currentState!.validate();
+                          final isValidForm2 =
+                              _formKey2.currentState!.validate();
+                          final isValidForm3 =
+                              _formKey3.currentState!.validate();
+                          final isValidForm4 =
+                              _formKey4.currentState!.validate();
+                          if (isValidForm &&
+                              isValidForm2 &&
+                              isValidForm3 &&
+                              isValidForm4) {
+                            print("Nombre Completo: " + _name.text);
+                            print("Contraseña: " + _password.text);
+                            print("Correo: " + _email.text);
+                            print("Direccion: " + _address.text);
+                            print("phone: " + _phone.text);
+                            print("DNI: " + _dni.text);
+                            print("Edad: " + _age.text);
+                            print("Estado Civil: " + _stateCivil.text);
+                            print("CMP: " + _cmp.text);
+                            await authService.registerMedic(
+                              context,
+                              capitalizeSentences(_name.text.trim()),
+                              _email.text.trim(),
+                              _password.text.trim(),
+                              _dni.text.trim(),
+                              _age.text.trim(),
+                              capitalizeSentences(_address.text.trim()),
+                              _phone.text.trim(),
+                              _cmp.text.trim(),
+                              "ROLE_MEDIC",
+                              _stateCivil.text.trim(),
+                            );
+                          }
+                        },
+                        child: Text(
+                          "Registrarse",
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelMedium!
+                              .copyWith(
+                                color: Theme.of(context).colorScheme.onTertiary,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16,
+                              ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 14),
+                    SizedBox(
+                      width: size.width * 1,
+                      height: 56,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            side: BorderSide(
+                                color: Color.fromRGBO(255, 161, 158, 1),
+                                width: 1.5),
+                            backgroundColor: Color.fromRGBO(255, 242, 241, 1),
+                            elevation: 0),
+                        onPressed: cancel,
+                        child: Text(
+                          "Retroceder",
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelMedium
+                              ?.copyWith(
+                                  color: Color.fromRGBO(255, 161, 158, 1),
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 16),
+                        ),
+                      ),
+                    ),
+                  ] else if (_currentStep == 0) ...[
+                    SizedBox(
+                      width: size.width * 1,
+                      height: 56,
+                      child: ElevatedButton(
+                        onPressed: enableStep1 == true ? continuedStep : null,
+                        style: ElevatedButton.styleFrom(
+                            elevation: 0,
+                            backgroundColor: Color.fromRGBO(255, 161, 158, 1)),
+                        child: Text('Siguiente',
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelMedium!
+                                .copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onTertiary,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600)),
+                      ),
+                    ),
+                  ] else if (_currentStep == 1) ...[
+                    Column(
+                      children: [
+                        SizedBox(
+                          width: size.width * 1,
+                          height: 56,
+                          child: ElevatedButton(
+                            onPressed: enableStep2 == true && _currentStep == 1
+                                ? continuedStep
+                                : null,
+                            style: ElevatedButton.styleFrom(
+                                elevation: 0,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8)),
+                                backgroundColor:
+                                    Color.fromRGBO(255, 161, 158, 1)),
+                            child: Text('Siguiente',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelMedium!
+                                    .copyWith(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onTertiary,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600)),
+                          ),
+                        ),
+                        const SizedBox(height: 14),
+                        SizedBox(
+                          width: size.width * 1,
+                          height: 56,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                side: BorderSide(
+                                    color: Color.fromRGBO(255, 161, 158, 1),
+                                    width: 1.5),
+                                backgroundColor:
+                                    Color.fromRGBO(255, 242, 241, 1),
+                                elevation: 0),
+                            onPressed: cancel,
+                            child: Text(
+                              "Retroceder",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .labelMedium
+                                  ?.copyWith(
+                                      color: Color.fromRGBO(255, 161, 158, 1),
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 16),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ] else if (_currentStep == 2) ...[
+                    Column(
+                      children: [
+                        SizedBox(
+                          width: size.width * 1,
+                          height: 56,
+                          child: ElevatedButton(
+                            onPressed: enableStep3 == true && _currentStep == 2
+                                ? continuedStep
+                                : null,
+                            style: ElevatedButton.styleFrom(
+                                elevation: 0,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8)),
+                                backgroundColor:
+                                    Color.fromRGBO(255, 161, 158, 1)),
+                            child: Text('Siguiente',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelMedium!
+                                    .copyWith(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onTertiary,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600)),
+                          ),
+                        ),
+                        const SizedBox(height: 14),
+                        SizedBox(
+                          width: size.width * 1,
+                          height: 56,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                side: BorderSide(
+                                    color: Color.fromRGBO(255, 161, 158, 1),
+                                    width: 1.5),
+                                backgroundColor:
+                                    Color.fromRGBO(255, 242, 241, 1),
+                                elevation: 0),
+                            onPressed: cancel,
+                            child: Text(
+                              "Retroceder",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .labelMedium
+                                  ?.copyWith(
+                                      color: Color.fromRGBO(255, 161, 158, 1),
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 16),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ]
+                ],
+              ),
+            ),
+          ),
           appBar: AppBar(
             backgroundColor: const Color.fromRGBO(250, 250, 250, 1),
             leading: _currentStep == 0
@@ -310,7 +545,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w400,
-                color: Theme.of(context).colorScheme.tertiary,
+                color: Theme.of(context).colorScheme.onBackground,
               ),
             ),
           ),
@@ -323,7 +558,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 decoration: BoxDecoration(
                   color: stepIndex == _currentStep
                       ? Theme.of(context).colorScheme.onSecondaryContainer
-                      : Theme.of(context).colorScheme.outline,
+                      : Theme.of(context).colorScheme.onSecondary,
                   borderRadius: BorderRadius.circular(30),
                 ),
                 child: Center(
@@ -339,12 +574,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
             margin: EdgeInsets.zero,
             type: StepperType.horizontal,
             onStepTapped: null,
-            //physics: const BouncingScrollPhysics(),
+            physics: null,
             currentStep: _currentStep,
             onStepCancel: cancel,
             onStepContinue: continuedStep,
             //onStepTapped: tapped,
-            controlsBuilder: controlBuilders,
+            controlsBuilder: (context, details) {
+              return Container();
+            },
             elevation: 0,
             steps: [
               Step(
@@ -354,7 +591,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         style: Theme.of(context).textTheme.labelLarge!.copyWith(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
-                            color: Theme.of(context).colorScheme.outline)),
+                            color: Theme.of(context).colorScheme.onSecondary)),
                   ),
                   content: Form(
                     key: _formKey,
@@ -385,14 +622,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             obscureText: true,
                             validator: validPassword(""),
                             controllerr: _password,
-                            option: TextInputAction.next,
+                            option: TextInputAction.done,
                             onSubmit: (value) {
                               if (_formKey.currentState!.validate()) {
                                 _formKey.currentState!.save();
-                                _currentStep += 1;
+                                //_currentStep += 1;
                                 print(_formKey.currentState!.validate());
                                 FocusScope.of(context).unfocus();
                                 setState(() {});
+                                enableStep1 = true;
+                              } else {
+                                enableStep1 = false;
                               }
                             },
                           ),
@@ -413,7 +653,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     style: Theme.of(context).textTheme.labelLarge!.copyWith(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
-                          color: Theme.of(context).colorScheme.outline,
+                          color: Theme.of(context).colorScheme.onSecondary,
                         ),
                   ),
                 ),
@@ -447,13 +687,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               "El número del dni debe ser de 8 dígitos"),
                           obscureText: false,
                           controllerr: _dni,
-                          option: TextInputAction.none,
+                          option: TextInputAction.done,
                           onSubmit: (value) {
                             if (_formKey2.currentState!.validate()) {
                               _formKey2.currentState!.save();
-                              _currentStep += 1;
+                              //_currentStep += 1;
                               print(_formKey2.currentState!.validate());
                               setState(() {});
+                              enableStep2 = true;
+                            } else {
+                              enableStep2 = false;
                             }
                           },
                         ),
@@ -474,7 +717,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         style: Theme.of(context).textTheme.labelLarge!.copyWith(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
-                            color: Theme.of(context).colorScheme.outline)),
+                            color: Theme.of(context).colorScheme.onSecondary)),
                   ),
                   content: Form(
                     key: _formKey3,
@@ -517,13 +760,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               "Escriba la dirección con el formato correcto"),
                           obscureText: false,
                           controllerr: _address,
-                          option: TextInputAction.send,
+                          option: TextInputAction.done,
                           onSubmit: (value) {
                             if (_formKey3.currentState!.validate()) {
                               _formKey3.currentState!.save();
-                              _currentStep += 1;
+                              //_currentStep += 1;
                               print(_formKey3.currentState!.validate());
                               setState(() {});
+                              enableStep3 = true;
+                            } else {
+                              enableStep3 = false;
                             }
                           },
                         ),
@@ -543,7 +789,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         style: Theme.of(context).textTheme.labelLarge!.copyWith(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
-                            color: Theme.of(context).colorScheme.outline)),
+                            color: Theme.of(context).colorScheme.onSecondary)),
                   ),
                   content: Form(
                     key: _formKey4,

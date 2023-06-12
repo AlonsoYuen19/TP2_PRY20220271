@@ -38,9 +38,7 @@ class _MyFutureBuilderState extends State<MyFutureBuilderFilter> {
                     child: SizedBox(
                   width: 100,
                   height: 100,
-                  child: CircularProgressIndicator(
-                    color: Theme.of(context).colorScheme.onTertiary,
-                  ),
+                  child: CircularProgressIndicator(color: Colors.transparent),
                 ));
               } else if (snapshot.hasError) {
                 return Center(
@@ -93,7 +91,7 @@ class _MyFutureBuilderState extends State<MyFutureBuilderFilter> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         CircleAvatar(
-                          radius: 30,
+                          radius: 32,
                           backgroundColor: Colors.transparent,
                           backgroundImage:
                               ExactAssetImage("assets/images/patient-logo.png"),
@@ -107,11 +105,12 @@ class _MyFutureBuilderState extends State<MyFutureBuilderFilter> {
                                     .textTheme
                                     .labelMedium!
                                     .copyWith(
-                                        fontSize: 16,
+                                        fontSize: 18,
                                         fontWeight: FontWeight.w600,
                                         color: Theme.of(context)
                                             .colorScheme
                                             .tertiary)),
+                            const SizedBox(height: 6),
                             Row(
                               children: [
                                 Text(
@@ -137,6 +136,7 @@ class _MyFutureBuilderState extends State<MyFutureBuilderFilter> {
                                 ),
                               ],
                             ),
+                            const SizedBox(height: 6),
                             Row(
                               children: [
                                 Text(

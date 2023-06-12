@@ -37,7 +37,7 @@ class _MyFutureBuilderAvailableNursesState
                   width: 100,
                   height: 100,
                   child: CircularProgressIndicator(
-                    color: Theme.of(context).colorScheme.onTertiary,
+                    color: Colors.transparent,
                   ),
                 ));
               }
@@ -86,25 +86,31 @@ class _MyFutureBuilderAvailableNursesState
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600),
                             ),
+                            const SizedBox(height: 6),
                             Text(
-                              "Enfermero",
+                              data[index].isAuxiliar == false
+                                  ? "Enfermero"
+                                  : "Enfermero Auxiliar",
                               style: Theme.of(context)
                                   .textTheme
                                   .labelMedium!
                                   .copyWith(
-                                      color:
-                                          Theme.of(context).colorScheme.outline,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSecondary,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w400),
                             ),
+                            const SizedBox(height: 6),
                             Text(
                               '${data[index].address}',
                               style: Theme.of(context)
                                   .textTheme
                                   .labelMedium!
                                   .copyWith(
-                                      color:
-                                          Theme.of(context).colorScheme.outline,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSecondary,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w400),
                             ),

@@ -52,10 +52,11 @@ class FancyCard extends StatelessWidget {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
+                  SizedBox(height: 8),
                   Text(
                     date,
                     style: TextStyle(
-                      color: Theme.of(context).colorScheme.outline,
+                      color: Theme.of(context).colorScheme.onSecondary,
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
                     ),
@@ -123,7 +124,7 @@ class FancyCardSearchPatient extends StatelessWidget {
                   Text(
                     date,
                     style: TextStyle(
-                      color: Theme.of(context).colorScheme.outline,
+                      color: Theme.of(context).colorScheme.onSecondary,
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
                     ),

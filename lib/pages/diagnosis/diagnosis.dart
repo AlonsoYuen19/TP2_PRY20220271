@@ -255,23 +255,28 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
                   width: size.width * 0.43,
                   height: 188,
                   decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.onSecondaryContainer,
-                      borderRadius: BorderRadius.circular(20)),
+                      border: Border.all(
+                          color: Color.fromRGBO(210, 217, 254, 1), width: 2),
+                      color: Color.fromRGBO(210, 217, 254, 1),
+                      borderRadius: BorderRadius.circular(8)),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [
                       Icon(
                         Icons.person,
-                        size: 36,
-                        color: Colors.white,
+                        size: 28,
+                        color: Color.fromRGBO(95, 109, 186, 1),
                       ),
                       SizedBox(
-                        height: 10,
+                        height: 11,
                       ),
                       Text(
-                        "Paciente Registrado",
+                        "Paciente\nRegistrado",
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.white, fontSize: 20),
+                        style: TextStyle(
+                            color: Color.fromRGBO(95, 109, 186, 1),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500),
                       )
                     ],
                   ),
@@ -285,15 +290,17 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
                   width: size.width * 0.43,
                   height: 188,
                   decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.onSecondaryContainer,
+                      border: Border.all(
+                          color: Color.fromRGBO(255, 217, 221, 1), width: 2),
+                      color: Color.fromRGBO(255, 217, 221, 1),
                       borderRadius: BorderRadius.circular(20)),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [
                       Icon(
                         Icons.medical_services,
-                        size: 36,
-                        color: Colors.white,
+                        size: 28,
+                        color: Color.fromRGBO(178, 88, 97, 1),
                       ),
                       SizedBox(
                         height: 10,
@@ -301,7 +308,10 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
                       Text(
                         "Diagnóstico\nRápido",
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.white, fontSize: 20),
+                        style: TextStyle(
+                            color: Color.fromRGBO(178, 88, 97, 1),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500),
                       )
                     ],
                   ),
@@ -322,16 +332,16 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
                   triggerMode: TooltipTriggerMode.tap,
                   margin: EdgeInsets.symmetric(horizontal: 50),
                   decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.onSecondaryContainer,
+                      color: Color.fromRGBO(210, 217, 254, 1),
                       borderRadius: BorderRadius.all(Radius.circular(10))),
                   padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                   showDuration: Duration(seconds: 6),
                   message:
                       "Seleccione la opción 'Paciente Registrado' si desea realizar un diagnóstico a un paciente registrado en el sistema.",
-                  textStyle: TextStyle(fontSize: 16),
+                  textStyle: TextStyle(
+                      fontSize: 16, color: Color.fromRGBO(95, 109, 186, 1)),
                   child: Icon(Icons.info_outline,
-                      color: Theme.of(context).colorScheme.onSecondaryContainer,
-                      size: 36)),
+                      color: Color.fromRGBO(95, 109, 186, 1), size: 36)),
             ),
             Padding(
               padding: EdgeInsets.only(right: 16.0),
@@ -339,16 +349,16 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
                   triggerMode: TooltipTriggerMode.tap,
                   margin: EdgeInsets.symmetric(horizontal: 50),
                   decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.onSecondaryContainer,
+                      color: Color.fromRGBO(255, 217, 221, 1),
                       borderRadius: BorderRadius.all(Radius.circular(10))),
                   padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                   showDuration: Duration(seconds: 6),
                   message:
                       "Seleccione la opción 'Diagnóstico Rápido' para realizar una revalidación de su diagnóstico.",
-                  textStyle: TextStyle(fontSize: 16),
+                  textStyle: TextStyle(
+                      fontSize: 16, color: Color.fromRGBO(178, 88, 97, 1)),
                   child: Icon(Icons.info_outline,
-                      color: Theme.of(context).colorScheme.onSecondaryContainer,
-                      size: 36)),
+                      color: Color.fromRGBO(178, 88, 97, 1), size: 36)),
             ),
           ],
         ),

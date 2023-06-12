@@ -60,8 +60,6 @@ class _ImagePreviewState extends State<ImagePreview> {
     return completer.future;
   }
 
-
-
   @override
   void initState() {
     super.initState();
@@ -111,7 +109,7 @@ class _ImagePreviewState extends State<ImagePreview> {
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w400,
-                color: Theme.of(context).colorScheme.tertiary,
+                color: Theme.of(context).colorScheme.onBackground,
               ),
             ),
           ),
@@ -181,10 +179,10 @@ class _ImagePreviewState extends State<ImagePreview> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "Etapa: ${diagnosis!.stagePredicted}",
+                                      "Etapa ${diagnosis!.stagePredicted}",
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
-                                          fontSize: 20,
+                                          fontSize: 22,
                                           fontWeight: FontWeight.w600,
                                           color: Theme.of(context)
                                               .colorScheme
@@ -226,7 +224,8 @@ class _ImagePreviewState extends State<ImagePreview> {
                             style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w400,
-                                color: Theme.of(context).colorScheme.outline),
+                                color:
+                                    Theme.of(context).colorScheme.onSecondary),
                           ),
                         ),
                         Expanded(

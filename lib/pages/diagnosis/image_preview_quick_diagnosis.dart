@@ -112,7 +112,7 @@ class _ImagePreviewQuickDiagnosisState
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w400,
-                              color: Theme.of(context).colorScheme.tertiary,
+                              color: Theme.of(context).colorScheme.onBackground,
                             ),
                           ),
                         ),
@@ -146,7 +146,7 @@ class _ImagePreviewQuickDiagnosisState
                                           topRight: Radius.circular(8),
                                         ),
                                         child: SizedBox(
-                                          height: size.height * 0.24,
+                                          height: size.height * 0.25,
                                           width: size.width * 1,
                                           child: Image.file(
                                             File(widget.imagePath.path),
@@ -174,10 +174,10 @@ class _ImagePreviewQuickDiagnosisState
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          "Etapa: ${quickDiagnosis!.stagePredicted}",
+                                          "Etapa ${quickDiagnosis!.stagePredicted}",
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
-                                              fontSize: 20,
+                                              fontSize: 22,
                                               fontWeight: FontWeight.w600,
                                               color: Theme.of(context)
                                                   .colorScheme
@@ -227,8 +227,9 @@ class _ImagePreviewQuickDiagnosisState
                                 style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w400,
-                                    color:
-                                        Theme.of(context).colorScheme.outline),
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSecondary),
                               ),
                             ),
                             Expanded(

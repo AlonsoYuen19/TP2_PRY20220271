@@ -124,38 +124,25 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     SizedBox(height: 28),
                     GetTextFormField(
-                      labelText: "Contraseña",
-                      placeholder: password,
-                      controllerr: passwordController,
-                      icon: const Icon(Icons.lock),
-                      keyboardType: TextInputType.visiblePassword,
-                      validator: validPasswordLogin("Rellene la contraseña"),
-                      obscureText: true,
-                      isRegisterPassword: false,
-                      option: TextInputAction.send,
-                      onSubmit: (p0) {
-                        setState(() {
-                          _isPressed = true;
-                          Future.delayed(const Duration(seconds: 6), () {
-                            setState(() {
-                              _isPressed = false;
-                            });
-                          });
-                        });
-                        if (_isPressed == true) {
-                          _handleButton();
-                        } else {
-                          null;
-                        }
-                      },
-                    ),
+                        labelText: "Contraseña",
+                        placeholder: password,
+                        controllerr: passwordController,
+                        icon: const Icon(Icons.lock),
+                        keyboardType: TextInputType.visiblePassword,
+                        validator: validPasswordLogin("Rellene la contraseña"),
+                        obscureText: true,
+                        isRegisterPassword: false,
+                        option: TextInputAction.send,
+                        onChanged:
+                            (_isPressed == false ? _handleButton : null)),
                     SizedBox(height: size.height * 0.096),
                     signInButton(context),
                     SizedBox(height: size.height * 0.02),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
                             "¿Aún no tienes una cuenta? ",
@@ -166,10 +153,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                     color:
                                         Theme.of(context).colorScheme.tertiary,
                                     fontSize: 16,
-                                    fontWeight: FontWeight.w500),
+                                    fontWeight: FontWeight.w400),
                           ),
-                          TextButton(
-                              onPressed: () async {
+                          GestureDetector(
+                              onTap: () async {
                                 Navigator.pushNamed(context, "preRegister");
                               },
                               child: Text("Crear cuenta",
@@ -178,7 +165,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                       .displaySmall!
                                       .copyWith(
                                           fontSize: 16,
-                                          fontWeight: FontWeight.w500,
+                                          decoration: TextDecoration.none,
+                                          fontWeight: FontWeight.w400,
                                           color: Theme.of(context)
                                               .colorScheme
                                               .onSecondaryContainer)))
@@ -187,7 +175,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     size.longestSide < 600
                         ? SizedBox(height: 40)
-                        : SizedBox(height: size.height * 0.195),
+                        : SizedBox(height: size.height * 0.15),
                     DefaultTextStyle(
                       style: TextStyle(
                         fontSize: 20,

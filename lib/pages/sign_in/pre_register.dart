@@ -58,7 +58,7 @@ class _PreRegisterScreenState extends State<PreRegisterScreen> {
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w400,
-              color: Theme.of(context).colorScheme.tertiary,
+              color: Theme.of(context).colorScheme.onBackground,
             ),
           ),
         ),
@@ -75,9 +75,9 @@ class _PreRegisterScreenState extends State<PreRegisterScreen> {
                 child: Text(
                   "Selecciona tu tipo de usuario",
                   style: TextStyle(
-                    fontSize: 20,
+                    fontSize: 16,
                     fontWeight: FontWeight.w400,
-                    color: Theme.of(context).colorScheme.outline,
+                    color: Theme.of(context).colorScheme.onSecondary,
                   ),
                 ),
               ),
@@ -106,10 +106,12 @@ class _PreRegisterScreenState extends State<PreRegisterScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SvgPicture.asset(
-                        "assets/svgImages/medico_logo1.svg",
-                        fit: BoxFit.cover,
-                        height: 50,
+                      Transform.scale(
+                        scale: 1.5,
+                        child: SvgPicture.asset(
+                          "assets/svgImages/medico_logo1.svg",
+                          height: 50,
+                        ),
                       ),
                       const SizedBox(
                         width: 10,
@@ -151,10 +153,13 @@ class _PreRegisterScreenState extends State<PreRegisterScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SvgPicture.asset(
-                        "assets/svgImages/enfermero_logo1.svg",
-                        fit: BoxFit.cover,
-                        height: 50,
+                      Transform.scale(
+                        scale: 1.5,
+                        child: SvgPicture.asset(
+                          "assets/svgImages/enfermero_logo1.svg",
+                          fit: BoxFit.cover,
+                          height: 50,
+                        ),
                       ),
                       const SizedBox(
                         width: 10,

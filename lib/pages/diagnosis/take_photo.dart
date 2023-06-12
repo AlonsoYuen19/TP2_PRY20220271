@@ -125,7 +125,7 @@ class _TakePhotoDiagnosisState extends State<TakePhotoDiagnosis> {
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w400,
-                color: Theme.of(context).colorScheme.tertiary,
+                color: Theme.of(context).colorScheme.onBackground,
               ),
             ),
           ),
@@ -253,7 +253,7 @@ class _TakePhotoDiagnosisState extends State<TakePhotoDiagnosis> {
                                     ElevatedButton(
                                       style: ElevatedButton.styleFrom(
                                           side: BorderSide(
-                                              width: 1.5,
+                                              width: 1,
                                               color: Theme.of(context)
                                                   .colorScheme
                                                   .onSecondaryContainer),

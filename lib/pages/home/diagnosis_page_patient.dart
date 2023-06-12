@@ -116,7 +116,7 @@ class _DiagnosisPageByPatientState extends State<DiagnosisPageByPatient> {
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w400,
-              color: Theme.of(context).colorScheme.tertiary,
+              color: Theme.of(context).colorScheme.onBackground,
             ),
           ),
         ),
@@ -193,7 +193,7 @@ class _DiagnosisPageByPatientState extends State<DiagnosisPageByPatient> {
                           style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w400,
-                              color: Theme.of(context).colorScheme.outline),
+                              color: Theme.of(context).colorScheme.onSecondary),
                         ),
                       ),
                       Expanded(

@@ -104,7 +104,7 @@ class _AssignItineraryPageState extends State<AssignItineraryPage> {
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w400,
-              color: Theme.of(context).colorScheme.tertiary,
+              color: Theme.of(context).colorScheme.onBackground,
             ),
           ),
         ),
@@ -360,7 +360,7 @@ class _AssignItineraryPageState extends State<AssignItineraryPage> {
               Text(fechaFormateada,
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: Theme.of(context).colorScheme.outline,
+                    color: Theme.of(context).colorScheme.onSecondary,
                     fontSize: 16,
                     fontWeight: FontWeight.w400,
                   )),
@@ -508,7 +508,7 @@ class _AssignItineraryPageState extends State<AssignItineraryPage> {
               switchVariable == false ? direccion! : patient!.address,
               textAlign: TextAlign.start,
               style: TextStyle(
-                color: Theme.of(context).colorScheme.outline,
+                color: Theme.of(context).colorScheme.onSecondary,
                 fontSize: 16,
                 fontWeight: FontWeight.w400,
               ),

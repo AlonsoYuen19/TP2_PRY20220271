@@ -111,7 +111,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w400,
-              color: Theme.of(context).colorScheme.tertiary,
+              color: Theme.of(context).colorScheme.onBackground,
             ),
           ),
         ),

@@ -10,6 +10,7 @@ import '../../../services/nurse_services.dart';
 import '../../../services/users_service.dart';
 import '../../../utils/helpers/Searchable/searchable_medic.dart';
 import '../../../utils/helpers/Searchable/searchable_nurse.dart';
+import '../../../utils/helpers/Searchable/searchable_widget.dart';
 import '../../../utils/helpers/constant_variables.dart';
 import '../../../utils/helpers/future_builder_cards/future_builders_filter.dart';
 
@@ -62,54 +63,23 @@ class _FirstPageState extends State<FirstPage> {
             const SizedBox(height: 16),
             diagnosis.isEmpty
                 ? Container()
-                : Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Flexible(
-                          child: Text(
-                            "Realice la búsqueda de un paciente",
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium!
-                                .copyWith(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSecondary),
-                          ),
-                        ),
-                        Container(
-                          width: 40,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.background,
-                            borderRadius: BorderRadius.circular(40),
-                          ),
-                          child: IconButton(
-                              onPressed: () async {
-                                await showSearch(
-                                    context: context,
-                                    delegate: user.role == "ROLE_MEDIC"
-                                        ? SearchUser(
-                                            isHome: false,
-                                            cmp: medic.cmp,
-                                            isEtapa: true,
-                                            stagePredicted: "1")
-                                        : SearchNurse(
-                                            isHome: false,
-                                            cep: nurse.cep,
-                                            isEtapa: true,
-                                            stagePredicted: "1"));
-                              },
-                              icon: Icon(
-                                Icons.search,
-                                color: Theme.of(context).colorScheme.tertiary,
-                                size: 17.49,
-                              )),
-                        )
-                      ],
-                    ),
+                : SearchableTitle(
+                    title: "Buscar por etapa 1...",
+                    onChanged: () async {
+                      await showSearch(
+                          context: context,
+                          delegate: user.role == "ROLE_MEDIC"
+                              ? SearchUser(
+                                  isHome: false,
+                                  cmp: medic.cmp,
+                                  isEtapa: true,
+                                  stagePredicted: "1")
+                              : SearchNurse(
+                                  isHome: false,
+                                  cep: nurse.cep,
+                                  isEtapa: true,
+                                  stagePredicted: "1"));
+                    },
                   ),
             const SizedBox(
               height: 16,

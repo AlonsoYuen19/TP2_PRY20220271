@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ulcernosis/utils/helpers/constant_variables.dart';
 
-const colorAccent = Color.fromRGBO(244, 179, 9, 1);
+const colorAccentTextFormField = Color.fromRGBO(121, 116, 126, 1);
 const chartColorBackground = Color.fromRGBO(224, 224, 224, 1);
 const backgroundColor2 = Color.fromRGBO(109, 153, 237, 1);
 
 const primaryColorApp = Color.fromRGBO(14, 26, 48, 1);
+const headerColorApp = Color.fromRGBO(40, 39, 53, 1);
+const labelTextFormColor = Color.fromRGBO(73, 69, 79, 1);
 const primaryColorTextColor = Color.fromRGBO(133, 133, 133, 1);
 const primaryBackGroundColor = Color.fromRGBO(14, 26, 48, 0.65);
 
@@ -15,7 +17,7 @@ const secondaryAppbarBackground = Color.fromRGBO(255, 225, 224, 1);
 const secondaryAppbarText = Color.fromRGBO(242, 144, 141, 1);
 const secondaryBackgroundColorApp = Color.fromRGBO(255, 242, 241, 1);
 
-const buttonForegroundColor = Color.fromRGBO(240, 240, 240, 1);
+const buttonForegroundColor = Color.fromRGBO(255, 255, 255, 1);
 
 const registerBackgroundColor = Color.fromRGBO(99, 128, 226, 10);
 const textColor = Color.fromRGBO(0, 0, 0, 1);
@@ -23,11 +25,12 @@ ThemeData textThemes = ThemeData(
   colorScheme: const ColorScheme.light(
     //primaryColorApp
     tertiary: primaryColorApp,
+    onSurface: labelTextFormColor,
     //primaryColorTextColor
     onSecondary: primaryColorTextColor,
     //primaryBackGroundColor
     outline: primaryBackGroundColor,
-    onBackground: primaryBackGroundColor,
+    onBackground: headerColorApp,
     //secondaryColorApp
     onSecondaryContainer: secondaryColorApp,
     inversePrimary: secondaryAppbarText,
@@ -38,7 +41,7 @@ ThemeData textThemes = ThemeData(
     background: chartColorBackground,
 
     primary: textColor,
-    secondary: colorAccent,
+    secondary: colorAccentTextFormField,
 
     error: Colors.red,
 
@@ -114,7 +117,7 @@ ThemeData textThemes = ThemeData(
   iconButtonTheme: const IconButtonThemeData(
       style: ButtonStyle(
     animationDuration: Duration(seconds: 2),
-    iconColor: MaterialStatePropertyAll(colorAccent),
+    iconColor: MaterialStatePropertyAll(colorAccentTextFormField),
   )),
   textTheme: GoogleFonts.robotoTextTheme(
     ThemeData(

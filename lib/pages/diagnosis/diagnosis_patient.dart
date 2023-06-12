@@ -78,7 +78,7 @@ class _DiagnosisPatientPageState extends State<DiagnosisPatientPage> {
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w400,
-                color: Theme.of(context).colorScheme.tertiary,
+                color: Theme.of(context).colorScheme.onBackground,
               ),
             ),
           ),
@@ -109,35 +109,37 @@ class _DiagnosisPatientPageState extends State<DiagnosisPatientPage> {
                                 color: Colors.transparent,
                               ));
                             }
-                            return Column(
-                              children: [
-                                SizedBox(
-                                  height: size.height * 0.08,
-                                ),
-                                Container(
-                                  height: 280,
-                                  width: 280,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                        width: 0, color: Colors.transparent),
-                                    image: const DecorationImage(
-                                      image: AssetImage(
-                                          'assets/images/out-of-stock.png'),
-                                      fit: BoxFit.contain,
+                            return Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 40),
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    height: size.height * 0.3,
+                                  ),
+                                  Container(
+                                    height: 60,
+                                    width: 60,
+                                    child: Image.asset(
+                                      'assets/images/Group.png',
+                                      color: Colors.grey,
+                                      filterQuality: FilterQuality.high,
+                                      fit: BoxFit.fitWidth,
                                     ),
                                   ),
-                                ),
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                const Text(
-                                    "No hay Registros de Pacientes Disponibles",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        color: Colors.grey,
-                                        fontSize: 30,
-                                        fontWeight: FontWeight.bold))
-                              ],
+                                  const SizedBox(
+                                    height: 16,
+                                  ),
+                                  const Text(
+                                      "No se encontraron registros de pacientes disponibles",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color:
+                                              Color.fromRGBO(213, 213, 213, 1),
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w600))
+                                ],
+                              ),
                             );
                           })
                       : Padding(
@@ -158,35 +160,37 @@ class _DiagnosisPatientPageState extends State<DiagnosisPatientPage> {
                                 color: Colors.transparent,
                               ));
                             }
-                            return Column(
-                              children: [
-                                SizedBox(
-                                  height: size.height * 0.08,
-                                ),
-                                Container(
-                                  height: 280,
-                                  width: 280,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                        width: 0, color: Colors.transparent),
-                                    image: const DecorationImage(
-                                      image: AssetImage(
-                                          'assets/images/out-of-stock.png'),
-                                      fit: BoxFit.contain,
+                            return Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 40),
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    height: size.height * 0.2,
+                                  ),
+                                  Container(
+                                    height: 60,
+                                    width: 60,
+                                    child: Image.asset(
+                                      'assets/images/Group.png',
+                                      color: Colors.grey,
+                                      filterQuality: FilterQuality.high,
+                                      fit: BoxFit.fitWidth,
                                     ),
                                   ),
-                                ),
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                const Text(
-                                    "No hay Registros de Pacientes Disponibles",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        color: Colors.grey,
-                                        fontSize: 30,
-                                        fontWeight: FontWeight.bold))
-                              ],
+                                  const SizedBox(
+                                    height: 16,
+                                  ),
+                                  const Text(
+                                      "No se encontraron registros de pacientes disponibles",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color:
+                                              Color.fromRGBO(213, 213, 213, 1),
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w600))
+                                ],
+                              ),
                             );
                           })
                       : Padding(

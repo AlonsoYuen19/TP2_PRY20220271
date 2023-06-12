@@ -37,9 +37,7 @@ class _MyFutureBuilderPatientsByNurseState
                     child: SizedBox(
                   width: 100,
                   height: 100,
-                  child: CircularProgressIndicator(
-                    color: Theme.of(context).colorScheme.onTertiary,
-                  ),
+                  child: CircularProgressIndicator(color: Colors.transparent),
                 ));
               }
               return GestureDetector(
@@ -61,20 +59,6 @@ class _MyFutureBuilderPatientsByNurseState
                       idPatient: idPatient,
                     );
                   }));
-                  /*await mostrarAlertaRegistroAsignacion(context,
-                                            "¿Deseas seleccionar al paciente $name para ser atendido por el $nameNurse?",
-                                            () {
-                                          patienService.createAssignment(
-                                              idPatient, widget.idNurse);
-                                          Navigator.pushReplacement(context,
-                                              MaterialPageRoute(
-                                                  builder: (BuildContext context) {
-                                            return AssignItineraryPage(
-                                              idNurse: widget.idNurse,
-                                              idPatient: idPatient,
-                                            );
-                                          }));
-                                        }, color: Colors.yellow);*/
                 },
                 child: Card(
                   margin: EdgeInsets.zero,
@@ -96,7 +80,7 @@ class _MyFutureBuilderPatientsByNurseState
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         CircleAvatar(
-                          radius: 30,
+                          radius: 32,
                           backgroundColor: Colors.transparent,
                           backgroundImage:
                               ExactAssetImage("assets/images/patient-logo.png"),
@@ -109,9 +93,10 @@ class _MyFutureBuilderPatientsByNurseState
                               '${data[index].fullName}',
                               style: TextStyle(
                                   color: Theme.of(context).colorScheme.tertiary,
-                                  fontSize: 16,
+                                  fontSize: 18,
                                   fontWeight: FontWeight.w600),
                             ),
+                            const SizedBox(height: 6),
                             Text(
                               "Paciente",
                               style: Theme.of(context)
@@ -124,6 +109,7 @@ class _MyFutureBuilderPatientsByNurseState
                                       fontSize: 16,
                                       fontWeight: FontWeight.w400),
                             ),
+                            const SizedBox(height: 6),
                             Text(
                               '${data[index].address}',
                               style: Theme.of(context)

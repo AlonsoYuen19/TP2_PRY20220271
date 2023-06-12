@@ -282,7 +282,7 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
       },
       child: SafeArea(
         child: Scaffold(
-          resizeToAvoidBottomInset: _currentStep==2?true: false,
+          resizeToAvoidBottomInset: _currentStep == 2 ? true : false,
           appBar: AppBar(
             backgroundColor: const Color.fromRGBO(250, 250, 250, 1),
             leading: _currentStep == 0
@@ -322,7 +322,7 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w400,
-                color: Theme.of(context).colorScheme.tertiary,
+                color: Theme.of(context).colorScheme.onBackground,
               ),
             ),
           ),
@@ -335,7 +335,7 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
                 decoration: BoxDecoration(
                   color: stepIndex == _currentStep
                       ? Theme.of(context).colorScheme.onSecondaryContainer
-                      : Theme.of(context).colorScheme.outline,
+                      : Theme.of(context).colorScheme.onSecondary,
                   borderRadius: BorderRadius.circular(30),
                 ),
                 child: Center(
@@ -366,7 +366,7 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
                         style: Theme.of(context).textTheme.labelLarge!.copyWith(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
-                            color: Theme.of(context).colorScheme.outline)),
+                            color: Theme.of(context).colorScheme.onSecondary)),
                   ),
                   content: Form(
                     key: _formKey,
@@ -422,7 +422,7 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
                         style: Theme.of(context).textTheme.labelLarge!.copyWith(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
-                            color: Theme.of(context).colorScheme.outline)),
+                            color: Theme.of(context).colorScheme.onSecondary)),
                   ),
                   content: Form(
                     key: _formKey2,
@@ -479,7 +479,7 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
                         style: Theme.of(context).textTheme.labelLarge!.copyWith(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
-                            color: Theme.of(context).colorScheme.outline)),
+                            color: Theme.of(context).colorScheme.onSecondary)),
                   ),
                   content: Form(
                     key: _formKey3,
@@ -547,7 +547,7 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
                         style: Theme.of(context).textTheme.labelLarge!.copyWith(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
-                            color: Theme.of(context).colorScheme.outline)),
+                            color: Theme.of(context).colorScheme.onSecondary)),
                   ),
                   content: Form(
                     key: _formKey4,

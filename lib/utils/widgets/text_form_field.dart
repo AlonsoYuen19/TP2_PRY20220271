@@ -1,6 +1,5 @@
 import 'package:fancy_password_field/fancy_password_field.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class GetTextFormField extends StatefulWidget {
   final String labelText;
@@ -15,6 +14,7 @@ class GetTextFormField extends StatefulWidget {
   final int maxLength;
   final TextInputAction? option;
   final Function(String)? onSubmit;
+  final void Function()? onChanged;
   final GlobalKey<FormState>? keyy;
   final bool? enabled;
   final Widget? prefixIcon;
@@ -34,7 +34,8 @@ class GetTextFormField extends StatefulWidget {
       this.onSubmit,
       this.keyy,
       this.enabled,
-      this.prefixIcon});
+      this.prefixIcon,
+      this.onChanged});
 
   @override
   State<GetTextFormField> createState() => _GetTextFormFieldState();
@@ -156,6 +157,7 @@ class _GetTextFormFieldState extends State<GetTextFormField> {
                   },
                   obscuringCharacter: "*",
                   onFieldSubmitted: widget.onSubmit,
+                  onEditingComplete: widget.onChanged,
                   textInputAction: widget.option,
                   validator: widget.validator,
                   keyboardType: widget.keyboardType,
@@ -177,7 +179,7 @@ class _GetTextFormFieldState extends State<GetTextFormField> {
                     counterStyle: TextStyle(fontWeight: FontWeight.w600),
                     helperText: null,
                     labelStyle: TextStyle(
-                        color: _color,
+                        color: Theme.of(context).colorScheme.onSurface,
                         fontWeight: FontWeight.w400,
                         fontSize: 16),
                     errorStyle: TextStyle(
@@ -247,7 +249,9 @@ class _GetTextFormFieldState extends State<GetTextFormField> {
                     fillColor: Colors.white,
                     labelStyle: TextStyle(
                         backgroundColor: Colors.transparent,
-                        color: Color.fromRGBO(14, 26, 48, 1),
+                        color: widget.enabled == null
+                            ? Theme.of(context).colorScheme.onSurface
+                            : Color.fromRGBO(169, 168, 170, 1),
                         fontWeight: FontWeight.w400),
                     errorStyle: TextStyle(
                       color: Theme.of(context).colorScheme.error,
@@ -260,6 +264,8 @@ class _GetTextFormFieldState extends State<GetTextFormField> {
                     errorMaxLines: 2,
                     labelText: widget.labelText,
                     hintText: widget.placeholder,
+                    /*hintStyle:
+                        TextStyle(color: Color.fromRGBO(11, 168, 180, 1)),*/
                     contentPadding: const EdgeInsets.all(16),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: const BorderRadius.all(Radius.circular(4)),

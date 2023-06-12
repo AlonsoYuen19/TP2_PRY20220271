@@ -132,7 +132,7 @@ class Validator {
 
   static FormFieldValidator<String> addressValid(String errorMessage) {
     return (value) {
-      if (value!.isEmpty || !RegExp(r'^[a-zA-Z0-9., ñáéíóúÁÉÍÓÚüÜ]+$').hasMatch(value)) {
+      if (value!.isEmpty || !RegExp(r'^[a-zA-Z0-9., ñáéíóúÁÉÍÓÚüÜ-]+$').hasMatch(value)) {
         return errorMessage;
       } else {
         return null;

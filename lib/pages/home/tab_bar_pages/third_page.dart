@@ -8,6 +8,7 @@ import '../../../services/medic_service.dart';
 import '../../../services/nurse_services.dart';
 import '../../../services/users_service.dart';
 import '../../../utils/helpers/Searchable/searchable_nurse.dart';
+import '../../../utils/helpers/Searchable/searchable_widget.dart';
 import '../../../utils/helpers/constant_variables.dart';
 
 import '../../../utils/helpers/Searchable/searchable_medic.dart';
@@ -61,52 +62,23 @@ class _ThirdPageState extends State<ThirdPage> {
             const SizedBox(height: 16),
             diagnosis.isEmpty
                 ? Container()
-                : Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Realice la búsqueda de un paciente",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium!
-                              .copyWith(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onSecondary),
-                        ),
-                        Container(
-                          height: 40,
-                          width: 40,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.background,
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          child: IconButton(
-                              onPressed: () async {
-                                await showSearch(
-                                    context: context,
-                                    delegate: user.role == "ROLE_MEDIC"
-                                        ? SearchUser(
-                                            isHome: false,
-                                            cmp: medic.cmp,
-                                            isEtapa: true,
-                                            stagePredicted: "3")
-                                        : SearchNurse(
-                                            isHome: false,
-                                            cep: nurse.cep,
-                                            isEtapa: true,
-                                            stagePredicted: "3"));
-                              },
-                              icon: Icon(
-                                Icons.search,
-                                color: Theme.of(context).colorScheme.tertiary,
-                                size: 17.49,
-                              )),
-                        )
-                      ],
-                    ),
+                : SearchableTitle(
+                    title: "Buscar por etapa 3...",
+                    onChanged: () async {
+                      await showSearch(
+                          context: context,
+                          delegate: user.role == "ROLE_MEDIC"
+                              ? SearchUser(
+                                  isHome: false,
+                                  cmp: medic.cmp,
+                                  isEtapa: true,
+                                  stagePredicted: "3")
+                              : SearchNurse(
+                                  isHome: false,
+                                  cep: nurse.cep,
+                                  isEtapa: true,
+                                  stagePredicted: "3"));
+                    },
                   ),
             const SizedBox(height: 16),
             diagnosis.isEmpty

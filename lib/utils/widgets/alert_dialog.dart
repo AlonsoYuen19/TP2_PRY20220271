@@ -86,15 +86,16 @@ class CustomDialogWidget extends StatelessWidget {
               Image.asset(
                 "assets/images/alert-icon.png",
                 height: 50,
+                color: Theme.of(context).colorScheme.onBackground,
               ),
               SizedBox(height: size.height * 0.02),
               Text(
                 "¿Estas seguro que deseas cerrar la sesión?",
                 textAlign: TextAlign.center,
                 style: TextStyle(
+                  color: Theme.of(context).colorScheme.onBackground,
                   fontSize: 20,
-                  color: Theme.of(context).colorScheme.tertiary,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
               SizedBox(height: size.height * 0.03),
@@ -148,7 +149,7 @@ class CustomDialogWidget extends StatelessWidget {
                                 color: Theme.of(context)
                                     .colorScheme
                                     .onSecondaryContainer,
-                                width: 1.5),
+                                width: 1),
                             backgroundColor: Color.fromRGBO(255, 232, 230, 1)),
                         onPressed: () => Navigator.pop(context, false),
                         child: Text("Cancelar",
@@ -185,18 +186,20 @@ mostrarAlertaError(BuildContext context, String subtitulo, Function function,
                 borderRadius: BorderRadius.all(Radius.circular(8.0))),
             title: Image.asset(
               "assets/images/alert-icon.png",
-              height: 60,
+              height: 50,
+              color: Theme.of(context).colorScheme.onBackground,
             ),
             content: Column(
               children: [
                 Text(subtitulo,
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                        color: Theme.of(context).colorScheme.tertiary,
-                        fontSize: 20)),
+                        color: Theme.of(context).colorScheme.onBackground,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600)),
                 SizedBox(height: size.height * 0.03),
-                TextButton(
-                  onPressed: function as void Function()?,
+                GestureDetector(
+                  onTap: function as void Function()?,
                   child: Container(
                     width: size.width * 1,
                     padding: const EdgeInsets.all(14.0),
@@ -239,18 +242,20 @@ mostrarAlertaExito(BuildContext context, String subtitulo, Function function) {
                 borderRadius: BorderRadius.all(Radius.circular(8.0))),
             title: Image.asset(
               "assets/images/alert-icon.png",
-              height: 60,
+              height: 50,
+              color: Theme.of(context).colorScheme.onBackground,
             ),
             content: Column(
               children: [
                 Text(subtitulo,
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                        color: Theme.of(context).colorScheme.tertiary,
-                        fontSize: 20)),
+                        color: Theme.of(context).colorScheme.onBackground,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600)),
                 SizedBox(height: size.height * 0.03),
-                TextButton(
-                  onPressed: function as void Function()?,
+                GestureDetector(
+                  onTap: function as void Function()?,
                   child: Container(
                     width: size.width * 1,
                     padding: const EdgeInsets.all(14.0),
@@ -293,15 +298,17 @@ mostrarAlertaRegistro(BuildContext context, String subtitulo, Function function,
                 borderRadius: BorderRadius.all(Radius.circular(8.0))),
             title: Image.asset(
               "assets/images/alert-icon.png",
-              height: 60,
+              height: 50,
+              color: Theme.of(context).colorScheme.onBackground,
             ),
             content: Column(
               children: [
                 Text(subtitulo,
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                        color: Theme.of(context).colorScheme.tertiary,
-                        fontSize: 20)),
+                        color: Theme.of(context).colorScheme.onBackground,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600)),
                 const SizedBox(height: 30.0),
                 Column(
                   children: [
@@ -334,7 +341,7 @@ mostrarAlertaRegistro(BuildContext context, String subtitulo, Function function,
                               color: Theme.of(context)
                                   .colorScheme
                                   .onSecondaryContainer,
-                              width: 1.5)),
+                              width: 1)),
                       child: Center(
                         child: Padding(
                           padding: EdgeInsets.all(10.0),
@@ -373,15 +380,17 @@ mostrarAlertaRegistroAsignacion(
                 borderRadius: BorderRadius.all(Radius.circular(8.0))),
             title: Image.asset(
               "assets/images/alert-icon.png",
-              height: 60,
+              height: 50,
+              color: Theme.of(context).colorScheme.onBackground,
             ),
             content: Column(
               children: [
                 Text(subtitulo,
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                        color: Theme.of(context).colorScheme.tertiary,
-                        fontSize: 20)),
+                        color: Theme.of(context).colorScheme.onBackground,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600)),
                 const SizedBox(height: 30.0),
                 Column(
                   children: [
@@ -414,7 +423,7 @@ mostrarAlertaRegistroAsignacion(
                               color: Theme.of(context)
                                   .colorScheme
                                   .onSecondaryContainer,
-                              width: 1.5)),
+                              width: 1)),
                       child: Center(
                         child: Padding(
                           padding: EdgeInsets.all(10.0),
@@ -453,15 +462,17 @@ mostrarAlertaVolverDiagnosticos(
                 borderRadius: BorderRadius.all(Radius.circular(8.0))),
             title: Image.asset(
               "assets/images/alert-icon.png",
-              height: 60,
+              height: 50,
+              color: Theme.of(context).colorScheme.onBackground,
             ),
             content: Column(
               children: [
                 Text(subtitulo,
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                        color: Theme.of(context).colorScheme.tertiary,
-                        fontSize: 20)),
+                        color: Theme.of(context).colorScheme.onBackground,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600)),
                 const SizedBox(height: 30.0),
                 Column(
                   children: [
@@ -494,7 +505,7 @@ mostrarAlertaVolverDiagnosticos(
                               color: Theme.of(context)
                                   .colorScheme
                                   .onSecondaryContainer,
-                              width: 1.5)),
+                              width: 1)),
                       child: Center(
                         child: Padding(
                           padding: EdgeInsets.all(10.0),

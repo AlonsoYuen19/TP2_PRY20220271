@@ -38,9 +38,7 @@ class _MyFutureBuilderState extends State<MyFutureBuilder> {
                     child: SizedBox(
                   width: 100,
                   height: 100,
-                  child: CircularProgressIndicator(
-                    color: Theme.of(context).colorScheme.onTertiary,
-                  ),
+                  child: CircularProgressIndicator(color: Colors.transparent),
                 ));
               } else if (snapshot.hasError) {
                 return Center(
@@ -97,7 +95,7 @@ class _MyFutureBuilderState extends State<MyFutureBuilder> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         CircleAvatar(
-                          radius: 30,
+                          radius: 32,
                           backgroundColor: Colors.transparent,
                           backgroundImage:
                               ExactAssetImage("assets/images/patient-logo.png"),
@@ -117,8 +115,9 @@ class _MyFutureBuilderState extends State<MyFutureBuilder> {
                                         color: Theme.of(context)
                                             .colorScheme
                                             .tertiary,
-                                        fontSize: 16,
+                                        fontSize: 18,
                                         fontWeight: FontWeight.w600)),
+                            const SizedBox(height: 6),
                             Row(
                               children: [
                                 Text(
@@ -144,6 +143,7 @@ class _MyFutureBuilderState extends State<MyFutureBuilder> {
                                 ),
                               ],
                             ),
+                            const SizedBox(height: 6),
                             Row(
                               children: [
                                 Text(

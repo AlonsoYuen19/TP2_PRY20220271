@@ -586,7 +586,8 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.never,
                               filled: true,
-                              fillColor: Theme.of(context).colorScheme.outline,
+                              fillColor:
+                                  Theme.of(context).colorScheme.onSecondary,
                               labelStyle: TextStyle(
                                 backgroundColor: Colors.transparent,
                                 color: Theme.of(context).colorScheme.onTertiary,

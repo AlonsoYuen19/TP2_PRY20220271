@@ -88,8 +88,11 @@ class _MyFutureBuilderNursesByMedicsTWState
                                     fontSize: 16,
                                     fontWeight: FontWeight.w600),
                               ),
+                              const SizedBox(height: 6),
                               Text(
-                                "Enfermero especializado",
+                                data[index].isAuxiliar == false
+                                    ? "Enfermero"
+                                    : "Enfermero Auxiliar",
                                 style: Theme.of(context)
                                     .textTheme
                                     .labelMedium!
@@ -100,6 +103,7 @@ class _MyFutureBuilderNursesByMedicsTWState
                                         fontSize: 16,
                                         fontWeight: FontWeight.w400),
                               ),
+                              const SizedBox(height: 6),
                               Text(
                                 '${data[index].address}',
                                 style: Theme.of(context)

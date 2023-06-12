@@ -17,7 +17,7 @@ class _AddNursePageState extends State<AddNursePage> {
   List nursesAvailable = [];
   Future<Widget> delayPage() {
     Completer<Widget> completer = Completer();
-    Future.delayed(const Duration(milliseconds: 900), () {
+    Future.delayed(const Duration(seconds: 1), () {
       completer.complete(Container());
     });
 
@@ -68,15 +68,13 @@ class _AddNursePageState extends State<AddNursePage> {
           centerTitle: true,
           toolbarHeight: 98,
           automaticallyImplyLeading: false,
-          title: Flexible(
-            child: Text(
-              "Añadir Enfermeros",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w400,
-                color: Theme.of(context).colorScheme.tertiary,
-              ),
+          title: Text(
+            "Añadir Enfermeros",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w400,
+              color: Theme.of(context).colorScheme.onBackground,
             ),
           ),
         ),

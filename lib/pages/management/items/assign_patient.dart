@@ -66,7 +66,7 @@ class _AssignPatientPageState extends State<AssignPatientPage> {
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w400,
-              color: Theme.of(context).colorScheme.tertiary,
+              color: Theme.of(context).colorScheme.onBackground,
             ),
           ),
         ),

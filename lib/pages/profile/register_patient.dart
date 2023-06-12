@@ -267,7 +267,7 @@ class _RegisterPatientScreenState extends State<RegisterPatientScreen> {
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w400,
-              color: Theme.of(context).colorScheme.tertiary,
+              color: Theme.of(context).colorScheme.onBackground,
             ),
           ),
         ),
@@ -280,7 +280,7 @@ class _RegisterPatientScreenState extends State<RegisterPatientScreen> {
               decoration: BoxDecoration(
                 color: stepIndex == _currentStep
                     ? Theme.of(context).colorScheme.onSecondaryContainer
-                    : Theme.of(context).colorScheme.outline,
+                    : Theme.of(context).colorScheme.onSecondary,
                 borderRadius: BorderRadius.circular(30),
               ),
               child: Center(
@@ -313,7 +313,7 @@ class _RegisterPatientScreenState extends State<RegisterPatientScreen> {
                       style: Theme.of(context).textTheme.labelLarge!.copyWith(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
-                          color: Theme.of(context).colorScheme.outline)),
+                          color: Theme.of(context).colorScheme.onSecondary)),
                 ),
                 content: Form(
                   key: _formKey,
@@ -365,7 +365,7 @@ class _RegisterPatientScreenState extends State<RegisterPatientScreen> {
                         style: Theme.of(context).textTheme.labelLarge!.copyWith(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
-                            color: Theme.of(context).colorScheme.outline))),
+                            color: Theme.of(context).colorScheme.onSecondary))),
                 content: Form(
                   key: _formKey2,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -405,7 +405,7 @@ class _RegisterPatientScreenState extends State<RegisterPatientScreen> {
                       style: Theme.of(context).textTheme.labelLarge!.copyWith(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
-                          color: Theme.of(context).colorScheme.outline)),
+                          color: Theme.of(context).colorScheme.onSecondary)),
                 ),
                 content: Form(
                   key: _formKey3,

@@ -33,7 +33,9 @@ class _MyFutureBuilderAppointmentByNurseState
             itemCount: data.length,
             itemBuilder: (context, index) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: SizedBox());
+                return const Center(child: CircularProgressIndicator(
+                  color: Colors.transparent
+                ));
               }
               return Card(
                 semanticContainer: true,

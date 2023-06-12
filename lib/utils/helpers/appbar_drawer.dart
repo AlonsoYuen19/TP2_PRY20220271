@@ -120,10 +120,10 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                               decoration: BoxDecoration(
                                 image: DecorationImage(
                                     image: AssetImage(prefs.idMedic == 0
-                                        ? "assets/images/enfermero-logo.png"
-                                        : "assets/images/doctor-logo.png"),
+                                        ? "assets/images/enfermero_logo1.png"
+                                        : "assets/images/medico_logo1.png"),
                                     fit: BoxFit.fitHeight),
-                                color: Colors.black26,
+                                color: Color(0xF1F1F1),
                                 shape: BoxShape.circle,
                               ),
                             )
@@ -155,7 +155,7 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                     ],
                   ),
                   SizedBox(
-                    height: 19,
+                    height: 24,
                   ),
                   Container(
                     width: double.infinity,
@@ -180,8 +180,7 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                       },
                       leading: SvgPicture.asset(
                         "assets/svgImages/home.svg",
-                        height: 26,
-                        width: 26,
+                        height: 20,
                         color: widget.isHome == false
                             ? Theme.of(context).colorScheme.tertiary
                             : Theme.of(context).colorScheme.inversePrimary,
@@ -189,12 +188,12 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                       title: Text('Menú principal',
                           style: widget.isHome == false
                               ? Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                    fontSize: 20,
+                                    fontSize: 16,
                                     color:
                                         Theme.of(context).colorScheme.tertiary,
                                   )
                               : Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                    fontSize: 20,
+                                    fontSize: 16,
                                     color: Theme.of(context)
                                         .colorScheme
                                         .inversePrimary,
@@ -233,8 +232,7 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                       },
                       leading: SvgPicture.asset(
                         "assets/svgImages/diagnostico.svg",
-                        height: 26,
-                        width: 26,
+                        height: 24,
                         color: widget.isDiagnosis == false &&
                                 widget.isDiagnosisNurse == false
                             ? Theme.of(context).colorScheme.tertiary
@@ -244,12 +242,12 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                           style: widget.isDiagnosis == false &&
                                   widget.isDiagnosisNurse == false
                               ? Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                    fontSize: 20,
+                                    fontSize: 16,
                                     color:
                                         Theme.of(context).colorScheme.tertiary,
                                   )
                               : Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                    fontSize: 20,
+                                    fontSize: 16,
                                     color: Theme.of(context)
                                         .colorScheme
                                         .inversePrimary,
@@ -280,8 +278,7 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                               },
                               leading: SvgPicture.asset(
                                 "assets/svgImages/gestion.svg",
-                                height: 26,
-                                width: 26,
+                                height: 24,
                                 color: widget.isManagement == false
                                     ? Theme.of(context).colorScheme.tertiary
                                     : Theme.of(context)
@@ -297,13 +294,13 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                                             color: Theme.of(context)
                                                 .colorScheme
                                                 .tertiary,
-                                            fontSize: 20,
+                                            fontSize: 16,
                                           )
                                       : Theme.of(context)
                                           .textTheme
                                           .bodyLarge!
                                           .copyWith(
-                                            fontSize: 20,
+                                            fontSize: 16,
                                             color: Theme.of(context)
                                                 .colorScheme
                                                 .inversePrimary,
@@ -333,8 +330,7 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                         },
                         leading: SvgPicture.asset(
                           "assets/svgImages/perfil.svg",
-                          height: 22,
-                          width: 22,
+                          height: 20,
                           color: widget.isProfile == false
                               ? Theme.of(context).colorScheme.tertiary
                               : Theme.of(context).colorScheme.inversePrimary,
@@ -345,7 +341,7 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                                     .textTheme
                                     .bodyLarge!
                                     .copyWith(
-                                      fontSize: 20,
+                                      fontSize: 16,
                                       color: Theme.of(context)
                                           .colorScheme
                                           .tertiary,
@@ -354,7 +350,7 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                                     .textTheme
                                     .bodyLarge!
                                     .copyWith(
-                                      fontSize: 20,
+                                      fontSize: 16,
                                       color: Theme.of(context)
                                           .colorScheme
                                           .inversePrimary,
@@ -381,15 +377,14 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                       },
                       leading: SvgPicture.asset(
                           "assets/svgImages/cerrarSesion.svg",
-                          height: 26,
-                          width: 26,
+                          height: 24,
                           color: Theme.of(context).colorScheme.tertiary),
                       title: Text('Cerrar Sesión',
                           style: Theme.of(context)
                               .textTheme
                               .bodyLarge!
                               .copyWith(
-                                fontSize: 20,
+                                fontSize: 16,
                                 color: Theme.of(context).colorScheme.tertiary,
                               )),
                     ),
@@ -456,7 +451,7 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w400,
-                  color: Theme.of(context).colorScheme.tertiary,
+                  color: Theme.of(context).colorScheme.onBackground,
                 ),
               ),
             ),
