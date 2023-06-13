@@ -4,7 +4,6 @@ import 'dart:typed_data';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:ulcernosis/models/medic.dart';
 import 'package:ulcernosis/models/nurse.dart';
 import 'package:ulcernosis/models/patient.dart';
@@ -54,20 +53,8 @@ class _TakePhotoDiagnosisState extends State<TakePhotoDiagnosis> {
     });
   }
 
-  void enableCameraAndMuteSound(BuildContext context) async {
-    PermissionStatus cameraPermissionStatus = await Permission.camera.request();
-    if (cameraPermissionStatus.isGranted) {
-      controller =
-          CameraController(cameras[indexCamaraActive], ResolutionPreset.high);
-      print("Permiso de cámara concedido");
-    } else {
-      print("Permiso de cámara denegado");
-    }
-  }
-
   @override
   void initState() {
-    //enableCameraAndMuteSound(context);
     init();
     getCameras();
     super.initState();
@@ -388,15 +375,17 @@ class _TakePhotoDiagnosisState extends State<TakePhotoDiagnosis> {
         setState(() {});
       } else {
         controller = CameraController(
-            cameras[indexCamaraActive], ResolutionPreset.medium);
+            cameras[indexCamaraActive], ResolutionPreset.high,
+            enableAudio: false);
+        await controller!.initialize();
+        await controller!
+            .setFlashMode(FlashMode.off); // Desactivar la flash de la cámara
 
-        controller!.initialize().then((_) {
-          if (!mounted) {
-            setState(() {});
-            return;
-          }
+        if (!mounted) {
           setState(() {});
-        });
+          return;
+        }
+        setState(() {});
       }
     } catch (ex) {
       mostrarAlertaError(context, "Sucedio un error al obtener las cámaras",

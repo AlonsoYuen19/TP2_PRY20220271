@@ -53,7 +53,7 @@ class _ImagePreviewState extends State<ImagePreview> {
 
   Future<Widget> delayPage() {
     Completer<Widget> completer = Completer();
-    Future.delayed(const Duration(seconds: 1), () {
+    Future.delayed(const Duration(seconds: 2), () {
       completer.complete(Container());
     });
 
