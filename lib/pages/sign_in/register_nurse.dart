@@ -373,41 +373,46 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     child: FocusTraversalGroup(
                       policy: OrderedTraversalPolicy(),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          GetTextFormField(
-                              labelText: "Correo",
-                              placeholder: email,
-                              maxLength: 20,
-                              icon: const Icon(Icons.email),
-                              keyboardType: TextInputType.emailAddress,
-                              validator: validEmail(
-                                  "Escriba el correo con el formato correcto"),
-                              obscureText: false,
-                              controllerr: _email,
-                              option: TextInputAction.next),
-                          const SizedBox(height: 20),
-                          GetTextFormField(
-                              labelText: "Contraseña",
-                              placeholder: password,
-                              icon: const Icon(Icons.lock),
-                              keyboardType: TextInputType.visiblePassword,
-                              obscureText: true,
-                              validator: validPassword(""),
-                              controllerr: _password,
-                              option: TextInputAction.next,
-                              onSubmit: (value) {
-                                if (_formKey.currentState!.validate()) {
-                                  _formKey.currentState!.save();
-                                  _currentStep += 1;
-                                  print(_formKey.currentState!.validate());
-                                  FocusScope.of(context).unfocus();
-                                  setState(() {});
-                                }
-                              }),
-                          SizedBox(height: size.height * 0.225),
-                        ],
+                      child: Container(
+                        height: MediaQuery.of(context).size.height - 350,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              GetTextFormField(
+                                  labelText: "Correo",
+                                  placeholder: email,
+                                  maxLength: 20,
+                                  icon: const Icon(Icons.email),
+                                  keyboardType: TextInputType.emailAddress,
+                                  validator: validEmail(
+                                      "Escriba el correo con el formato correcto"),
+                                  obscureText: false,
+                                  controllerr: _email,
+                                  option: TextInputAction.next),
+                              const SizedBox(height: 20),
+                              GetTextFormField(
+                                  labelText: "Contraseña",
+                                  placeholder: password,
+                                  icon: const Icon(Icons.lock),
+                                  keyboardType: TextInputType.visiblePassword,
+                                  obscureText: true,
+                                  validator: validPassword(""),
+                                  controllerr: _password,
+                                  option: TextInputAction.next,
+                                  onSubmit: (value) {
+                                    if (_formKey.currentState!.validate()) {
+                                      _formKey.currentState!.save();
+                                      _currentStep += 1;
+                                      print(_formKey.currentState!.validate());
+                                      FocusScope.of(context).unfocus();
+                                      setState(() {});
+                                    }
+                                  }),
+                              //SizedBox(height: size.height * 0.225),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -429,41 +434,46 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     child: FocusTraversalGroup(
                       policy: OrderedTraversalPolicy(),
-                      child: Column(
-                        children: [
-                          GetTextFormField(
-                            labelText: "CEP",
-                            placeholder: cep,
-                            icon: const Icon(Icons.code),
-                            keyboardType: TextInputType.phone,
-                            validator: validCep(
-                                "El número de teléfono debe ser de 6 dígitos"),
-                            obscureText: false,
-                            controllerr: _cep,
-                            option: TextInputAction.next,
+                      child: Container(
+                        height: MediaQuery.of(context).size.height - 400,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              GetTextFormField(
+                                labelText: "CEP",
+                                placeholder: cep,
+                                icon: const Icon(Icons.code),
+                                keyboardType: TextInputType.phone,
+                                validator: validCep(
+                                    "El número de teléfono debe ser de 6 dígitos"),
+                                obscureText: false,
+                                controllerr: _cep,
+                                option: TextInputAction.next,
+                              ),
+                              const SizedBox(height: 20),
+                              GetTextFormField(
+                                labelText: "Dni",
+                                placeholder: dni,
+                                icon: const Icon(Icons.article_outlined),
+                                keyboardType: TextInputType.number,
+                                validator: validDni(
+                                    "El número del dni debe ser de 8 dígitos"),
+                                obscureText: false,
+                                controllerr: _dni,
+                                option: TextInputAction.none,
+                                onSubmit: (value) {
+                                  if (_formKey2.currentState!.validate()) {
+                                    _formKey2.currentState!.save();
+                                    _currentStep += 1;
+                                    print(_formKey2.currentState!.validate());
+                                    setState(() {});
+                                  }
+                                },
+                              ),
+                              SizedBox(height: size.height * 0.295),
+                            ],
                           ),
-                          const SizedBox(height: 20),
-                          GetTextFormField(
-                            labelText: "Dni",
-                            placeholder: dni,
-                            icon: const Icon(Icons.article_outlined),
-                            keyboardType: TextInputType.number,
-                            validator: validDni(
-                                "El número del dni debe ser de 8 dígitos"),
-                            obscureText: false,
-                            controllerr: _dni,
-                            option: TextInputAction.none,
-                            onSubmit: (value) {
-                              if (_formKey2.currentState!.validate()) {
-                                _formKey2.currentState!.save();
-                                _currentStep += 1;
-                                print(_formKey2.currentState!.validate());
-                                setState(() {});
-                              }
-                            },
-                          ),
-                          SizedBox(height: size.height * 0.295),
-                        ],
+                        ),
                       ),
                     ),
                   ),

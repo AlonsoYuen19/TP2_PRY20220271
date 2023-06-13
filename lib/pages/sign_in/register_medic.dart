@@ -1,5 +1,4 @@
 // ignore_for_file: use_build_context_synchronously
-
 import 'package:flutter/material.dart';
 import 'package:ulcernosis/services/medic_service.dart';
 import '../../shared/user_prefs.dart';
@@ -40,6 +39,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey3 = GlobalKey<FormState>();
   final _formKey4 = GlobalKey<FormState>();
   int _currentStep = 0;
+
   @override
   void dispose() {
     _name.dispose();
@@ -54,10 +54,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     super.dispose();
   }
 
-  bool enableStep1 = false;
-  bool enableStep2 = false;
-  bool enableStep3 = false;
-  bool enableStep4 = false;
   tapped(int step) {
     setState(() {
       _currentStep = step;
@@ -66,28 +62,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   continuedStep() {
     setState(() {
-      if (_currentStep == 0 &&
-          email == "" &&
-          password == "" &&
-          _formKey.currentState!.validate()) {
+      if (_currentStep == 0 && _formKey.currentState!.validate()) {
         print(_formKey.currentState!.validate());
         _currentStep++;
-      } else if (_currentStep == 1 &&
-          cmp == "" &&
-          dni == "" &&
-          _formKey2.currentState!.validate()) {
+      } else if (_currentStep == 1 && _formKey2.currentState!.validate()) {
         print(_formKey2.currentState!.validate());
         _currentStep++;
-      } else if (_currentStep == 2 &&
-          name == "" &&
-          address == "" &&
-          phone == "" &&
-          _formKey3.currentState!.validate()) {
+      } else if (_currentStep == 2 && _formKey3.currentState!.validate()) {
         print(_formKey3.currentState!.validate());
         _currentStep++;
-      } else if (_currentStep == 3 &&
-          age == "" &&
-          _formKey4.currentState!.validate()) {
+      } else if (_currentStep == 3 && _formKey4.currentState!.validate()) {
         print(_formKey4.currentState!.validate());
         _currentStep++;
       }
@@ -100,6 +84,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
         _currentStep--;
       });
     }
+  }
+
+  Widget title(String title) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 5),
+        child: Text(
+          title,
+          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+              color: Theme.of(context).colorScheme.tertiary,
+              fontSize: 17,
+              fontWeight: FontWeight.w500),
+        ),
+      ),
+    );
   }
 
   Widget controlBuilders(context, details) {
@@ -116,39 +116,54 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 elevation: 0,
                 backgroundColor: Color.fromRGBO(255, 161, 158, 1),
               ),
-              onPressed: () async {
-                final isValidForm = _formKey.currentState!.validate();
-                final isValidForm2 = _formKey2.currentState!.validate();
-                final isValidForm3 = _formKey3.currentState!.validate();
-                final isValidForm4 = _formKey4.currentState!.validate();
-                if (isValidForm &&
-                    isValidForm2 &&
-                    isValidForm3 &&
-                    isValidForm4) {
-                  print("Nombre Completo: " + _name.text);
-                  print("Contraseña: " + _password.text);
-                  print("Correo: " + _email.text);
-                  print("Direccion: " + _address.text);
-                  print("phone: " + _phone.text);
-                  print("DNI: " + _dni.text);
-                  print("Edad: " + _age.text);
-                  print("Estado Civil: " + _stateCivil.text);
-                  print("CMP: " + _cmp.text);
-                  await authService.registerMedic(
-                    context,
-                    capitalizeSentences(_name.text.trim()),
-                    _email.text.trim(),
-                    _password.text.trim(),
-                    _dni.text.trim(),
-                    _age.text.trim(),
-                    capitalizeSentences(_address.text.trim()),
-                    _phone.text.trim(),
-                    _cmp.text.trim(),
-                    "ROLE_MEDIC",
-                    _stateCivil.text.trim(),
-                  );
-                }
-              },
+              onPressed: _formKey4.currentState == null ||
+                      !_formKey4.currentState!.validate() ||
+                      _age.text == "" ||
+                      onceTime == false
+                  ? null
+                  : () async {
+                      final isValidForm = _formKey.currentState!.validate();
+                      final isValidForm2 = _formKey2.currentState!.validate();
+                      final isValidForm3 = _formKey3.currentState!.validate();
+                      final isValidForm4 = _formKey4.currentState!.validate();
+                      if (isValidForm &&
+                          isValidForm2 &&
+                          isValidForm3 &&
+                          isValidForm4) {
+                        //onceTime = false;
+                        print("Nombre Completo: " + _name.text);
+                        print("Contraseña: " + _password.text);
+                        print("Correo: " + _email.text);
+                        print("Direccion: " + _address.text);
+                        print("phone: " + _phone.text);
+                        print("DNI: " + _dni.text);
+                        print("Edad: " + _age.text);
+                        print("Estado Civil: " + _stateCivil.text);
+                        print("CMP: " + _cmp.text);
+                        print(onceTime);
+                        setState(() {
+                          onceTime = false;
+                          Future.delayed(const Duration(seconds: 3), () {
+                            setState(() {
+                              onceTime = true;
+                            });
+                          });
+                        });
+                        await authService.registerMedic(
+                          context,
+                          capitalizeSentences(_name.text.trim()),
+                          _email.text.trim(),
+                          _password.text.trim(),
+                          _dni.text.trim(),
+                          _age.text.trim(),
+                          capitalizeSentences(_address.text.trim()),
+                          _phone.text.trim(),
+                          _cmp.text.trim(),
+                          "ROLE_MEDIC",
+                          _stateCivil.text.trim(),
+                        );
+                      }
+                    },
               child: Text(
                 "Registrarse",
                 style: Theme.of(context).textTheme.labelMedium!.copyWith(
@@ -184,7 +199,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
             width: size.width * 1,
             height: 56,
             child: ElevatedButton(
-              onPressed: details.onStepContinue,
+              onPressed: _formKey.currentState == null ||
+                      !_formKey.currentState!.validate() ||
+                      _email.text == "" ||
+                      _password.text == ""
+                  ? null
+                  : details.onStepContinue,
               style: ElevatedButton.styleFrom(
                   elevation: 0,
                   backgroundColor: Color.fromRGBO(255, 161, 158, 1)),
@@ -195,14 +215,67 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       fontWeight: FontWeight.w600)),
             ),
           ),
-        ] else if (_currentStep > 0 && _currentStep < 3) ...[
+        ] else if (_currentStep == 1) ...[
           Column(
             children: [
               SizedBox(
                 width: size.width * 1,
                 height: 56,
                 child: ElevatedButton(
-                  onPressed: details.onStepContinue,
+                  onPressed: _formKey2.currentState == null ||
+                          !_formKey2.currentState!.validate() ||
+                          _cmp.text == "" ||
+                          _dni.text == ""
+                      ? null
+                      : details.onStepContinue,
+                  style: ElevatedButton.styleFrom(
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8)),
+                      backgroundColor: Color.fromRGBO(255, 161, 158, 1)),
+                  child: Text('Siguiente',
+                      style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                          color: Theme.of(context).colorScheme.onTertiary,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600)),
+                ),
+              ),
+              const SizedBox(height: 14),
+              SizedBox(
+                width: size.width * 1,
+                height: 56,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      side: BorderSide(
+                          color: Color.fromRGBO(255, 161, 158, 1), width: 1.5),
+                      backgroundColor: Color.fromRGBO(255, 242, 241, 1),
+                      elevation: 0),
+                  onPressed: details.onStepCancel,
+                  child: Text(
+                    "Retroceder",
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                        color: Color.fromRGBO(255, 161, 158, 1),
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ] else if (_currentStep == 2) ...[
+          Column(
+            children: [
+              SizedBox(
+                width: size.width * 1,
+                height: 56,
+                child: ElevatedButton(
+                  onPressed: _formKey3.currentState == null ||
+                          !_formKey3.currentState!.validate() ||
+                          _name.text == "" ||
+                          _phone.text == "" ||
+                          _address.text == ""
+                      ? null
+                      : details.onStepContinue,
                   style: ElevatedButton.styleFrom(
                       elevation: 0,
                       shape: RoundedRectangleBorder(
@@ -242,25 +315,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  Widget title(String title) {
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 5),
-        child: Text(
-          title,
-          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-              color: Theme.of(context).colorScheme.tertiary,
-              fontSize: 17,
-              fontWeight: FontWeight.w500),
-        ),
-      ),
-    );
-  }
+  bool onceTime = true;
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     return WillPopScope(
       onWillPop: () async {
         if (_currentStep == 0) {
@@ -275,237 +333,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
       child: SafeArea(
         child: Scaffold(
           resizeToAvoidBottomInset: _currentStep == 2 ? true : false,
-          bottomNavigationBar: Container(
-            height: _currentStep == 0 ? 110 : 170,
-            decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(color: Colors.grey.withOpacity(0.6)),
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(8), topRight: Radius.circular(8))),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (_currentStep == 3) ...[
-                    SizedBox(
-                      width: size.width * 1,
-                      height: 56,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          elevation: 0,
-                          backgroundColor: Color.fromRGBO(255, 161, 158, 1),
-                        ),
-                        onPressed: () async {
-                          final isValidForm = _formKey.currentState!.validate();
-                          final isValidForm2 =
-                              _formKey2.currentState!.validate();
-                          final isValidForm3 =
-                              _formKey3.currentState!.validate();
-                          final isValidForm4 =
-                              _formKey4.currentState!.validate();
-                          if (isValidForm &&
-                              isValidForm2 &&
-                              isValidForm3 &&
-                              isValidForm4) {
-                            print("Nombre Completo: " + _name.text);
-                            print("Contraseña: " + _password.text);
-                            print("Correo: " + _email.text);
-                            print("Direccion: " + _address.text);
-                            print("phone: " + _phone.text);
-                            print("DNI: " + _dni.text);
-                            print("Edad: " + _age.text);
-                            print("Estado Civil: " + _stateCivil.text);
-                            print("CMP: " + _cmp.text);
-                            await authService.registerMedic(
-                              context,
-                              capitalizeSentences(_name.text.trim()),
-                              _email.text.trim(),
-                              _password.text.trim(),
-                              _dni.text.trim(),
-                              _age.text.trim(),
-                              capitalizeSentences(_address.text.trim()),
-                              _phone.text.trim(),
-                              _cmp.text.trim(),
-                              "ROLE_MEDIC",
-                              _stateCivil.text.trim(),
-                            );
-                          }
-                        },
-                        child: Text(
-                          "Registrarse",
-                          style: Theme.of(context)
-                              .textTheme
-                              .labelMedium!
-                              .copyWith(
-                                color: Theme.of(context).colorScheme.onTertiary,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16,
-                              ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 14),
-                    SizedBox(
-                      width: size.width * 1,
-                      height: 56,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            side: BorderSide(
-                                color: Color.fromRGBO(255, 161, 158, 1),
-                                width: 1.5),
-                            backgroundColor: Color.fromRGBO(255, 242, 241, 1),
-                            elevation: 0),
-                        onPressed: cancel,
-                        child: Text(
-                          "Retroceder",
-                          style: Theme.of(context)
-                              .textTheme
-                              .labelMedium
-                              ?.copyWith(
-                                  color: Color.fromRGBO(255, 161, 158, 1),
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 16),
-                        ),
-                      ),
-                    ),
-                  ] else if (_currentStep == 0) ...[
-                    SizedBox(
-                      width: size.width * 1,
-                      height: 56,
-                      child: ElevatedButton(
-                        onPressed: enableStep1 == true ? continuedStep : null,
-                        style: ElevatedButton.styleFrom(
-                            elevation: 0,
-                            backgroundColor: Color.fromRGBO(255, 161, 158, 1)),
-                        child: Text('Siguiente',
-                            style: Theme.of(context)
-                                .textTheme
-                                .labelMedium!
-                                .copyWith(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onTertiary,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600)),
-                      ),
-                    ),
-                  ] else if (_currentStep == 1) ...[
-                    Column(
-                      children: [
-                        SizedBox(
-                          width: size.width * 1,
-                          height: 56,
-                          child: ElevatedButton(
-                            onPressed: enableStep2 == true && _currentStep == 1
-                                ? continuedStep
-                                : null,
-                            style: ElevatedButton.styleFrom(
-                                elevation: 0,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8)),
-                                backgroundColor:
-                                    Color.fromRGBO(255, 161, 158, 1)),
-                            child: Text('Siguiente',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .labelMedium!
-                                    .copyWith(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onTertiary,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600)),
-                          ),
-                        ),
-                        const SizedBox(height: 14),
-                        SizedBox(
-                          width: size.width * 1,
-                          height: 56,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                side: BorderSide(
-                                    color: Color.fromRGBO(255, 161, 158, 1),
-                                    width: 1.5),
-                                backgroundColor:
-                                    Color.fromRGBO(255, 242, 241, 1),
-                                elevation: 0),
-                            onPressed: cancel,
-                            child: Text(
-                              "Retroceder",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelMedium
-                                  ?.copyWith(
-                                      color: Color.fromRGBO(255, 161, 158, 1),
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 16),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ] else if (_currentStep == 2) ...[
-                    Column(
-                      children: [
-                        SizedBox(
-                          width: size.width * 1,
-                          height: 56,
-                          child: ElevatedButton(
-                            onPressed: enableStep3 == true && _currentStep == 2
-                                ? continuedStep
-                                : null,
-                            style: ElevatedButton.styleFrom(
-                                elevation: 0,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8)),
-                                backgroundColor:
-                                    Color.fromRGBO(255, 161, 158, 1)),
-                            child: Text('Siguiente',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .labelMedium!
-                                    .copyWith(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onTertiary,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600)),
-                          ),
-                        ),
-                        const SizedBox(height: 14),
-                        SizedBox(
-                          width: size.width * 1,
-                          height: 56,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                side: BorderSide(
-                                    color: Color.fromRGBO(255, 161, 158, 1),
-                                    width: 1.5),
-                                backgroundColor:
-                                    Color.fromRGBO(255, 242, 241, 1),
-                                elevation: 0),
-                            onPressed: cancel,
-                            child: Text(
-                              "Retroceder",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelMedium
-                                  ?.copyWith(
-                                      color: Color.fromRGBO(255, 161, 158, 1),
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 16),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ]
-                ],
-              ),
-            ),
-          ),
           appBar: AppBar(
             backgroundColor: const Color.fromRGBO(250, 250, 250, 1),
             leading: _currentStep == 0
@@ -574,14 +401,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
             margin: EdgeInsets.zero,
             type: StepperType.horizontal,
             onStepTapped: null,
-            physics: null,
+            physics: const BouncingScrollPhysics(),
             currentStep: _currentStep,
             onStepCancel: cancel,
             onStepContinue: continuedStep,
             //onStepTapped: tapped,
-            controlsBuilder: (context, details) {
-              return Container();
-            },
+            controlsBuilder: controlBuilders,
             elevation: 0,
             steps: [
               Step(
@@ -590,7 +415,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     child: Text(_currentStep == 0 ? "Credenciales" : "",
                         style: Theme.of(context).textTheme.labelLarge!.copyWith(
                             fontSize: 16,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.w400,
                             color: Theme.of(context).colorScheme.onSecondary)),
                   ),
                   content: Form(
@@ -598,46 +423,51 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     child: FocusTraversalGroup(
                       policy: OrderedTraversalPolicy(),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          GetTextFormField(
-                            labelText: "Correo",
-                            placeholder: email,
-                            maxLength: 20,
-                            icon: const Icon(Icons.email),
-                            keyboardType: TextInputType.emailAddress,
-                            validator: validEmail(
-                                "Escriba el correo con el formato correcto"),
-                            obscureText: false,
-                            controllerr: _email,
-                            option: TextInputAction.next,
+                      child: Container(
+                        height: MediaQuery.of(context).size.height - 350,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              GetTextFormField(
+                                labelText: "Correo",
+                                placeholder: email,
+                                maxLength: 20,
+                                icon: const Icon(Icons.email),
+                                keyboardType: TextInputType.emailAddress,
+                                validator: _email.text == ""
+                                    ? null
+                                    : validEmail(
+                                        "Escriba el correo con el formato correcto"),
+                                obscureText: false,
+                                controllerr: _email,
+                                option: TextInputAction.next,
+                              ),
+                              const SizedBox(height: 20),
+                              GetTextFormField(
+                                labelText: "Contraseña",
+                                placeholder: password,
+                                icon: const Icon(Icons.lock),
+                                keyboardType: TextInputType.visiblePassword,
+                                obscureText: true,
+                                validator: _password.text == ""
+                                    ? null
+                                    : validPassword(""),
+                                controllerr: _password,
+                                option: TextInputAction.done,
+                                onSubmit: (value) {
+                                  if (_formKey.currentState!.validate()) {
+                                    //_currentStep += 1;
+                                    _formKey.currentState!.save();
+                                    print(_formKey.currentState!.validate());
+                                    //FocusScope.of(context).unfocus();
+                                    setState(() {});
+                                  }
+                                },
+                              ),
+                            ],
                           ),
-                          SizedBox(height: 20),
-                          GetTextFormField(
-                            labelText: "Contraseña",
-                            placeholder: password,
-                            icon: const Icon(Icons.lock),
-                            keyboardType: TextInputType.visiblePassword,
-                            obscureText: true,
-                            validator: validPassword(""),
-                            controllerr: _password,
-                            option: TextInputAction.done,
-                            onSubmit: (value) {
-                              if (_formKey.currentState!.validate()) {
-                                _formKey.currentState!.save();
-                                //_currentStep += 1;
-                                print(_formKey.currentState!.validate());
-                                FocusScope.of(context).unfocus();
-                                setState(() {});
-                                enableStep1 = true;
-                              } else {
-                                enableStep1 = false;
-                              }
-                            },
-                          ),
-                          SizedBox(height: size.height * 0.225),
-                        ],
+                        ),
                       ),
                     ),
                   ),
@@ -652,7 +482,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     _currentStep == 1 ? "Identificacion" : "",
                     style: Theme.of(context).textTheme.labelLarge!.copyWith(
                           fontSize: 16,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w400,
                           color: Theme.of(context).colorScheme.onSecondary,
                         ),
                   ),
@@ -662,46 +492,53 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   child: FocusTraversalGroup(
                     policy: OrderedTraversalPolicy(),
-                    child: Column(
-                      children: [
-                        GetTextFormField(
-                          labelText: "CMP",
-                          placeholder: cmp,
-                          icon: const Icon(Icons.code),
-                          keyboardType: TextInputType.phone,
-                          validator: validCmp(
-                            "El número del cmp debe de iniciar con 0 tener 6 dígitos",
-                          ),
-                          obscureText: false,
-                          controllerr: _cmp,
-                          option: TextInputAction.next,
+                    child: Container(
+                      height: MediaQuery.of(context).size.height - 400,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: GetTextFormField(
+                                labelText: "CMP",
+                                placeholder: cmp,
+                                icon: const Icon(Icons.code),
+                                keyboardType: TextInputType.phone,
+                                validator: _cmp.text == ""
+                                    ? null
+                                    : validCmp(
+                                        "El número del cmp debe de iniciar con 0 tener 6 dígitos",
+                                      ),
+                                obscureText: false,
+                                controllerr: _cmp,
+                                option: TextInputAction.next,
+                              ),
+                            ),
+                            SizedBox(height: 20),
+                            GetTextFormField(
+                              labelText: "Dni",
+                              placeholder: dni,
+                              icon: const Icon(Icons.article_outlined),
+                              keyboardType: TextInputType.number,
+                              validator: _dni.text == ""
+                                  ? null
+                                  : validDni(
+                                      "El número del dni debe ser de 8 dígitos"),
+                              obscureText: false,
+                              controllerr: _dni,
+                              option: TextInputAction.done,
+                              onSubmit: (value) {
+                                if (_formKey2.currentState!.validate()) {
+                                  _formKey2.currentState!.save();
+
+                                  print(_formKey2.currentState!.validate());
+                                  setState(() {});
+                                }
+                              },
+                            ),
+                          ],
                         ),
-                        SizedBox(height: 20),
-                        GetTextFormField(
-                          keyy: _formKey2,
-                          labelText: "Dni",
-                          placeholder: dni,
-                          icon: const Icon(Icons.article_outlined),
-                          keyboardType: TextInputType.number,
-                          validator: validDni(
-                              "El número del dni debe ser de 8 dígitos"),
-                          obscureText: false,
-                          controllerr: _dni,
-                          option: TextInputAction.done,
-                          onSubmit: (value) {
-                            if (_formKey2.currentState!.validate()) {
-                              _formKey2.currentState!.save();
-                              //_currentStep += 1;
-                              print(_formKey2.currentState!.validate());
-                              setState(() {});
-                              enableStep2 = true;
-                            } else {
-                              enableStep2 = false;
-                            }
-                          },
-                        ),
-                        SizedBox(height: size.height * 0.295),
-                      ],
+                      ),
                     ),
                   ),
                 ),
@@ -716,65 +553,74 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         _currentStep == 2 ? "Información\npersonal" : "",
                         style: Theme.of(context).textTheme.labelLarge!.copyWith(
                             fontSize: 16,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.w400,
                             color: Theme.of(context).colorScheme.onSecondary)),
                   ),
                   content: Form(
                     key: _formKey3,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
-                    child: Column(
-                      children: [
-                        GetTextFormField(
-                          keyy: _formKey3,
-                          labelText: "Nombre Completo",
-                          maxLength: 36,
-                          placeholder: name,
-                          icon: const Icon(Icons.person_add_alt_1_sharp),
-                          keyboardType: TextInputType.visiblePassword,
-                          validator: validName(
-                              "Escriba el nombre con el formato correcto"),
-                          controllerr: _name,
-                          obscureText: false,
-                          option: TextInputAction.next,
+                    child: Container(
+                      height: MediaQuery.of(context).size.height - 400,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: GetTextFormField(
+                                labelText: "Nombre Completo",
+                                maxLength: 36,
+                                placeholder: name,
+                                icon: const Icon(Icons.person_add_alt_1_sharp),
+                                keyboardType: TextInputType.visiblePassword,
+                                validator: _name.text == ""
+                                    ? null
+                                    : validName(
+                                        "Escriba el nombre con el formato correcto"),
+                                controllerr: _name,
+                                obscureText: false,
+                                option: TextInputAction.next,
+                              ),
+                            ),
+                            SizedBox(height: 20),
+                            GetTextFormField(
+                              labelText: "Telefono",
+                              placeholder: phone,
+                              icon: const Icon(Icons.phone),
+                              keyboardType: TextInputType.phone,
+                              validator: _phone.text == ""
+                                  ? null
+                                  : validPhone(
+                                      "El número de teléfono debe ser de 9 dígitos"),
+                              obscureText: false,
+                              controllerr: _phone,
+                              option: TextInputAction.next,
+                            ),
+                            SizedBox(height: 20),
+                            GetTextFormField(
+                              maxLength: 50,
+                              labelText: "Dirección",
+                              placeholder: address,
+                              icon: const Icon(Icons.house),
+                              keyboardType: TextInputType.streetAddress,
+                              validator: _address.text == ""
+                                  ? null
+                                  : validAddress(
+                                      "Escriba la dirección con el formato correcto"),
+                              obscureText: false,
+                              controllerr: _address,
+                              option: TextInputAction.none,
+                              onSubmit: (value) {
+                                if (_formKey3.currentState!.validate()) {
+                                  _formKey3.currentState!.save();
+                                  //_currentStep += 1;
+                                  print(_formKey3.currentState!.validate());
+                                  setState(() {});
+                                }
+                              },
+                            ),
+                          ],
                         ),
-                        SizedBox(height: 20),
-                        GetTextFormField(
-                          labelText: "Telefono",
-                          placeholder: phone,
-                          icon: const Icon(Icons.phone),
-                          keyboardType: TextInputType.phone,
-                          validator: validPhone(
-                              "El número de teléfono debe ser de 9 dígitos"),
-                          obscureText: false,
-                          controllerr: _phone,
-                          option: TextInputAction.next,
-                        ),
-                        SizedBox(height: 20),
-                        GetTextFormField(
-                          maxLength: 50,
-                          labelText: "Dirección",
-                          placeholder: address,
-                          icon: const Icon(Icons.house),
-                          keyboardType: TextInputType.streetAddress,
-                          validator: validAddress(
-                              "Escriba la dirección con el formato correcto"),
-                          obscureText: false,
-                          controllerr: _address,
-                          option: TextInputAction.done,
-                          onSubmit: (value) {
-                            if (_formKey3.currentState!.validate()) {
-                              _formKey3.currentState!.save();
-                              //_currentStep += 1;
-                              print(_formKey3.currentState!.validate());
-                              setState(() {});
-                              enableStep3 = true;
-                            } else {
-                              enableStep3 = false;
-                            }
-                          },
-                        ),
-                        SizedBox(height: size.height * 0.19),
-                      ],
+                      ),
                     ),
                   ),
                   isActive: _currentStep >= 0,
@@ -794,25 +640,35 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   content: Form(
                     key: _formKey4,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
-                    child: Column(
-                      children: [
-                        GetTextFormField(
-                            labelText: "Edad",
-                            placeholder: age,
-                            icon: const Icon(Icons.numbers),
-                            keyboardType: TextInputType.number,
-                            validator: validAge(
-                                "La edad debe tener el formato correcto", _age),
-                            obscureText: false,
-                            controllerr: _age,
-                            option: TextInputAction.done),
-                        SizedBox(height: 20),
-                        title("Estado Civil"),
-                        DropDownWithSearch(
-                          searchController: _stateCivil,
+                    child: Container(
+                      height: MediaQuery.of(context).size.height - 400,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: GetTextFormField(
+                                  labelText: "Edad",
+                                  placeholder: age,
+                                  icon: const Icon(Icons.numbers),
+                                  keyboardType: TextInputType.number,
+                                  validator: _age.text == ""
+                                      ? null
+                                      : validAge(
+                                          "La edad debe tener el formato correcto",
+                                          _age),
+                                  obscureText: false,
+                                  controllerr: _age,
+                                  option: TextInputAction.none),
+                            ),
+                            SizedBox(height: 20),
+                            //title("Estado Civil"),
+                            DropDownWithSearch(
+                              searchController: _stateCivil,
+                            ),
+                          ],
                         ),
-                        SizedBox(height: size.height * 0.3),
-                      ],
+                      ),
                     ),
                   ),
                   isActive: _currentStep >= 0,

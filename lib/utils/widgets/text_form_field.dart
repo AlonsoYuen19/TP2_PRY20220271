@@ -105,55 +105,52 @@ class _GetTextFormFieldState extends State<GetTextFormField> {
                             color: Colors.red),
                       );
                     }
-                    return Padding(
-                      padding: EdgeInsets.only(left: size.width * 0.15),
-                      child: ListView(
-                          physics: NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          children: rules
-                              .map(
-                                (rule) => rule.validate(value)
-                                    ? Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          const Icon(
-                                            Icons.check,
-                                            size: 24,
-                                            color: Colors.green,
-                                          ),
-                                          const SizedBox(width: 12),
-                                          Text(
-                                            rule.name,
-                                            style: const TextStyle(
-                                                color: Colors.green,
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w400),
-                                          ),
-                                        ],
-                                      )
-                                    : Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          const Icon(
-                                            Icons.close,
-                                            size: 24,
-                                            color: Colors.red,
-                                          ),
-                                          const SizedBox(width: 12),
-                                          Text(
-                                            rule.name,
-                                            style: const TextStyle(
-                                                color: Colors.red,
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w400),
-                                          ),
-                                        ],
-                                      ),
-                              )
-                              .toList()),
-                    );
+                    return ListView(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        children: rules
+                            .map(
+                              (rule) => rule.validate(value)
+                                  ? Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        const Icon(
+                                          Icons.check,
+                                          size: 24,
+                                          color: Colors.green,
+                                        ),
+                                        const SizedBox(width: 12),
+                                        Text(
+                                          rule.name,
+                                          style: const TextStyle(
+                                              color: Colors.green,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w400),
+                                        ),
+                                      ],
+                                    )
+                                  : Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        const Icon(
+                                          Icons.close,
+                                          size: 24,
+                                          color: Colors.red,
+                                        ),
+                                        const SizedBox(width: 12),
+                                        Text(
+                                          rule.name,
+                                          style: const TextStyle(
+                                              color: Colors.red,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w400),
+                                        ),
+                                      ],
+                                    ),
+                            )
+                            .toList());
                   },
                   obscuringCharacter: "*",
                   onFieldSubmitted: widget.onSubmit,

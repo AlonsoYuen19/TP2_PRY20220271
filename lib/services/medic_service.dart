@@ -143,15 +143,15 @@ class MedicAuthServic with ChangeNotifier {
       if (response.statusCode == 201) {
         print(response.body);
         print("Registro Exitoso");
-                              mostrarAlertaExito(context, "Registro Exitoso", () async {
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const LoginScreen(),
-                          ),
-                          (route) => false,
-                        );
-                      });
+        mostrarAlertaExito(context, "Registro Exitoso", () async {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const LoginScreen(),
+            ),
+            (route) => false,
+          );
+        });
         notifyListeners();
         return response;
       } else if (response.statusCode == 400) {
@@ -192,8 +192,10 @@ class MedicAuthServic with ChangeNotifier {
         }
       }
     } on SocketException catch (e) {
-      print(e);
-      return null;
+
+      return mostrarAlertaError(context, e.message, () async {
+        Navigator.pop(context);
+      });
     }
     return "";
   }
@@ -351,7 +353,6 @@ class MedicAuthServic with ChangeNotifier {
       throw Exception("Failed to load data");
     }
   }
-
 
   Future<Uint8List> getImageFromBackend() async {
     final response = await http.get(
