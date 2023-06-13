@@ -649,9 +649,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: SizedBox(
                     width: 100,
                     height: 100,
-                    child: CircularProgressIndicator(
-                      color: Theme.of(context).colorScheme.onTertiary,
-                    ),
+                    child: CircularProgressIndicator(color: Colors.transparent),
                   ));
                 }
                 if (snapshot.hasError) {
