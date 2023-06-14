@@ -154,7 +154,7 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
                         print("El valor es :" + isAuxiliar.toString());
                         setState(() {
                           onceTime = false;
-                          Future.delayed(const Duration(seconds: 3), () {
+                          Future.delayed(const Duration(seconds: 1), () {
                             setState(() {
                               onceTime = true;
                             });

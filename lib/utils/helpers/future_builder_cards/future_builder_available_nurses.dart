@@ -44,8 +44,14 @@ class _MyFutureBuilderAvailableNursesState
               return InkWell(
                 onTap: () async {
                   final teamWorkService = TeamWorkService();
-                  String name = data[index].fullName.toString().substring(
-                      0, data[index].fullName.toString().indexOf(" "));
+                  String fullName = data[index].fullName.toString();
+                  int spaceIndex = fullName.indexOf(" ");
+                  String? name;
+                  if (spaceIndex != -1) {
+                    name = fullName.substring(0, spaceIndex);
+                  } else {
+                    name = fullName;
+                  }
                   await mostrarAlertaRegistro(context,
                       "Desea registrar al enfermero $name a tu equipo médico",
                       () {

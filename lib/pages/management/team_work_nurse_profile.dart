@@ -140,22 +140,15 @@ class _TeamWorkNurseProfileState extends State<TeamWorkNurseProfile> {
                           child: Column(
                             children: [
                               avatar.isEmpty
-                                  ? StreamBuilder<Object>(
-                                      stream: null,
-                                      builder: (context, snapshot) {
-                                        return Container(
-                                          clipBehavior: Clip.antiAlias,
-                                          decoration: const BoxDecoration(
-                                            image: DecorationImage(
-                                                image: AssetImage(
-                                                  "assets/images/enfermero_logo1.png",
-                                                ),
-                                                fit: BoxFit.fitHeight),
-                                            color: Colors.black26,
-                                            shape: BoxShape.circle,
-                                          ),
-                                        );
-                                      })
+                                  ? CircleAvatar(
+                                      backgroundColor: Color(0xF1F1F1),
+                                      radius: 66,
+                                      child: Image.asset(
+                                        "assets/images/enfermero_logo1.png",
+                                        fit: BoxFit.fill,
+                                        height: 150,
+                                      ),
+                                    )
                                   : ClipOval(
                                       child: Image.memory(avatar,
                                           height: 100,

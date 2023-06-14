@@ -143,7 +143,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         print(onceTime);
                         setState(() {
                           onceTime = false;
-                          Future.delayed(const Duration(seconds: 3), () {
+                          Future.delayed(const Duration(seconds: 1), () {
                             setState(() {
                               onceTime = true;
                             });

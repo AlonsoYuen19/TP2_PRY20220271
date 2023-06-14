@@ -121,7 +121,7 @@ class _RegisterPatientScreenState extends State<RegisterPatientScreen> {
                         print(age);
                         setState(() {
                           onceTime = false;
-                          Future.delayed(const Duration(seconds: 3), () {
+                          Future.delayed(const Duration(seconds: 1), () {
                             setState(() {
                               onceTime = true;
                             });
@@ -248,7 +248,6 @@ class _RegisterPatientScreenState extends State<RegisterPatientScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     return WillPopScope(
       onWillPop: () async {
         if (_currentStep == 0) {
