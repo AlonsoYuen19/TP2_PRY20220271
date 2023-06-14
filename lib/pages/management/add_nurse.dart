@@ -106,7 +106,7 @@ class _AddNursePageState extends State<AddNursePage> {
                           nursesAvailable.isEmpty
                               ? Padding(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 20),
+                                      horizontal: 40),
                                   child: Column(
                                     children: [
                                       SizedBox(
@@ -132,7 +132,7 @@ class _AddNursePageState extends State<AddNursePage> {
                                               color: Color.fromRGBO(
                                                   213, 213, 213, 1),
                                               fontSize: 20,
-                                              fontWeight: FontWeight.w600))
+                                              fontWeight: FontWeight.w400))
                                     ],
                                   ),
                                 )

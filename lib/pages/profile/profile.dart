@@ -341,7 +341,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: SvgPicture.asset(
               icon,
               height: 20,
-              colorFilter: ColorFilter.mode(Colors.black, BlendMode.dst),
+              fit: BoxFit.cover,
+              color: Theme.of(context).colorScheme.onSecondary,
+              /*colorFilter: ColorFilter.mode(
+                  Theme.of(context).colorScheme.onSecondary, BlendMode.dst),*/
             ),
           ),
           const SizedBox(
@@ -409,11 +412,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           CircleAvatar(
                             backgroundColor: Color(0xF1F1F1),
                             radius: 66,
-                            child: SvgPicture.asset(
+                            child: Image.asset(
                               prefs.idMedic == 0
-                                  ? "assets/svgImages/enfermero_logo.svg"
-                                  : "assets/svgImages/medico_logo.svg",
-                              fit: BoxFit.cover,
+                                  ? "assets/images/enfermero_logo1.png"
+                                  : "assets/images/medico_logo1.png",
+                              fit: BoxFit.fill,
                               height: 150,
                             ),
                           ),
@@ -525,7 +528,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         users.role == "ROLE_NURSE"
             ? Padding(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
                 child: Column(
                   children: [
                     Container(
@@ -546,7 +549,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         style: TextStyle(
                             color: colorEquipoMedico,
                             fontSize: 20,
-                            fontWeight: FontWeight.w600))
+                            fontWeight: FontWeight.w400))
                   ],
                 ),
               )
@@ -616,7 +619,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 }
                 if (data!.isEmpty) {
                   return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    padding: const EdgeInsets.symmetric(horizontal: 40),
                     child: Column(
                       children: [
                         Container(
@@ -638,7 +641,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             style: TextStyle(
                                 color: Color.fromRGBO(213, 213, 213, 1),
                                 fontSize: 20,
-                                fontWeight: FontWeight.w600))
+                                fontWeight: FontWeight.w400))
                       ],
                     ),
                   );

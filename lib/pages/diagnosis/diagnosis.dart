@@ -253,7 +253,8 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
                 },
                 child: Container(
                   width: size.width * 0.43,
-                  height: 188,
+                  //height: 188,
+                  padding: EdgeInsets.symmetric(vertical: 24),
                   decoration: BoxDecoration(
                       border: Border.all(
                           color: Color.fromRGBO(210, 217, 254, 1), width: 2),
@@ -268,7 +269,7 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
                         color: Color.fromRGBO(95, 109, 186, 1),
                       ),
                       SizedBox(
-                        height: 11,
+                        height: 8,
                       ),
                       Text(
                         "Paciente\nRegistrado",
@@ -288,7 +289,7 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
                 },
                 child: Container(
                   width: size.width * 0.43,
-                  height: 188,
+                  padding: EdgeInsets.symmetric(vertical: 24),
                   decoration: BoxDecoration(
                       border: Border.all(
                           color: Color.fromRGBO(255, 217, 221, 1), width: 2),
@@ -303,7 +304,7 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
                         color: Color.fromRGBO(178, 88, 97, 1),
                       ),
                       SizedBox(
-                        height: 10,
+                        height: 8,
                       ),
                       Text(
                         "Diagnóstico\nRápido",
@@ -321,7 +322,7 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
           ),
         ),
         const SizedBox(
-          height: 30,
+          height: 24,
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,

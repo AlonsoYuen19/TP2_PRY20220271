@@ -92,7 +92,7 @@ class _SecondPageState extends State<SecondPage> {
                         ));
                       }
                       return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        padding: const EdgeInsets.symmetric(horizontal: 40),
                         child: Column(
                           children: [
                             SizedBox(
@@ -117,7 +117,7 @@ class _SecondPageState extends State<SecondPage> {
                                 style: TextStyle(
                                     color: Color.fromRGBO(213, 213, 213, 1),
                                     fontSize: 20,
-                                    fontWeight: FontWeight.w600))
+                                    fontWeight: FontWeight.w400))
                           ],
                         ),
                       );

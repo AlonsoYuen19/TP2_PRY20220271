@@ -113,7 +113,7 @@ class _RegisterAttendancePageState extends State<RegisterAttendancePage> {
                     return listAppointments.isEmpty
                         ? Padding(
                             padding:
-                                const EdgeInsets.symmetric(horizontal: 20.0),
+                                const EdgeInsets.symmetric(horizontal: 40.0),
                             child: Column(
                               children: [
                                 SizedBox(
@@ -138,7 +138,7 @@ class _RegisterAttendancePageState extends State<RegisterAttendancePage> {
                                     style: TextStyle(
                                         color: Color.fromRGBO(213, 213, 213, 1),
                                         fontSize: 20,
-                                        fontWeight: FontWeight.w600))
+                                        fontWeight: FontWeight.w400))
                               ],
                             ),
                           )

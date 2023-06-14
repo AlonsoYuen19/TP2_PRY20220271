@@ -72,8 +72,8 @@ class _MyFutureBuilderNursesByMedicsTWState
                         CircleAvatar(
                           radius: 30,
                           backgroundColor: Colors.transparent,
-                          backgroundImage:
-                              ExactAssetImage("assets/images/patient-logo.png"),
+                          backgroundImage: ExactAssetImage(
+                              "assets/images/enfermero_logo1.png"),
                         ),
                         SizedBox(width: 12),
                         Expanded(

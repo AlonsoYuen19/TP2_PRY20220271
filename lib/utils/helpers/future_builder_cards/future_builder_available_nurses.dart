@@ -72,8 +72,8 @@ class _MyFutureBuilderAvailableNursesState
                         CircleAvatar(
                           radius: 30,
                           backgroundColor: Colors.transparent,
-                          backgroundImage:
-                              ExactAssetImage("assets/images/patient-logo.png"),
+                          backgroundImage: ExactAssetImage(
+                              "assets/images/enfermero_logo1.png"),
                         ),
                         const SizedBox(width: 12),
                         Column(

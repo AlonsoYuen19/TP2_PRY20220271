@@ -12,8 +12,8 @@ class PreRegisterScreen extends StatefulWidget {
 class _PreRegisterScreenState extends State<PreRegisterScreen> {
   int indexPage = 0;
   List<String> imagesLogo = [
-    'assets/images/doctor-logo.png',
-    'assets/images/enfermero-logo.png'
+    'assets/images/medico_logo1.png',
+    'assets/images/enfermero_logo1.png'
   ];
   final textIndex = [
     'Registro de Médico',

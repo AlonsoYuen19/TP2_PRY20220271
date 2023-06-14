@@ -148,7 +148,7 @@ class _TeamWorkNurseProfileState extends State<TeamWorkNurseProfile> {
                                           decoration: const BoxDecoration(
                                             image: DecorationImage(
                                                 image: AssetImage(
-                                                  "assets/images/enfermero-logo.png",
+                                                  "assets/images/enfermero_logo1.png",
                                                 ),
                                                 fit: BoxFit.fitHeight),
                                             color: Colors.black26,

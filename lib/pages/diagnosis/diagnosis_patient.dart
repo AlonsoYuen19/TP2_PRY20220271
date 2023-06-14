@@ -137,7 +137,7 @@ class _DiagnosisPatientPageState extends State<DiagnosisPatientPage> {
                                           color:
                                               Color.fromRGBO(213, 213, 213, 1),
                                           fontSize: 20,
-                                          fontWeight: FontWeight.w600))
+                                          fontWeight: FontWeight.w400))
                                 ],
                               ),
                             );
@@ -188,7 +188,7 @@ class _DiagnosisPatientPageState extends State<DiagnosisPatientPage> {
                                           color:
                                               Color.fromRGBO(213, 213, 213, 1),
                                           fontSize: 20,
-                                          fontWeight: FontWeight.w600))
+                                          fontWeight: FontWeight.w400))
                                 ],
                               ),
                             );

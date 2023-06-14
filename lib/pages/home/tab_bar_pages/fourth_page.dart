@@ -91,7 +91,7 @@ class _FourthPageState extends State<FourthPage> {
                         ));
                       }
                       return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        padding: const EdgeInsets.symmetric(horizontal: 40),
                         child: Column(
                           children: [
                             SizedBox(
@@ -116,7 +116,7 @@ class _FourthPageState extends State<FourthPage> {
                                 style: TextStyle(
                                     color: Color.fromRGBO(213, 213, 213, 1),
                                     fontSize: 20,
-                                    fontWeight: FontWeight.w600))
+                                    fontWeight: FontWeight.w400))
                           ],
                         ),
                       );

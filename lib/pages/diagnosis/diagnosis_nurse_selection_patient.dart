@@ -106,7 +106,7 @@ class _DiagnosisScreenState extends State<DiagnosisNurseSelectionScreen> {
                         ));
                       }
                       return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        padding: const EdgeInsets.symmetric(horizontal: 40),
                         child: Column(
                           children: [
                             SizedBox(
@@ -131,7 +131,7 @@ class _DiagnosisScreenState extends State<DiagnosisNurseSelectionScreen> {
                                 style: TextStyle(
                                     color: Color.fromRGBO(213, 213, 213, 1),
                                     fontSize: 20,
-                                    fontWeight: FontWeight.w600))
+                                    fontWeight: FontWeight.w400))
                           ],
                         ),
                       );

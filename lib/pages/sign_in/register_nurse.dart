@@ -81,29 +81,16 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
 
   continuedStep() {
     setState(() {
-      if (_currentStep == 0 &&
-          email == "" &&
-          password == "" &&
-          _formKey.currentState!.validate()) {
+      if (_currentStep == 0 && _formKey.currentState!.validate()) {
         print(_formKey.currentState!.validate());
         _currentStep++;
-      } else if (_currentStep == 1 &&
-          cep == "" &&
-          dni == "" &&
-          _formKey2.currentState!.validate()) {
+      } else if (_currentStep == 1 && _formKey2.currentState!.validate()) {
         print(_formKey2.currentState!.validate());
         _currentStep++;
-      } else if (_currentStep == 2 &&
-          name == "" &&
-          address == "" &&
-          address == "" &&
-          phone == "" &&
-          _formKey3.currentState!.validate()) {
+      } else if (_currentStep == 2 && _formKey3.currentState!.validate()) {
         print(_formKey3.currentState!.validate());
         _currentStep++;
-      } else if (_currentStep == 3 &&
-          age == "" &&
-          _formKey4.currentState!.validate()) {
+      } else if (_currentStep == 3 && _formKey4.currentState!.validate()) {
         print(_formKey4.currentState!.validate());
         _currentStep++;
       }
@@ -132,47 +119,62 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
                 elevation: 0,
                 backgroundColor: Color.fromRGBO(255, 161, 158, 1),
               ),
-              onPressed: () async {
-                final isValidForm = _formKey.currentState!.validate();
-                final isValidForm2 = _formKey2.currentState!.validate();
-                final isValidForm3 = _formKey3.currentState!.validate();
-                final isValidForm4 = _formKey4.currentState!.validate();
-                bool isAuxiliar;
-                if (isValidForm &&
-                    isValidForm2 &&
-                    isValidForm3 &&
-                    isValidForm4) {
-                  print("Nombre Completo: " + capitalizeSentences(_name.text));
-                  print("Contraseña: " + _password.text);
-                  print("Correo: " + _email.text);
-                  print("Direccion: " + capitalizeSentences(_address.text));
-                  print("phone: " + _phone.text);
-                  print("DNI: " + _dni.text);
-                  print("Edad: " + _age.text);
-                  print("CEP: " + _cep.text);
-                  print("Estado Civil: " + _stateCivil.text);
-                  print("Auxiliar: " + _auxiliar.text);
-                  if (_auxiliar.text == "Si") {
-                    isAuxiliar = true;
-                  } else {
-                    isAuxiliar = false;
-                  }
-                  print("El valor es :" + isAuxiliar.toString());
-                  await nurseService.registerNurse(
-                      context,
-                      capitalizeSentences(_name.text.trim()),
-                      _email.text.trim(),
-                      _password.text.trim(),
-                      _dni.text.trim(),
-                      _age.text.trim(),
-                      capitalizeSentences(_address.text.trim()),
-                      _phone.text.trim(),
-                      _cep.text.trim(),
-                      "ROLE_NURSE",
-                      _stateCivil.text.trim(),
-                      isAuxiliar);
-                }
-              },
+              onPressed: _formKey4.currentState == null ||
+                      !_formKey4.currentState!.validate() ||
+                      _age.text == "" ||
+                      onceTime == false
+                  ? null
+                  : () async {
+                      final isValidForm = _formKey.currentState!.validate();
+                      final isValidForm2 = _formKey2.currentState!.validate();
+                      final isValidForm3 = _formKey3.currentState!.validate();
+                      final isValidForm4 = _formKey4.currentState!.validate();
+                      bool isAuxiliar;
+                      if (isValidForm &&
+                          isValidForm2 &&
+                          isValidForm3 &&
+                          isValidForm4) {
+                        print("Nombre Completo: " +
+                            capitalizeSentences(_name.text));
+                        print("Contraseña: " + _password.text);
+                        print("Correo: " + _email.text);
+                        print(
+                            "Direccion: " + capitalizeSentences(_address.text));
+                        print("phone: " + _phone.text);
+                        print("DNI: " + _dni.text);
+                        print("Edad: " + _age.text);
+                        print("CEP: " + _cep.text);
+                        print("Estado Civil: " + _stateCivil.text);
+                        print("Auxiliar: " + _auxiliar.text);
+                        if (_auxiliar.text == "Si") {
+                          isAuxiliar = true;
+                        } else {
+                          isAuxiliar = false;
+                        }
+                        print("El valor es :" + isAuxiliar.toString());
+                        setState(() {
+                          onceTime = false;
+                          Future.delayed(const Duration(seconds: 3), () {
+                            setState(() {
+                              onceTime = true;
+                            });
+                          });
+                        });
+                        await nurseService.registerNurse(
+                            context,
+                            capitalizeSentences(_name.text.trim()),
+                            _email.text.trim(),
+                            _password.text.trim(),
+                            _dni.text.trim(),
+                            _age.text.trim(),
+                            capitalizeSentences(_address.text.trim()),
+                            _phone.text.trim(),
+                            _cep.text.trim(),
+                            "ROLE_NURSE",
+                            _stateCivil.text.trim(),
+                            isAuxiliar);
+                      }
+                    },
               child: Text(
                 "Registrarse",
                 style: Theme.of(context).textTheme.labelMedium!.copyWith(
@@ -208,7 +210,12 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
             width: size.width * 1,
             height: 56,
             child: ElevatedButton(
-              onPressed: details.onStepContinue,
+              onPressed: _formKey.currentState == null ||
+                      !_formKey.currentState!.validate() ||
+                      _email.text == "" ||
+                      _password.text == ""
+                  ? null
+                  : details.onStepContinue,
               style: ElevatedButton.styleFrom(
                   elevation: 0,
                   backgroundColor: Color.fromRGBO(255, 161, 158, 1)),
@@ -219,14 +226,67 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
                       fontWeight: FontWeight.w600)),
             ),
           ),
-        ] else if (_currentStep > 0 && _currentStep < 3) ...[
+        ] else if (_currentStep == 1) ...[
           Column(
             children: [
               SizedBox(
                 width: size.width * 1,
                 height: 56,
                 child: ElevatedButton(
-                  onPressed: details.onStepContinue,
+                  onPressed: _formKey2.currentState == null ||
+                          !_formKey2.currentState!.validate() ||
+                          _cep.text == "" ||
+                          _dni.text == ""
+                      ? null
+                      : details.onStepContinue,
+                  style: ElevatedButton.styleFrom(
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8)),
+                      backgroundColor: Color.fromRGBO(255, 161, 158, 1)),
+                  child: Text('Siguiente',
+                      style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                          color: Theme.of(context).colorScheme.onTertiary,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600)),
+                ),
+              ),
+              const SizedBox(height: 14),
+              SizedBox(
+                width: size.width * 1,
+                height: 56,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      side: BorderSide(
+                          color: Color.fromRGBO(255, 161, 158, 1), width: 1.5),
+                      backgroundColor: Color.fromRGBO(255, 242, 241, 1),
+                      elevation: 0),
+                  onPressed: details.onStepCancel,
+                  child: Text(
+                    "Retroceder",
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                        color: Color.fromRGBO(255, 161, 158, 1),
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ] else if (_currentStep == 2) ...[
+          Column(
+            children: [
+              SizedBox(
+                width: size.width * 1,
+                height: 56,
+                child: ElevatedButton(
+                  onPressed: _formKey3.currentState == null ||
+                          !_formKey3.currentState!.validate() ||
+                          _name.text == "" ||
+                          _phone.text == "" ||
+                          _address.text == ""
+                      ? null
+                      : details.onStepContinue,
                   style: ElevatedButton.styleFrom(
                       elevation: 0,
                       shape: RoundedRectangleBorder(
@@ -266,6 +326,7 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
     );
   }
 
+  bool onceTime = true;
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -385,8 +446,10 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
                                   maxLength: 20,
                                   icon: const Icon(Icons.email),
                                   keyboardType: TextInputType.emailAddress,
-                                  validator: validEmail(
-                                      "Escriba el correo con el formato correcto"),
+                                  validator: _email.text == ""
+                                      ? null
+                                      : validEmail(
+                                          "Escriba el correo con el formato correcto"),
                                   obscureText: false,
                                   controllerr: _email,
                                   option: TextInputAction.next),
@@ -397,15 +460,15 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
                                   icon: const Icon(Icons.lock),
                                   keyboardType: TextInputType.visiblePassword,
                                   obscureText: true,
-                                  validator: validPassword(""),
+                                  validator: _password.text == ""
+                                      ? null
+                                      : validPassword(""),
                                   controllerr: _password,
-                                  option: TextInputAction.next,
+                                  option: TextInputAction.done,
                                   onSubmit: (value) {
                                     if (_formKey.currentState!.validate()) {
                                       _formKey.currentState!.save();
-                                      _currentStep += 1;
                                       print(_formKey.currentState!.validate());
-                                      FocusScope.of(context).unfocus();
                                       setState(() {});
                                     }
                                   }),
@@ -444,8 +507,10 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
                                 placeholder: cep,
                                 icon: const Icon(Icons.code),
                                 keyboardType: TextInputType.phone,
-                                validator: validCep(
-                                    "El número de teléfono debe ser de 6 dígitos"),
+                                validator: _cep.text == ""
+                                    ? null
+                                    : validCep(
+                                        "El número de teléfono debe ser de 6 dígitos"),
                                 obscureText: false,
                                 controllerr: _cep,
                                 option: TextInputAction.next,
@@ -456,15 +521,17 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
                                 placeholder: dni,
                                 icon: const Icon(Icons.article_outlined),
                                 keyboardType: TextInputType.number,
-                                validator: validDni(
-                                    "El número del dni debe ser de 8 dígitos"),
+                                validator: _dni.text == ""
+                                    ? null
+                                    : validDni(
+                                        "El número del dni debe ser de 8 dígitos"),
                                 obscureText: false,
                                 controllerr: _dni,
                                 option: TextInputAction.none,
                                 onSubmit: (value) {
                                   if (_formKey2.currentState!.validate()) {
                                     _formKey2.currentState!.save();
-                                    _currentStep += 1;
+
                                     print(_formKey2.currentState!.validate());
                                     setState(() {});
                                   }
@@ -494,55 +561,66 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
                   content: Form(
                     key: _formKey3,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
-                    child: Column(
-                      children: [
-                        GetTextFormField(
-                          labelText: "Nombre Completo",
-                          maxLength: 36,
-                          placeholder: name,
-                          icon: const Icon(Icons.person_add_alt_1_sharp),
-                          keyboardType: TextInputType.name,
-                          validator: validName(
-                              "Escriba el nombre con el formato correcto"),
-                          controllerr: _name,
-                          obscureText: false,
-                          option: TextInputAction.next,
+                    child: Container(
+                      height: MediaQuery.of(context).size.height - 400,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            GetTextFormField(
+                              labelText: "Nombre Completo",
+                              maxLength: 36,
+                              placeholder: name,
+                              icon: const Icon(Icons.person_add_alt_1_sharp),
+                              keyboardType: TextInputType.name,
+                              validator: _name.text == ""
+                                  ? null
+                                  : validName(
+                                      "Escriba el nombre con el formato correcto"),
+                              controllerr: _name,
+                              obscureText: false,
+                              option: TextInputAction.next,
+                            ),
+                            SizedBox(height: 20),
+                            GetTextFormField(
+                              labelText: "Telefono",
+                              placeholder: phone,
+                              icon: const Icon(Icons.phone),
+                              keyboardType: TextInputType.phone,
+                              validator: _phone.text == ""
+                                  ? null
+                                  : validPhone(
+                                      "El número de teléfono debe ser de 9 dígitos"),
+                              obscureText: false,
+                              controllerr: _phone,
+                              option: TextInputAction.next,
+                            ),
+                            SizedBox(height: 20),
+                            GetTextFormField(
+                              maxLength: 50,
+                              labelText: "Dirección",
+                              placeholder: address,
+                              icon: const Icon(Icons.house),
+                              keyboardType: TextInputType.streetAddress,
+                              validator: _address.text == ""
+                                  ? null
+                                  : validAddress(
+                                      "Escriba la dirección con el formato correcto"),
+                              obscureText: false,
+                              controllerr: _address,
+                              option: TextInputAction.send,
+                              onSubmit: (value) {
+                                if (_formKey3.currentState!.validate()) {
+                                  _formKey3.currentState!.save();
+                                  //_currentStep += 1;
+                                  print(_formKey3.currentState!.validate());
+                                  setState(() {});
+                                }
+                              },
+                            ),
+                            SizedBox(height: size.height * 0.19),
+                          ],
                         ),
-                        SizedBox(height: 20),
-                        GetTextFormField(
-                          labelText: "Telefono",
-                          placeholder: phone,
-                          icon: const Icon(Icons.phone),
-                          keyboardType: TextInputType.phone,
-                          validator: validPhone(
-                              "El número de teléfono debe ser de 9 dígitos"),
-                          obscureText: false,
-                          controllerr: _phone,
-                          option: TextInputAction.next,
-                        ),
-                        SizedBox(height: 20),
-                        GetTextFormField(
-                          maxLength: 50,
-                          labelText: "Dirección",
-                          placeholder: address,
-                          icon: const Icon(Icons.house),
-                          keyboardType: TextInputType.streetAddress,
-                          validator: validAddress(
-                              "Escriba la dirección con el formato correcto"),
-                          obscureText: false,
-                          controllerr: _address,
-                          option: TextInputAction.send,
-                          onSubmit: (value) {
-                            if (_formKey3.currentState!.validate()) {
-                              _formKey3.currentState!.save();
-                              _currentStep += 1;
-                              print(_formKey3.currentState!.validate());
-                              setState(() {});
-                            }
-                          },
-                        ),
-                        SizedBox(height: size.height * 0.19),
-                      ],
+                      ),
                     ),
                   ),
                   isActive: _currentStep >= 0,
@@ -562,30 +640,38 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
                   content: Form(
                     key: _formKey4,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
-                    child: Column(
-                      children: [
-                        GetTextFormField(
-                            labelText: "Edad",
-                            placeholder: age,
-                            icon: const Icon(Icons.numbers),
-                            keyboardType: TextInputType.number,
-                            validator: validAge(
-                                "La edad debe tener el formato correcto", _age),
-                            obscureText: false,
-                            controllerr: _age,
-                            option: TextInputAction.done),
-                        SizedBox(height: 20),
-                        title("Estado Civil"),
-                        DropDownWithSearch(
-                          searchController: _stateCivil,
+                    child: Container(
+                      height: MediaQuery.of(context).size.height - 400,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            GetTextFormField(
+                                labelText: "Edad",
+                                placeholder: age,
+                                icon: const Icon(Icons.numbers),
+                                keyboardType: TextInputType.number,
+                                validator: _age.text == ""
+                                    ? null
+                                    : validAge(
+                                        "La edad debe tener el formato correcto",
+                                        _age),
+                                obscureText: false,
+                                controllerr: _age,
+                                option: TextInputAction.done),
+                            SizedBox(height: 20),
+                            title("Estado Civil"),
+                            DropDownWithSearch(
+                              searchController: _stateCivil,
+                            ),
+                            const SizedBox(height: 20),
+                            title(
+                                "¿Estará disponible para ser enfermero auxiliar"),
+                            DropDownWithAuxiliar(
+                              searchController: _auxiliar,
+                            ),
+                          ],
                         ),
-                        const SizedBox(height: 20),
-                        title("¿Estará disponible para ser enfermero auxiliar"),
-                        DropDownWithAuxiliar(
-                          searchController: _auxiliar,
-                        ),
-                        SizedBox(height: size.height * 0.17),
-                      ],
+                      ),
                     ),
                   ),
                   isActive: _currentStep >= 0,

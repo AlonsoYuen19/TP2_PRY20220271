@@ -662,7 +662,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   option: TextInputAction.none),
                             ),
                             SizedBox(height: 20),
-                            //title("Estado Civil"),
+                            title("Estado Civil"),
                             DropDownWithSearch(
                               searchController: _stateCivil,
                             ),
