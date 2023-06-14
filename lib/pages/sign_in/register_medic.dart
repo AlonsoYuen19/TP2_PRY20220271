@@ -110,7 +110,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         if (_currentStep == 3) ...[
           SizedBox(
             width: size.width * 1,
-            height: 56,
+            height: 50,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 elevation: 0,
@@ -177,7 +177,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           const SizedBox(height: 14),
           SizedBox(
             width: size.width * 1,
-            height: 56,
+            height: 50,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                   side: BorderSide(
@@ -197,7 +197,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ] else if (_currentStep == 0) ...[
           SizedBox(
             width: size.width * 1,
-            height: 56,
+            height: 50,
             child: ElevatedButton(
               onPressed: _formKey.currentState == null ||
                       !_formKey.currentState!.validate() ||
@@ -220,7 +220,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             children: [
               SizedBox(
                 width: size.width * 1,
-                height: 56,
+                height: 50,
                 child: ElevatedButton(
                   onPressed: _formKey2.currentState == null ||
                           !_formKey2.currentState!.validate() ||
@@ -243,7 +243,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               const SizedBox(height: 14),
               SizedBox(
                 width: size.width * 1,
-                height: 56,
+                height: 50,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                       side: BorderSide(
@@ -267,7 +267,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             children: [
               SizedBox(
                 width: size.width * 1,
-                height: 56,
+                height: 50,
                 child: ElevatedButton(
                   onPressed: _formKey3.currentState == null ||
                           !_formKey3.currentState!.validate() ||
@@ -291,7 +291,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               const SizedBox(height: 14),
               SizedBox(
                 width: size.width * 1,
-                height: 56,
+                height: 50,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                       side: BorderSide(
@@ -319,6 +319,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    print(size);
     return WillPopScope(
       onWillPop: () async {
         if (_currentStep == 0) {
@@ -332,13 +334,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
       },
       child: SafeArea(
         child: Scaffold(
-          resizeToAvoidBottomInset: _currentStep == 2 ? true : false,
           appBar: AppBar(
             backgroundColor: const Color.fromRGBO(250, 250, 250, 1),
             leading: _currentStep == 0
                 ? Padding(
-                    padding: const EdgeInsets.only(
-                        left: 20, right: 20, top: 16, bottom: 16),
+                    padding: size.longestSide < 600
+                        ? const EdgeInsets.only(
+                            left: 20, right: 20, top: 8, bottom: 8)
+                        : const EdgeInsets.only(
+                            left: 20, right: 20, top: 16, bottom: 16),
                     child: ElevatedButton(
                         style: ButtonStyle(
                           shape:
@@ -364,7 +368,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 : Container(),
             leadingWidth: 96,
             centerTitle: true,
-            toolbarHeight: 90,
+            toolbarHeight: size.longestSide < 600 ? 70 : 90,
             automaticallyImplyLeading: false,
             title: Text(
               "Registro",
@@ -411,7 +415,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             steps: [
               Step(
                   title: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(6.0),
                     child: Text(_currentStep == 0 ? "Credenciales" : "",
                         style: Theme.of(context).textTheme.labelLarge!.copyWith(
                             fontSize: 16,
@@ -424,26 +428,31 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     child: FocusTraversalGroup(
                       policy: OrderedTraversalPolicy(),
                       child: Container(
-                        height: MediaQuery.of(context).size.height - 350,
+                        height: size.longestSide < 600
+                            ? size.height - 280
+                            : size.height - 350,
                         child: SingleChildScrollView(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              GetTextFormField(
-                                labelText: "Correo",
-                                placeholder: email,
-                                maxLength: 20,
-                                icon: const Icon(Icons.email),
-                                keyboardType: TextInputType.emailAddress,
-                                validator: _email.text == ""
-                                    ? null
-                                    : validEmail(
-                                        "Escriba el correo con el formato correcto"),
-                                obscureText: false,
-                                controllerr: _email,
-                                option: TextInputAction.next,
+                              Padding(
+                                padding: EdgeInsets.only(top: 0),
+                                child: GetTextFormField(
+                                  labelText: "Correo",
+                                  placeholder: email,
+                                  maxLength: 20,
+                                  icon: const Icon(Icons.email),
+                                  keyboardType: TextInputType.emailAddress,
+                                  validator: _email.text == ""
+                                      ? null
+                                      : validEmail(
+                                          "Escriba el correo con el formato correcto"),
+                                  obscureText: false,
+                                  controllerr: _email,
+                                  option: TextInputAction.next,
+                                ),
                               ),
-                              const SizedBox(height: 20),
+                              const SizedBox(height: 15),
                               GetTextFormField(
                                 labelText: "Contraseña",
                                 placeholder: password,
@@ -493,7 +502,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   child: FocusTraversalGroup(
                     policy: OrderedTraversalPolicy(),
                     child: Container(
-                      height: MediaQuery.of(context).size.height - 400,
+                      height: size.longestSide < 600
+                          ? size.height - 325
+                          : size.height - 400,
                       child: SingleChildScrollView(
                         child: Column(
                           children: [
@@ -560,7 +571,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     key: _formKey3,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     child: Container(
-                      height: MediaQuery.of(context).size.height - 400,
+                      height: size.longestSide < 600
+                          ? size.height - 325
+                          : size.height - 400,
                       child: SingleChildScrollView(
                         child: Column(
                           children: [
@@ -581,7 +594,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 option: TextInputAction.next,
                               ),
                             ),
-                            SizedBox(height: 20),
+                            SizedBox(height: 15),
                             GetTextFormField(
                               labelText: "Telefono",
                               placeholder: phone,
@@ -595,7 +608,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               controllerr: _phone,
                               option: TextInputAction.next,
                             ),
-                            SizedBox(height: 20),
+                            SizedBox(height: 15),
                             GetTextFormField(
                               maxLength: 50,
                               labelText: "Dirección",
@@ -641,7 +654,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     key: _formKey4,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     child: Container(
-                      height: MediaQuery.of(context).size.height - 400,
+                      height: size.longestSide < 600
+                          ? size.height - 325
+                          : size.height - 400,
                       child: SingleChildScrollView(
                         child: Column(
                           children: [
@@ -661,7 +676,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   controllerr: _age,
                                   option: TextInputAction.none),
                             ),
-                            SizedBox(height: 20),
+                            SizedBox(height: 15),
                             title("Estado Civil"),
                             DropDownWithSearch(
                               searchController: _stateCivil,

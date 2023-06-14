@@ -45,7 +45,7 @@ ThemeData textThemes = ThemeData(
 
     error: Colors.red,
 
-    onPrimary: Colors.black,
+    onPrimary: Color.fromRGBO(29, 27, 32, 1),
 
     onTertiary: buttonForegroundColor,
   ),

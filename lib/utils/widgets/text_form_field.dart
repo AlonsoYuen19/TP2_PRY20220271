@@ -47,7 +47,6 @@ class _GetTextFormFieldState extends State<GetTextFormField> {
     super.initState();
   }
 
-  Color _color = Color.fromRGBO(14, 26, 48, 1);
   @override
   void dispose() {
     super.dispose();
@@ -55,6 +54,7 @@ class _GetTextFormFieldState extends State<GetTextFormField> {
 
   @override
   Widget build(BuildContext context) {
+    Color _color = Theme.of(context).colorScheme.onSurface;
     final size = MediaQuery.of(context).size;
     return /*RawKeyboardListener(
       focusNode: FocusNode(onKey: (node, event) {
@@ -160,7 +160,7 @@ class _GetTextFormFieldState extends State<GetTextFormField> {
                   keyboardType: widget.keyboardType,
                   cursorColor: _color,
                   style: TextStyle(
-                      color: _color,
+                      color: Theme.of(context).colorScheme.onPrimary,
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
                       decoration: TextDecoration.none),
@@ -185,7 +185,7 @@ class _GetTextFormFieldState extends State<GetTextFormField> {
                       fontSize: Theme.of(context)
                           .textTheme
                           .bodyMedium!
-                          .copyWith(fontSize: 16)
+                          .copyWith(fontSize: 12)
                           .fontSize,
                     ),
                     errorMaxLines: 2,
@@ -234,7 +234,7 @@ class _GetTextFormFieldState extends State<GetTextFormField> {
                   keyboardType: widget.keyboardType,
                   cursorColor: _color,
                   style: TextStyle(
-                      color: _color,
+                      color: Theme.of(context).colorScheme.onPrimary,
                       fontSize: 16,
                       decoration: TextDecoration.none,
                       decorationThickness: 0),
@@ -255,7 +255,7 @@ class _GetTextFormFieldState extends State<GetTextFormField> {
                       fontSize: Theme.of(context)
                           .textTheme
                           .bodyMedium!
-                          .copyWith(fontSize: 16)
+                          .copyWith(fontSize: 12)
                           .fontSize,
                     ),
                     errorMaxLines: 2,
