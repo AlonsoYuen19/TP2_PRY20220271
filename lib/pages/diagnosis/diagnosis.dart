@@ -292,9 +292,9 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
                   padding: EdgeInsets.symmetric(vertical: 24),
                   decoration: BoxDecoration(
                       border: Border.all(
-                          color: Color.fromRGBO(255, 217, 221, 1), width: 2),
-                      color: Color.fromRGBO(255, 217, 221, 1),
-                      borderRadius: BorderRadius.circular(20)),
+                          color: Color.fromRGBO(210, 217, 254, 1), width: 2),
+                      color: Color.fromRGBO(210, 217, 254, 1),
+                      borderRadius: BorderRadius.circular(8)),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [
