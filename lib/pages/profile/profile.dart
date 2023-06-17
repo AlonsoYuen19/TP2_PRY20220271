@@ -342,7 +342,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               icon,
               height: 20,
               fit: BoxFit.cover,
-              color: Theme.of(context).colorScheme.onSecondary,
+              color: Theme.of(context).colorScheme.tertiary,
               /*colorFilter: ColorFilter.mode(
                   Theme.of(context).colorScheme.onSecondary, BlendMode.dst),*/
             ),

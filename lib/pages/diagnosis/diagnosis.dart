@@ -46,7 +46,7 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    'Evalúe una imágen de una escara desde tu...',
+                    'Seleccione una opción...',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         color: Theme.of(context).colorScheme.tertiary,
@@ -254,7 +254,7 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
                 child: Container(
                   width: size.width * 0.43,
                   //height: 188,
-                  padding: EdgeInsets.symmetric(vertical: 24),
+                  padding: EdgeInsets.symmetric(vertical: 28),
                   decoration: BoxDecoration(
                       border: Border.all(
                           color: Color.fromRGBO(210, 217, 254, 1), width: 2),
@@ -289,11 +289,11 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
                 },
                 child: Container(
                   width: size.width * 0.43,
-                  padding: EdgeInsets.symmetric(vertical: 24),
+                  padding: EdgeInsets.symmetric(vertical: 28),
                   decoration: BoxDecoration(
                       border: Border.all(
-                          color: Color.fromRGBO(210, 217, 254, 1), width: 2),
-                      color: Color.fromRGBO(210, 217, 254, 1),
+                          color: Color.fromRGBO(255, 217, 221, 1), width: 2),
+                      color: Color.fromRGBO(255, 217, 221, 1),
                       borderRadius: BorderRadius.circular(8)),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,

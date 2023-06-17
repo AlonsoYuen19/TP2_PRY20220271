@@ -135,7 +135,7 @@ class _ManageScreenState extends State<ManageScreen> {
                   ),
                 ),
           const SizedBox(
-            height: 16,
+            height: 24,
           ),
           if (listNurses.length < 3) ...[
             cardNurseSelectorEmpty(),
@@ -154,46 +154,26 @@ class _ManageScreenState extends State<ManageScreen> {
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child: Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(4),
-            side: BorderSide(
-              color: Theme.of(context).colorScheme.background,
-              width: 1,
-            ),
-          ),
-          elevation: 0,
-          color: Colors.white,
-          child: Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 20),
-                  child: Container(
-                    height: 50,
-                    width: 50,
-                    decoration: BoxDecoration(
-                      border: Border.all(width: 1, color: Colors.transparent),
-                      image: const DecorationImage(
-                        image: AssetImage('assets/images/add-friend.png'),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                Text(
-                  "Añadir",
-                  style: TextStyle(
-                      color: Theme.of(context).colorScheme.tertiary,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600),
-                ),
-              ],
-            ),
+        child: Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "Añadir",
+                style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSecondaryContainer,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600),
+              ),
+              const SizedBox(
+                width: 8,
+              ),
+              Icon(
+                Icons.add,
+                color: Theme.of(context).colorScheme.onSecondaryContainer,
+                size: 26,
+              ),
+            ],
           ),
         ),
       ),
