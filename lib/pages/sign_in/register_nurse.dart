@@ -443,7 +443,7 @@ class _RegisterNurseScreenState extends State<RegisterNurseScreen> {
                               GetTextFormField(
                                   labelText: "Correo",
                                   placeholder: email,
-                                  maxLength: 20,
+                                  maxLength: 60,
                                   icon: const Icon(Icons.email),
                                   keyboardType: TextInputType.emailAddress,
                                   validator: _email.text == ""
