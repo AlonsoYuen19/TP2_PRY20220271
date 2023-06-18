@@ -7,7 +7,8 @@ import 'package:flutter/material.dart'
 class Validator {
   static FormFieldValidator<String> nameValid(String errorMessage) {
     return (value) {
-      if (value!.isEmpty || !RegExp(r'^[a-z A-ZáéíóúÁÉÍÓÚüÜ]+$').hasMatch(value)) {
+      if (value!.isEmpty ||
+          !RegExp(r'^[a-z A-ZáéíóúÁÉÍÓÚüÜ]+$').hasMatch(value)) {
         return errorMessage;
       } else {
         return null;
@@ -109,7 +110,7 @@ class Validator {
       if (value!.isEmpty) {
         return errorMessage;
       } else if (!RegExp(
-              r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,20}$')
+              r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#$%^&*(),.?":{}|<>]).{8,20}$')
           .hasMatch(value)) {
         return errorMessage;
       } else if (RegExp(r"\s\b|\b\s").hasMatch(value)) {
@@ -132,7 +133,8 @@ class Validator {
 
   static FormFieldValidator<String> addressValid(String errorMessage) {
     return (value) {
-      if (value!.isEmpty || !RegExp(r'^[a-zA-Z0-9., ñáéíóúÁÉÍÓÚüÜ-]+$').hasMatch(value)) {
+      if (value!.isEmpty ||
+          !RegExp(r'^[a-zA-Z0-9., ñáéíóúÁÉÍÓÚüÜ-]+$').hasMatch(value)) {
         return errorMessage;
       } else {
         return null;
