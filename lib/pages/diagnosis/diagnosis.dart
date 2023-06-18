@@ -7,6 +7,9 @@ import 'dart:typed_data';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:ulcernosis/pages/diagnosis/take_photo_quick_diagnosis.dart';
+import 'package:ulcernosis/services/diagnosis_service.dart';
+import 'package:ulcernosis/utils/widgets/loader_dialog.dart';
+import '../../models/quick_diagnosis.dart';
 import '../../utils/helpers/appbar_drawer.dart';
 import '../../utils/helpers/constant_variables.dart';
 import '../../utils/helpers/loaders_screens/loader_home_screen.dart';
@@ -41,7 +44,7 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.0)),
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(12.0),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -54,7 +57,7 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
                         fontWeight: FontWeight.w600),
                   ),
                   const SizedBox(
-                    height: 20,
+                    height: 15,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -62,14 +65,22 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
                       GestureDetector(
                         onTap: () async {
                           prefs.imageQuickDiagFile = await galleryFunction();
+                          final dialog = WaitDialog(context);
+                          dialog.show();
                           if (prefs.idMedic != 0 &&
                               prefs.imageQuickDiagFile != '') {
                             avatar = File(prefs.imageQuickDiagFile)
                                 .readAsBytesSync();
                             //avatar to a XFile
                             XFile image = XFile(prefs.imageQuickDiagFile);
-                            if (image.path != '') {
+                            DiagnosisService diagnosisService =
+                                DiagnosisService();
+                            QuickDiagnosis imageSend = await diagnosisService
+                                .createQuickDiagnosis(avatar, context, true);
+
+                            if (image.path != '' && imageSend != false) {
                               print("Galeria");
+                              dialog.dispose();
                               return mostrarAlertaExito(context,
                                   "Imagen de la úlcera subida correctamente",
                                   () async {
@@ -80,9 +91,11 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
                                             ImagePreviewQuickDiagnosis(
                                               imagePath: image,
                                               isFromGallery: true,
+                                              quickDiagnosis: imageSend,
                                             )));
                               });
                             } else {
+                              dialog.dispose();
                               return mostrarAlertaError(context,
                                   "No se pudo subir correctamente la imagen",
                                   () async {
@@ -93,7 +106,7 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
                           if (prefs.imageQuickDiagFile != '') {
                             if (!mounted) {}
                             Navigator.of(context).pop();
-                            setState(() {});
+                            //setState(() {});
                           } else {
                             if (!mounted) {}
                             ScaffoldMessenger.of(context).showSnackBar(
@@ -284,8 +297,8 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
                 ),
               ),
               GestureDetector(
-                onTap: () {
-                  selectImage();
+                onTap: () async {
+                  await selectImage();
                 },
                 child: Container(
                   width: size.width * 0.43,

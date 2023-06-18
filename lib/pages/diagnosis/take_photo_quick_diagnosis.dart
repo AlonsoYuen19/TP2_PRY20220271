@@ -43,7 +43,6 @@ class _TakePhotoQuickDiagnosisState extends State<TakePhotoQuickDiagnosis> {
     setState(() {});
   }
 
-
   @override
   void initState() {
     init();
@@ -290,6 +289,7 @@ class _TakePhotoQuickDiagnosisState extends State<TakePhotoQuickDiagnosis> {
           QuickDiagnosis image = await diagnosisService.createQuickDiagnosis(
               avatar, context, false);
           if (image.stagePredicted.isNotEmpty) {
+            print(image.toJson().toString() + "Hola");
             return mostrarAlertaExito(
                 context, "Se capturó la imagen de la herida exitosamente",
                 () async {
@@ -303,6 +303,7 @@ class _TakePhotoQuickDiagnosisState extends State<TakePhotoQuickDiagnosis> {
                           ImagePreviewQuickDiagnosis(
                             imagePath: value,
                             isFromGallery: false,
+                            quickDiagnosis: image,
                           )));
             });
           } else {
@@ -334,8 +335,7 @@ class _TakePhotoQuickDiagnosisState extends State<TakePhotoQuickDiagnosis> {
             cameras[indexCamaraActive], ResolutionPreset.high,
             enableAudio: false);
         await controller!.initialize();
-        await controller!
-            .setFlashMode(FlashMode.off);
+        await controller!.setFlashMode(FlashMode.off);
         if (!mounted) {
           setState(() {});
           return;

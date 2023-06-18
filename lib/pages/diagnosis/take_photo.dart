@@ -4,10 +4,13 @@ import 'dart:typed_data';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:ulcernosis/models/diagnosis.dart';
 import 'package:ulcernosis/models/medic.dart';
 import 'package:ulcernosis/models/nurse.dart';
 import 'package:ulcernosis/models/patient.dart';
+import 'package:ulcernosis/models/users.dart';
 import 'package:ulcernosis/services/medic_service.dart';
+import 'package:ulcernosis/services/users_service.dart';
 import 'package:ulcernosis/utils/helpers/constant_variables.dart';
 import 'package:ulcernosis/utils/widgets/alert_dialog.dart';
 import 'package:ulcernosis/utils/widgets/loader_dialog.dart';
@@ -257,14 +260,17 @@ class _TakePhotoDiagnosisState extends State<TakePhotoDiagnosis> {
       controller!.takePicture().then((value) async {
         prefs.imageDiag = value.path;
         avatar = await value.readAsBytes();
-        int idDiag;
-        int idDiag2;
-
+        /*int idDiag;
+        int idDiag2;*/
+        Diagnosis idDiag;
+        Diagnosis idDiag2;
+        UsersAuthService usersAuthService = UsersAuthService();
+        Users? users = await usersAuthService.getUsersById();
         if (prefs.idMedic != 0) {
           idDiag = await diagnosisService.createDiagnosisMedic(
               avatar, widget.idPatient);
-          print(idDiag);
-          if (!idDiag.isNaN && idDiag != 0) {
+          print(idDiag.toJson());
+          if (idDiag != false && users != null) {
             return mostrarAlertaExito(
                 context, "Se capturó la imagen de la herida exitosamente",
                 () async {
@@ -274,8 +280,11 @@ class _TakePhotoDiagnosisState extends State<TakePhotoDiagnosis> {
                   MaterialPageRoute(
                       builder: (BuildContext context) => ImagePreview(
                             imagePath: value,
-                            idDiagnosis: idDiag,
+                            idDiagnosis: idDiag.id,
                             idPatient: widget.idPatient,
+                            diagnosis: idDiag,
+                            users: users,
+                            fullName: patient.fullName,
                           )));
             });
           } else {
@@ -289,8 +298,8 @@ class _TakePhotoDiagnosisState extends State<TakePhotoDiagnosis> {
         } else {
           idDiag2 = await diagnosisService.createDiagnosisNurse(
               avatar, widget.idPatient);
-          print(idDiag2);
-          if (!idDiag2.isNaN) {
+          print(idDiag2.toJson());
+          if (idDiag2 != false) {
             dialog.dispose();
             return mostrarAlertaExito(
                 context, "Se capturó la imagen de la herida exitosamente",
@@ -300,8 +309,11 @@ class _TakePhotoDiagnosisState extends State<TakePhotoDiagnosis> {
                   MaterialPageRoute(
                       builder: (BuildContext context) => ImagePreview(
                             imagePath: value,
-                            idDiagnosis: idDiag2,
+                            idDiagnosis: idDiag2.id,
                             idPatient: widget.idPatient,
+                            diagnosis: idDiag2,
+                            users: users!,
+                            fullName: patient.fullName,
                           )));
             });
           } else {

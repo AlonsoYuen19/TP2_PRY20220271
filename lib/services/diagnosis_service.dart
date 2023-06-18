@@ -61,7 +61,7 @@ class DiagnosisService {
     return null;
   }
 
-  Future<int> createDiagnosisMedic(Uint8List imageBytes, int idPatient) async {
+  Future<Diagnosis> createDiagnosisMedic(Uint8List imageBytes, int idPatient) async {
     const url = '${authURL}diagnosis/create-diagnosis';
     final request = http.MultipartRequest('POST', Uri.parse(url));
     final multipartFile = http.MultipartFile.fromBytes('file', imageBytes,
@@ -76,12 +76,10 @@ class DiagnosisService {
     if (response.statusCode == 201) {
       print('Image uploaded successfully!');
       final jsonResponse = json.decode(await response.stream.bytesToString());
-      int id = jsonResponse['id'];
-      print("El id del diagnóstico es: " + id.toString());
-      return id;
+      return Diagnosis.fromJson(jsonResponse);
     } else {
       print('Error uploading image. Status code: ${response.statusCode}');
-      return 0;
+      return Diagnosis();
     }
   }
 
@@ -122,7 +120,7 @@ class DiagnosisService {
     }
   }
 
-  Future<int> createDiagnosisNurse(Uint8List imageBytes, int idPatient) async {
+  Future<Diagnosis> createDiagnosisNurse(Uint8List imageBytes, int idPatient) async {
     const url = '${authURL}diagnosis/create-diagnosis';
     final request = http.MultipartRequest('POST', Uri.parse(url));
     final multipartFile = http.MultipartFile.fromBytes('file', imageBytes,
@@ -137,12 +135,10 @@ class DiagnosisService {
     if (response.statusCode == 201) {
       print('Image uploaded successfully!');
       final jsonResponse = json.decode(await response.stream.bytesToString());
-      int id = jsonResponse['id'];
-      print("El id del diagnóstico es: " + id.toString());
-      return id;
+      return Diagnosis.fromJson(jsonResponse);
     } else {
       print('Error uploading image. Status code: ${response.statusCode}');
-      return 0;
+      return Diagnosis();
     }
   }
 

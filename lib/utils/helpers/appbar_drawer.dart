@@ -15,6 +15,7 @@ import '../../services/nurse_services.dart';
 import '../widgets/alert_dialog.dart';
 import 'constant_variables.dart';
 
+
 // ignore: must_be_immutable
 class AppBarDrawer extends StatefulWidget {
   final Widget child;
@@ -214,7 +215,7 @@ class _AppBarDrawerState extends State<AppBarDrawer> {
                       ),
                     ),
                     child: ListTile(
-                      onTap: () {
+                      onTap: () async {
                         if (widget.isDiagnosis == false &&
                             users.role == "ROLE_MEDIC") {
                           Navigator.pushNamedAndRemoveUntil(
