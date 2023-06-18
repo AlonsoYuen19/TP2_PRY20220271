@@ -178,51 +178,55 @@ mostrarAlertaError(BuildContext context, String subtitulo, Function function,
     barrierDismissible: false,
     context: context,
     builder: (_) => Center(
-      child: Wrap(
-        children: [
-          AlertDialog(
-            backgroundColor: Colors.white,
-            shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(8.0))),
-            title: Image.asset(
-              "assets/images/alert-icon.png",
-              height: 50,
-              color: Theme.of(context).colorScheme.onBackground,
-            ),
-            content: Column(
-              children: [
-                Text(subtitulo,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Theme.of(context).colorScheme.onBackground,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600)),
-                SizedBox(height: size.height * 0.03),
-                GestureDetector(
-                  onTap: function as void Function()?,
-                  child: Container(
-                    width: size.width * 1,
-                    padding: const EdgeInsets.all(14.0),
-                    decoration: BoxDecoration(
-                        color:
-                            Theme.of(context).colorScheme.onSecondaryContainer,
-                        borderRadius: BorderRadius.circular(8.0),
-                        border: Border.all(
-                            width: 1.5,
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onSecondaryContainer)),
-                    child: const Center(
-                      child: Text('Aceptar',
-                          style: TextStyle(color: Colors.white)),
+      child: WillPopScope(
+        onWillPop: () async => false,
+        child: Wrap(
+          children: [
+            AlertDialog(
+              backgroundColor: Colors.white,
+              shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(8.0))),
+              title: Image.asset(
+                "assets/images/alert-icon.png",
+                height: 50,
+                color: Theme.of(context).colorScheme.onBackground,
+              ),
+              content: Column(
+                children: [
+                  Text(subtitulo,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.onBackground,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600)),
+                  SizedBox(height: size.height * 0.03),
+                  GestureDetector(
+                    onTap: function as void Function()?,
+                    child: Container(
+                      width: size.width * 1,
+                      padding: const EdgeInsets.all(14.0),
+                      decoration: BoxDecoration(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSecondaryContainer,
+                          borderRadius: BorderRadius.circular(8.0),
+                          border: Border.all(
+                              width: 1.5,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSecondaryContainer)),
+                      child: const Center(
+                        child: Text('Aceptar',
+                            style: TextStyle(color: Colors.white)),
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 10),
-              ],
+                  const SizedBox(height: 10),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     ),
   );
@@ -234,51 +238,55 @@ mostrarAlertaExito(BuildContext context, String subtitulo, Function function) {
     barrierDismissible: false,
     context: context,
     builder: (_) => Center(
-      child: Wrap(
-        children: [
-          AlertDialog(
-            backgroundColor: Colors.white,
-            shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(8.0))),
-            title: Image.asset(
-              "assets/images/alert-icon.png",
-              height: 50,
-              color: Theme.of(context).colorScheme.onBackground,
-            ),
-            content: Column(
-              children: [
-                Text(subtitulo,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Theme.of(context).colorScheme.onBackground,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600)),
-                SizedBox(height: size.height * 0.03),
-                GestureDetector(
-                  onTap: function as void Function()?,
-                  child: Container(
-                    width: size.width * 1,
-                    padding: const EdgeInsets.all(14.0),
-                    decoration: BoxDecoration(
-                        color:
-                            Theme.of(context).colorScheme.onSecondaryContainer,
-                        borderRadius: BorderRadius.circular(8.0),
-                        border: Border.all(
-                            width: 1.5,
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onSecondaryContainer)),
-                    child: const Center(
-                      child: Text('Aceptar',
-                          style: TextStyle(color: Colors.white)),
+      child: WillPopScope(
+        onWillPop: () async => false,
+        child: Wrap(
+          children: [
+            AlertDialog(
+              backgroundColor: Colors.white,
+              shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(8.0))),
+              title: Image.asset(
+                "assets/images/alert-icon.png",
+                height: 50,
+                color: Theme.of(context).colorScheme.onBackground,
+              ),
+              content: Column(
+                children: [
+                  Text(subtitulo,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.onBackground,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600)),
+                  SizedBox(height: size.height * 0.03),
+                  GestureDetector(
+                    onTap: function as void Function()?,
+                    child: Container(
+                      width: size.width * 1,
+                      padding: const EdgeInsets.all(14.0),
+                      decoration: BoxDecoration(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSecondaryContainer,
+                          borderRadius: BorderRadius.circular(8.0),
+                          border: Border.all(
+                              width: 1.5,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSecondaryContainer)),
+                      child: const Center(
+                        child: Text('Aceptar',
+                            style: TextStyle(color: Colors.white)),
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 10),
-              ],
+                  const SizedBox(height: 10),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     ),
   );

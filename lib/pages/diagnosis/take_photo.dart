@@ -10,6 +10,7 @@ import 'package:ulcernosis/models/patient.dart';
 import 'package:ulcernosis/services/medic_service.dart';
 import 'package:ulcernosis/utils/helpers/constant_variables.dart';
 import 'package:ulcernosis/utils/widgets/alert_dialog.dart';
+import 'package:ulcernosis/utils/widgets/loader_dialog.dart';
 import '../../services/diagnosis_service.dart';
 import '../../services/nurse_services.dart';
 import '../../services/patient_service.dart';
@@ -36,7 +37,6 @@ class _TakePhotoDiagnosisState extends State<TakePhotoDiagnosis> {
   Medic medic = Medic();
   Nurse nurse = Nurse();
   Patient patient = Patient();
-  bool _isPressed = false;
   Future init() async {
     patient = (await patientService.getPatientByIdDiagnosis(widget.idPatient))!;
     if (prefs.idMedic != 0) {
@@ -187,54 +187,20 @@ class _TakePhotoDiagnosisState extends State<TakePhotoDiagnosis> {
                                           backgroundColor: Theme.of(context)
                                               .colorScheme
                                               .onSecondaryContainer),
-                                      onPressed: _isPressed == false
-                                          ? handleButton
-                                          : null,
-                                      child: _isPressed == true
-                                          ? Container(
-                                              height: 36,
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Container(
-                                                    height: 15,
-                                                    width: 15,
-                                                    child:
-                                                        const CircularProgressIndicator(
-                                                      color: Color.fromRGBO(
-                                                          114, 146, 171, 1),
-                                                      strokeWidth: 5,
-                                                    ),
-                                                  ),
-                                                  const SizedBox(
-                                                    width: 20,
-                                                  ),
-                                                  const Text(
-                                                      'Por favor espere ...',
-                                                      style: TextStyle(
-                                                          color: Color.fromRGBO(
-                                                              114, 146, 171, 1),
-                                                          fontSize: 16,
-                                                          fontWeight:
-                                                              FontWeight.bold)),
-                                                ],
-                                              ),
-                                            )
-                                          : Container(
-                                              alignment: Alignment.center,
-                                              width: size.width * 1,
-                                              height: 38,
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 20),
-                                              child: Text('Capture la imagen',
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                            ),
+                                      onPressed: handleButton,
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        width: size.width * 1,
+                                        height: 38,
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 20),
+                                        child: Text('Capture la imagen',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold)),
+                                      ),
                                     ),
                                     const SizedBox(height: 14),
                                     ElevatedButton(
@@ -285,20 +251,15 @@ class _TakePhotoDiagnosisState extends State<TakePhotoDiagnosis> {
   }
 
   void handleButton() {
+    final dialog = WaitDialog(context);
+    dialog.show();
     try {
-      setState(() {
-        _isPressed = true;
-        /*Future.delayed(const Duration(seconds: 9), () {
-          setState(() {
-            _isPressed = false;
-          });
-        });*/
-      });
       controller!.takePicture().then((value) async {
         prefs.imageDiag = value.path;
         avatar = await value.readAsBytes();
         int idDiag;
         int idDiag2;
+
         if (prefs.idMedic != 0) {
           idDiag = await diagnosisService.createDiagnosisMedic(
               avatar, widget.idPatient);
@@ -307,9 +268,7 @@ class _TakePhotoDiagnosisState extends State<TakePhotoDiagnosis> {
             return mostrarAlertaExito(
                 context, "Se capturó la imagen de la herida exitosamente",
                 () async {
-              setState(() {
-                _isPressed = false;
-              });
+              dialog.dispose();
               Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -320,13 +279,11 @@ class _TakePhotoDiagnosisState extends State<TakePhotoDiagnosis> {
                           )));
             });
           } else {
+            dialog.dispose();
             return mostrarAlertaError(
                 context, "Ocurrió un error al tomar la foto de la herida",
                 () async {
               Navigator.pop(context);
-              setState(() {
-                _isPressed = false;
-              });
             });
           }
         } else {
@@ -334,12 +291,10 @@ class _TakePhotoDiagnosisState extends State<TakePhotoDiagnosis> {
               avatar, widget.idPatient);
           print(idDiag2);
           if (!idDiag2.isNaN) {
+            dialog.dispose();
             return mostrarAlertaExito(
                 context, "Se capturó la imagen de la herida exitosamente",
                 () async {
-              setState(() {
-                _isPressed = false;
-              });
               Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -350,19 +305,17 @@ class _TakePhotoDiagnosisState extends State<TakePhotoDiagnosis> {
                           )));
             });
           } else {
+            dialog.dispose();
             return mostrarAlertaError(
                 context, "Ocurrió un error al tomar la foto de la herida",
                 () async {
               Navigator.pop(context);
-              setState(() {
-                _isPressed = false;
-              });
             });
           }
         }
       });
     } catch (e) {
-      print(e);
+      print(e.toString() + "error");
     }
   }
 

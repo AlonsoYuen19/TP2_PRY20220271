@@ -201,27 +201,32 @@ class _LoginScreenState extends State<LoginScreen> {
         context: context,
         builder: (_) {
           return StatefulBuilder(builder: (context, StateSetter setState) {
-            return Dialog(
-              backgroundColor: Colors.white,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    CircularProgressIndicator(
-                      color: !isLogged
-                          ? Colors.red
-                          : Theme.of(context).colorScheme.onSecondaryContainer,
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Text('Cargando...',
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium!
-                            .copyWith(color: Colors.black, fontSize: 18))
-                  ],
+            return WillPopScope(
+              onWillPop: () async => false,
+              child: Dialog(
+                backgroundColor: Colors.white,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      CircularProgressIndicator(
+                        color: !isLogged
+                            ? Colors.red
+                            : Theme.of(context)
+                                .colorScheme
+                                .onSecondaryContainer,
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Text('Cargando...',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium!
+                              .copyWith(color: Colors.black, fontSize: 18))
+                    ],
+                  ),
                 ),
               ),
             );
@@ -246,8 +251,6 @@ class _LoginScreenState extends State<LoginScreen> {
       final userService = Provider.of<UsersAuthService>(context, listen: false);
       var email = emailController.text.trim();
       var password = passwordController.text.trim();
-      //await token.updateToken(context);
-
       var id = await userService.getAuthenticateUserId(email, password);
       var idMedic = await medicService.getAuthenticateId(email, password);
       var idNurse = await nurseService.getAuthenticateId(email, password);
@@ -267,14 +270,8 @@ class _LoginScreenState extends State<LoginScreen> {
               print("Error de conexion");
               return;
             }*/
-      setState(() {
-        _isPressed = true;
-        Future.delayed(const Duration(seconds: 6), () {
-          setState(() {
-            _isPressed = false;
-          });
-        });
-      });
+      _isPressed = true;
+
       if (id == null) {
         _fetchData(context, false);
         ScaffoldMessenger.of(context).showSnackBar(
@@ -289,7 +286,11 @@ class _LoginScreenState extends State<LoginScreen> {
         );
         print("No existe en la base de datos");
         setState(() {
-          _isPressed = false;
+          Future.delayed(const Duration(seconds: 3), () {
+            setState(() {
+              _isPressed = false;
+            });
+          });
         });
       } else {
         _fetchData(context, true);
@@ -298,6 +299,13 @@ class _LoginScreenState extends State<LoginScreen> {
         _prefs.login = true;
         //Obtener el token
         await token.updateToken(context);
+        setState(() {
+          Future.delayed(const Duration(seconds: 6), () {
+            setState(() {
+              _isPressed = false;
+            });
+          });
+        });
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             duration: const Duration(seconds: 2),
