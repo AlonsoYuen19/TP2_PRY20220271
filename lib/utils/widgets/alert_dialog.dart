@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ulcernosis/services/users_service.dart';
 import 'package:ulcernosis/utils/providers/auth_token.dart';
+import 'package:ulcernosis/utils/widgets/loader_dialog.dart';
 import '../../shared/user_prefs.dart';
 
 class ReturnAlert {
@@ -111,6 +114,8 @@ class CustomDialogWidget extends StatelessWidget {
                                 .colorScheme
                                 .onSecondaryContainer),
                         onPressed: () async {
+                          final dialog = WaitDialog(context);
+                          dialog.show();
                           final token =
                               Provider.of<AuthProvider>(context, listen: false);
                           final prefs = SaveData();
@@ -119,7 +124,7 @@ class CustomDialogWidget extends StatelessWidget {
                           if (!context.mounted) {
                             return;
                           }
-                          await tokencito.logOutToken();
+                          var response = await tokencito.logOutToken();
                           await token.deleteToken(context);
                           prefs.deleteIdUsers();
                           prefs.deleteIdMedic();
@@ -132,6 +137,15 @@ class CustomDialogWidget extends StatelessWidget {
                           prefs.deleteImageDiag();
                           prefs.deleteImageQuickDiag();
                           prefs.deleteImageQuickDiagFile();
+                          if (response == false) {
+                            dialog.dispose();
+                            return mostrarAlertaError(context,
+                                "El servidor se encuentra en mantenimiento, espero unos momentos...",
+                                () {
+                              exit(0);
+                            });
+                          }
+                          dialog.dispose();
                           Navigator.pushNamedAndRemoveUntil(
                               context, 'login', (_) => false);
                         },
@@ -198,7 +212,7 @@ mostrarAlertaError(BuildContext context, String subtitulo, Function function,
                       style: TextStyle(
                           color: Theme.of(context).colorScheme.onBackground,
                           fontSize: 20,
-                          fontWeight: FontWeight.w600)),
+                          fontWeight: FontWeight.w400)),
                   SizedBox(height: size.height * 0.03),
                   GestureDetector(
                     onTap: function as void Function()?,

@@ -6,7 +6,7 @@ import "package:http/http.dart" as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:ulcernosis/models/diagnosis.dart';
 import 'package:ulcernosis/models/patient.dart';
-import 'package:ulcernosis/utils/widgets/alert_dialog.dart';
+
 
 import '../models/quick_diagnosis.dart';
 import '../utils/helpers/constant_variables.dart';
@@ -61,7 +61,8 @@ class DiagnosisService {
     return null;
   }
 
-  Future<Diagnosis> createDiagnosisMedic(Uint8List imageBytes, int idPatient) async {
+  Future<Diagnosis> createDiagnosisMedic(
+      Uint8List imageBytes, int idPatient) async {
     const url = '${authURL}diagnosis/create-diagnosis';
     final request = http.MultipartRequest('POST', Uri.parse(url));
     final multipartFile = http.MultipartFile.fromBytes('file', imageBytes,
@@ -95,18 +96,7 @@ class DiagnosisService {
     request.headers['Authorization'] = 'Bearer ${prefs.token}';
     request.headers['Content-Type'] = 'multipart/form-data';
     request.files.add(multipartFile);
-    final response = await request
-        .send()
-        .timeout(Duration(seconds: 10))
-        .then((value) => value)
-        .catchError((onError) {
-      print(onError);
-      return mostrarAlertaError(context,
-          "¡Ups! Hubo un problema al momento de realizar la operación, reintenta el diagnóstico",
-          () {
-        Navigator.pop(context);
-      });
-    });
+    final response = await request.send();
 
     if (response.statusCode == 200) {
       final jsonResponse = await response.stream.bytesToString();
@@ -120,7 +110,8 @@ class DiagnosisService {
     }
   }
 
-  Future<Diagnosis> createDiagnosisNurse(Uint8List imageBytes, int idPatient) async {
+  Future<Diagnosis> createDiagnosisNurse(
+      Uint8List imageBytes, int idPatient) async {
     const url = '${authURL}diagnosis/create-diagnosis';
     final request = http.MultipartRequest('POST', Uri.parse(url));
     final multipartFile = http.MultipartFile.fromBytes('file', imageBytes,

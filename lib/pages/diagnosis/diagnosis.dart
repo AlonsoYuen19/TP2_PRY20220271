@@ -78,7 +78,8 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
                             QuickDiagnosis imageSend = await diagnosisService
                                 .createQuickDiagnosis(avatar, context, true);
 
-                            if (image.path != '' && imageSend != false) {
+                            if (image.path != '' &&
+                                imageSend.creatorType != "") {
                               print("Galeria");
                               dialog.dispose();
                               return mostrarAlertaExito(context,
@@ -108,6 +109,7 @@ class _DiagnosisScreenState extends State<DiagnosisScreen> {
                             Navigator.of(context).pop();
                             //setState(() {});
                           } else {
+                            dialog.dispose();
                             if (!mounted) {}
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(

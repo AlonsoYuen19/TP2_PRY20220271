@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:ulcernosis/services/nurse_services.dart';
+import 'package:ulcernosis/utils/widgets/alert_dialog.dart';
 import 'package:ulcernosis/utils/widgets/background_figure.dart';
+import 'package:ulcernosis/utils/widgets/loader_dialog.dart';
 import '../../models/users.dart';
 import '../../services/medic_service.dart';
 import '../../services/users_service.dart';
@@ -30,7 +32,6 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  bool _isPressed = false;
   @override
   void initState() {
     print("token : " + prefs.token);
@@ -133,8 +134,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         obscureText: true,
                         isRegisterPassword: false,
                         option: TextInputAction.send,
-                        onChanged:
-                            (_isPressed == false ? _handleButton : null)),
+                        onChanged: _handleButton),
                     SizedBox(height: size.height * 0.096),
                     signInButton(context),
                     SizedBox(height: size.height * 0.02),
@@ -244,6 +244,8 @@ class _LoginScreenState extends State<LoginScreen> {
   void _handleButton() async {
     final token = Provider.of<AuthProvider>(context, listen: false);
     final isValidForm = _formKey.currentState!.validate();
+    final dialog = WaitDialog(context);
+    dialog.show();
     if (isValidForm) {
       final medicService = Provider.of<MedicAuthServic>(context, listen: false);
       final nurseService =
@@ -251,7 +253,20 @@ class _LoginScreenState extends State<LoginScreen> {
       final userService = Provider.of<UsersAuthService>(context, listen: false);
       var email = emailController.text.trim();
       var password = passwordController.text.trim();
+      if (email == "" || password == "") {
+        dialog.dispose();
+        return;
+      }
       var id = await userService.getAuthenticateUserId(email, password);
+      print(id);
+      if (id == -1) {
+        dialog.dispose();
+        mostrarAlertaError(context,
+            "¡El servidor se encuentra en mantenimiento, vuelva más tarde!",
+            () {
+          Navigator.pop(context);
+        });
+      }
       var idMedic = await medicService.getAuthenticateId(email, password);
       var idNurse = await nurseService.getAuthenticateId(email, password);
       var type = await userService.getAuthenticateIdRole(email, password);
@@ -263,20 +278,14 @@ class _LoginScreenState extends State<LoginScreen> {
         _prefs.idUsers = id;
         _prefs.idNurse = idNurse!;
       }
-      if (email == "" || password == "") {
-        return;
-      }
-      /*if (id == -1) {
-              print("Error de conexion");
-              return;
-            }*/
-      _isPressed = true;
 
-      if (id == null) {
-        _fetchData(context, false);
+      if (id == 0) {
+        dialog.dispose();
+
+        //_fetchData(context, false);
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            duration: Duration(seconds: 2),
+            duration: Duration(seconds: 1),
             content: Text(
               "Usuario o contraseña incorrectas",
               style: TextStyle(color: Colors.white),
@@ -285,30 +294,17 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         );
         print("No existe en la base de datos");
-        setState(() {
-          Future.delayed(const Duration(seconds: 3), () {
-            setState(() {
-              _isPressed = false;
-            });
-          });
-        });
       } else {
-        _fetchData(context, true);
+        //_fetchData(context, true);
+
         _prefs.email = email;
         _prefs.password = password;
         _prefs.login = true;
         //Obtener el token
         await token.updateToken(context);
-        setState(() {
-          Future.delayed(const Duration(seconds: 6), () {
-            setState(() {
-              _isPressed = false;
-            });
-          });
-        });
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            duration: const Duration(seconds: 2),
+            duration: const Duration(seconds: 1),
             content: Text(
               type == "ROLE_MEDIC"
                   ? "Médico logueado correctamente"
@@ -323,10 +319,14 @@ class _LoginScreenState extends State<LoginScreen> {
         } else {
           print("Enfermero existe en la base de datos");
         }
+        dialog.dispose();
+        Navigator.pushNamed(context, "home");
       }
       if (!mounted) {
         return;
       }
+    } else {
+      dialog.dispose();
     }
   }
 
@@ -342,7 +342,7 @@ class _LoginScreenState extends State<LoginScreen> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               )),
-          onPressed: _isPressed == false ? _handleButton : null,
+          onPressed: _handleButton,
           child: Container(
             width: size.width * 1,
             padding: const EdgeInsets.all(6),

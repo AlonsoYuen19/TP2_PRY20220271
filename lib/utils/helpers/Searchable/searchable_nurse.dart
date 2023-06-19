@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:ulcernosis/models/diagnosis.dart';
+import '../../../models/patient.dart';
 import '../../../pages/home/diagnosis_page_patient.dart';
 import '../../../services/diagnosis_service.dart';
+import '../../../services/patient_service.dart';
 import '../constant_variables.dart';
 
 class SearchNurse extends SearchDelegate {
@@ -143,7 +145,17 @@ class SearchNurse extends SearchDelegate {
                                                   .tertiary)),
                                 ),
                                 GestureDetector(
-                                  onTap: () {
+                                  onTap: () async {
+                                    DiagnosisService diagnosisService =
+                                        DiagnosisService();
+                                    Diagnosis? diagnosis =
+                                        await diagnosisService
+                                            .getDiagnosisId(data[index].id);
+                                    PatientService patientService =
+                                        PatientService();
+                                    Patient? patient = await patientService
+                                        .getPatientByIdDiagnosis(
+                                            data[index].patientId);
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
@@ -152,6 +164,8 @@ class SearchNurse extends SearchDelegate {
                                                   idDiagnosis: data[index].id,
                                                   idPatient:
                                                       data[index].patientId,
+                                                  diagnosis: diagnosis,
+                                                  patient: patient,
                                                 )));
                                   },
                                   child: Padding(

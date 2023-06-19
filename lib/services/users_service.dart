@@ -35,7 +35,8 @@ class UsersAuthService with ChangeNotifier {
     }
   }
 
-  Future<void> logOutToken() async {
+
+  Future<bool> logOutToken() async {
     try {
       var response = await http.get(
         Uri.parse("${authURL}auth/logout"),
@@ -43,15 +44,16 @@ class UsersAuthService with ChangeNotifier {
           'Authorization': 'Bearer ${prefs.token}',
         },
       );
-
       if (response.statusCode == 200) {
         print("Se deslogeo correctamente");
+        return true;
       } else {
         print("Hubo un error al deslogearse");
         throw Exception("Failed to load data");
       }
     } on SocketException catch (e) {
       print('Error de conexión: ${e.message}');
+      return false;
     }
   }
 
@@ -76,6 +78,12 @@ class UsersAuthService with ChangeNotifier {
       if (response.statusCode == 403) {
         print("Error no deseado");
       }
+      if (response.statusCode == 500) {
+        String message = json.decode(response.body)["message"];
+        if (message == "Bad credentials") {
+          return 0;
+        }
+      }
     } on SocketException catch (e) {
       if (e.osError?.errorCode == 61) {
         // El servidor no está en ejecución
@@ -85,7 +93,7 @@ class UsersAuthService with ChangeNotifier {
         print('Error: $e');
       }
     }
-    return null;
+    return -1;
   }
 
   Future<Users?> getUsersById() async {

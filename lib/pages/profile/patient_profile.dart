@@ -7,7 +7,6 @@ import 'package:ulcernosis/services/patient_service.dart';
 import 'package:ulcernosis/utils/helpers/loaders_screens/loader_home_screen.dart';
 import '../../utils/helpers/constant_variables.dart';
 import '../../utils/widgets/DropDowns/drop_down.dart';
-import '../../utils/widgets/background_figure.dart';
 
 class PatientProfileScreen extends StatefulWidget {
   bool? isName;

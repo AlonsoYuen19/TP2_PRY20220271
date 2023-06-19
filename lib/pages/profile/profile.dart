@@ -381,12 +381,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
     if (users.role == 'ROLE_MEDIC') {
       role = "Médico especialista";
     } else {
-      role = "Enfermero especialista";
+      role = nurse.isAuxiliar == true ? "Enfermero auxiliar" : "Enfermero";
     }
 
     if (nurse.itWasNotified == true) {
       equipoMedico = "¡Usted actualmente se encuentra en un equipo médico!";
-      colorEquipoMedico = Colors.lightBlue;
+      colorEquipoMedico = Theme.of(context).colorScheme.onSecondaryContainer;
     } else {
       equipoMedico = "¡Usted actualmente no se encuentra en un equipo médico!";
       colorEquipoMedico = Colors.redAccent;
@@ -614,7 +614,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 if (!snapshot.hasData) {
                   return const Center(
                       child: CircularProgressIndicator(
-                    color: Colors.red,
+                    color: Colors.transparent,
                   ));
                 }
                 if (data!.isEmpty) {

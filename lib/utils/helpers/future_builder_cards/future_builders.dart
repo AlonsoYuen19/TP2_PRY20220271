@@ -3,7 +3,11 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:ulcernosis/services/diagnosis_service.dart';
+import '../../../models/diagnosis.dart';
+import '../../../models/patient.dart';
 import '../../../pages/home/diagnosis_page_patient.dart';
+import '../../../services/patient_service.dart';
 import '../constant_variables.dart';
 
 class MyFutureBuilder extends StatefulWidget {
@@ -67,14 +71,23 @@ class _MyFutureBuilderState extends State<MyFutureBuilder> {
               String mes2 = data[index].createdAt.substring(5, 7);
               String dia2 = data[index].createdAt.substring(8, 10);
               mes2 = meses[mes2]!;
+
               return GestureDetector(
-                onTap: () {
+                onTap: () async {
+                  DiagnosisService diagnosisService = DiagnosisService();
+                  Diagnosis? diagnosis = await diagnosisService
+                      .getDiagnosisId(data[reversedIndex].id);
+                  PatientService patientService = PatientService();
+                  Patient? patient = await patientService
+                      .getPatientByIdDiagnosis(data[reversedIndex].patientId);
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => DiagnosisPageByPatient(
                                 idDiagnosis: data[reversedIndex].id,
                                 idPatient: data[reversedIndex].patientId,
+                                diagnosis: diagnosis,
+                                patient: patient,
                               )));
                 },
                 child: Card(
