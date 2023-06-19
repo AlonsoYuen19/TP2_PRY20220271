@@ -17,15 +17,18 @@ class EditProfileScreen extends StatefulWidget {
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
   Widget title(String title) {
-    return Padding(
-      padding:
-          const EdgeInsets.symmetric(horizontal: paddingHori, vertical: 10),
-      child: Text(
-        title,
-        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-            color: Theme.of(context).colorScheme.onSecondary,
-            fontSize: 16,
-            fontWeight: FontWeight.w400),
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 15),
+        child: Text(
+          title,
+          textAlign: TextAlign.left,
+          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+              color: Theme.of(context).colorScheme.onSecondary,
+              fontSize: 16,
+              fontWeight: FontWeight.w400),
+        ),
       ),
     );
   }
@@ -128,9 +131,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: Column(
                         children: [
-                          title("Nombre Completo"),
+                          SizedBox(height: size.height * 0.01),
                           GetTextFormField(
-                            labelText: name,
+                            labelText: "Nombre Completo",
                             placeholder: "",
                             icon: const Icon(Icons.person_add_alt_1_sharp),
                             keyboardType: TextInputType.name,
@@ -141,9 +144,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             isEditProfile: true,
                             option: TextInputAction.next,
                           ),
-                          title("Telefono	"),
+                          SizedBox(height: size.height * 0.02),
                           GetTextFormField(
-                            labelText: phone,
+                            labelText: "Telefono",
                             placeholder: "",
                             icon: const Icon(Icons.phone),
                             keyboardType: TextInputType.phone,
@@ -154,9 +157,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             isEditProfile: true,
                             option: TextInputAction.next,
                           ),
-                          title("Dirección"),
+                          SizedBox(height: size.height * 0.02),
                           GetTextFormField(
-                            labelText: address,
+                            labelText: "Dirección",
                             placeholder: "",
                             icon: const Icon(Icons.house),
                             keyboardType: TextInputType.streetAddress,
@@ -167,10 +170,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             isEditProfile: true,
                             option: TextInputAction.next,
                           ),
-                          SizedBox(height: size.height * 0.01),
-                          title("Dni"),
+                          SizedBox(height: size.height * 0.02),
                           GetTextFormField(
-                            labelText: dni,
+                            labelText: "Dni",
                             placeholder: "",
                             icon: const Icon(Icons.card_membership),
                             keyboardType: TextInputType.number,
@@ -181,10 +183,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             isEditProfile: true,
                             option: TextInputAction.next,
                           ),
-                          SizedBox(height: size.height * 0.01),
-                          title("Edad"),
+                          SizedBox(height: size.height * 0.02),
                           GetTextFormField(
-                            labelText: age,
+                            labelText: "Edad",
                             placeholder: "",
                             icon: const Icon(Icons.numbers),
                             keyboardType: TextInputType.number,
@@ -195,17 +196,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             isEditProfile: true,
                             option: TextInputAction.done,
                           ),
-                          SizedBox(height: size.height * 0.01),
                           title("Estado Civil"),
                           DropDownWithSearch(
                             searchController: _stateCivil,
                           ),
-                          const SizedBox(height: 16),
                         ],
                       ),
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(
+                      height: size.longestSide < 700 ? 30 : size.height * 0.15),
                   Container(
                     width: size.width * 1,
                     height: 56,

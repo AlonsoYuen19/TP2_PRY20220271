@@ -712,7 +712,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               function: () {
                                 //id para enviar a la siguiente pantalla
                                 prefs.idPatient = snapshot.data![index].id;
-                                Navigator.pushReplacement(
+                                Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) =>
