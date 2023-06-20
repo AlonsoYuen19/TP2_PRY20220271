@@ -302,18 +302,6 @@ class _LoginScreenState extends State<LoginScreen> {
         _prefs.login = true;
         //Obtener el token
         await token.updateToken(context);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            duration: const Duration(seconds: 1),
-            content: Text(
-              type == "ROLE_MEDIC"
-                  ? "Médico logueado correctamente"
-                  : "Enfermero logueado correctamente",
-              style: const TextStyle(color: Colors.white),
-            ),
-            backgroundColor: Theme.of(context).colorScheme.onSecondaryContainer,
-          ),
-        );
         if (type == "ROLE_MEDIC") {
           print("Médico existe en la base de datos");
         } else {
