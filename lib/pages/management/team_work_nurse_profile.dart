@@ -127,247 +127,273 @@ class _TeamWorkNurseProfileState extends State<TeamWorkNurseProfile> {
                   mes = meses[mes]!;
                   return SafeArea(
                       child: SingleChildScrollView(
+                          physics: const BouncingScrollPhysics(),
                           child: Column(children: [
-                    Column(children: [
-                      Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.surface,
-                            borderRadius: const BorderRadius.vertical(
-                                bottom: Radius.elliptical(400, 80))),
-                        child: Column(
-                          children: [
-                            avatar.isEmpty
-                                ? CircleAvatar(
-                                    backgroundColor: Color(0xF1F1F1),
-                                    radius: 66,
-                                    child: Image.asset(
-                                      "assets/images/enfermero_logo1.png",
-                                      fit: BoxFit.fill,
-                                      height: 150,
+                            Column(children: [
+                              Container(
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                    color:
+                                        Theme.of(context).colorScheme.surface,
+                                    borderRadius: const BorderRadius.vertical(
+                                        bottom: Radius.elliptical(400, 80))),
+                                child: Column(
+                                  children: [
+                                    avatar.isEmpty
+                                        ? CircleAvatar(
+                                            backgroundColor: Color(0xF1F1F1),
+                                            radius: 66,
+                                            child: Image.asset(
+                                              "assets/images/enfermero_logo1.png",
+                                              fit: BoxFit.fill,
+                                              height: 150,
+                                            ),
+                                          )
+                                        : ClipOval(
+                                            child: Image.memory(avatar,
+                                                height: 100,
+                                                width: 100,
+                                                fit: BoxFit.cover),
+                                          ),
+                                    const SizedBox(
+                                      height: 11,
                                     ),
-                                  )
-                                : ClipOval(
-                                    child: Image.memory(avatar,
-                                        height: 100,
-                                        width: 100,
-                                        fit: BoxFit.cover),
-                                  ),
+                                    Text(
+                                      nurse.fullName,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .tertiary,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    const SizedBox(
+                                      height: 23,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 28,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    SvgPicture.asset(
+                                        "assets/svgImages/correo.svg",
+                                        height: 20,
+                                        colorFilter: ColorFilter.mode(
+                                            Colors.black, BlendMode.dst)),
+                                    const SizedBox(
+                                      width: 11,
+                                    ),
+                                    Text(
+                                      "Correo: ",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .tertiary,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    const SizedBox(
+                                      width: 4,
+                                    ),
+                                    Text(
+                                      nurse.email,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSecondary,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 16,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    SvgPicture.asset("assets/svgImages/dni.svg",
+                                        height: 23,
+                                        colorFilter: ColorFilter.mode(
+                                            Colors.black, BlendMode.dst)),
+                                    const SizedBox(
+                                      width: 11,
+                                    ),
+                                    Text(
+                                      "CEP: ",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .tertiary,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    const SizedBox(
+                                      width: 4,
+                                    ),
+                                    Text(
+                                      nurse.cep,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSecondary,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 16,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    SvgPicture.asset("assets/svgImages/dni.svg",
+                                        height: 23.5,
+                                        colorFilter: ColorFilter.mode(
+                                            Colors.black, BlendMode.dst)),
+                                    const SizedBox(
+                                      width: 11,
+                                    ),
+                                    Text(
+                                      "Aux: ",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .tertiary,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    const SizedBox(
+                                      width: 4,
+                                    ),
+                                    Text(
+                                      nurse.isAuxiliar == true
+                                          ? "Autorizado"
+                                          : "No autorizado",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSecondary,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 16,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    SvgPicture.asset(
+                                        "assets/svgImages/usuario.svg",
+                                        height: 20,
+                                        colorFilter: ColorFilter.mode(
+                                            Colors.black, BlendMode.dst)),
+                                    const SizedBox(
+                                      width: 11,
+                                    ),
+                                    const Text(
+                                      "Fecha de registro: ",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    const SizedBox(
+                                      width: 4,
+                                    ),
+                                    Flexible(
+                                      child: Text(
+                                        "$mes $dia, $anio",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onSecondary,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ]),
                             const SizedBox(
-                              height: 11,
+                              height: 32,
                             ),
-                            Text(
-                              nurse.fullName,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Theme.of(context).colorScheme.tertiary,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            const SizedBox(
-                              height: 23,
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 28,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            SvgPicture.asset("assets/svgImages/correo.svg",
-                                height: 20,
-                                colorFilter: ColorFilter.mode(
-                                    Colors.black, BlendMode.dst)),
-                            const SizedBox(
-                              width: 11,
-                            ),
-                            Text(
-                              "Correo: ",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Theme.of(context).colorScheme.tertiary,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            const SizedBox(
-                              width: 4,
-                            ),
-                            Text(
-                              nurse.email,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color:
-                                      Theme.of(context).colorScheme.onSecondary,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            SvgPicture.asset("assets/svgImages/dni.svg",
-                                height: 23,
-                                colorFilter: ColorFilter.mode(
-                                    Colors.black, BlendMode.dst)),
-                            const SizedBox(
-                              width: 11,
-                            ),
-                            Text(
-                              "CEP: ",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Theme.of(context).colorScheme.tertiary,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            const SizedBox(
-                              width: 4,
-                            ),
-                            Text(
-                              nurse.cep,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color:
-                                      Theme.of(context).colorScheme.onSecondary,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            SvgPicture.asset("assets/svgImages/dni.svg",
-                                height: 23.5,
-                                colorFilter: ColorFilter.mode(
-                                    Colors.black, BlendMode.dst)),
-                            const SizedBox(
-                              width: 11,
-                            ),
-                            Text(
-                              "Aux: ",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Theme.of(context).colorScheme.tertiary,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            const SizedBox(
-                              width: 4,
-                            ),
-                            Text(
-                              nurse.isAuxiliar == true
-                                  ? "Autorizado"
-                                  : "No autorizado",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color:
-                                      Theme.of(context).colorScheme.onSecondary,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            SvgPicture.asset("assets/svgImages/usuario.svg",
-                                height: 20,
-                                colorFilter: ColorFilter.mode(
-                                    Colors.black, BlendMode.dst)),
-                            const SizedBox(
-                              width: 11,
-                            ),
-                            const Text(
-                              "Fecha de registro: ",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            const SizedBox(
-                              width: 4,
-                            ),
-                            Flexible(
-                              child: Text(
-                                "$mes $dia, $anio",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSecondary,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  cardSelector(
+                                      color: Color.fromRGBO(210, 217, 254, 1),
+                                      color2: Color.fromRGBO(95, 109, 186, 1),
+                                      text: "Registro de Citas",
+                                      icon: Icons.replay,
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder:
+                                                    (BuildContext context) =>
+                                                        RegisterAttendancePage(
+                                                          idNurse: widget.id,
+                                                        )));
+                                      }),
+                                  cardSelector(
+                                      color: Color.fromRGBO(255, 217, 221, 1),
+                                      color2: Color.fromRGBO(178, 88, 97, 1),
+                                      text: "Asignar Cita",
+                                      icon: Icons.calendar_today_rounded,
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder:
+                                                    (BuildContext context) =>
+                                                        AssignPatientPage(
+                                                          idNurse: widget.id,
+                                                        )));
+                                      }),
+                                ],
                               ),
                             ),
-                          ],
-                        ),
-                      ),
-                    ]),
-                    const SizedBox(
-                      height: 32,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          cardSelector(
-                              color: Color.fromRGBO(210, 217, 254, 1),
-                              color2: Color.fromRGBO(95, 109, 186, 1),
-                              text: "Registro de Citas",
-                              icon: Icons.replay,
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                            RegisterAttendancePage(
-                                              idNurse: widget.id,
-                                            )));
-                              }),
-                          cardSelector(
-                              color: Color.fromRGBO(255, 217, 221, 1),
-                              color2: Color.fromRGBO(178, 88, 97, 1),
-                              text: "Asignar Cita",
-                              icon: Icons.calendar_today_rounded,
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                            AssignPatientPage(
-                                              idNurse: widget.id,
-                                            )));
-                              }),
-                        ],
-                      ),
-                    ),
-                  ])));
+                            const SizedBox(
+                              height: 16,
+                            ),
+                          ])));
                 })),
       ),
     );
