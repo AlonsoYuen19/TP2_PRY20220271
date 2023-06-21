@@ -87,10 +87,15 @@ class SearchUserPatient extends SearchDelegate {
                     date: "Fecha: $mes $dia, $anio",
                     function: () {
                       prefs.idPatient = snapshot.data![index].id;
+                      Patient patient = snapshot.data![index];
+                      print(patient);
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => PatientProfileScreen(),
+                          builder: (context) => PatientProfileScreen(
+                            patient: patient,
+                            
+                          ),
                         ),
                       );
                     },

@@ -706,17 +706,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             return FancyCard(
                               image:
                                   Image.asset("assets/images/patient-logo.png"),
-                              //image2: avatar3,
                               title: snapshot.data![index].fullName,
                               date: "$mes $dia, $anio",
                               function: () {
-                                //id para enviar a la siguiente pantalla
                                 prefs.idPatient = snapshot.data![index].id;
+                                Patient patient = snapshot.data![index];
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) =>
-                                        PatientProfileScreen(),
+                                    builder: (context) => PatientProfileScreen(
+                                      patient: patient,
+                                    ),
                                   ),
                                 );
                               },
