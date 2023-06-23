@@ -55,10 +55,7 @@ String capitalizeSentences(String input) {
       '. '); // Unir las oraciones capitalizadas nuevamente en un solo string
 }
 
-//const authURL = "http://10.0.2.2:8080/api/v1/";
-const authURL = "http://52.14.42.193:8080/api/v1/";
-//const authURL = "http://192.168.189.137:8080/api/v1/";
-//const authURL = "http://192.168.18.46:8080/api/v1/";
+const authURL = "";
 const camaraFunction = GaleryOptions.selectImageFromCamera;
 const galleryFunction = GaleryOptions.selectImageFromGallery;
 const colorCard = Color.fromRGBO(207, 234, 254, 1);
