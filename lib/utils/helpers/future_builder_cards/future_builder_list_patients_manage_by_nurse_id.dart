@@ -1,55 +1,44 @@
-//class future builder
+// ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import '../constant_variables.dart';
 
-import 'constant_variables.dart';
-
-class MyFutureBuilder extends StatefulWidget {
+class MyFutureBuilderListPatientsByNurseId extends StatefulWidget {
   final Future<List> myFuture;
-  bool isHome = true;
-  MyFutureBuilder({super.key, required this.myFuture, this.isHome = true});
+  final int idNurse;
+  const MyFutureBuilderListPatientsByNurseId(
+      {super.key, required this.myFuture, required this.idNurse});
 
   @override
-  State<MyFutureBuilder> createState() => _MyFutureBuilderState();
+  State<MyFutureBuilderListPatientsByNurseId> createState() =>
+      _MyFutureBuilderListPatientsByNurseIdState();
 }
 
-class _MyFutureBuilderState extends State<MyFutureBuilder> {
+class _MyFutureBuilderListPatientsByNurseIdState
+    extends State<MyFutureBuilderListPatientsByNurseId> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      padding: const EdgeInsets.symmetric(horizontal: 15.0),
       child: FutureBuilder<List>(
         future: widget.myFuture,
         builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
           var data = snapshot.data ?? [];
           return ListView.builder(
-              physics: const BouncingScrollPhysics(),
-              itemCount: widget.isHome ? 4 : data.length,
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: data.length,
               itemBuilder: (context, index) {
-                int reversedIndex = data.length - index - 1;
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  Future.delayed(const Duration(seconds: 1));
                   return Center(
                       child: SizedBox(
                     width: 100,
                     height: 100,
                     child: CircularProgressIndicator(
-                      color: Theme.of(context).colorScheme.onTertiary,
+                      color: Colors.transparent
                     ),
                   ));
-                }
-                if (snapshot.connectionState == ConnectionState.done) {
-                  if (data.isEmpty) {
-                    return Center(
-                      child: Text(
-                        "No hay diagnósticos creados",
-                        style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                              color: Theme.of(context).colorScheme.tertiary,
-                            ),
-                      ),
-                    );
-                  }
                 }
                 return Container(
                   width: size.width * 0.9,
@@ -74,26 +63,12 @@ class _MyFutureBuilderState extends State<MyFutureBuilder> {
                             children: [
                               Flexible(
                                 child: Text(
-                                  widget.isHome
-                                      ? '${data[reversedIndex].fullNameDoctor}'
-                                      : '${data[index].fullNameDoctor}',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelMedium!
-                                      .copyWith(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .tertiary,
-                                      ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 12.0),
-                                child: ImageIcon(
-                                  const AssetImage(
-                                      "assets/images/search-icon.png"),
-                                  color: Theme.of(context).colorScheme.tertiary,
-                                  size: 28,
+                                  '${data[index].fullName}',
+                                  style: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .tertiary,
+                                      fontSize: 20),
                                 ),
                               ),
                             ],
@@ -104,15 +79,12 @@ class _MyFutureBuilderState extends State<MyFutureBuilder> {
                           padding: const EdgeInsets.only(left: paddingHori),
                           child: Row(
                             children: [
-                              ImageIcon(
-                                const AssetImage(
-                                    "assets/images/category-icon.png"),
-                                color: Theme.of(context).colorScheme.tertiary,
-                                size: 36,
-                              ),
+                              Icon(Icons.info_outline,
+                                  color: Theme.of(context).colorScheme.tertiary,
+                                  size: 28),
                               const SizedBox(width: 10),
                               Text(
-                                "Categoria 1",
+                                "Paciente",
                                 style: Theme.of(context).textTheme.labelMedium,
                               )
                             ],
@@ -123,17 +95,14 @@ class _MyFutureBuilderState extends State<MyFutureBuilder> {
                           padding: const EdgeInsets.only(left: paddingHori),
                           child: Row(
                             children: [
-                              ImageIcon(
-                                const AssetImage(
-                                    "assets/images/address-icon.png"),
+                              Icon(
+                                Icons.location_pin,
                                 color: Theme.of(context).colorScheme.tertiary,
-                                size: 24,
+                                size: 28,
                               ),
                               const SizedBox(width: 10),
                               Text(
-                                widget.isHome
-                                    ? '${data[reversedIndex].address}'
-                                    : '${data[index].address}',
+                                '${data[index].address}',
                                 style: Theme.of(context).textTheme.labelMedium,
                               )
                             ],

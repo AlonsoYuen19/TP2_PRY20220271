@@ -57,10 +57,29 @@ dependencies:
   stacked_card_carousel: ^0.0.4
   responsive_grid_list: ^1.3.1
   image_picker: ^0.8.6+3
+  mime_type: ^1.0.0
+  mime: ^1.0.4
+  http_parser: ^4.0.2
+  intl: ^0.18.0
+  timezone: ^0.9.1
+  flutter_keyboard_visibility: ^5.4.1
+  flutter_localizations:
+    sdk: flutter
+  camera: ^0.10.3+2
+  pie_chart: ^5.3.2
+  flutter_native_splash: ^2.2.19
+  flutter_svg: ^2.0.6
+  permission_handler: ^10.3.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+flutter_native_splash:
+  color: "FFFFFF"
+  image: assets/images/Ulsernosis2.png
+  resize_mode: "cover"
+  android: true
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -86,6 +105,8 @@ flutter:
     - assets/background_images/
     - assets/images/
     - assets/loaders/
+    - assets/icon_app/
+    - assets/svgImages/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

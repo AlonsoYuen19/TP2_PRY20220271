@@ -1,14 +1,15 @@
 // ignore_for_file: use_build_context_synchronously
 import 'dart:async';
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
-import 'package:starsview/config/StarsConfig.dart';
-import 'package:starsview/starsview.dart';
+import 'package:ulcernosis/services/nurse_services.dart';
+import 'package:ulcernosis/utils/widgets/alert_dialog.dart';
 import 'package:ulcernosis/utils/widgets/background_figure.dart';
-
-import '../../services/user_auth_service.dart';
+import 'package:ulcernosis/utils/widgets/loader_dialog.dart';
+import '../../models/users.dart';
+import '../../services/medic_service.dart';
+import '../../services/users_service.dart';
 import '../../shared/user_prefs.dart';
 import '../../utils/providers/auth_token.dart';
 import '../../utils/helpers/constant_variables.dart';
@@ -27,14 +28,15 @@ String password = "";
 
 class _LoginScreenState extends State<LoginScreen> {
   final _prefs = SaveData();
-  final authService = UserServiceAuth();
+  final authService = MedicAuthServic();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   @override
   void initState() {
+    print("token : " + prefs.token);
+    print(prefs.login);
     init();
-
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((_) {
       checkLogin();
@@ -50,9 +52,11 @@ class _LoginScreenState extends State<LoginScreen> {
     if (!mounted) {
       return;
     }
-    if (isLogin == false) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => const HomeScreen()));
+    if (isLogin == true) {
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
+          (route) => false);
     }
   }
 
@@ -63,182 +67,129 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
+  List<String> medic = [];
+  Users users = Users();
   Future init() async {
     //obtener el token
     Provider.of<AuthProvider>(context, listen: false);
+    print("Id del user: " + prefs.idUsers.toString());
+    print("Id del enfermero: " + prefs.idNurse.toString());
+    print("Id del medico: " + prefs.idMedic.toString());
   }
 
   final texts = ["Brindar", "Ayudar", "Diagnosticar", "En ese orden"];
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      body: Stack(
-        children: <Widget>[
-          backgroundFigure(context),
-          const StarsView(
-            fps: 60,
-            starsConfig: StarsConfig(
-              starCount: 30,
-              minStarSize: 2,
-              maxStarSize: 5,
-            ),
-          ),
-          SingleChildScrollView(
-            child: SafeArea(
-              child: Form(
+    return SafeArea(
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        body: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Stack(
+                children: [
+                  backgroundFigure(
+                    context,
+                    height: 0.3,
+                  ),
+                  Positioned(
+                    bottom: 40,
+                    left: size.width * 0.39,
+                    child: Image.asset(
+                      'assets/images/just_logo.png',
+                      fit: BoxFit.cover,
+                      height: 55,
+                    ),
+                  ),
+                ],
+              ),
+              Form(
                 key: _formKey,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    SizedBox(height: size.height * 0.03),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Container(
-                          height: size.height * 0.15,
-                          width: size.width * 0.5,
-                          padding: const EdgeInsets.only(bottom: 50),
-                          decoration: const BoxDecoration(
-                            image: DecorationImage(
-                              image:
-                                  AssetImage('assets/images/hospital-bed.png'),
-                              fit: BoxFit.fitHeight,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 12.0),
-                          child: SizedBox(
-                            width: size.width * 0.4,
-                            child: AnimatedTextKit(
-                                repeatForever: true,
-                                displayFullTextOnTap: false,
-                                animatedTexts: [
-                                  ScaleAnimatedText(
-                                    texts[0],
-                                    textAlign: TextAlign.center,
-                                    textStyle:
-                                        Theme.of(context).textTheme.labelLarge,
-                                  ),
-                                  ScaleAnimatedText(
-                                    texts[1],
-                                    textAlign: TextAlign.center,
-                                    textStyle:
-                                        Theme.of(context).textTheme.labelLarge,
-                                  ),
-                                  ScaleAnimatedText(
-                                    texts[2],
-                                    textAlign: TextAlign.center,
-                                    textStyle:
-                                        Theme.of(context).textTheme.labelLarge,
-                                  ),
-                                  ScaleAnimatedText(
-                                    texts[3],
-                                    textAlign: TextAlign.center,
-                                    textStyle:
-                                        Theme.of(context).textTheme.labelLarge,
-                                  ),
-                                ]),
-                          ),
-                        ),
-                      ],
+                    SizedBox(height: size.height * 0.043),
+                    GetTextFormField(
+                      labelText: "Correo",
+                      placeholder: email,
+                      controllerr: emailController,
+                      icon: const Icon(Icons.email),
+                      keyboardType: TextInputType.emailAddress,
+                      validator: validEmail(
+                          "Escriba el correo con el formato correcto"),
+                      obscureText: false,
+                      isRegisterPassword: false,
+                      option: TextInputAction.next,
                     ),
-                    SizedBox(height: size.height * 0.04),
-                    Center(
-                        child: Text(appTitle,
-                            style: Theme.of(context).textTheme.titleSmall!)),
-                    SizedBox(height: size.height * 0.065),
-                    //CARD
-                    SizedBox(
-                      width: size.width * 0.9,
-                      child: Card(
-                        semanticContainer: true,
-                        borderOnForeground: true,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25.0),
-                        ),
-                        elevation: 20,
-                        color: Colors.white,
-                        child: Column(
-                          children: [
-                            SizedBox(height: size.height * 0.03),
-                            Center(
-                                child: Text("Bienvenido",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .titleSmall!
-                                        .copyWith(
-                                            fontSize: 28,
-                                            fontWeight: FontWeight.bold,
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .tertiary))),
-                            SizedBox(height: size.height * 0.03),
-                            GetTextFormField(
-                              labelText: "Correo",
-                              placeholder: email,
-                              controllerr: emailController,
-                              icon: const Icon(Icons.email),
-                              keyboardType: TextInputType.emailAddress,
-                              validator: validEmail(
-                                  "Escriba el correo con el formato correcto"),
-                              obscureText: false,
-                              isRegisterPassword: false,
-                            ),
-                            SizedBox(height: size.height * 0.03),
-                            GetTextFormField(
-                              labelText: "Contraseña",
-                              placeholder: password,
-                              controllerr: passwordController,
-                              icon: const Icon(Icons.lock),
-                              keyboardType: TextInputType.visiblePassword,
-                              validator:
-                                  validPasswordLogin("Rellene la contraseña"),
-                              obscureText: true,
-                              isRegisterPassword: false,
-                            ),
-                            SizedBox(height: size.height * 0.02),
-                            signInButton(context),
-                            const SizedBox(height: 5),
-                            Center(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "No tienes una cuenta?",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium!
-                                        .copyWith(color: Colors.grey),
-                                  ),
-                                  TextButton(
-                                      onPressed: () async {
-                                        Navigator.pushNamed(
-                                            context, "preRegister");
-                                      },
-                                      child: Text("Registrate",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .displaySmall!
-                                              .copyWith(
-                                                  fontWeight: FontWeight.bold,
-                                                  decoration: TextDecoration
-                                                      .underline)))
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
+                    SizedBox(height: 28),
+                    GetTextFormField(
+                        labelText: "Contraseña",
+                        placeholder: password,
+                        controllerr: passwordController,
+                        icon: const Icon(Icons.lock),
+                        keyboardType: TextInputType.visiblePassword,
+                        validator: validPasswordLogin("Rellene la contraseña"),
+                        obscureText: true,
+                        isRegisterPassword: false,
+                        option: TextInputAction.send,
+                        onChanged: _handleButton),
+                    SizedBox(height: size.height * 0.096),
+                    signInButton(context),
+                    SizedBox(height: size.height * 0.02),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "¿Aún no tienes una cuenta? ",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(
+                                    color:
+                                        Theme.of(context).colorScheme.tertiary,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400),
+                          ),
+                          GestureDetector(
+                              onTap: () async {
+                                Navigator.pushNamed(context, "preRegister");
+                              },
+                              child: Text("Crear cuenta",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .displaySmall!
+                                      .copyWith(
+                                          fontSize: 16,
+                                          decoration: TextDecoration.none,
+                                          fontWeight: FontWeight.w400,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSecondaryContainer)))
+                        ],
                       ),
+                    ),
+                    size.longestSide < 600
+                        ? SizedBox(height: 40)
+                        : SizedBox(height: size.height * 0.15),
+                    DefaultTextStyle(
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                        color: Color.fromRGBO(213, 213, 213, 1),
+                      ),
+                      child: const Text("$appTitle"),
                     ),
                   ],
                 ),
-              ),
-            ),
-          )
-        ],
+              )
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -250,25 +201,32 @@ class _LoginScreenState extends State<LoginScreen> {
         context: context,
         builder: (_) {
           return StatefulBuilder(builder: (context, StateSetter setState) {
-            return Dialog(
-              backgroundColor: Colors.white,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    CircularProgressIndicator(
-                      color: !isLogged ? Colors.red : Colors.green,
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Text('Cargando...',
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium!
-                            .copyWith(color: Colors.black, fontSize: 18))
-                  ],
+            return WillPopScope(
+              onWillPop: () async => false,
+              child: Dialog(
+                backgroundColor: Colors.white,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      CircularProgressIndicator(
+                        color: !isLogged
+                            ? Colors.red
+                            : Theme.of(context)
+                                .colorScheme
+                                .onSecondaryContainer,
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Text('Cargando...',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium!
+                              .copyWith(color: Colors.black, fontSize: 18))
+                    ],
+                  ),
                 ),
               ),
             );
@@ -283,66 +241,106 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  Widget signInButton(BuildContext context) {
+  void _handleButton() async {
     final token = Provider.of<AuthProvider>(context, listen: false);
-    return ElevatedButton(
-        onPressed: () async {
-          final isValidForm = _formKey.currentState!.validate();
-          if (isValidForm) {
-            final loginService =
-                Provider.of<UserServiceAuth>(context, listen: false);
-            var email = emailController.text.trim();
-            var password = passwordController.text.trim();
-            _prefs.email = email;
-            _prefs.password = password;
-            await token.updateToken(context);
-            _prefs.login = false;
-            var id = await loginService.getAuthenticateId(email, password);
-            if (id != null) {
-              _prefs.idDoctor = id;
-            }
-            if (email == "" || password == "") {
-              return;
-            }
-            if (id == null) {
-              _fetchData(context, false);
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  duration: Duration(seconds: 2),
-                  content: Text(
-                    "Usuario o contraseña incorrectas",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  backgroundColor: Colors.red,
-                ),
-              );
-              print("No existe en la base de datos");
-            } else {
-              _fetchData(context, true);
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  duration: Duration(seconds: 2),
-                  content: Text(
-                    "Usuario logueado correctamente",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  backgroundColor: Colors.green,
-                ),
-              );
-              print("Usuario existe en la base de datos");
-            }
-            if (!mounted) {
-              return;
-            }
-          }
-        },
-        child: Container(
-          padding: const EdgeInsets.all(5.0),
-          child: Text("Iniciar sesión",
-              style: Theme.of(context)
-                  .textTheme
-                  .labelMedium!
-                  .copyWith(color: Colors.white)),
-        ));
+    final isValidForm = _formKey.currentState!.validate();
+    final dialog = WaitDialog(context);
+    dialog.show();
+    if (isValidForm) {
+      final medicService = Provider.of<MedicAuthServic>(context, listen: false);
+      final nurseService =
+          Provider.of<NurseAuthService>(context, listen: false);
+      final userService = Provider.of<UsersAuthService>(context, listen: false);
+      var email = emailController.text.trim();
+      var password = passwordController.text.trim();
+      if (email == "" || password == "") {
+        dialog.dispose();
+        return;
+      }
+      var id = await userService.getAuthenticateUserId(email, password);
+      print(id);
+      if (id == -1) {
+        dialog.dispose();
+        mostrarAlertaError(context,
+            "¡El servidor se encuentra en mantenimiento, vuelva más tarde!",
+            () {
+          Navigator.pop(context);
+        });
+      }
+      var idMedic = await medicService.getAuthenticateId(email, password);
+      var idNurse = await nurseService.getAuthenticateId(email, password);
+      var type = await userService.getAuthenticateIdRole(email, password);
+      if (id != null && type == "ROLE_MEDIC") {
+        _prefs.idUsers = id;
+        _prefs.idMedic = idMedic!;
+      }
+      if (id != null && type == "ROLE_NURSE") {
+        _prefs.idUsers = id;
+        _prefs.idNurse = idNurse!;
+      }
+
+      if (id == 0) {
+        dialog.dispose();
+
+        //_fetchData(context, false);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            duration: Duration(seconds: 1),
+            content: Text(
+              "Usuario o contraseña incorrectas",
+              style: TextStyle(color: Colors.white),
+            ),
+            backgroundColor: Colors.red,
+          ),
+        );
+        print("No existe en la base de datos");
+      } else {
+        //_fetchData(context, true);
+
+        _prefs.email = email;
+        _prefs.password = password;
+        _prefs.login = true;
+        //Obtener el token
+        await token.updateToken(context);
+        if (type == "ROLE_MEDIC") {
+          print("Médico existe en la base de datos");
+        } else {
+          print("Enfermero existe en la base de datos");
+        }
+        dialog.dispose();
+        Navigator.pushNamed(context, "home");
+      }
+      if (!mounted) {
+        return;
+      }
+    } else {
+      dialog.dispose();
+    }
+  }
+
+  Widget signInButton(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+              elevation: 0,
+              backgroundColor:
+                  Theme.of(context).colorScheme.onSecondaryContainer,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              )),
+          onPressed: _handleButton,
+          child: Container(
+            width: size.width * 1,
+            padding: const EdgeInsets.all(6),
+            child: Text("Ingresar",
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500)),
+          )),
+    );
   }
 }

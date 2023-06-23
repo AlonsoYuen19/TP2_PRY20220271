@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:ulcernosis/models/medic.dart';
+import 'package:ulcernosis/models/nurse.dart';
+import 'package:ulcernosis/models/users.dart';
+import 'package:ulcernosis/services/medic_service.dart';
+import '../../../models/diagnosis.dart';
+import '../../../services/diagnosis_service.dart';
 
-import '../../../models/doctor.dart';
-import '../../../services/user_auth_service.dart';
-import '../../../utils/helpers/future_builders.dart';
-import '../../../utils/helpers/searchable.dart';
+import '../../../services/nurse_services.dart';
+import '../../../services/users_service.dart';
+import '../../../utils/helpers/Searchable/searchable_medic.dart';
+import '../../../utils/helpers/Searchable/searchable_nurse.dart';
+import '../../../utils/helpers/Searchable/searchable_widget.dart';
+import '../../../utils/helpers/constant_variables.dart';
+import '../../../utils/helpers/future_builder_cards/future_builders_filter.dart';
 
 class FirstPage extends StatefulWidget {
   const FirstPage({Key? key}) : super(key: key);
@@ -14,17 +22,28 @@ class FirstPage extends StatefulWidget {
 }
 
 class _FirstPageState extends State<FirstPage> {
-  final userAuth = UserServiceAuth();
-  Future<List<Doctor>> getStrings() async {
-    await Future.delayed(const Duration(seconds: 1));
-    return userAuth.getDoctorsByStateCivil("Soltero");
-  }
-
-  int? count;
+  final diagnosisService = DiagnosisService();
+  final medicService = MedicAuthServic();
+  final userService = UsersAuthService();
+  final nurseService = NurseAuthService();
+  List<Diagnosis> diagnosis = [];
+  List<Diagnosis> diagnosisCEP = [];
+  Medic medic = Medic();
+  Users user = Users();
+  Nurse nurse = Nurse();
   Future init() async {
-    final list = await getStrings();
-    final count = list.length;
-    print("La cantidad de diagnósticos de categoría 1 es: $count");
+    user = (await userService.getUsersById())!;
+    if (user.role == "ROLE_MEDIC") {
+      medic = (await medicService.getMedicById(prefs.idMedic.toString()))!;
+      diagnosis =
+          await diagnosisService.getDiagnosisByCMPByStage(medic.cmp, "1");
+    } else {
+      nurse = (await nurseService.getNurseByIdManage(prefs.idNurse))!;
+      diagnosis =
+          await diagnosisService.getDiagnosisByCEPByStage(nurse.cep, "1");
+    }
+
+    setState(() {});
   }
 
   @override
@@ -35,64 +54,95 @@ class _FirstPageState extends State<FirstPage> {
 
   @override
   Widget build(BuildContext context) {
-    final doctorProvider = Provider.of<UserServiceAuth>(context, listen: false);
+    final size = MediaQuery.of(context).size;
     return Scaffold(
-      body: ListView(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Flexible(
-                  child: Text(
-                    "Seleccione el icono de búsqueda\npara filtrar por nombres del\npaciente",
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium!
-                        .copyWith(color: Colors.grey),
-                  ),
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.tertiary,
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                  child: IconButton(
-                      style: ButtonStyle(
-                        shape: MaterialStateProperty.all(const CircleBorder()),
-                        padding: MaterialStateProperty.all(
-                            const EdgeInsets.symmetric(
-                          horizontal: 8.0,
-                          vertical: 8.0,
-                        )),
-                      ),
-                      onPressed: () async {
-                        await showSearch(
+      body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
+        child: Column(
+          children: [
+            const SizedBox(height: 16),
+            diagnosis.isEmpty
+                ? Container()
+                : SearchableTitle(
+                    title: "Buscar por etapa 1...",
+                    onChanged: () async {
+                      await showSearch(
                           context: context,
-                          delegate: SearchUser(isHome: false, state: "Soltero"),
-                        );
-                      },
-                      icon: Icon(
-                        Icons.search,
-                        color: Theme.of(context).colorScheme.onTertiary,
-                        size: 30,
-                      )),
-                )
-              ],
+                          delegate: user.role == "ROLE_MEDIC"
+                              ? SearchUser(
+                                  isHome: false,
+                                  cmp: medic.cmp,
+                                  isEtapa: true,
+                                  stagePredicted: "1")
+                              : SearchNurse(
+                                  isHome: false,
+                                  cep: nurse.cep,
+                                  isEtapa: true,
+                                  stagePredicted: "1"));
+                    },
+                  ),
+            const SizedBox(
+              height: 16,
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 12.0),
-            child: SizedBox(
-              height: 580,
-              child: MyFutureBuilder(
-                myFuture: doctorProvider.getDoctorsByStateCivil("Soltero"),
-                isHome: false,
-              ),
-            ),
-          ),
-        ],
+            diagnosis.isEmpty
+                ? FutureBuilder(
+                    future: Future.delayed(const Duration(seconds: 1)),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                            child: CircularProgressIndicator(
+                          color: Colors.transparent,
+                        ));
+                      }
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 40),
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: size.height * 0.18,
+                            ),
+                            Container(
+                              height: 60,
+                              width: 60,
+                              child: Image.asset(
+                                'assets/images/Group.png',
+                                color: Colors.grey,
+                                filterQuality: FilterQuality.high,
+                                fit: BoxFit.fitWidth,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 16,
+                            ),
+                            const Text(
+                                "No se encontraron registros de diagnósticos disponibles",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Color.fromRGBO(213, 213, 213, 1),
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w400))
+                          ],
+                        ),
+                      );
+                    })
+                : user.role == "ROLE_MEDIC"
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20.0, vertical: 0),
+                        child: MyFutureBuilderFilter(
+                          myFuture: diagnosisService.getDiagnosisByCMPByStage(
+                              medic.cmp, "1"),
+                        ),
+                      )
+                    : Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: MyFutureBuilderFilter(
+                          myFuture: diagnosisService.getDiagnosisByCEPByStage(
+                              nurse.cep, "1"),
+                        ),
+                      ),
+          ],
+        ),
       ),
     );
   }

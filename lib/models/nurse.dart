@@ -1,53 +1,85 @@
 import 'dart:convert';
 
 Nurse nurseFromJson(String str) => Nurse.fromJson(json.decode(str));
-
+Nurse nurseFromJson2(String str) => Nurse.fromJson2(json.decode(str));
 String nurseToJson(Nurse data) => json.encode(data.toJson());
 
 class Nurse {
   Nurse({
     this.id = 0,
-    this.fullNameNurse = "",
-    this.password = "aS1#s462",
+    this.fullName = "",
     this.email = "",
-    this.stateCivil = "",
-    this.address = "",
-    this.phone = "",
+    this.password = "",
     this.dni = "",
-    this.age = "",
+    this.age = 0,
+    this.address = "",
+    this.cep = "",
+    this.phone = "",
+    this.rol = "ROLE_NURSE",
+    this.civilStatus = "",
+    this.isAuxiliar = false,
+    this.haveTeamWork = false,
+    this.itWasNotified = false,
+    this.createdAt = "",
   });
 
   int id;
-  String fullNameNurse;
-  String password;
+  String fullName;
   String email;
-  String stateCivil;
-  String address;
-  String phone;
+  String password;
   String dni;
-  String age;
-
+  int age;
+  String address;
+  String cep;
+  String phone;
+  String rol;
+  String civilStatus;
+  bool isAuxiliar;
+  bool haveTeamWork;
+  bool itWasNotified;
+  String createdAt;
   factory Nurse.fromJson(Map<String, dynamic> json) => Nurse(
-        id: json["id"],
-        fullNameNurse: json["fullNameNurse"],
-        password: json["password"],
+        fullName: json["fullName"],
         email: json["email"],
-        stateCivil: json["stateCivil"],
-        address: json["address"],
-        phone: json["phone"],
+        //password: json["password"],
         dni: json["dni"],
         age: json["age"],
+        address: json["address"],
+        cep: json["cep"],
+        phone: json["phone"],
+        itWasNotified: json["itWasNotified"],
+        //rol: json["rol"],
+        //civilStatus: json["civilStatus"],
       );
-
+  factory Nurse.fromJson2(Map<String, dynamic> json) => Nurse(
+        id: json["id"],
+        fullName: json["fullName"],
+        email: json["email"],
+        dni: json["dni"],
+        phone: json["phone"],
+        age: json["age"],
+        address: json["address"],
+        cep: json["cep"],
+        isAuxiliar: json["isAuxiliar"],
+        civilStatus: json["civilStatus"],
+        rol: json["role"],
+        haveTeamWork: json["haveTeamWork"],
+        itWasNotified: json["itWasNotified"],
+        createdAt: json["createdAt"],
+      );
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "fullNameNurse": fullNameNurse,
-        "password": password,
+        "fullName": fullName,
         "email": email,
-        "stateCivil": stateCivil,
-        "address": address,
-        "phone": phone,
+        "password": password,
         "dni": dni,
         "age": age,
+        "address": address,
+        "cep": cep,
+        "phone": phone,
+        "role": rol,
+        "civilStatus": civilStatus,
+        "isAuxiliar": isAuxiliar,
+        "haveTeamWork": haveTeamWork,
+        "createdAt": createdAt,
       };
 }

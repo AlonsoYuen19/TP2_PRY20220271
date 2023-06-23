@@ -3,15 +3,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:ulcernosis/pages/home/tab_bar_pages/first_page.dart';
 import 'package:ulcernosis/pages/home/tab_bar_pages/fourth_page.dart';
 import 'package:ulcernosis/pages/home/tab_bar_pages/second_page.dart';
 import 'package:ulcernosis/pages/home/tab_bar_pages/third_page.dart';
-
-import '../../models/doctor.dart';
-import '../../services/user_auth_service.dart';
-import '../../shared/user_prefs.dart';
 
 class TabBarFilter extends StatefulWidget {
   const TabBarFilter({Key? key}) : super(key: key);
@@ -22,24 +17,23 @@ class TabBarFilter extends StatefulWidget {
 
 class _TabBarFilterState extends State<TabBarFilter>
     with TickerProviderStateMixin {
-  Doctor doctorUser = Doctor();
-  final userAuth = UserServiceAuth();
-  final prefs = SaveData();
+  /*Medic doctorUser = Medic();
+  final userAuth = MedicAuthServic();
+  final prefs = SaveData();*/
   ScrollController _scrollController = ScrollController();
 
-  Future init() async {
+  /*Future init() async {
     var userId = await userAuth.getAuthenticateId(prefs.email, prefs.password);
-    doctorUser = (await userAuth.getDoctorById(userId.toString()))!;
+    doctorUser = (await userAuth.getMedicById(userId.toString()))!;
     setState(() {
-      print(
-          "El usuario con info es el siguiente :${doctorUser.fullNameDoctor}");
+      print("El usuario con info es el siguiente :${doctorUser.fullName}");
       print("El usuario con id es el siguiente :" + userId!.toString());
     });
-  }
+  }*/
 
   @override
   void initState() {
-    init();
+    //init();
     _scrollController = ScrollController();
     super.initState();
   }
@@ -70,8 +64,8 @@ class _TabBarFilterState extends State<TabBarFilter>
           size: 32,
         ),
         child: Text(
-          'Categoria',
-          style: TextStyle(fontSize: 15),
+          'Etapa',
+          style: TextStyle(fontSize: 12),
         ),
       ),
       const Tab(
@@ -81,8 +75,8 @@ class _TabBarFilterState extends State<TabBarFilter>
           size: 32,
         ),
         child: Text(
-          'Categoria',
-          style: TextStyle(fontSize: 15),
+          'Etapa',
+          style: TextStyle(fontSize: 12),
         ),
       ),
       const Tab(
@@ -92,8 +86,8 @@ class _TabBarFilterState extends State<TabBarFilter>
           size: 32,
         ),
         child: Text(
-          'Categoria',
-          style: TextStyle(fontSize: 15),
+          'Etapa',
+          style: TextStyle(fontSize: 12),
         ),
       ),
       const Tab(
@@ -103,78 +97,113 @@ class _TabBarFilterState extends State<TabBarFilter>
           size: 32,
         ),
         child: Text(
-          'Categoria',
-          style: TextStyle(fontSize: 15),
+          'Etapa',
+          style: TextStyle(fontSize: 12),
         ),
       ),
     ];
     return DefaultTabController(
         length: 4,
-        child: Scaffold(
-          body: NestedScrollView(
-            floatHeaderSlivers: true,
-            controller: _scrollController,
-            headerSliverBuilder:
-                (BuildContext context, bool innerBoxIsScrolled) {
-              return <Widget>[
-                SliverAppBar(
-                  toolbarHeight: MediaQuery.of(context).size.height * 0.1,
-                  title: const Text('Filtrado por Categoría'),
-                  centerTitle: true,
-                  backgroundColor: Theme.of(context).colorScheme.onTertiary,
-                  elevation: 10.0,
-                  pinned: true,
-                  floating: true,
-                  forceElevated: innerBoxIsScrolled,
-                  bottom: TabBar(
-                    controller: tabController,
-                    tabs: tabss,
-                    indicator: BoxDecoration(
-                      color: Theme.of(context).colorScheme.tertiary,
-                      borderRadius: BorderRadius.circular(16.0),
-                    ),
-                    labelColor: Colors.white,
-                    unselectedLabelColor: Colors.black,
-                  ),
-                )
-              ];
-            },
-            body: SizedBox(
-              width: double.maxFinite,
-              child: FutureBuilder(
-                  future: delayPage(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return TabBarView(
-                        controller: tabController,
-                        children: const [
-                          //Primera categoria
-                          Tab(
-                            child: FirstPage(),
-                          ),
-                          //Segunda categoria
-                          Tab(child: SecondPage()),
-                          //Tercera categoria
-                          Tab(
-                            child: ThirdPage(),
-                          ),
-                          //Cuarta categoria
-                          Tab(
-                            child: FourthPage(),
-                          ),
-                        ],
-                      );
-                    } else {
-                      return const Center(
-                        child: SizedBox(
-                          height: 100,
-                          width: 100,
-                          child: CircularProgressIndicator(
-                              color: Colors.transparent),
+        child: SafeArea(
+          child: Scaffold(
+            body: NestedScrollView(
+              //physics: NeverScrollableScrollPhysics(),
+              floatHeaderSlivers: true,
+              controller: _scrollController,
+              headerSliverBuilder:
+                  (BuildContext context, bool innerBoxIsScrolled) {
+                return <Widget>[
+                  SliverAppBar(
+                    leading: Padding(
+                      padding: const EdgeInsets.only(
+                          left: 20, right: 20, top: 16, bottom: 16),
+                      child: ElevatedButton(
+                        child: Icon(
+                          Icons.arrow_back_outlined,
+                          color: Theme.of(context).colorScheme.onTertiary,
+                          size: 18,
                         ),
-                      );
-                    }
-                  }),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        style: ButtonStyle(
+                          elevation: MaterialStateProperty.all(0),
+                          backgroundColor: MaterialStateProperty.all(
+                              Theme.of(context)
+                                  .colorScheme
+                                  .onSecondaryContainer), // <-- Button color
+                        ),
+                      ),
+                    ),
+                    leadingWidth: 96,
+                    toolbarHeight: 98,
+                    title: Text('Filtrado por Etapa',
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.onBackground,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w400,
+                        )),
+                    centerTitle: true,
+                    backgroundColor: Theme.of(context).colorScheme.onTertiary,
+                    elevation: 10.0,
+                    pinned: false,
+                    floating: true,
+                    forceElevated: innerBoxIsScrolled,
+                    bottom: TabBar(
+                      controller: tabController,
+                      tabs: tabss,
+                      indicator: BoxDecoration(
+                        color:
+                            Theme.of(context).colorScheme.onSecondaryContainer,
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      labelColor: Colors.white,
+                      unselectedLabelColor: Theme.of(context)
+                          .colorScheme
+                          .tertiary, // <-- label color
+                    ),
+                  )
+                ];
+              },
+              body: SizedBox(
+                width: double.infinity,
+                child: FutureBuilder(
+                    future: delayPage(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return TabBarView(
+                          physics: const NeverScrollableScrollPhysics(),
+                          controller: tabController,
+                          children: const [
+                            //Primera Etapa
+                            Tab(
+                              child: FirstPage(),
+                            ),
+                            //Segunda Etapa
+                            Tab(child: SecondPage()),
+                            //Tercera Etapa
+                            Tab(
+                              child: ThirdPage(),
+                            ),
+                            //Cuarta Etapa
+                            Tab(
+                              child: FourthPage(),
+                            ),
+                          ],
+                        );
+                      } else {
+                        return Center(
+                          child: SizedBox(
+                            height: 100,
+                            width: 100,
+                            child: CircularProgressIndicator(
+                                color:
+                                    Theme.of(context).colorScheme.onSecondary),
+                          ),
+                        );
+                      }
+                    }),
+              ),
             ),
           ),
         ));

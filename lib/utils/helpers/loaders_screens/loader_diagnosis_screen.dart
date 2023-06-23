@@ -9,7 +9,7 @@ class LoaderDiagnosisScreen extends StatefulWidget {
 }
 
 class _LoaderDiagnosisScreenState extends State<LoaderDiagnosisScreen> {
-@override
+  @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
@@ -50,7 +50,7 @@ class _LoaderDiagnosisScreenState extends State<LoaderDiagnosisScreen> {
                     width: 50,
                     height: 50,
                     child: CircularProgressIndicator(
-                      color: Theme.of(context).colorScheme.tertiary,
+                      color: Theme.of(context).colorScheme.onTertiary,
                       strokeWidth: 10,
                     ),
                   ),

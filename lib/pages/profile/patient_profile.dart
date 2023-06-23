@@ -2,13 +2,10 @@
 
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:ulcernosis/models/nurse.dart';
-import '../../services/nurse_services.dart';
+import 'package:ulcernosis/models/patient.dart';
+import 'package:ulcernosis/services/patient_service.dart';
 import '../../utils/helpers/constant_variables.dart';
-import '../../utils/helpers/loaders_screens/loader_patient_profile_screen.dart';
-import '../../utils/widgets/background_figure.dart';
-import '../../utils/widgets/drop_down.dart';
+import '../../utils/widgets/DropDowns/drop_down.dart';
 
 class PatientProfileScreen extends StatefulWidget {
   bool? isName;
@@ -18,6 +15,7 @@ class PatientProfileScreen extends StatefulWidget {
   bool? isPhone;
   bool? isAge;
   bool? isDni;
+  final Patient? patient;
   PatientProfileScreen(
       {super.key,
       this.isName = false,
@@ -26,7 +24,8 @@ class PatientProfileScreen extends StatefulWidget {
       this.isAddress = false,
       this.isPhone = false,
       this.isAge = false,
-      this.isDni = false});
+      this.isDni = false,
+      this.patient});
 
   @override
   State<PatientProfileScreen> createState() => _PatientProfileScreenState();
@@ -35,14 +34,13 @@ class PatientProfileScreen extends StatefulWidget {
 class _PatientProfileScreenState extends State<PatientProfileScreen> {
   Future<Widget> delayPage() {
     Completer<Widget> completer = Completer();
-    Future.delayed(const Duration(seconds: 2), () {
+    Future.delayed(const Duration(seconds: 1), () {
       completer.complete(Container());
     });
 
     return completer.future;
   }
 
-  Nurse nurseUser = Nurse();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _stateCivilController = TextEditingController();
@@ -50,36 +48,16 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _ageController = TextEditingController();
   final TextEditingController _dniController = TextEditingController();
-  Future init() async {
-    final nurseProvider = Provider.of<NurseAuthService>(context, listen: false);
-    nurseUser = (await nurseProvider.getNurseById())!;
-    print("El id del paciente es ${prefs.idPatient}");
-    setState(() {});
-  }
+
 
   final _formKey = GlobalKey<FormState>();
-  late Future _myFuture;
   String? name;
   String? email;
   String? stateCivil;
   String? address;
   String? phone;
-  String? age;
+  int? age;
   String? dni;
-
-  @override
-  void initState() {
-    init();
-    name = nurseUser.fullNameNurse;
-    email = nurseUser.email;
-    stateCivil = nurseUser.stateCivil;
-    address = nurseUser.address;
-    phone = nurseUser.phone;
-    age = nurseUser.age;
-    dni = nurseUser.dni;
-    _myFuture = delayPage();
-    super.initState();
-  }
 
   @override
   void dispose() {
@@ -95,333 +73,346 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    //super.build(context);
     final size = MediaQuery.of(context).size;
     return WillPopScope(
-      onWillPop: () async => false,
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: SafeArea(
-          child: FutureBuilder(
-              future: _myFuture,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: LoaderPatientProfileScreen());
-                }
-                return Column(
-                  children: [
-                    backgroundFigureAppbarPatient(context, height: 0.1),
-                    Expanded(
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 15),
-                        width: size.width * 0.8,
-                        child: Card(
-                          color: Colors.grey[200],
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const CircleAvatar(
-                                radius: 50,
-                                backgroundImage: AssetImage(
-                                    "assets/images/patient-logo.png"),
+        onWillPop: () async => false,
+        child: Scaffold(
+            appBar: AppBar(
+              backgroundColor: Color.fromRGBO(250, 250, 250, 1),
+              leading: Padding(
+                padding: const EdgeInsets.only(
+                    left: 20, right: 20, top: 16, bottom: 16),
+                child: ElevatedButton(
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                      ),
+                      backgroundColor: MaterialStateProperty.all(
+                          Theme.of(context)
+                              .colorScheme
+                              .onSecondaryContainer), // <-- Button color
+                      elevation:
+                          MaterialStateProperty.all(0), // <-- Splash color
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Icon(Icons.arrow_back_outlined,
+                        color: Theme.of(context).colorScheme.onTertiary,
+                        size: 18)),
+              ),
+              leadingWidth: 96,
+              centerTitle: true,
+              toolbarHeight: 98,
+              automaticallyImplyLeading: false,
+              title: Text(
+                "Perfil del paciente",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w400,
+                  color: Theme.of(context).colorScheme.onBackground,
+                ),
+              ),
+            ),
+            resizeToAvoidBottomInset: false,
+            body: SafeArea(
+                child: Column(
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  width: size.width * 1,
+                  child: Column(
+                    children: [
+                      const CircleAvatar(
+                        radius: 36,
+                        backgroundImage:
+                            AssetImage("assets/images/patient-logo.png"),
+                      ),
+                      const SizedBox(height: 10),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Flexible(
+                              child: Text(
+                                widget.patient?.fullName ?? "Nombre",
+                                textAlign: TextAlign.center,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge!
+                                    .copyWith(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .tertiary,
+                                        fontSize: 18),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 16.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Flexible(
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(4.0),
-                                        child: Text(
-                                          nurseUser.fullNameNurse,
-                                          textAlign: TextAlign.center,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyLarge!
-                                              .copyWith(
-                                                  color: Colors.black,
-                                                  fontSize: 26),
-                                        ),
-                                      ),
-                                    ),
-                                    btnEdit(
-                                        "Edita el nombre del paciente",
-                                        "Nombre completo",
-                                        _nameController,
-                                        TextInputType.name,
-                                        validNameEditDoctor(
-                                            "Escriba el nombre con el formato correcto"),
-                                        const Icon(Icons.person),
-                                        isName: true,
-                                        btnText1: name!),
-                                  ],
+                            ),
+                            btnEdit(
+                                "Edita el nombre del paciente",
+                                "Nombre completo",
+                                _nameController,
+                                TextInputType.name,
+                                validNameEditDoctor(
+                                    "Escriba el nombre con el formato correcto"),
+                                Icon(
+                                  Icons.person,
+                                  color: Theme.of(context).colorScheme.tertiary,
+                                ),
+                                isName: true,
+                                btnText1: name ?? ""),
+                          ],
+                        ),
+                      ),
+                      const Divider(
+                        height: 20,
+                        thickness: 2,
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Flexible(
+                              child: Text(
+                                widget.patient?.email ?? "Correo Electrónico",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w400,
+                                  color: Theme.of(context).colorScheme.tertiary,
                                 ),
                               ),
-                              Divider(
-                                endIndent: 50,
-                                indent: 50,
-                                color: Colors.grey[400],
-                                thickness: 1,
+                            ),
+                            btnEdit(
+                                "Edita el correo electrónico del paciente",
+                                "Correo Electrónico",
+                                _emailController,
+                                TextInputType.emailAddress,
+                                validEmail(
+                                    "Escriba el correo electrónico con el formato correcto"),
+                                Icon(Icons.email,
+                                    color:
+                                        Theme.of(context).colorScheme.tertiary),
+                                isEmail: true,
+                                btnText1: email ?? ""),
+                          ],
+                        ),
+                      ),
+                      const Divider(
+                        height: 20,
+                        thickness: 2,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const SizedBox(width: 10),
+                            Text(widget.patient?.civilStatus ?? "Estado civil",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w400,
+                                  color: Theme.of(context).colorScheme.tertiary,
+                                )),
+                            btnEdit(
+                                "Edita el estado civil del paciente",
+                                "Estado civil",
+                                _stateCivilController,
+                                TextInputType.name,
+                                validStateCivil(
+                                    "Escriba el estado civil con el formato correcto"),
+                                Icon(Icons.person_2,
+                                    color:
+                                        Theme.of(context).colorScheme.tertiary),
+                                isStateCivil: true,
+                                btnText1: stateCivil ?? ""),
+                          ],
+                        ),
+                      ),
+                      const Divider(
+                        height: 20,
+                        thickness: 2,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Flexible(
+                              child: Text(
+                                widget.patient?.address ?? "Dirección",
+                                textAlign: TextAlign.center,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium!
+                                    .copyWith(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .tertiary,
+                                        fontSize: 18),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 16.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Icon(
-                                      Icons.email,
-                                      color: Colors.blue,
-                                      size: 32,
-                                    ),
-                                    const SizedBox(width: 10),
-                                    Flexible(
-                                      child: Text(
-                                        nurseUser.email,
-                                        textAlign: TextAlign.center,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyMedium!
-                                            .copyWith(
-                                                color: Colors.black87,
-                                                fontSize: 20),
-                                      ),
-                                    ),
-                                    btnEdit(
-                                        "Edita el correo electrónico del paciente",
-                                        "Correo Electrónico",
-                                        _emailController,
-                                        TextInputType.emailAddress,
-                                        validEmail(
-                                            "Escriba el correo electrónico con el formato correcto"),
-                                        const Icon(Icons.email),
-                                        isEmail: true,
-                                        btnText1: email!),
-                                  ],
-                                ),
-                              ),
-                              Divider(
-                                endIndent: 50,
-                                indent: 50,
-                                color: Colors.grey[400],
-                                thickness: 1,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 16.0, vertical: 4),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Icon(
-                                      Icons.person_4,
-                                      color: Colors.blue,
-                                      size: 32,
-                                    ),
-                                    const SizedBox(width: 10),
-                                    Flexible(
-                                      child: Text(
-                                        nurseUser.stateCivil,
-                                        textAlign: TextAlign.center,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyMedium!
-                                            .copyWith(
-                                                color: Colors.black87,
-                                                fontSize: 20),
-                                      ),
-                                    ),
-                                    btnEdit(
-                                        "Edita el estado civil del paciente",
-                                        "Estado civil",
-                                        _stateCivilController,
-                                        TextInputType.name,
-                                        validStateCivil(
-                                            "Escriba el estado civil con el formato correcto"),
-                                        const Icon(Icons.person_2),
-                                        isStateCivil: true,
-                                        btnText1: stateCivil!),
-                                  ],
-                                ),
-                              ),
-                              Divider(
-                                endIndent: 50,
-                                indent: 50,
-                                color: Colors.grey[400],
-                                thickness: 1,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 16.0, vertical: 4),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Icon(
-                                      Icons.location_on,
-                                      color: Colors.blue,
-                                      size: 32,
-                                    ),
-                                    const SizedBox(width: 10),
-                                    Flexible(
-                                      child: Text(
-                                        nurseUser.address,
-                                        textAlign: TextAlign.center,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyMedium!
-                                            .copyWith(
-                                                color: Colors.black87,
-                                                fontSize: 20),
-                                      ),
-                                    ),
-                                    btnEdit(
-                                        "Edita la dirección del paciente",
-                                        "Dirección",
-                                        _addressController,
-                                        TextInputType.streetAddress,
-                                        validAddressEditDoctor(
-                                            "Escriba la dirección con el formato correcto"),
-                                        const Icon(Icons.person_2),
-                                        isDirection: true,
-                                        btnText1: address!),
-                                  ],
-                                ),
-                              ),
-                              Divider(
-                                endIndent: 50,
-                                indent: 50,
-                                color: Colors.grey[400],
-                                thickness: 1,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 16.0, vertical: 4),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Icon(
-                                      Icons.phone,
-                                      color: Colors.blue,
-                                      size: 32,
-                                    ),
-                                    const SizedBox(width: 10),
-                                    Text(
-                                      nurseUser.phone,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium!
-                                          .copyWith(
-                                              color: Colors.black87,
-                                              fontSize: 20),
-                                    ),
-                                    btnEdit(
-                                        "Edita el número de celular del paciente",
-                                        "Número de celular",
-                                        _phoneController,
-                                        TextInputType.phone,
-                                        validPhoneEditDoctor(
-                                            "Escriba el número de celular con el formato correcto"),
-                                        const Icon(Icons.phone),
-                                        isPhone: true,
-                                        btnText1: phone!),
-                                  ],
-                                ),
-                              ),
-                              Divider(
-                                endIndent: 50,
-                                indent: 50,
-                                color: Colors.grey[400],
-                                thickness: 1,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 16.0, vertical: 4),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Icon(
-                                      Icons.numbers,
-                                      color: Colors.blue,
-                                      size: 32,
-                                    ),
-                                    const SizedBox(width: 10),
-                                    Text(
-                                      "${nurseUser.age} años",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium!
-                                          .copyWith(
-                                              color: Colors.black87,
-                                              fontSize: 20),
-                                    ),
-                                    btnEdit(
-                                        "Edita la edad del paciente",
-                                        "Edad",
-                                        _ageController,
-                                        TextInputType.number,
-                                        validAgeEditDoctor(
-                                            "Escriba la edad con el formato correcto",
-                                            _ageController),
-                                        const Icon(Icons.document_scanner),
-                                        isAge: true,
-                                        btnText1: age!),
-                                  ],
-                                ),
-                              ),
-                              Divider(
-                                endIndent: 50,
-                                indent: 50,
-                                color: Colors.grey[400],
-                                thickness: 1,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 16.0, vertical: 4),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Icon(
-                                      Icons.document_scanner,
-                                      color: Colors.blue,
-                                      size: 32,
-                                    ),
-                                    const SizedBox(width: 10),
-                                    Text(
-                                      nurseUser.dni,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium!
-                                          .copyWith(
-                                              color: Colors.black87,
-                                              fontSize: 20),
-                                    ),
-                                    btnEdit(
-                                        "Edita el # del dni del paciente",
-                                        "Dni",
-                                        _dniController,
-                                        TextInputType.number,
-                                        validDniEditDoctor(
-                                            "Escriba el dni con el formato correcto"),
-                                        const Icon(Icons.numbers),
-                                        isDni: true,
-                                        btnText1: dni!),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                            btnEdit(
+                                "Edita la dirección del paciente",
+                                "Dirección",
+                                _addressController,
+                                TextInputType.streetAddress,
+                                validAddressEditDoctor(
+                                    "Escriba la dirección con el formato correcto"),
+                                Icon(Icons.person_2,
+                                    color:
+                                        Theme.of(context).colorScheme.tertiary),
+                                isDirection: true,
+                                btnText1: address ?? ""),
+                          ],
+                        ),
+                      ),
+                      const Divider(
+                        height: 20,
+                        thickness: 2,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              widget.patient?.phone ?? "Número de celular",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium!
+                                  .copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .tertiary,
+                                      fontSize: 18),
+                            ),
+                            btnEdit(
+                                "Edita el número de celular del paciente",
+                                "Número de celular",
+                                _phoneController,
+                                TextInputType.phone,
+                                validPhoneEditDoctor(
+                                    "Escriba el número de celular con el formato correcto"),
+                                Icon(Icons.phone,
+                                    color:
+                                        Theme.of(context).colorScheme.tertiary),
+                                isPhone: true,
+                                btnText1: phone ?? ""),
+                          ],
+                        ),
+                      ),
+                      const Divider(
+                        height: 20,
+                        thickness: 2,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "${widget.patient?.age.toString()} años",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium!
+                                  .copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .tertiary,
+                                      fontSize: 18),
+                            ),
+                            btnEdit(
+                                "Edita la edad del paciente",
+                                "Edad",
+                                _ageController,
+                                TextInputType.number,
+                                validAgeEditDoctor(
+                                    "Escriba la edad con el formato correcto",
+                                    _ageController),
+                                Icon(Icons.document_scanner,
+                                    color:
+                                        Theme.of(context).colorScheme.tertiary),
+                                isAge: true,
+                                btnText1: age.toString()),
+                          ],
+                        ),
+                      ),
+                      const Divider(
+                        height: 20,
+                        thickness: 2,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              widget.patient?.dni ?? "Dni",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium!
+                                  .copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .tertiary,
+                                      fontSize: 18),
+                            ),
+                            btnEdit(
+                                "Edita el # del dni del paciente",
+                                "Dni",
+                                _dniController,
+                                TextInputType.number,
+                                validDniEditDoctor(
+                                    "Escriba el dni con el formato correcto"),
+                                Icon(Icons.numbers,
+                                    color:
+                                        Theme.of(context).colorScheme.tertiary),
+                                isDni: true,
+                                btnText1: dni ?? ""),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const Spacer(),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  width: size.width * 1,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor:
+                          Theme.of(context).colorScheme.onSecondaryContainer,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Text(
+                        "Regresar",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.white,
                         ),
                       ),
                     ),
-                    backgroundFigureFooterPatient(context,
-                        footer: true, height: 0.1),
-                  ],
-                );
-              }),
-        ),
-      ),
-    );
+                  ),
+                ),
+                const SizedBox(height: 25),
+              ],
+            ))));
   }
 
   Widget btnEdit(
@@ -463,31 +454,33 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
               isAge: widget.isAge,
               isDni: widget.isDni);
           if (name == null) return;
-          setState(() {
-            if (widget.isName == true) {
-              btnText1 = name;
-            }
-            if (widget.isEmail == true) {
-              btnText1 = name;
-            }
-            if (widget.isStateCivil == true) {
-              btnText1 = name;
-            }
-            if (widget.isAddress == true) {
-              btnText1 = name;
-            }
-            if (widget.isPhone == true) {
-              btnText1 = name;
-            }
-            if (widget.isAge == true) {
-              btnText1 = name;
-            }
-            if (widget.isDni == true) {
-              btnText1 = name;
-            }
-          });
+          //setState(() {
+          if (widget.isName == true) {
+            btnText1 = name;
+          }
+          if (widget.isEmail == true) {
+            btnText1 = name;
+          }
+          if (widget.isStateCivil == true) {
+            btnText1 = name;
+          }
+          if (widget.isAddress == true) {
+            btnText1 = name;
+          }
+          if (widget.isPhone == true) {
+            btnText1 = name;
+          }
+          if (widget.isAge == true) {
+            btnText1 = name;
+          }
+          if (widget.isDni == true) {
+            btnText1 = name;
+          }
+          //});
         },
-        child: const Icon(Icons.edit, color: Colors.blue, size: 30),
+        child: Icon(Icons.edit,
+            color: Theme.of(context).colorScheme.onSecondaryContainer,
+            size: 24),
       ),
     );
   }
@@ -513,189 +506,226 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
         barrierColor: Colors.black54,
         transitionDuration: const Duration(milliseconds: 400),
         context: context,
-        transitionBuilder: (context, al, _, child) {
-          return ScaleTransition(
-            scale: CurvedAnimation(
-                parent: al,
-                curve: Curves.elasticOut,
-                reverseCurve: Curves.easeOutCubic),
-            child: AlertDialog(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20)),
-              content: Form(
-                                            key: _formKey,
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const CircleAvatar(
-                      radius: 50,
-                      backgroundColor: Colors.blue,
-                      child: Icon(
-                        Icons.edit,
-                        size: 56,
-                        color: Colors.white,
+        transitionBuilder: (context, a1, _, child) {
+          final curvedValue = Curves.easeInOutBack.transform(a1.value) - 1.0;
+          final screenHeight = MediaQuery.of(context).size.height;
+          final dialogHeight = screenHeight * 0.7;
+          return Transform(
+            transform: Matrix4.translationValues(0.0, curvedValue * 200, 0.0),
+            child: ScaleTransition(
+              scale: CurvedAnimation(
+                  parent: a1,
+                  curve: Curves.elasticOut,
+                  reverseCurve: Curves.easeOutCubic),
+              child: Container(
+                height: dialogHeight,
+                child: AlertDialog(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8)),
+                  content: Form(
+                    key: _formKey,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const SizedBox(height: 10),
+                        widget.isStateCivil == true
+                            ? DropDownWithSearch(
+                                searchController: controller,
+                              )
+                            : TextFormField(
+                                validator: validator,
+                                controller: controller,
+                                keyboardType: keyboardType,
+                                cursorColor:
+                                    Theme.of(context).colorScheme.tertiary,
+                                style: TextStyle(
+                                    color:
+                                        Theme.of(context).colorScheme.tertiary,
+                                    fontSize: 16),
+                                decoration: InputDecoration(
+                                  counterText: "",
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  labelStyle: TextStyle(
+                                      backgroundColor: Colors.transparent,
+                                      color: Color.fromRGBO(180, 168, 170, 1),
+                                      fontWeight: FontWeight.w400),
+                                  errorStyle: TextStyle(
+                                    color: Theme.of(context).colorScheme.error,
+                                    fontSize: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium!
+                                        .copyWith(fontSize: 12)
+                                        .fontSize,
+                                  ),
+                                  errorMaxLines: 2,
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 16, vertical: 0),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(4)),
+                                    borderSide: BorderSide(
+                                        color: Colors.green, width: 2),
+                                  ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(4)),
+                                    borderSide: BorderSide(
+                                        color:
+                                            Theme.of(context).colorScheme.error,
+                                        width: 1.2),
+                                  ),
+                                  focusedErrorBorder: OutlineInputBorder(
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(4)),
+                                    borderSide: BorderSide(
+                                        color:
+                                            Theme.of(context).colorScheme.error,
+                                        width: 1.2),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(4)),
+                                      borderSide: BorderSide(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSurface,
+                                          width: 1.2)),
+                                  labelText: content,
+                                ),
+                              ),
+                      ],
+                    ),
+                  ),
+                  actions: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                              width: size.width * 1,
+                              child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 0,
+                                    backgroundColor:
+                                        Color.fromRGBO(255, 161, 158, 1),
+                                  ),
+                                  onPressed: () async {
+                                    final patientService = PatientService();
+                                    final isValidForm =
+                                        _formKey.currentState!.validate();
+                                    if (isValidForm) {
+                                      var result = await patientService
+                                          .updatePatient(context,
+                                              fullName: isName!
+                                                  ? capitalizeSentences(
+                                                      controller.text.trim())
+                                                  : widget.patient!.fullName,
+                                              email: isEmail!
+                                                  ? controller.text.trim()
+                                                  : widget.patient!.email,
+                                              stateCivil: isStateCivil!
+                                                  ? controller.text.trim()
+                                                  : widget.patient!.civilStatus,
+                                              address: isDirection!
+                                                  ? capitalizeSentences(
+                                                      controller.text.trim())
+                                                  : widget.patient!.address,
+                                              phone: isPhone!
+                                                  ? controller.text.trim()
+                                                  : widget.patient!.phone,
+                                              age: isAge!
+                                                  ? int.parse(
+                                                      controller.text.trim())
+                                                  : widget.patient!.age,
+                                              dni: isDni!
+                                                  ? controller.text.trim()
+                                                  : widget.patient!.dni,
+                                              onSuccess: () {
+                                        //setState(() {
+                                        if (widget.isName == true) {
+                                          widget.patient!.fullName =
+                                              capitalizeSentences(
+                                                  controller.text);
+                                        }
+                                        if (widget.isEmail == true) {
+                                          widget.patient!.email =
+                                              controller.text;
+                                        }
+                                        if (widget.isStateCivil == true) {
+                                          widget.patient!.civilStatus =
+                                              controller.text;
+                                        }
+                                        if (widget.isAddress == true) {
+                                          widget.patient!.address =
+                                              capitalizeSentences(
+                                                  controller.text);
+                                        }
+
+                                        if (widget.isPhone == true) {
+                                          widget.patient!.phone =
+                                              controller.text;
+                                        }
+                                        if (widget.isAge == true) {
+                                          widget.patient!.age =
+                                              int.parse(controller.text);
+                                        }
+                                        if (widget.isDni == true) {
+                                          widget.patient!.dni = controller.text;
+                                        }
+                                      });
+                                      print(result);
+                                      if (result != null) {
+                                        setState(() {});
+                                      }
+                                    }
+                                  },
+                                  child: Text("Guardar",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .labelMedium!
+                                          .copyWith(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onTertiary,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 16,
+                                          )))),
+                          const SizedBox(height: 10),
+                          SizedBox(
+                            width: size.width * 1,
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    side: BorderSide(
+                                        color: Color.fromRGBO(255, 161, 158, 1),
+                                        width: 1.5),
+                                    backgroundColor:
+                                        Color.fromRGBO(255, 242, 241, 1),
+                                    elevation: 0),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text(
+                                  'Cancelar',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelMedium
+                                      ?.copyWith(
+                                          color:
+                                              Color.fromRGBO(255, 161, 158, 1),
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 16),
+                                )),
+                          ),
+                          const SizedBox(height: 15),
+                        ],
                       ),
                     ),
-                    const SizedBox(height: 15),
-                    Flexible(
-                      child: Text(title,
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium!
-                              .copyWith(color: Colors.blue, fontSize: 24)),
-                    ),
-                    const SizedBox(height: 20),
-                    widget.isStateCivil == true
-                        ? DropDownWithSearch(
-                            searchController: controller,
-                          )
-                        : TextFormField(
-                            validator: validator,
-                            controller: controller,
-                            keyboardType: keyboardType,
-                            cursorColor: Theme.of(context).colorScheme.onTertiary,
-                            style: TextStyle(
-                                color: Theme.of(context).colorScheme.onTertiary,
-                                fontSize: 20),
-                            decoration: InputDecoration(
-                              floatingLabelBehavior: FloatingLabelBehavior.never,
-                              filled: true,
-                              fillColor: Theme.of(context).colorScheme.outline,
-                              labelStyle: TextStyle(
-                                backgroundColor: Colors.transparent,
-                                color: Theme.of(context).colorScheme.onTertiary,
-                              ),
-                              errorStyle: TextStyle(
-                                color: Theme.of(context).colorScheme.error,
-                                fontSize: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium!
-                                    .copyWith(fontSize: 16)
-                                    .fontSize,
-                              ),
-                              errorMaxLines: 2,
-                              prefixIconColor:
-                                  Theme.of(context).colorScheme.onTertiary,
-                              prefixIcon: icon,
-                              contentPadding: const EdgeInsets.all(15),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(20)),
-                                borderSide: BorderSide(
-                                    color:
-                                        Theme.of(context).colorScheme.onTertiary,
-                                    width: 5.0),
-                              ),
-                              errorBorder: OutlineInputBorder(
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(20)),
-                                borderSide: BorderSide(
-                                    color: Theme.of(context).colorScheme.error,
-                                    width: 5.0),
-                              ),
-                              focusedErrorBorder: OutlineInputBorder(
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(20)),
-                                borderSide: BorderSide(
-                                    color: Theme.of(context).colorScheme.error,
-                                    width: 5.0),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                  borderRadius:
-                                      const BorderRadius.all(Radius.circular(20)),
-                                  borderSide: BorderSide(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onTertiary,
-                                      width: 5.0)),
-                              labelText: content,
-                            ),
-                          ),
                   ],
                 ),
               ),
-              actions: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        width: size.width * 0.3,
-                        child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.red),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: const Text('Cancelar')),
-                      ),
-                      const SizedBox(width: 20),
-                      SizedBox(
-                        width: size.width * 0.3,
-                        child: ElevatedButton(
-                            onPressed: () async {
-                              final nurseProvider =
-                                  Provider.of<NurseAuthService>(context,
-                                      listen: false);
-                              final isValidForm =
-                                  _formKey.currentState!.validate();
-                              if (isValidForm) {
-                                await nurseProvider.updateNurse(
-                                  fullNameNurse: isName!
-                                      ? controller.text
-                                      : nurseUser.fullNameNurse,
-                                  email: isEmail!
-                                      ? controller.text
-                                      : nurseUser.email,
-                                  stateCivil: isStateCivil!
-                                      ? controller.text
-                                      : nurseUser.stateCivil,
-                                  address: isDirection!
-                                      ? controller.text
-                                      : nurseUser.address,
-                                  phone: isPhone!
-                                      ? controller.text
-                                      : nurseUser.phone,
-                                  age: isAge! ? controller.text : nurseUser.age,
-                                  dni: isDni! ? controller.text : nurseUser.dni,
-                                );
-                                setState(() {
-                                  if (widget.isName == true) {
-                                    nurseUser.fullNameNurse = controller.text;
-                                  }
-                                  if (widget.isEmail == true) {
-                                    nurseUser.email = controller.text;
-                                  }
-                                  if (widget.isStateCivil == true) {
-                                    nurseUser.stateCivil = controller.text;
-                                  }
-                                  if (widget.isAddress == true) {
-                                    nurseUser.address = controller.text;
-                                  }
-
-                                  if (widget.isPhone == true) {
-                                    nurseUser.phone = controller.text;
-                                  }
-                                  if (widget.isAge == true) {
-                                    nurseUser.age = controller.text;
-                                  }
-                                  if (widget.isDni == true) {
-                                    nurseUser.dni = controller.text;
-                                  }
-                                });
-                                Navigator.of(context).pop(controller.text);
-                              }
-                            },
-                            child: const Text("Guardar")),
-                      )
-                    ],
-                  ),
-                ),
-              ],
             ),
           );
         },

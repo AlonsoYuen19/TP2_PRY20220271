@@ -42,12 +42,28 @@ class SaveData {
     _prefs!.setBool('login', true);
   }
 
-  int get idDoctor {
-    return _prefs!.getInt('idDoctor') ?? 0;
+  int get idUsers {
+    return _prefs!.getInt('idUsers') ?? 0;
   }
 
-  set idDoctor(int value) {
-    _prefs!.setInt('idDoctor', value);
+  set idUsers(int value) {
+    _prefs!.setInt('idUsers', value);
+  }
+
+  int get idMedic {
+    return _prefs!.getInt('idMedic') ?? 0;
+  }
+
+  set idMedic(int value) {
+    _prefs!.setInt('idMedic', value);
+  }
+
+  int get idNurse {
+    return _prefs!.getInt('idNurse') ?? 0;
+  }
+
+  set idNurse(int value) {
+    _prefs!.setInt('idNurse', value);
   }
 
   int get idPatient {
@@ -66,8 +82,30 @@ class SaveData {
   set image(String value) {
     _prefs!.setString('image', value);
   }
+  //image diagnosis
+  String get imageDiag {
+    return _prefs!.getString('imageDiag') ?? '';
+  }
 
+  set imageDiag(String value) {
+    _prefs!.setString('imageDiag', value);
+  }
+    //image diagnosis quick
+  String get imageQuickDiag {
+    return _prefs!.getString('imageQuickDiag') ?? '';
+  }
 
+  set imageQuickDiag(String value) {
+    _prefs!.setString('imageQuickDiag', value);
+  }
+      //image diagnosis quick file
+  String get imageQuickDiagFile {
+    return _prefs!.getString('imageQuickDiagFile') ?? '';
+  }
+
+  set imageQuickDiagFile(String value) {
+    _prefs!.setString('imageQuickDiagFile', value);
+  }
   //delete token
   void deleteToken() {
     _prefs?.remove('token');
@@ -83,5 +121,34 @@ class SaveData {
 
   void deleteLogin() {
     _prefs?.remove('login');
+  }
+
+  void deleteIdUsers() {
+    _prefs?.remove('idUsers');
+  }
+
+  void deleteIdMedic() {
+    _prefs?.remove('idMedic');
+  }
+
+  void deleteIdNurse() {
+    _prefs?.remove('idNurse');
+  }
+
+  void deleteIdPatient() {
+    _prefs?.remove('idPatient');
+  }
+
+  void deleteImage() {
+    _prefs?.remove('image');
+  }
+  void deleteImageDiag() {
+    _prefs?.remove('imageDiag');
+  }
+  void deleteImageQuickDiag() {
+    _prefs?.remove('imageQuickDiag');
+  }
+  void deleteImageQuickDiagFile() {
+    _prefs?.remove('imageQuickDiagFile');
   }
 }
